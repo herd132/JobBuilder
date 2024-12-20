@@ -1,0 +1,50 @@
+복사할 폴더 위치 선정(ex workspace)
+
+(git bash 창에서)
+1. git clone https://github.com/kh-finalProject-team3/finalProject.git
+
+이렇게 하면 복사할 폴더위치(ex workspace)에 finalProject 폴더 생성
+
+finalProject 폴더에 들어가서 git bash 선택
+
+(git bash 창에서)
+1. git remote update		(브랜치 변경사항 업데이트, 약간 로딩시간 있음)
+2. git branch -a		(로컬&원격 레파지토리의 모든 브랜치 조회, 원격은 빨간색)
+3. git checkout -t remotes/origin/본인이름대문자    (로컬에 WOOKJAE 브랜치 생성 후 해당 브랜치로 이동)
+
+┌--------------------------------------------------------------------------┐
+ |                                                                                        |
+ | 각자 코드 작성 (이 때 기능별로 나눠서 코드구현할 예정)                   |
+ | 아직 코드 명명규칙은 정하지 않음                                              |
+ |                                                                                        |
+└--------------------------------------------------------------------------┘
+(git bash 창에서)
+(★★이때 브랜치명이 master면 절대 안됨!/ 자기이름인 브랜치에서 진행★★)
+1. git add .
+2. git commit -m "변경사항 작성"
+3. git push
+
+이후 집에서 추가작성하는 경우는 위의 3가지 내용 반복
+
+
+
+git push 하고 git 허브에 들어가서 
+자신이 git push 한 내용에 대한 Compare & pull request 버튼 클릭
+(★) base : development 무조건 확인(base : master 면 큰일남....)
+(★) compare : 자기 이름 브랜치 확인
+
+아래 부분에 제목 + 내용(변경사항) 작성하기
+
+여기까지 문제없으면 완료
+
+이후 다 같이 모여 내용 확인 후, 팀장이 Merge pull request 클릭
+
+집에서 merge 된 코드에다가 추가로 작성하려는 경우
+(git bash 창에서)
+git pull origin development		(모든 변경사항을 pull 함)
+
+
+if 편집기 뜨면 
+:wq
+하면 탈출임
+
