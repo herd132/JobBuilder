@@ -15,6 +15,9 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class AdminController {
 	
+	/* ********** 필드 ********** */
 	private final AdminService service;
+
+	/* ********** 메서드 ********** */
 
 }
