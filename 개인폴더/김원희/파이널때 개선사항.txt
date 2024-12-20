@@ -1,0 +1,26 @@
+1. 로그인 후 보던 페이지로 이동 (메인에서 로그인 시도가 아닐때)
+   AuthenticationSuccessHandler 라는 핸들러를 이용하여
+   Referer 헤더값(이전 페이지에 대한 url)을 Session에 저장한다.
+
+방법 : 
+
+1. 스프링 시큐리티는 권한이 없는 페이지에 대해서 login form 페이지로 redirect 시켜야함
+(현재 세미는 경고창으로만 안내함)
+
+2. 이 때 이전 페이지에 대한 url을 Referer 헤더로 request에 가지고 있다.
+
+3. Referer 헤더값(이전 페이지에 대한 url)을 Session에 저장한다.
+
+4. 로그인 성공 시 동작하는 AuthenticationSuccessHandler를 상속받아 구현한다.
+
+5. 이 때 Referer 헤더값을 Session에서 꺼내서 해당 url로 redirect한다.
+
+
+
+https://steady-snail.tistory.com/123
+
+https://hungseong.tistory.com/60
+
+https://blog.naver.com/v_jongja/220009073744
+
+https://madinthe90.tistory.com/47
