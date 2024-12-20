@@ -13,21 +13,4 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class TestController {
 	
-	@Autowired
-	private TestService service;
-
-	@RequestMapping("/")
-	public String main(Model model) {
-		
-		return "test";
-	}
-	
-	@RequestMapping("/test")
-	public String test(Model model) {
-		
-		int num = service.getNum();
-		
-		model.addAttribute("message", num);
-		return "test";
-	}
 }
