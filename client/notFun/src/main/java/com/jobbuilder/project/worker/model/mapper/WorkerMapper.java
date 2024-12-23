@@ -18,13 +18,10 @@ public interface WorkerMapper {
 
 	// 근로자 회원가입
 	int signupMember(Worker inputMember);
-	
-	int signupWorker();
 
 	// 근로자 아이디 중복확인
 	int checkId(String workerId);
 
-	// 로그인
 	int signup(Worker inputMember);
 
 }
