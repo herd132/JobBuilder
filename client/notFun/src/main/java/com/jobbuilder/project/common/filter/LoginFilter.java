@@ -54,21 +54,7 @@ public class LoginFilter implements Filter{
 		
 		//-------- 추가작성 여기까지(241115 오후 2시10분) -----------------------
 		
-		// Session 얻어오기
-		HttpSession session = req.getSession();
-		
-		// 세션에서 로그인한 회원 정보를 얻어옴
-		
-		// 얻어왔으나 회원정보 없을 때(로그인이 되어 있지 않은 상태)
-		// /loginError 재요청 : resp 를 이용해서 원하는 곳으로 redirect
-		if(session.getAttribute("loginMember") == null) resp.sendRedirect("/loginError");
-		else {		// 로그인이 되어 있는 경우
-			// FilterChain
-			// - 다음 필터 또는 Dispatcher Servlet 과 연결된 객체로 넘어감
-			// 다음 필터로 요청/응답 객체 전달
-			// 만약 다음 필터가 없으면 Dispatcher Servlet으로 request, response 전달
-			chain.doFilter(request, response);
-		}
+
 	}
 	
 }
