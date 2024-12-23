@@ -97,7 +97,7 @@ public class WorkerServiceImpl implements WorkerService{
 		
 		// 회원가입 성공시 DB에 정보 알바생 기본 정보 입력
 		if(result > 0 ) {
-			int resultWorker = mapper.signupWorker();
+			int resultWorker = mapper.signupWorker(inputMember);
 
 			signupList.put("resultWorker", resultWorker);
 		}		

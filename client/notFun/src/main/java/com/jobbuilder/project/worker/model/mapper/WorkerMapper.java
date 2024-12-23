@@ -24,4 +24,6 @@ public interface WorkerMapper {
 
 	int signup(Worker inputMember);
 
+	int signupWorker(Worker inputMember);
+
 }
