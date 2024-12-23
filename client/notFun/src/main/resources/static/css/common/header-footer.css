@@ -1,0 +1,175 @@
+/* *********** header ************ */
+:root {
+  --primary-orange: #FF9838;
+  --secondary-orange: #FFB876;
+  --background-orange: #FFF4EA;
+  --text-dark: #333333;
+  --text-gray: #666666;
+  --border-light: #FFE4CC;
+  --border-bold: #FF9838;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-dark);
+}
+
+/* Header Styles */
+header {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(255, 152, 56, 0.2);
+}
+
+/* 로고및 검색바 로그인,회원가입,닉네임 */
+.main-nav {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-img {
+  width: 200px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.search-bar {
+  flex: 1;
+  margin: 0 2rem;
+  position: relative;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 1.2rem 0.75rem;
+  border: 2px solid var(--border-bold);
+  border-radius: 25px;
+  font-size: 1rem;
+  transition: border-color 0.1s;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: var(--primary-orange);
+}
+
+.search-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: var(--primary-orange);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  cursor: pointer;
+}
+
+.user-menu {
+   width: 120px;
+   display: flex;
+   flex-direction: row;
+   justify-content: space-between;
+}
+
+.user-menu a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.user-menu a:hover {
+  color: var(--primary-orange);
+  transition: 0.1s;
+}
+
+/* 로그인 회원가입 버튼 css */
+
+/* 닉네임 css */
+.nav-nickname {
+  border: none;
+  cursor: pointer;
+}
+
+
+/* 헤더 게시판 띄우는 네비바 */
+.sub-nav {
+  background-color: white;
+  border-top: 1px solid var(--border-bold);
+}
+
+.menu-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+}
+
+.menu-list li {
+  margin-right: 2rem;
+  cursor: pointer;
+  color: var(--text-gray);
+  transition: color 0.1s;
+}
+
+.menu-list li:hover {
+  color: var(--primary-orange);
+}
+
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .search-bar {
+      margin: 1rem 0;
+  }
+}
+
+
+
+
+/* *********** footer ************ */
+footer {
+  width: 100%;
+  height: 200px;
+  background-color: var(--primary-orange);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+footer>p {
+  font-weight: bold;
+  margin: 16px 0;
+}
+
+footer>article>* {
+  font-size: 14px;
+}
+
+footer a {
+  color: black;
+  text-decoration: none;
+}
+
+footer span {
+  padding: 0 10px;
+}
+
+
+
+
+.hidden {
+  display: none;
+}

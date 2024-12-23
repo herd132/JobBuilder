@@ -1,14 +1,201 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Job Builder</title>
+    
+    <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+    <th:block th:replace="~{common/common}"></th:block>
+    
+    <!-- <main> 안쪽 CSS -->
+    <link rel="stylesheet" href="/css//common/main.css">
 </head>
-
 <body>
-  <h1>메인페이지입니다.</h1>
-</body>
+    <!-- 로고 및 검색바 로그인 -->
+    <th:block th:replace="~{common/main-header}"></th:block>
 
+    <!-- 주의사항 디자인을 위해 th문 안 넣었습니다 th문은 알아서!!!! -->
+    <main>
+      
+        <!-- 지역 및 급구 알바 알림판 -->
+        <section class="job-filter">
+            <div class="filter-options">
+                <span>지역별</span>
+                <span>전체 / 경남 / 경북 / 수원 / 군포...</span>
+            </div>
+            <div class="date-stats">
+                <div class="stat-item">급구 알바(4월 이내, 일반 수)</div>
+                <div class="stat-numbers">
+                    <span>D-0 : 5곳</span>
+                    <span>D-1 : 10곳</span>
+                    <span>D-2 : 15곳</span>
+                    <span>D-3 : 5곳</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- VIP, 프리미언 공고 공통점 9, 12 개 넘어갈시 알바몬 메인페이지처럼 로고가 자동으로 옆으로 움직이게 구현해야합니다.
+        조장님 아이디어 -->
+
+        <!-- VIP 공고 최대 9개 -->
+        <section class="job-navigation">
+            <button class="nav-prev">◀</button>
+            <div class="page-buttons">
+                <button class="page-btn active">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+                <button class="page-btn">로고</button>
+            </div>
+            <button class="nav-next">▶</button>
+        </section>
+
+        <!-- VIP 공고 내용에 지역만 띄우기에는 애매하니 제작자 맘대로, 단 만들당시 6개 카드 정도만 띄울려했음음 -->
+        <section class="vip-listings">
+            <div class="job-flex">
+                <div class="job-card">
+                    <div class="company-logo">
+                        <img src="/images/sample-logo1.png" alt="회사 로고" class="logo-image">
+                    </div>
+                    <div class="job-info">
+                        <h3>VIP 공고</h3>
+                        <p>지역: 서울, 경기</p>
+                    </div>
+                </div>
+                <div class="job-card">
+                    <div class="company-logo">
+                        <img src="/images/sample-logo2.png" alt="회사 로고" class="logo-image">
+                    </div>
+                    <div class="job-info">
+                        <h3>VIP 공고</h3>
+                        <p>지역: 부산</p>
+                    </div>
+                </div>
+                <div class="job-card">
+                    <div class="company-logo">
+                        <img src="/images/sample-logo2.png" alt="회사 로고" class="logo-image">
+                    </div>
+                    <div class="job-info">
+                        <h3>VIP 공고</h3>
+                        <p>지역: 부산</p>
+                    </div>
+                </div>
+                <div class="job-card">
+                    <div class="company-logo">
+                        <img src="/images/sample-logo2.png" alt="회사 로고" class="logo-image">
+                    </div>
+                    <div class="job-info">
+                        <h3>VIP 공고</h3>
+                        <p>지역: 부산</p>
+                    </div>
+                </div>
+                <!-- 추가 VIP 공고들 -->
+            </div>
+        </section>
+
+        <!-- 프리멈 공고 최대 12개 -->
+        <section class="regular-listings">
+            <div class="job-flex">
+                <div class="job-card">
+                    <div class="company-logo">
+                        <img src="/images/brand-logo1.png" alt="회사 로고" class="logo-image">
+                    </div>
+                    <div class="job-info">
+                        <h3>프리미엄 공고</h3>
+                        <p>지역: 대구</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 클루드가 짜준 타입리프문 혹시라도 사용할일을 대비해 여기 둡니다 또한 클래스명 타임리프문은 알아서 바꾸기! -->
+        <!-- <section class="job-navigation">
+            <button class="nav-prev">◀</button>
+            <div class="page-buttons">
+                <button th:each="page : ${#numbers.sequence(1, 10)}" 
+                        class="page-btn" 
+                        th:classappend="${currentPage == page ? 'active' : ''}"
+                        th:text="'공고'"></button>
+            </div>
+            <button class="nav-next">▶</button>
+        </section>
+
+        <section class="vip-listings">
+            <div class="job-grid">
+                <div th:each="job : ${vipJobs}" class="job-card" th:classappend="${job.sample ? 'sample' : ''}">
+                    <div th:if="${job.sample}" class="sample-stamp">SAMPLE</div>
+                    <h3 th:text="${job.title}">VIP 공고</h3>
+                    <p th:if="${job.location}" th:text="|지역: ${job.location}|">지역: 서울, 경기</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="regular-listings">
+            <div class="job-grid">
+                <div th:each="job : ${regularJobs}" class="job-card">
+                    <h3 th:text="${job.title}">브랜드 알바</h3>
+                </div>
+            </div>
+        </section> -->
+
+        <!-- 공고게시글 리스트 의도는 10개정도? 게시글 띄우기 -->
+        <section class="recruitment-list">
+            <h2>채용 공고</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>공고제목</th>
+                        <th>근무시간</th>
+                        <th>근무지역</th>
+                        <th>급여</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>카페 바리스타</td>
+                        <td>09:00 - 18:00</td>
+                        <td>서울 강남구</td>
+                        <td>10,000원/시간</td>
+                    </tr>
+                    <tr>
+                        <td>편의점 아르바이트</td>
+                        <td>22:00 - 06:00</td>
+                        <td>부산 해운대구</td>
+                        <td>12,000원/시간</td>
+                    </tr>
+                    <!-- 추가 공고는 여기에 -->
+                </tbody>
+            </table>
+        </section>
+        
+        <!-- 공지사항 및 게시글은 대충 해둔겁니다  -->
+        <!-- 공지사항 및 게시글 -->
+        <section class="announcements-posts">
+            <div class="announcements">
+                <h3>공지사항</h3>
+                <ul>
+                    <li>신규 채용 공고 업데이트</li>
+                    <li>명절 휴무 관련 안내</li>
+                </ul>
+            </div>
+            <div class="posts">
+                <h3>종합 게시글</h3>
+                <ul>
+                    <li>알바 꿀팁 공유</li>
+                    <li>추천 근무지 리스트</li>
+                </ul>
+            </div>
+        </section>
+        
+    </main>
+
+    <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+    <th:block th:replace="~{common/main-footer}"></th:block>
+</body>
 </html>
