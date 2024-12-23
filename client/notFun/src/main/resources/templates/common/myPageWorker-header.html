@@ -1,0 +1,27 @@
+<header>
+  <nav class="main-nav">
+    <i class="fa-solid fa-bars"></i>
+    <div class="logo">
+      <a href="#">
+        <img src="/images/logo.png" alt="로고" class="logo-img">
+    </div>
+    <div class="search-bar">
+      <h3>마이페이지</h3>
+      </a>
+    </div>
+
+    <div class="user-menu">
+      <!-- 로그인 시 -->
+      <th:block th:if="${session.loginMember == null}">
+        <a href="#" class="nav-login">로그인</a>
+        <a href="#" class="nav-singup">회원가입</a>
+      </th:block>
+
+      <th:block th:if="${session.loginMember != null}">
+        <span class="nav-nickname">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+      </th:block>
+    </div>
+
+  </nav>
+
+</header>

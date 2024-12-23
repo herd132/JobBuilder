@@ -1,51 +1,49 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MyPageWorkerInfo</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>MyPage</title>
 
-    <script src="https://kit.fontawesome.com/4d970bf746.js" crossorigin="anonymous"></script>
+	<!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+	<th:block th:replace="~{common/common}"></th:block>
 
-    <link rel="stylesheet" href="/css/myPageWorkerInfo.css">
+	<link rel="stylesheet" href="/css/myPageWorker/myPageWorkerInfo.css">
 </head>
+
 <body>
+	<!-- 로고 및 검색바 로그인 -->
+	<th:block th:replace="~{common/myPageWorker-header}"></th:block>
+
 	<div>
 
-	    <div class="member-info-container">
-	      <div class="section-header">
-	        <h2 class="section-title">닉네임 님의 회원정보</h2>
-	        <button class="action-button">수정</button>
-	      </div>
+		<div class="member-info-container">
+			<div class="header">
+				<h2 class="title">닉네임 님의 회원정보</h2>
+				<button class="updateBtn" onClick="location.href='updateWorkerInfo.html'"></button>>수정</button>
+			</div>
 
-	      <div class="info-container">
-	        <div class="form-field">
-	          <span class="field-label">연락처</span>
-	          <span class="field-value">010-0000-0000</span>
-	        </div>
-	        <div class="form-field">
-	          <span class="field-label">이메일</span>
-	          <span class="field-value">test@test.com</span>
-	        </div>
-	        <div class="form-field">
-	          <span class="field-label">주소</span>
-	          <span class="field-value">지번주소/도로명주소만</span>
-	        </div>
-	      </div>
+			<div class="info-container-background">
+				<div class="info-container">
+					<div class="form-field">
+						<label class="memberTel">연락처</label>
+						<label class="memberTel">010-1234-1234</label>
+					</div>
+					<div class="form-field">
+						<span class="field-label">이메일</span>
+						<span class="field-value">test@test.com</span>
+					</div>
+					<div class="form-field">
+						<span class="field-label">주소</span>
+						<span class="field-value">지번주소/도로명주소만</span>
+					</div>
+				</div>
+			</div>
+		</div>
 
-	      <div class="divider"></div>
-
-	      <div class="section-header">
-	        <h2 class="section-title">비밀번호 변경</h2>
-	        <button class="action-button">변경</button>
-	      </div>
-
-	      <div class="section-header">
-	        <h2 class="section-title">회원탈퇴</h2>
-	        <button class="action-button">탈퇴</button>
-	      </div>
-	    </div>
-
-	  </div>
+		 <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+		 <th:block th:replace="~{common/main-footer}"></th:block>
 </body>
+
 </html>
