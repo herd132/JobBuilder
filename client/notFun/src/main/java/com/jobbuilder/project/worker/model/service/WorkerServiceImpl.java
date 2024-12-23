@@ -7,6 +7,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobbuilder.project.worker.model.dto.Member;
 import com.jobbuilder.project.worker.model.dto.Worker;
 import com.jobbuilder.project.worker.model.mapper.WorkerMapper;
 
@@ -25,26 +26,28 @@ public class WorkerServiceImpl implements WorkerService{
 
 	// 회원 로그인
 	@Override
-	public Worker login(Worker inputMember) {
+	public Member login(Member inputMember) {
 		
-		// 암호화 진행
-		String bcryptPassword = bcrypt.encode(inputMember.getMemberPw());
-		log.debug("inputmember" + inputMember);
+		// 1. ID 가 일치하면서 탈퇴하지 않은 회원 조회
+		Member loginWorker = mapper.login(inputMember.getWorkerId());
+		log.debug("inputmember123" + inputMember);
+		log.debug("loginMember" + loginWorker);
 		
-		// 1. 이메일이 일치하면서 탈퇴하지 않은 회원 조회
-		Worker loginMember = mapper.login(inputMember.getWorkerId());
-		log.debug("loginMembe12312321r" + loginMember);
-		// 일치하는 이메일이 없어서 조회 결과가 null인경우
-		if(loginMember == null) return null;
+		if(loginWorker == null) return null;
 		
 		// 입력 받은 비밀번호 평문과 암호화된 비밀번호가 일치하는지 확인
-		if(!bcrypt.matches(inputMember.getMemberPw(), loginMember.getMemberPw())) {
+		if(!bcrypt.matches(inputMember.getMemberPw(), loginWorker.getMemberPw())) {
+			log.debug("1 qjs" + inputMember.getMemberPw());
+			log.debug("2번" + loginWorker.getMemberPw());
 			return null;
 		}
 		
-		loginMember.setMemberPw(null);
+		log.debug("loginMembe12312321r" + loginWorker);
+		// 일치하는 이메일이 없어서 조회 결과가 null인경우
 		
-		return loginMember;
+		loginWorker.setMemberPw(null);
+		
+		return loginWorker;
 	}
 	
 	@Override

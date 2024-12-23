@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jobbuilder.project.worker.model.dto.Member;
 import com.jobbuilder.project.worker.model.dto.Worker;
 import com.jobbuilder.project.worker.model.service.WorkerService;
 
@@ -27,7 +28,48 @@ public class WorkerController {
 
 	private final WorkerService service;
 	
+	/*                        단순 페이지 보여주는 경우                       */
 	
+	/** 회원가입 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("workerSignup") 
+	public String signupPage()  {
+		
+		return "worker/workerSignup";
+	}
+	
+	/** 로그인 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("workerLogin")
+	public String workerLogin() {
+		return "worker/workerLogin";
+	}
+	
+	// 이메일 찾기
+	@GetMapping("workerFindEmail")
+	public String workerFindEmail() {
+		return "worker/workerFindEmail";
+	}
+	
+	// 비밀번호 찾기
+	@GetMapping("workerFindPw")
+	public String workerFindPw() {
+		return "worker/workerFindPw";
+	}
+	
+	// 비밀번호 변경
+	@GetMapping("workerChangePw")
+	public String workerChangePw() {
+		return "myPage/changePw";
+	}
+	
+	// 비밀번호 찾기 후 변경화면 이동
+	@GetMapping("workerFindChangePw")
+	public String workerFindChangePw() {
+		return "member/workerFindChangePw";
+	}
 	
 	/** 회원 로그인 ( 근로자 )
 	 * @param workerMember
@@ -37,29 +79,31 @@ public class WorkerController {
 	 * @param resp
 	 * @return
 	 */
-	@PostMapping("login")
-	public String login(Worker inputMember,
-						RedirectAttributes ra,
-						Model model,
-						@RequestParam(value="saveId", required=false) String saveId,
-						HttpServletResponse resp) {
+	@PostMapping("workerLogin")
+	public String login(Member inputMember,
+						@RequestParam(value="saveId", required = false) String saveId,
+						Model model, HttpServletResponse resp,
+						RedirectAttributes ra) {
 		
-		try {
-			Worker loginMember = service.login(inputMember);
+			Member loginWorker = service.login(inputMember);
 			
+			String path = null;
+			String message = null;
+						
 			// 로그인 실패 시
-			if (loginMember == null) {
-				ra.addFlashAttribute("message", "아이디 또는 비밀번호가 일치하지 않습니다.");
+			if (loginWorker == null) {
+				path = "worker/workerLogin";
+				message = " 아이디 또는 비밀번호가 일치하지 않습니다.";
 			} else {
-				model.addAttribute("loginMember", loginMember);
+				
+				path = "/";
+				
+				model.addAttribute("loginWorker", loginWorker);
 				
 				// ******************* Cookie ***********************
-				Cookie cookie = new Cookie("saveId", loginMember.getMemberEmail());
-				
-				// 쿠키가 적용될 경로 설정
+				Cookie cookie = new Cookie("saveId", loginWorker.getMemberEmail());		
 				cookie.setPath("/");
 				
-				// 쿠키 만료 기간 지정하기
 				if(saveId != null) { // 아이디 저장을 체크 시
 					cookie.setMaxAge(31536000); // 초 단위로 지정 ( 30일 )
 					
@@ -71,13 +115,9 @@ public class WorkerController {
 				resp.addCookie(cookie);
 				
 			}
-			
-		} catch (Exception e) {
-			e.printStackTrace();
-			log.info("로그인 중 예외 발생 try-catch로 예외 처리");
-		}
 		
-		return "redirect:/" ; // 메인페이지에 재요청	
+		ra.addFlashAttribute("message", message);
+		return "redirect:/" + path ; // 메인페이지에 재요청	
 		
 	}
 	
@@ -96,22 +136,6 @@ public class WorkerController {
 		return "redirect:/";
 	}
 	
-	/** 회원가입 페이지로 이동
-	 * @return
-	 */
-	@GetMapping("workerSignup") 
-	public String signupPage()  {
-		
-		return "worker/workerSignup";
-	}
-	
-	/** 로그인 페이지로 이동
-	 * @return
-	 */
-	@GetMapping("workerLogin")
-	public String workerLoginPage() {
-		return "worker/workerLogin";
-	}
 	
 	/** 아이디 중복검사 ( 비동기 요청 ) 
 	 * @return
