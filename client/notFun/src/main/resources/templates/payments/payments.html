@@ -12,13 +12,14 @@
   <th:block th:replace="~{common/common}"></th:block>
 
   <link rel="stylesheet" href="/css/payments/payments.css">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
-
+<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 <body>
 
   <!-- header (홈버튼, 홈페이지 이름, 로그인버튼, 네비바, 검색창)-->
   <th:block th:replace="~{common/main-header}"></th:block>
-
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
   <div class="payments-background-gray">
 
     <!-- 흰색배경영역(안쪽)  -->
@@ -88,6 +89,15 @@
           </div>
         </form>
 
+        <button id="tempLoginBtn">임시 로그인</button>
+        <button id="tempLoginBtn2">임시 로그인2</button>
+        <button id="tempLogoutBtn">로그아웃</button>
+      
+        <!-- 회원 정보 출력 영역 -->
+        <div id="userInfo"></div>
+
+        <div id="details-container"></div>
+        
       </div> <!-- 배경선 -->
     </div> <!-- 흰색부분 -->
   </div> <!-- 회색부분 -->
@@ -95,6 +105,8 @@
   <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
   <th:block th:replace="~{common/main-footer}"></th:block>
 
+  <script src="/js/payments/payments.js"></script>
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </body>
 
 </html>

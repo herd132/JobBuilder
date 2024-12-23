@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Membership {
 	private int membershipNo;					// 맴버십 번호
-	private int membershipGrade;				// 맴버 등급
+	private String membershipType;			// 맴버 등급
 	private String membershipContent;			// 혜택 내용
 	private String membershipDelFl;				// 가입여부 확인
 	private String membershipStartDate;			// 가입일
@@ -23,6 +23,20 @@ public class Membership {
 	private String membershipExpirationDate;	// 잔여일 기준점
 	private String membershipSubscriptionFl;	// 구독 결제 여부 Y/N
 	
-	private int employerNo;						// 고용주 번호 (연동자료)
+	private int employerNo; 					// 고용주 번호 (연동자료)
+	private int memberNo;						// 회원 번호 (연동자료)
 	
+    // Getters and Setters
+    public int getEmployerNo() {
+        return employerNo;
+    }
+    public void setEmployerNo(int employerNo) {
+        this.employerNo = employerNo;
+    }
+    public String getMembershipType() {
+        return membershipType;
+    }
+    public void setMembershipType(String membershipType) {
+        this.membershipType = membershipType;
+    }
 }
