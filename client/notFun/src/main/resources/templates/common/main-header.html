@@ -12,11 +12,11 @@
           <button type="submit" class="search-btn">검색</button>
       </div>
 
+          <a href="/myPageWorker/myPageWorkerInfo" class="nav-login">로그인</a>
       <div class="user-menu">
         
         <!-- 로그인 시 -->
         <th:block th:if="${session.loginMember == null}">
-          <a href="#" class="nav-login">로그인</a>
           <a href="#" class="nav-singup">회원가입</a>
         </th:block>
 
