@@ -1,0 +1,288 @@
+/*--------------- 회색배경영역(제일끝) ---------------*/
+.payments-background-gray {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 2rem 0 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+
+/*--------------- 흰색배경영역(안쪽)  ---------------*/
+.payments-background-white {
+  width: 45%;
+  height: 100%;
+  padding: 2rem 2rem 0 2rem;
+  background-color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: left;
+  margin: 0;
+}
+
+.payments-background-outside {
+  padding: 1rem;
+  border-radius: 10px;
+  border: #333;
+  border-style: double ;
+  border-width: 1px;
+  margin: 0.5rem;
+  margin-bottom: 2rem;
+  background-color: #F0BB78;
+}
+
+.payments-background-inside {
+  background-color: #FFF0DC;
+  border-radius: 10px;
+  padding: 1rem;
+}
+
+
+/*-------------------------------------------------------------------*/
+
+/* 상단 제목 */
+.payments-title-top {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.payments-title-top hr {
+  margin-top: 0.5rem;
+  background: #F0BB78;
+  height:0.5rem;
+  border:0;
+}
+
+.payments-title-middle {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+/*-------------------------------------------------------------------*/
+
+/*--------------- 공통 스타일  ---------------*/
+
+/* 유효성 검사 span 부분 색상 변경용*/
+.error{
+  color: red;
+  font-weight: bold;
+}
+
+.confirm{
+  color: blue;
+  font-weight: bold;
+}
+
+/* 필수 입력 요소*/
+.requiredmark{
+  color: red;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.required{
+  color: #333;
+  font-size: 1rem;
+}
+
+/* 입력창 */
+.payments-input {
+  display: block;
+  width: 40%;
+  height: 2rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  margin-top: 0.2rem;
+  margin-bottom: 0.2rem;
+  padding: 0.5rem;
+}
+
+
+
+/*인증버튼류*/
+.payments-btn-auth {
+  display: block;
+  width: 10%;
+  height: 25px;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 10%;
+}
+
+.payments-btn-auth:hover {
+  background-color: #444;
+  transform: scale(1.2);
+}
+
+/*메인버튼*/
+
+/* 안내메시지 */
+.payments-message {
+color: #ada9a9;
+margin-left: 1rem;
+height: 1.5rem;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 이메일 입력 영역*/
+.payments-email-area{
+  display: block;
+  align-items: center;
+  margin-bottom: 0.4rem;
+
+  padding-bottom: 0.7rem;
+  border: #666;
+  border-style:solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.payments-inside-top{
+  display: flex;
+  gap: 4rem;
+  justify-content: space-between;
+}
+
+.payments-inside-top-item{
+  background-color: #FAFAFA;
+}
+
+
+/*-------------------------------------------------------------------*/
+
+/* 비밀번호 입력 영역*/
+.payments-pw-area{
+  display: block;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.7rem;
+  border: #666;
+  border-style:solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.payments-pw-input{
+  display: block;
+  gap: 4rem;
+  align-items: center;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 이메일 입력 영역*/
+.payments-nickname-area{
+  display: block;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.7rem;
+  border: #666;
+  border-style:solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.payments-nickname-input{
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 이름 입력 영역*/
+.payments-name-area{
+  display: block;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.7rem;
+  border: #666;
+  border-style:solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.payments-name-input{
+  display: block;
+  gap: 4rem;
+  align-items: center;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 전화번호 입력 영역*/
+.payments-tel-area{
+  display: block;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.7rem;
+  border: #666;
+  border-style:solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.payments-tel-input{
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 주소 입력 영역*/
+.payments-address-area{
+  display: block;
+  align-items: center;
+  margin-bottom: 0.4rem;
+  padding-bottom: 0.7rem;
+  border: #666;
+  border-style:solid;
+  border-width: 0px 0px 1px 0px;
+}
+
+.payments-address-input{
+  display: flex;
+  gap: 4rem;
+  align-items: center;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 메인버튼 영역*/
+
+.payments-mainbtn-area{
+  margin-top: 2.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 7rem;
+}
+
+
+.payments-btn-main {
+  display: block;
+  width: 30%;
+  padding: 0.8rem;
+  background-color: #333;
+  color: white;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 2rem;
+}
+
+.payments-btn-main:hover {
+	background-color: #444;
+  transform: scale(1.1);
+}
+
+
+
+.criticalInfo{
+  margin: 1.4rem;
+  display: flex;
+  justify-content: center;
+  color: red;
+  font-size: 1.21rem;
+
+}
+

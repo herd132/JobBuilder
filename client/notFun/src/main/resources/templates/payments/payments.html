@@ -1,11 +1,86 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+</html>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>맴버십 안내</title>
+
+  <!-- CSS, font awesome 라이브러리-->
+  <th:block th:replace="~{common/common}"></th:block>
+
+  <link rel="stylesheet" href="/css/payments/payments.css">
 </head>
+
 <body>
-  
+
+  <!-- header (홈버튼, 홈페이지 이름, 로그인버튼, 네비바, 검색창)-->
+  <th:block th:replace="~{common/main-header}"></th:block>
+
+  <div class="payments-background-gray">
+
+    <!-- 흰색배경영역(안쪽)  -->
+    <div class="payments-background-white">
+
+
+      <!-- 상단 제목 스타일 -->
+      <h1 class="payments-title-top">맴버십 혜택 안내
+        <hr>
+      </h1>
+
+      <div class="payments-background-outside">
+        <h3 class="payments-title-middle">상세 등급별 혜택</h3>
+        <form action="/member/payments" method="POST" name="paymentsForm" id="paymentsForm">
+
+          <div class="payments-background-inside">
+            <!-- 이메일 입력 영역 -->
+            <div class="payments-email-area">
+
+              <div class="payments-inside-top">
+                <div class="payments-inside-top-item">
+                  11
+                </div>
+                <div class="payments-inside-top-item">
+                  22
+                </div>
+                <div class="payments-inside-top-item">
+                  33
+                </div>
+              </div>
+
+              <div class="payments-message">
+                <span id="emailMessage">인증번호를 받을 수 있는 이메일을 입력해주세요</span>
+              </div>
+              <div class="payments-email-inputAuth">
+                <input class="payments-input" type="text" name="authKey" id="authKey" maxlength="6" autocomplete="off">
+                <button type="button" id="checkAuthKeyBtn" class="payments-btn-auth">인증하기</button>
+                <div class="payments-message">
+                  <span id="authKeyMessage"></span>
+                </div>
+              </div>
+            </div>
+
+
+
+
+            <!-- 메인 버튼 영역 -->
+            <div class="payments-mainbtn-area">
+              <button type="submit" id="paymentsBtn" class="payments-btn-main"> 가입하기</button>
+              <button type="button" id="rerutnBtn" class="payments-btn-main" onclick="location.href='login'">
+                취소</button>
+            </div>
+          </div>
+        </form>
+
+      </div> <!-- 배경선 -->
+    </div> <!-- 흰색부분 -->
+  </div> <!-- 회색부분 -->
+
+  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+  <th:block th:replace="~{common/main-footer}"></th:block>
+
 </body>
+
 </html>
