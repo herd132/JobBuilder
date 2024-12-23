@@ -8,7 +8,7 @@ import com.jobbuilder.project.worker.model.dto.Worker;
 public interface WorkerMapper {
 
 	// 근로자 로그인 서비스
-	Worker login(String memberEmail);
+	Worker login(String workerId);
 
 	// 근로자 이메일 중복확인
 	int checkEmail(String memberEmail);

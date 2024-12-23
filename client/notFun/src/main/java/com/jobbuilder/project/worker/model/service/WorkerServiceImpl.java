@@ -29,10 +29,11 @@ public class WorkerServiceImpl implements WorkerService{
 		
 		// 암호화 진행
 		String bcryptPassword = bcrypt.encode(inputMember.getMemberPw());
+		log.debug("inputmember" + inputMember);
 		
 		// 1. 이메일이 일치하면서 탈퇴하지 않은 회원 조회
-		Worker loginMember = mapper.login(inputMember.getMemberEmail());
-		
+		Worker loginMember = mapper.login(inputMember.getWorkerId());
+		log.debug("loginMembe12312321r" + loginMember);
 		// 일치하는 이메일이 없어서 조회 결과가 null인경우
 		if(loginMember == null) return null;
 		
