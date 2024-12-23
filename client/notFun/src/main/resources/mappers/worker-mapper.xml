@@ -46,7 +46,10 @@
 			
 	 </insert>
 	 <!--  회원가입 ( 알바생 정보 )  -->
-	 <insert id="signupWorker">	
+	 <insert id="signupWorker" useGeneratedKeys="true" parameterType="Worker">	
+	 	<selectKey order="BEFORE" resultType="_int" keyProperty="memberNo">
+			SELECT (SEQ_MEMBER_NO.NEXTVAL - 1 ) FROM DUAL
+		</selectKey>
 	 INSERT INTO "WORKER"
 		VALUES(SEQ_WORKER_NO.NEXTVAL,
 			#{workerId},

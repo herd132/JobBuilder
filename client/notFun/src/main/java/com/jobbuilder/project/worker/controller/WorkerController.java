@@ -99,10 +99,18 @@ public class WorkerController {
 	/** 회원가입 페이지로 이동
 	 * @return
 	 */
-	@GetMapping("signup") 
+	@GetMapping("workerSignup") 
 	public String signupPage()  {
 		
-		return "member/signup";
+		return "worker/workerSignup";
+	}
+	
+	/** 로그인 페이지로 이동
+	 * @return
+	 */
+	@GetMapping("workerLogin")
+	public String workerLoginPage() {
+		return "worker/workerLogin";
 	}
 	
 	/** 아이디 중복검사 ( 비동기 요청 ) 
@@ -110,11 +118,23 @@ public class WorkerController {
 	 */
 	
 	@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
-	@GetMapping("checkEmail") // Get요청 /member/checkEmail
+	@GetMapping("checkId") // Get요청 /member/checkEmail
 	public int checkId(@RequestParam("workerId") String workerId) {
 		
 		
 		return service.checkId(workerId); // 0 or 1
+	}
+	
+	/** 이메일 중복검사 ( 비동기 요청 ) 
+	 * @return
+	 */
+	
+	@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
+	@GetMapping("checkEmail") // Get요청 /member/checkEmail
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		
+		
+		return service.checkEmail(memberEmail); // 0 or 1
 	}
 	
 	/** 닉네임 중복 검사
