@@ -89,6 +89,8 @@ public class WorkerServiceImpl implements WorkerService{
 		inputMember.setMemberPw(encPw);
 		// 회원 가입 매퍼 메서드 호출쓰
 		
+		
+		
 		return mapper.signup(inputMember);
 	}
 }
