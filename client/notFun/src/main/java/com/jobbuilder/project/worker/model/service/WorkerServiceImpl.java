@@ -1,5 +1,8 @@
 package com.jobbuilder.project.worker.model.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,9 +91,18 @@ public class WorkerServiceImpl implements WorkerService{
 		String encPw = bcrypt.encode(inputMember.getMemberPw()); // 암호화하는과정
 		inputMember.setMemberPw(encPw);
 		// 회원 가입 매퍼 메서드 호출쓰
+		Map<Object, Object> signupList = new HashMap<>();
 		
+		int result = mapper.signupMember(inputMember);
 		
+		// 회원가입 성공시 DB에 정보 알바생 기본 정보 입력
+		if(result > 0 ) {
+			int resultWorker = mapper.signupWorker();
+
+			signupList.put("resultWorker", resultWorker);
+		}		
+		signupList.put("signupMember", result);
 		
-		return mapper.signup(inputMember);
+		return result;
 	}
 }
