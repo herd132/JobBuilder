@@ -1,0 +1,42 @@
+
+<header>  
+  <!-- 로고 및 검색바 로그인 -->
+  <nav class="main-nav">
+
+      <div class="logo">
+          <img src="/images/logo.png" alt="로고" class="logo-img">
+      </div>
+
+      <div class="search-bar">
+          <input type="text" placeholder="검색어를 입력해주세요">
+          <button type="submit" class="search-btn">검색</button>
+      </div>
+
+      <div class="user-menu">
+        
+        <!-- 로그인 시 -->
+        <th:block th:if="${session.loginMember == null}">
+          <a href="#" class="nav-login">로그인</a>
+          <a href="#" class="nav-singup">회원가입</a>
+        </th:block>
+
+        <th:block th:if="${session.loginMember != null}">
+          <span class="nav-nickname">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+        </th:block>
+
+      </div>
+
+  </nav>
+
+  <!-- 게시판 네비바 -->
+  <nav class="sub-nav">
+      <ul class="menu-list">
+          <li>채용정보</li>
+          <li>점포매칭</li>
+          <li>인재정보</li>
+          <li>이벤트</li>
+          <li>아르바이트</li>
+          <li>고객센터</li>
+      </ul>
+  </nav>
+</header>
