@@ -26,24 +26,20 @@ public class WorkerServiceImpl implements WorkerService{
 
 	// 회원 로그인
 	@Override
-	public Worker login(Worker inputMember) {
+	public Worker login(Worker inputWorker) {
+		
 		
 		// 1. ID 가 일치하면서 탈퇴하지 않은 회원 조회
-		Worker loginWorker = mapper.login(inputMember.getWorkerId());
-		log.debug("inputmember123" + inputMember);
-		log.debug("loginMember" + loginWorker);
-		
+		Worker loginWorker = mapper.login(inputWorker.getWorkerId());
 		if(loginWorker == null) return null;
 		
+		log.debug("loginWroker ~!:" + loginWorker);
 		// 입력 받은 비밀번호 평문과 암호화된 비밀번호가 일치하는지 확인
-		if(!bcrypt.matches(inputMember.getMemberPw(), loginWorker.getMemberPw())) {
-			log.debug("1 qjs" + inputMember.getMemberPw());
-			log.debug("2번" + loginWorker.getMemberPw());
+		if(!bcrypt.matches(inputWorker.getMemberPw(), loginWorker.getMemberPw())) {
+			log.debug("인풋 PW" + inputWorker.getMemberPw());
+			log.debug("로그인 PW" + loginWorker.getMemberPw());
 			return null;
 		}
-		
-		log.debug("loginMembe12312321r" + loginWorker);
-		// 일치하는 이메일이 없어서 조회 결과가 null인경우
 		
 		loginWorker.setMemberPw(null);
 		
@@ -72,8 +68,8 @@ public class WorkerServiceImpl implements WorkerService{
 
 	// 회원 가입
 	@Override
-	public int signup(Worker inputMember, String[] memberAddress) {
-		if(!inputMember.getWorkerAddress().equals(",,")) {
+	public int signup(Worker inputWorker, String[] memberAddress) {
+		if(!inputWorker.getWorkerAddress().equals(",,")) {
 			
 			// String.join("구분자" , 배열 ) 		
 			
@@ -83,25 +79,25 @@ public class WorkerServiceImpl implements WorkerService{
 			// -> 주소, 상세주소에 없는 특수문자 작성
 			// -> 나중에 마이페이지에서 주소 수정 시 다시 3분할 해야할 때 구분자로 이용할 예정
 			// inputMember 주소로 합쳐진 주소를 세팅
-			inputMember.setWorkerAddress(address);
+			inputWorker.setWorkerAddress(address);
 			
 		} else {			
 		// 주소가 입력되지 않은 경우
-			inputMember.setWorkerAddress(null); // null 저장	
+			inputWorker.setWorkerAddress(null); // null 저장	
 		}
 		
 		// inputMember 안의 memberPw -> 평문	
 		// 비밀번호를 암호화하여 inputMember에 세팅
-		String encPw = bcrypt.encode(inputMember.getMemberPw()); // 암호화하는과정
-		inputMember.setMemberPw(encPw);
+		String encPw = bcrypt.encode(inputWorker.getMemberPw()); // 암호화하는과정
+		inputWorker.setMemberPw(encPw);
 		// 회원 가입 매퍼 메서드 호출쓰
 		Map<Object, Object> signupList = new HashMap<>();
 		
-		int result = mapper.signupMember(inputMember);
+		int result = mapper.signupMember(inputWorker);
 		
 		// 회원가입 성공시 DB에 정보 알바생 기본 정보 입력
 		if(result > 0 ) {
-			int resultWorker = mapper.signupWorker(inputMember);
+			int resultWorker = mapper.signupWorker(inputWorker);
 
 			signupList.put("resultWorker", resultWorker);
 		}		

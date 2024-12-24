@@ -6,7 +6,7 @@ import com.jobbuilder.project.worker.model.dto.Worker;
 public interface WorkerService {
 
 	// 근로자 로그인
-	Worker login(Worker inputMember);
+	Worker login(Worker inputMember) throws Exception;
 	
 	/* *************** 회원가입 *************** */
 	// 이메일 중복검사

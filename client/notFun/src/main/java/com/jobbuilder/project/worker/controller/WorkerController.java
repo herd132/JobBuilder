@@ -82,45 +82,51 @@ public class WorkerController {
 	 * @return
 	 */
 	@PostMapping("workerLogin")
-	public String login(Worker inputMember,
+	public String login(Worker inputWorker,
 						@RequestParam(value="saveId", required = false) String saveId,
 						Model model, HttpServletResponse resp,
 						RedirectAttributes ra) {
 		
-			Worker loginWorker = service.login(inputMember);
-			
-			String path = null;
-			String message = null;
-						
-			// 로그인 실패 시
-			if (loginWorker == null) {
-				path = "worker/workerLogin";
-				message = " 아이디 또는 비밀번호가 일치하지 않습니다.";
-			} else {
+			Worker loginWorker;
+			try {
+				loginWorker = service.login(inputWorker);
+				String path = null;
+				String message = null;
 				
-				path = "/";
-				
-				model.addAttribute("loginWorker", loginWorker);
-				
-				// ******************* Cookie ***********************
-				Cookie cookie = new Cookie("saveId", loginWorker.getMemberEmail());		
-				cookie.setPath("/");
-				
-				if(saveId != null) { // 아이디 저장을 체크 시
-					cookie.setMaxAge(31536000); // 초 단위로 지정 ( 30일 )
+				// 로그인 실패 시
+				if (loginWorker == null) {
 					
-				} else { // 미체크 시
-					cookie.setMaxAge(0); // 0초 (클라이언트에서 쿠키삭제 )				
+					message = " 아이디 또는 비밀번호가 일치하지 않습니다.";
+				} else {
+					
+					path = "/";
+					
+					model.addAttribute("loginWorker", loginWorker);
+					
+					// ******************* Cookie ***********************
+					Cookie cookie = new Cookie("saveId", loginWorker.getWorkerId());		
+					cookie.setPath("/");
+					
+					if(saveId != null) { // 아이디 저장을 체크 시
+						cookie.setMaxAge(31536000); // 초 단위로 지정 ( 30일 )
+						
+					} else { // 미체크 시
+						cookie.setMaxAge(0); // 0초 (클라이언트에서 쿠키삭제 )				
+					}
+					
+					// 응답 객체에 쿠키 추가 -> 클라이언트 전달
+					resp.addCookie(cookie);
+					
 				}
 				
-				// 응답 객체에 쿠키 추가 -> 클라이언트 전달
-				resp.addCookie(cookie);
+				ra.addFlashAttribute("message", message);
 				
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
-		
-		ra.addFlashAttribute("message", message);
-		return "redirect:/" + path ; // 메인페이지에 재요청	
-		
+			
+			return "redirect:/"; // 메인페이지에 재요청	
 	}
 	
 	/** 회원 로그아웃 ( 근로자 )
@@ -183,20 +189,20 @@ public class WorkerController {
 		 * @return
 		 */
 		@PostMapping("signup")
-		public String signup(@ModelAttribute/*생략가능*/ Worker inputMember,
+		public String signup(@ModelAttribute/*생략가능*/ Worker inputWorker,
 							@RequestParam("memberAddress") String[] memberAddress,
 							RedirectAttributes ra) {
 			//log.debug("inputmember: " + inputMember);
 			
 			// 회원가입 서비스 호출
-			int result = service.signup(inputMember, memberAddress);
+			int result = service.signup(inputWorker, memberAddress);
 			
 			String path = null;
 			String message = null;
 			
 			if(result > 0) { // 성공
 				
-				message = inputMember.getWorkerNickname() + "님의 가입을 환영 합니다~";
+				message = inputWorker.getWorkerNickname() + "님의 가입을 환영 합니다~";
 				path = "/"; // 메인페이지로 재요청
 			} else { // 실패
 				
