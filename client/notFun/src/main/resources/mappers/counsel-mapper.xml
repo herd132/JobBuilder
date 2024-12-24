@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.counsel.model.mapper.CounselMapper">
 	
-	<select id="get">
+	<select id="loginCounselor">
 	
 		SELECT 
 
@@ -15,7 +15,8 @@
 			AUTHORITY  
 		
 		FROM "MEMBER"
-		WHERE MEMBER_NO = #{i}
+		WHERE MEMBER_EMAIL = #{memberEmail}
+		AND AUTHORITY = 4
 	</select>
 	
 </mapper>
