@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -24,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("worker")
 @RequiredArgsConstructor
 @Slf4j
+@SessionAttributes({"loginMember"})
 public class WorkerController {
 
 	private final WorkerService service;
@@ -80,12 +82,12 @@ public class WorkerController {
 	 * @return
 	 */
 	@PostMapping("workerLogin")
-	public String login(Member inputMember,
+	public String login(Worker inputMember,
 						@RequestParam(value="saveId", required = false) String saveId,
 						Model model, HttpServletResponse resp,
 						RedirectAttributes ra) {
 		
-			Member loginWorker = service.login(inputMember);
+			Worker loginWorker = service.login(inputMember);
 			
 			String path = null;
 			String message = null;

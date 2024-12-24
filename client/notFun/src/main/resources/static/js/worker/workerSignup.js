@@ -26,3 +26,15 @@ function execDaumPostcode() {
 
 // 주소 검색 버튼 클릭 시 
 document.querySelector("#searchAddress").addEventListener("click", execDaumPostcode);
+
+console.log("회원가입 유효성 검사");
+
+const checkObj = {
+  "memberEmail": false,
+  "authKey": false,
+  "memberPw": false,
+  "memberPwConfirm": false,
+  "workerNickname": false,
+  "memberTel": false,
+  "memberName": false
+}

@@ -26,10 +26,10 @@ public class WorkerServiceImpl implements WorkerService{
 
 	// 회원 로그인
 	@Override
-	public Member login(Member inputMember) {
+	public Worker login(Worker inputMember) {
 		
 		// 1. ID 가 일치하면서 탈퇴하지 않은 회원 조회
-		Member loginWorker = mapper.login(inputMember.getWorkerId());
+		Worker loginWorker = mapper.login(inputMember.getWorkerId());
 		log.debug("inputmember123" + inputMember);
 		log.debug("loginMember" + loginWorker);
 		

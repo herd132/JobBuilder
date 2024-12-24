@@ -9,7 +9,7 @@ import com.jobbuilder.project.worker.model.dto.Worker;
 public interface WorkerMapper {
 
 	// 근로자 로그인 서비스
-	Member login(String workerId);
+	Worker login(String workerId);
 
 	/* **************** 회원가입 ******************* */
 	

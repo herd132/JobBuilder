@@ -6,7 +6,7 @@ import com.jobbuilder.project.worker.model.dto.Worker;
 public interface WorkerService {
 
 	// 근로자 로그인
-	Member login(Member inputMember);
+	Worker login(Worker inputMember);
 	
 	/* *************** 회원가입 *************** */
 	// 이메일 중복검사
