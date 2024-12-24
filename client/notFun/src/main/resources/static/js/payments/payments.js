@@ -72,7 +72,6 @@ function renderDetails(details) {
         Employer No: ${details.employerNo}
         Membership Type: ${details.membershipType}
     `;
-  errorContainer.innerText = "";
 }
 
 // 페이지 로드 시 UI 초기화
