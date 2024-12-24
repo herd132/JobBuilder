@@ -15,4 +15,20 @@ import lombok.extern.slf4j.Slf4j;
 public class MyPageWorkerServiceImpl implements MyPageWorkerService{
 
 	private final MyPageWorkerMapper mapper;
+
+	/** 
+	 *	닉네임 중복검사
+	 */
+	@Override
+	public int checkNickname(String workerNickname) {
+		return mapper.checkNickname(workerNickname);
+	}
+
+	/**
+	 * 연락처 중복검사
+	 */
+	@Override
+	public int checkMemberTel(String memberTel) {
+		return mapper.checkMemberTel(memberTel);
+	}
 }

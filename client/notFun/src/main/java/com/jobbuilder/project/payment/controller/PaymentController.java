@@ -29,12 +29,21 @@ public class PaymentController {
     public String showPaymentsPage() {
         return "payments/payments";
     }
+    
+    @GetMapping("testpay")
+    public String showTestPage() {
+        return "payments/testpay";
+    }
+    
+    
 
     @PostMapping("/setSession")
     @ResponseBody
     public void setSession(@RequestBody Map<String, Object> loginData, HttpSession session) {
         Integer employerNo = (Integer) loginData.get("employerNo");
             session.setAttribute("employerNo", employerNo);
+            Integer membershipType = (Integer) loginData.getOrDefault("membershipType", null); // null 처리
+            session.setAttribute("membershipType", membershipType); // null일 경우도 세션에 설정
     }
 
     @PostMapping("/details")

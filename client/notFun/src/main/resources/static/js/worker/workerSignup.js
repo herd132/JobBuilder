@@ -95,7 +95,7 @@ let sec = initSec;
 
 // 1) 이메일 유효성 검사에 사용될 요소 얻어오기
 const memberEmail = document.querySelector("#memberEmail");
-const workerEmailMessage = document.querySelector("#workerEmailMessage");
+const emailMessage = document.querySelector("#workerEmailMessage");
 
 // 2) 이메일이 입력(input) 될 때 마다 유효성 검사 수행
 memberEmail.addEventListener("input", (e) => {
@@ -158,6 +158,7 @@ memberEmail.addEventListener("input", (e) => {
         workerEmailMessage.classList.remove("confirm");
         checkObj.memberEmail = false; // 중복은 유효하지 않은 상태이다.
         return;
+
       }
       // 중복 X인 경우
       workerEmailMessage.innerText = "사용 가능한 이메일 입니다";
