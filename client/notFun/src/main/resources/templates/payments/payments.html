@@ -12,13 +12,15 @@
   <th:block th:replace="~{common/common}"></th:block>
 
   <link rel="stylesheet" href="/css/payments/payments.css">
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </head>
+<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 
 <body>
 
   <!-- header (홈버튼, 홈페이지 이름, 로그인버튼, 네비바, 검색창)-->
   <th:block th:replace="~{common/main-header}"></th:block>
-
+  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
   <div class="payments-background-gray">
 
     <!-- 흰색배경영역(안쪽)  -->
@@ -32,55 +34,108 @@
 
       <div class="payments-background-outside">
         <h3 class="payments-title-middle">상세 등급별 혜택</h3>
-        <form action="/member/payments" method="POST" name="paymentsForm" id="paymentsForm">
 
-          <div class="payments-background-inside">
-            <!-- 이메일 입력 영역 -->
-            <div class="payments-email-area">
+        <div class="payments-background-inside">
+          <!-- 이메일 입력 영역 -->
+          <div class="payments-email-area">
 
-              <div class="payments-inside-top">
-                <div class="payments-inside-top-item">
-                  11
+            <div class="payments-inside-top">
+              <div class="payments-inside-top-item">
+
+                <div class="payments-inside-box1">부담없이 무료로</div>
+
+                <div>FREE</div>
+
+                <div>무료</div>
+
+                <div class="payments-inside-content">
+                  <ul>
+                    <li>✔공고 일일 30건 등록</li>
+                    <li>✔이력서 열람 100건</li>
+                    <li>✔키워드 이력서 검색</li>
+                    <li>✔이력서 상세 정보 열람</li>
+                  </ul>
                 </div>
-                <div class="payments-inside-top-item">
-                  22
+
+                <div class="payments-inside-box2">
+                  <h4>무제한</h4>
+                  <p>로그인시 무제한으로 이력서 탐색</p>
                 </div>
-                <div class="payments-inside-top-item">
-                  33
-                </div>
+
               </div>
-
-              <div class="payments-message">
-                <span id="emailMessage">인증번호를 받을 수 있는 이메일을 입력해주세요</span>
+              <div class="payments-inside-top-item">
+                22
               </div>
-              <div class="payments-email-inputAuth">
-                <input class="payments-input" type="text" name="authKey" id="authKey" maxlength="6" autocomplete="off">
-                <button type="button" id="checkAuthKeyBtn" class="payments-btn-auth">인증하기</button>
-                <div class="payments-message">
-                  <span id="authKeyMessage"></span>
-                </div>
+              <div class="payments-inside-top-item">
+                33
               </div>
             </div>
 
 
+            <div class="payments-inside-top">
+              <div class="payments-inside-middle-item">
+                <button id="basicBtn" name="disable"> 현재 이용중인 상품 입니다</button>
+              </div>
+
+              <div class="payments-inside-middle-item">
+                <button id="goldBtn" class="payments-btn-main"> 시작하기</button>
+              </div>
+
+              <div class="payments-inside-middle-item">
+                <button id="platinumBtn" class="payments-btn-main"> 시작하기</button>
+              </div>
+            </div>
+
+          </div>
 
 
-            <!-- 메인 버튼 영역 -->
+          <div>
+            <p class="payments-email-area2">기타 상품</p>
             <div class="payments-mainbtn-area">
-              <button type="submit" id="paymentsBtn" class="payments-btn-main"> 가입하기</button>
-              <button type="button" id="rerutnBtn" class="payments-btn-main" onclick="location.href='login'">
-                취소</button>
+
+              <button type="submit" id="paymentsBtn" class="payments-btn-main">급구</button>
+              <button type="submit" id="paymentsBtn" class="payments-btn-main">HOT</button>
             </div>
           </div>
-        </form>
+        </div>
+
+        <button id="tempLoginBtn">임시 로그인</button>
+        <button id="tempLoginBtn2">임시 로그인2</button>
+        <button id="tempLogoutBtn">로그아웃</button>
+
+        <!-- 회원 정보 출력 영역 -->
+        <div id="userInfo"></div>
+
+        <div id="details-container"></div>
 
       </div> <!-- 배경선 -->
-    </div> <!-- 흰색부분 -->
-  </div> <!-- 회색부분 -->
 
-  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
-  <th:block th:replace="~{common/main-footer}"></th:block>
 
+      <div class="payments-background-outside">
+        <h3 class="payments-title-middle">추가 안내 사항</h3>
+
+        <div class="payments-background-inside">
+          <!-- 이메일 입력 영역 -->
+          <div class="payments-email-area">
+
+
+
+
+            <div>
+              <p class="payments-email-area2">안내</p>
+            </div>
+          </div>
+
+          </div>
+        </div> <!-- 배경선 -->
+      </div> <!-- 흰색부분 -->
+    </div> <!-- 회색부분 -->
+
+    <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+    <th:block th:replace="~{common/main-footer}"></th:block>
+
+    <script src="/js/payments/payments.js"></script>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </body>
 
 </html>
