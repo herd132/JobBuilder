@@ -5,7 +5,8 @@
     <select id="selectMembershipDetails" resultType="Membership">
         SELECT 
             A.EMPLOYER_NO AS employerNo,
-            B.MEMBERSHIP_TYPE AS membershipType
+            B.MEMBERSHIP_TYPE AS membershipType,
+            B.MEMBERSHIP_CONTENT AS membershipContent
         FROM EMPLOYER A
         JOIN MEMBERSHIP B ON A.EMPLOYER_NO = B.EMPLOYER_NO
         WHERE A.EMPLOYER_NO = #{employerNo}
