@@ -72,7 +72,7 @@ let sec = initSec;
 
 // 1) 이메일 유효성 검사에 사용될 요소 얻어오기
 const memberEmail = document.querySelector("#memberEmail");
-const workerEmailMessage = document.querySelector("#workerEmailMessage");
+const emailMessage = document.querySelector("#workerEmailMessage");
 
 // 2) 이메일이 입력(input) 될 때 마다 유효성 검사 수행
 memberEmail.addEventListener("input", e => {
@@ -123,7 +123,7 @@ memberEmail.addEventListener("input", e => {
     // 5) 유효한 이메일 형식인 경우 중복 검사 수행
     // 비동기(ajax)
 
-    fetch("/member/checkEmail?memberEmail=" + inputEmail)
+    fetch("/worker/checkEmail?memberEmail=" + inputEmail)
         .then(resp => resp.text())
         .then(count => {
             // count : 1이면 중복, 0이면 중복 아님

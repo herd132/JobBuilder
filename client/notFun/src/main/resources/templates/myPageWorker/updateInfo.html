@@ -9,20 +9,22 @@
     <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
     <th:block th:replace="~{common/common}"></th:block>
 
+    <!-- css 연결 -->
     <link rel="stylesheet" href="/css/myPageWorker/updateInfo.css">
 </head>
 
 <body>
-    <!-- 로고 및 검색바 로그인 -->
+    <!-- myPageWorker 헤더 -->
     <th:block th:replace="~{common/myPageWorker-header}"></th:block>
 
     <main class="container">
         <h1 class="page-title">내 정보 수정</h1>
 
-        <form class="info-form">
+        <form action="/myPageWorkee/updateInfo" class="update-form" method="post">
             <div class="profile-image-area">
 
                 <img src="/images/logo.png" alt="로고" class="logo-img" id="profileImg">
+                <!-- 기본 이미지 경로 적을 것 -->
 
                 <span id="deleteImage">x</span>
             </div>
@@ -32,38 +34,65 @@
                 <input type="file" name="profileImg" id="imageInput" accept="image/*">
             </div>
 
+            <br>
             <div class="form-group">
-                <label for="phone">연락처</label>
-                <input type="tel" id="phone">
+                <label style="color: red;">* 필수 입력사항입니다</label>
+                <label for="workerNickname">닉네임</label>
+                <div class="nickname-input-area">
+                    <input type="text" name="workerNickname" maxlength="20" id="workerNickname">
+                    <button type="button" id="checkNickname" class="info-button">중복확인</button>
+                </div>
+                <span class="signUp-message" id="nicknameMessage">한글, 영어, 숫자로만 2~20 글자로 입력해주세요.</span>
+            </div>
+
+            <br>
+            <div class="form-group">
+                <label style="color: red;">* 필수 입력사항입니다</label>
+                <label for="memberTel">연락처</label>
+                <input type="text" name="memberTel" maxlength="11" id="memberTel" placeholder="-를 제외한 숫자를 입력해 주세요">
+                <span class="signUp-message" id="memberTelMessage"></span>
+            </div>
+
+            <br>
+            <div class="form-group">
+                <label style="color: red;">* 필수 입력사항입니다</label>
+                <label for="memberEmail">이메일</label>
+                <div class="email-input-area">
+                    <input type="email" id="memberEmail" name="memberEmail">
+                    <button type="button" id="sendAuthKeyBtn" class="btn-secondary">인증번호 받기</button>
+                </div>
+                <span class="workerEmailMessage" id="workerEmailMessage"></span>
             </div>
 
             <div class="form-group">
-                <label for="email">이메일</label>
-                <input type="email" id="email">
+                <label for="authKey">인증번호 입력</label>
+                <div class="authkey-input-area">
+                  <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력">
+                  <button type="button" id="checkAuthKeyBtn" class="btn-secondary2">확인</button>
+                  <span id="authKeyMessage"></span>
+                </div>
             </div>
 
-            <div class="form-group">
-                <label for="nickName">닉네임</label>
-                <input type="text" id="nickName">
-            </div>
 
             <div class="form-group">
-                <label for="mbti">MBTI</label>
-                <input type="text" id="mbti">
+                <label for="workerMbti">MBTI</label>
+                <input placeholder="대문자 알파벳만 입력 가능합니다" type="text" oninput="handleOnInput(this)" name="workerMbti" id="workerMbti" maxlength="4">
+                <span class="workerMbtiMessage" id="workerMbtiMessage"></span>
             </div>
 
             <div class="form-group address-group">
-                <label for="address">주소</label>
+                <label for="postcode">주소</label>
                 <div class="address-inputs">
-                    <input type="text" id="postcode" placeholder="우편번호">
+                    <input type="text" name="workerAddress" id="postcode" placeholder="우편번호">
                     <button type="button" class="search-button">검색</button>
                 </div>
-                <input type="text" placeholder="도로명 지번 주소" name="address" class="full-width">
-                <input type="text" placeholder="상세주소" class="detailAddress">
+                <input type="text" placeholder="도로명 지번 주소" id="address" name="workerAddress" class="full-width">
+                <input type="text" placeholder="상세주소" id="detailAddress" name="workerAddress">
             </div>
 
             <div class="button-group">
-                <button type="button" class="cancel-button">취소</button>
+                <button type="button" class="cancel-button"
+                    onclick="location.href='http://localhost/myPageWorkee/myPageWorkerInfo'" ;>취소</button>
                 <button type="submit" class="submit-button">등록</button>
             </div>
         </form>
@@ -72,5 +101,9 @@
 </body>
 <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
 <th:block th:replace="~{common/main-footer}"></th:block>
+<!-- JS연결 -->
 <script src="/js/myPageWorker/updateInfo.js"></script>
+<!-- 다음 API 연결 -->
+<script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+
 </html>

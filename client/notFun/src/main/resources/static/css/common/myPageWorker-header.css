@@ -1,0 +1,236 @@
+/* *********** header ************ */
+:root {
+  --primary-orange: #FF9838;
+  --secondary-orange: #FFB876;
+  --background-orange: #FFF4EA;
+  --text-dark: #333333;
+  --text-gray: #666666;
+  --button: #543A14;
+  --border-light: #FFE4CC;
+  --border-bold: #FF9838;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Noto Sans KR', sans-serif;
+  color: var(--text-dark);
+}
+
+/* Header Styles */
+header {
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(255, 152, 56, 0.2);
+}
+
+/* 로고및 검색바 로그인,회원가입,닉네임 */
+.main-nav {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.logo-img {
+  width: 200px;
+  height: 100px;
+  cursor: pointer;
+}
+
+.search-bar {
+  flex: 1;
+  margin: 0 2rem;
+  position: relative;
+}
+
+.user-menu {
+  width: 120px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  position: relative;
+  display: inline-block;
+}
+
+.user-menu a {
+  color: black;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.user-menu a:hover {
+  color: var(--primary-orange);
+  transition: 0.1s;
+}
+
+/* 로그인 회원가입 버튼 css */
+
+/* 닉네임 css */
+.nav-nickname {
+  border: none;
+  cursor: pointer;
+}
+
+
+/* 헤더 게시판 띄우는 네비바 */
+.sub-nav {
+  background-color: white;
+  border-top: 1px solid var(--border-bold);
+
+  position: relative;
+}
+
+.menu-list {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 2rem;
+  
+  position: relative;
+  z-index: 2;
+}
+
+.menu-list li {
+  width: 140px;
+  cursor: pointer;
+  color: var(--text-gray);
+  transition: color 0.1s;
+  padding: 0.5rem 1rem;
+  text-align: center;
+
+}
+
+.menu-list li:hover {
+  color: var(--primary-orange);
+}
+
+.mega-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: white;
+  display: flex;
+  justify-content: center;
+  padding: 2rem;
+  box-shadow: 0 2px 8px rgba(255, 152, 56, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform-origin: top;
+  transform: scaleY(0);
+  transition: all 0.3s ease;
+  z-index: 1;
+  border-top: 1px solid var(--border-bold);
+  border-bottom: 1px solid var(--border-bold);
+  height: 0;
+  overflow: hidden;
+}
+
+.menu-list:hover + .mega-dropdown,
+.mega-dropdown:hover {
+  opacity: 1;
+  visibility: visible;
+  transform: scaleY(1);
+  height: auto;
+}
+
+.dropdown-section {
+  width: 140px;
+  padding: 0 1.5rem;
+  border-right: 1px solid var(--border-light);
+  /* text-align: center; */
+}
+
+.dropdown-section:last-child {
+  border-right: none;
+}
+
+.dropdown-section h4 {
+  color: var(--primary-orange);
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+}
+
+.dropdown-section a {
+  display: block;
+  padding: 0.5rem 0;
+  color: var(--text-gray);
+  text-decoration: none;
+  transition: color 0.2s ease;
+  cursor: pointer;
+}
+
+.dropdown-section a:hover {
+  color: var(--primary-orange);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .mega-dropdown {
+      flex-direction: column;
+      padding: 1rem;
+  }
+
+  .dropdown-section {
+      padding: 1rem;
+      border-right: none;
+      border-bottom: 1px solid var(--border-light);
+  }
+
+  .dropdown-section:last-child {
+      border-bottom: none;
+  }
+}
+/* Responsive Design */
+
+@media (max-width: 768px) {
+  .search-bar {
+      margin: 1rem 0;
+  }
+}
+
+
+
+
+/* *********** footer ************ */
+footer {
+  width: 100%;
+  height: 200px;
+  background-color: var(--primary-orange);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+footer>p {
+  font-weight: bold;
+  margin: 16px 0;
+}
+
+footer>article>* {
+  font-size: 14px;
+}
+
+footer a {
+  color: black;
+  text-decoration: none;
+}
+
+footer span {
+  padding: 0 10px;
+}
+
+
+
+
+.hidden {
+  display: none;
+}

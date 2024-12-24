@@ -20,6 +20,10 @@
   transition: background-color 0.3s ease; /* 마우스 hover 효과 */
 }
 
+.search-button:hover {
+  background-color: #e4956a; /* 호버 시 배경색 */
+}
+
 .profile-btn-area{
   margin-bottom: 15px;
 }
@@ -27,10 +31,6 @@
 .myPageBtn{
   text-decoration: none;
   color: black;
-}
-
-.search-button:hover {
-  background-color: #e4956a; /* 호버 시 배경색 */
 }
 
 /* 기존 스타일 수정 없이, 나머지 버튼과 폼 그룹은 그대로 유지 */
@@ -87,8 +87,8 @@ label {
 input {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
+  border: 4px solid #f0bb78;
+  border-radius: 50px;
   font-size: 14px;
 }
 
@@ -142,7 +142,6 @@ input::placeholder {
   width: 110px;
   height: 33px;
   padding: 5px 10px;
-
   border: 1px solid black;
   background-color: white;
   font-size: 14px;
@@ -156,4 +155,45 @@ input::placeholder {
   background-color: #455ba8;
   color : white;
   margin-left: 2px;
+}
+
+.confirm{
+  color: green;
+}
+
+.error{
+  color: red;
+}
+
+.nickname-input-area, .email-input-area, .authkey-input-area {
+  display: flex;
+  align-items: center;  /* 세로로 중앙 정렬 */
+  gap: 10px;            /* 입력창과 버튼 사이의 간격 */
+}
+
+/* 닉네임 입력창의 너비와 버튼 위치 */
+.nickname-input-area input {
+  flex-grow: 1; /* 입력창이 남은 공간을 채우도록 설정 */
+  padding: 10px;
+  border: 4px solid #f0bb78;
+  border-radius: 50px;
+  font-size: 14px;
+}
+
+.info-button, .btn-secondary, .btn-secondary2 {
+  text-align: center;
+    background-color: #f4b183;
+    color: white;
+    border: none;
+    width: 100px;
+    height: 44px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease; /* 마우스 hover 효과 */
+    white-space: nowrap;
+  }
+
+.nickname-input-area button:hover {
+  background-color: #e4956a; /* 호버 시 배경색 */
 }

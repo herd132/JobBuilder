@@ -59,7 +59,7 @@
 /* 상세정보창 container */
 .info-container {
  width: 950px;
- height: 397px;
+ height: 410px;
  margin-left: 18px;
  margin-top: 20px;
   background-color: #ffffff;
@@ -71,11 +71,13 @@
 
 .form-field > *{
 font-size: 25px;
-margin: 50px;
-line-height: 3;
+margin-left: 50px;
+margin-bottom: 20px;
+line-height: 2.7;
 }
 
-.workerAddress{
-  margin-left: 65px;
+.workerAddress2,.workerMbti2{
+  margin-left: 75px;
 }
+
 
