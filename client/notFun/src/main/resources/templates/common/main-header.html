@@ -1,5 +1,6 @@
 
-<header>  
+<header> 
+  <link rel="favicon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
   <!-- 로고 및 검색바 로그인 -->
   <nav class="main-nav">
 
@@ -21,19 +22,20 @@
         </th:block>
 
         <th:block th:if="${session.loginWorker != null}">
-          <span class="nav-nickname">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+          <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
           <div class="nav-mypage hidden">
-              <a href="#">회원 정보</a>
-              <a href="#">이력서 관리</a>
-              <a href="#">로그아웃</a>
+              <a href="/myPageWorkee/info">회원 정보</a>
+              <a href="/myPageWorkee/resume">이력서 관리</a>
+              <a href="/worker/workerLogout">로그아웃</a>
           </div>
         </th:block>
 
         <th:block th:if="${session.loginEmployer != null}">
-          <span class="nav-nickname">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+          <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
           <div class="nav-mypage hidden">
-              <a href="#">회원정보</a>
-              <a href="#">로그아웃</a>
+              <a href="/myPageEmployer/info">회원정보</a>
+              <a href="/myPageEmployer/recruitmentList">공고 관리</a>
+              <a href="/employer/employerLogout">로그아웃</a>
           </div>
         </th:block>
 

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사업주 employerLogin</title>
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+
+<body>
+  <th:block th:replace="~{common/signUp-header}"></th:block>
+
+  <main>
+    <div class="main-header">
+      <span class="logo">
+        <a href="/"><img src="/images/logo.png" alt="로고" class="logo-img"></a>
+      </span>
+      <div class="title">취업빌드는 잡빌드!</div>
+    </div>
+
+    <div class="login-container">
+      <form action="/employer/employerLogin" method="post">
+        <div class="login-area">
+          <input type="text" name="memberEmail" placeholder="이메일을 입력해주세요"> 
+          <input type="password" name="memberPw" placeholder="비밀번호를 입력해주세요">
+        </div>
+
+        <div class="checkbox-area">
+          <input type="checkbox" id="saveId" name="saveId">
+          <label for="saveId">아이디 저장</label>
+        </div>
+
+        <div class="login-btn-area">
+          <button class="login-btn">로그인</button>
+        </div>
+      </form>
+    </div>
+    
+    <div class="help-links">
+      <div>
+        <a href="#">이메일 찾기</a>
+        <span>&nbsp;|&nbsp;</span>
+        <a href="#">비밀번호 찾기</a>
+      </div>
+      <div>
+        <a href="/employer/employerSignUp">회원가입</a>
+      </div>
+    </div>
+
+  </main>
+</body>
+
+</html>

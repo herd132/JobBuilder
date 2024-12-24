@@ -2,4 +2,15 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.employer.model.mapper.EmployerMapper">
 
+	<!-- email 일치한 employer select -->
+	<select id="login">
+	SELECT e.MEMBER_NO, EMPLOYER_NO, BUSINESS_REGISTRATION_NUMBER, BUSINESS_NAME, BUSINESS_ADDRESS,
+		MEMBERSHIP_LEVEL, MEMBER_EMAIL, MEMBER_PW, MEMBER_NAME, MEMBER_TEL,
+		TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE,
+		AUTHORITY
+	FROM "EMPLOYER" e
+	JOIN "MEMBER" m ON(e.MEMBER_NO = m.MEMBER_NO)
+	WHERE MEMBER_EMAIL = #{memberEmail}
+		AND MEMBER_DEL_FL = 'N'
+	</select>
 </mapper>
