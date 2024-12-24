@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.payment.model.service.PaymentService;
 
 import jakarta.servlet.http.HttpSession;

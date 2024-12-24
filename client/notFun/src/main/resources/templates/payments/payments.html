@@ -71,24 +71,30 @@
               </div>
             </div>
 
+
+            <div class="payments-inside-top">
+              <div class="payments-inside-middle-item">
+                <button id="basicBtn" name="disable"> 현재 이용중인 상품 입니다</button>
+              </div>
+
+              <div class="payments-inside-middle-item">
+                <button id="goldBtn" class="payments-btn-main"> 시작하기</button>
+              </div>
+
+              <div class="payments-inside-middle-item">
+                <button id="platinumBtn" class="payments-btn-main"> 시작하기</button>
+              </div>
+            </div>
+
           </div>
 
 
-
-
-          <!-- 메인 버튼 영역 -->
-          <div class="payments-mainbtn-area">
-            <button type="submit" id="paymentsBtn" class="payments-btn-main">현재 이용중 입니다.</button>
-            <button type="submit" id="paymentsBtn" class="payments-btn-main"> 가입하기</button>
-            <button type="submit" id="paymentsBtn" class="payments-btn-main"> 가입하기</button>
-          </div>
-          
-          <div >
+          <div>
             <p class="payments-email-area2">기타 상품</p>
             <div class="payments-mainbtn-area">
 
-              <button type="submit" id="paymentsBtn" class="payments-btn-main">현재 이용중 입니다.</button>
-              <button type="submit" id="paymentsBtn" class="payments-btn-main"> 가입하기</button>
+              <button type="submit" id="paymentsBtn" class="payments-btn-main">급구</button>
+              <button type="submit" id="paymentsBtn" class="payments-btn-main">HOT</button>
             </div>
           </div>
         </div>
@@ -103,14 +109,33 @@
         <div id="details-container"></div>
 
       </div> <!-- 배경선 -->
-    </div> <!-- 흰색부분 -->
-  </div> <!-- 회색부분 -->
 
-  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
-  <th:block th:replace="~{common/main-footer}"></th:block>
 
-  <script src="/js/payments/payments.js"></script>
-  <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+      <div class="payments-background-outside">
+        <h3 class="payments-title-middle">추가 안내 사항</h3>
+
+        <div class="payments-background-inside">
+          <!-- 이메일 입력 영역 -->
+          <div class="payments-email-area">
+
+
+
+
+            <div>
+              <p class="payments-email-area2">안내</p>
+            </div>
+          </div>
+
+          </div>
+        </div> <!-- 배경선 -->
+      </div> <!-- 흰색부분 -->
+    </div> <!-- 회색부분 -->
+
+    <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+    <th:block th:replace="~{common/main-footer}"></th:block>
+
+    <script src="/js/payments/payments.js"></script>
+    <link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
 </body>
 
 </html>
