@@ -7,6 +7,6 @@ import com.jobbuilder.project.counsel.model.dto.Counselor;
 @Mapper
 public interface CounselMapper {
 
-	Counselor get(int memberNo);
+	Counselor loginCounselor(Counselor inputCounselor);
 
 }

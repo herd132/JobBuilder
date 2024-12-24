@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8" xmlns:th="http://www.thymeleaf.org">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>상담 채팅 시스템</title>
+    <link rel="stylesheet" href="/css/chatting/counselMain.css">
+</head>
+<body>
+    <div class="header">
+        <img src="/images/logo.png" alt="로고" class="logo">
+    </div>
+    
+    <div class="main-container">
+        <div class="chat-list">
+            <div class="status-filters">
+                <button class="status-btn active">진행중</button>
+                <button class="status-btn waiting">완료됨</button>
+            </div>
+            <div id="chatUsers"></div>
+        </div>
+        
+        <div class="chat-content">
+            <div class="chat-header">
+                <h2 id="chatTitle">채팅</h2>
+            </div>
+            <div class="messages" id="messageContainer">
+                <div class="welcome-message">
+                    <p th:text="|${session.loginCounselor.memberName} 상담가님,|"></p>
+                    <p>오늘 하루도 참을 인 3번이면 살인을 피할 수 있습니다.</p>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" id="messageInput" style="flex: 1; padding: 0.5rem;">
+                <button onclick="sendMessage()">전송</button>
+            </div>
+        </div>
+        
+    </div>
+
+    <script src="/js/chatting/counselMain.js"></script>
+
+</body>
+</html>

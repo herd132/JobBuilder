@@ -36,6 +36,17 @@ header {
   margin: 0 auto;
 }
 
+.logo *{
+  
+  /* 드래그 방지 12.24 신동국 추가 */
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  -moz-user-drag: none;
+  -o-user-drag: none;
+  user-drag: none;
+
+}
+
 .logo-img {
   width: 200px;
   height: 100px;
