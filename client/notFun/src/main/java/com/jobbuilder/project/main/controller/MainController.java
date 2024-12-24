@@ -12,5 +12,10 @@ public class MainController {
 	public String mainPage(HttpServletResponse resp) {
 		return "main";
 	}
-
+	
+	@RequestMapping("multiSignUp")
+	public String multiSignUp(HttpServletResponse resp) {
+		return "multiSignUp";
+	}
+	
 }

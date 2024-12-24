@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.jobbuilder.project.worker.model.dto.Member;
 import com.jobbuilder.project.worker.model.dto.Worker;
 import com.jobbuilder.project.worker.model.service.WorkerService;
 
@@ -25,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("worker")
 @RequiredArgsConstructor
 @Slf4j
-@SessionAttributes({"loginMember"})
+@SessionAttributes({"loginWorker"})
 public class WorkerController {
 
 	private final WorkerService service;
@@ -35,10 +34,10 @@ public class WorkerController {
 	/** 회원가입 페이지로 이동
 	 * @return
 	 */
-	@GetMapping("workerSignup") 
+	@GetMapping("workerSignUp") 
 	public String signupPage()  {
 		
-		return "worker/workerSignup";
+		return "worker/workerSignUp";
 	}
 	
 	/** 로그인 페이지로 이동
@@ -70,7 +69,7 @@ public class WorkerController {
 	// 비밀번호 찾기 후 변경화면 이동
 	@GetMapping("workerFindChangePw")
 	public String workerFindChangePw() {
-		return "member/workerFindChangePw";
+		return "worker/workerFindChangePw";
 	}
 	
 	/** 회원 로그인 ( 근로자 )
@@ -85,12 +84,11 @@ public class WorkerController {
 	public String login(Worker inputWorker,
 						@RequestParam(value="saveId", required = false) String saveId,
 						Model model, HttpServletResponse resp,
-						RedirectAttributes ra) {
-		
-			Worker loginWorker;
+						RedirectAttributes ra) {		
+			
 			try {
-				loginWorker = service.login(inputWorker);
-				String path = null;
+				Worker loginWorker = service.login(inputWorker);
+				log.debug("로그인멤버 " + loginWorker);
 				String message = null;
 				
 				// 로그인 실패 시
@@ -99,7 +97,7 @@ public class WorkerController {
 					message = " 아이디 또는 비밀번호가 일치하지 않습니다.";
 				} else {
 					
-					path = "/";
+					
 					
 					model.addAttribute("loginWorker", loginWorker);
 					
@@ -122,7 +120,7 @@ public class WorkerController {
 				ra.addFlashAttribute("message", message);
 				
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
+				
 				e.printStackTrace();
 			}
 			
@@ -133,7 +131,7 @@ public class WorkerController {
 	 * @param status
 	 * @return
 	 */
-	@GetMapping("logout")
+	@GetMapping("workerLogout")
 	public String logout(SessionStatus status ) {
 		
 		status.setComplete(); // 세션을 완료시킴 ( == 세션에서 @SessionAttributes로 등록된 걸 제거
@@ -145,40 +143,6 @@ public class WorkerController {
 	}
 	
 	
-	/** 아이디 중복검사 ( 비동기 요청 ) 
-	 * @return
-	 */
-	
-	@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
-	@GetMapping("checkId") // Get요청 /member/checkEmail
-	public int checkId(@RequestParam("workerId") String workerId) {
-		
-		
-		return service.checkId(workerId); // 0 or 1
-	}
-	
-	/** 이메일 중복검사 ( 비동기 요청 ) 
-	 * @return
-	 */
-	
-	@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
-	@GetMapping("checkEmail") // Get요청 /member/checkEmail
-	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
-		
-		
-		return service.checkEmail(memberEmail); // 0 or 1
-	}
-	
-	/** 닉네임 중복 검사
-	 * @param memberNickname
-	 * @return 중복 1, 아니면 0 
-	 */
-	@ResponseBody
-	@GetMapping("checkNickname")
-	public int checkNickname(@RequestParam("workerNickname") String workerNickname) {
-		
-		return service.checkNickname(workerNickname); 
-	}
 	
 	// form태그는 비동기가 아니라 동기식요청
 		/** 회원 가입 
@@ -188,12 +152,12 @@ public class WorkerController {
 		 * @param ra : 리다이렉트 시 request scope로 데이터 전달하는 객체
 		 * @return
 		 */
-		@PostMapping("signup")
-		public String signup(@ModelAttribute/*생략가능*/ Worker inputWorker,
+		@PostMapping("workerSignUp")
+		public String signup(@ModelAttribute/*생략가능*/ Worker inputWorker,							
 							@RequestParam("memberAddress") String[] memberAddress,
 							RedirectAttributes ra) {
-			//log.debug("inputmember: " + inputMember);
-			
+			log.debug("inputmember: " + inputWorker);
+			log.debug("memberAddd" + memberAddress);
 			// 회원가입 서비스 호출
 			int result = service.signup(inputWorker, memberAddress);
 			
@@ -216,5 +180,40 @@ public class WorkerController {
 			return "redirect:"+path;
 		}
 	
+		/**********************   중복검사  ***************/
+		/** 아이디 중복검사 ( 비동기 요청 ) 
+		 * @return
+		 */
+		
+		@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
+		@GetMapping("checkWorkerId") //
+		public int checkId(@RequestParam("workerId") String workerId) {
+			
+			
+			return service.checkId(workerId); // 0 or 1
+		}
+		
+		/** 이메일 중복검사 ( 비동기 요청 ) 
+		 * @return
+		 */
+		
+		@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
+		@GetMapping("checkEmail") // Get요청 /member/checkEmail
+		public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+			
+			
+			return service.checkEmail(memberEmail); // 0 or 1
+		}
+		
+		/** 닉네임 중복 검사
+		 * @param memberNickname
+		 * @return 중복 1, 아니면 0 
+		 */
+		@ResponseBody
+		@GetMapping("checkNickname")
+		public int checkNickname(@RequestParam("workerNickname") String workerNickname) {
+			
+			return service.checkNickname(workerNickname); 
+		}
 	
 }

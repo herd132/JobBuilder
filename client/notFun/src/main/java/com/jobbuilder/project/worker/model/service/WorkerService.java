@@ -1,6 +1,5 @@
 package com.jobbuilder.project.worker.model.service;
 
-import com.jobbuilder.project.worker.model.dto.Member;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 public interface WorkerService {

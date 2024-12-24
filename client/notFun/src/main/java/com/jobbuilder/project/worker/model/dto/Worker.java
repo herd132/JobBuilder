@@ -32,6 +32,7 @@ public class Worker {
 	private String fastLoginToken;	// 빠른 로그인 ( 카카오톡 등 )
 	private String blindLoginId;	// 블라인드 게시판 이용할 경우
 	private String workerMbti;		// 알바생 MBTI
+	private String workerBrithDate; // 알바생 생년월일
 	
 
 	
