@@ -111,7 +111,6 @@ header {
   justify-content: center;
 
   width: 110px;
-  height: 100px;
   position: absolute;
   right: 10px;
   top: 50px;
@@ -126,6 +125,7 @@ header {
 }
 
 .nav-mypage a {
+  padding: 0.5rem 0;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -134,9 +134,12 @@ header {
   font-size: 0.8rem;
 }
 
-.nav-mypage a:nth-child(2) {
-  border-top: 1px solid #FF9838;
+.nav-mypage a:nth-child(n) {
   border-bottom: 1px solid #FF9838;
+}
+
+.nav-mypage a:last-child {
+  border-bottom: none;
 }
 
 

@@ -15,16 +15,24 @@
       <div class="user-menu">
         
         <!-- 로그인 시 -->
-        <th:block th:if="${session.loginMember == null}">
+        <th:block th:if="${session.loginEmployer == null and session.loginWorker == null}">
           <a href="/worker/workerLogin" class="nav-login">로그인</a>
           <a href="/worker/workerSignup" class="nav-singup">회원가입</a>
         </th:block>
 
-        <th:block th:if="${session.loginMember != null}">
+        <th:block th:if="${session.loginWorker != null}">
           <span class="nav-nickname">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
           <div class="nav-mypage hidden">
               <a href="#">회원 정보</a>
               <a href="#">이력서 관리</a>
+              <a href="#">로그아웃</a>
+          </div>
+        </th:block>
+
+        <th:block th:if="${session.loginEmployer != null}">
+          <span class="nav-nickname">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+          <div class="nav-mypage hidden">
+              <a href="#">회원정보</a>
               <a href="#">로그아웃</a>
           </div>
         </th:block>
