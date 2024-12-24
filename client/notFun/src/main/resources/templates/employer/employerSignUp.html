@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고용주 회원가입페이지 입니다</title>
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+
+<body>
+  <th:block th:replace="~{common/signUp-header}"></th:block>
+
+  <!-- 가장 끝 배경(회색)-->
+  <div class="employSignup-background-gray">
+
+    <!-- 내용작성 부분-->
+    <div class="employSignup-background-gray">
+      <h3>기업 회원 가입</h3>
+
+      <section class="form-contioner">
+        <form>
+          <fieldset>
+            <legend>약관 동의 <span class="accent">*</span>&nbsp;</legend>
+            <div class="agree-container">
+  
+              <div class="all-agree">
+                <input type="checkbox" id="allAgree"> 
+                <label for="allAgree">전체 동의</label>
+                <p>선택항목 포함 모든 약관에 동의합니다</p>
+              </div> <hr>
+  
+              <div class="essential-agree">
+                <div>
+                  <input type="checkbox" id="essentialAge">
+                  <label for="essentialAge">(필수) 만 20세 이상입니다.</label>
+                </div>
+                <div>
+                  <input type="checkbox" id="essentialService">
+                  <label for="essentialAge">(필수) 서비스 이용약관 동의</label>
+                  <button class="fa-solid fa-angle-right"></button>
+                </div>
+                <div>
+                  <input type="checkbox" id="essentialPersonalInfo">
+                  <label for="essentialPersonalInfo">(필수) 개인정보 수집 및 이용 동의</label>
+                  <button class="fa-solid fa-angle-right"></button>
+                </div>
+              </div>
+  
+              <div class="optionaal-agree">
+                <div>
+                  <input type="checkbox" id="optionalNotice">
+                  <label for="optionalNotice">(선택) 공고추천, 멤버십 알림 혜택알림</label>
+                  <button class="fa-solid fa-angle-right"></button>
+                </div>
+              </div>
+
+            </div>
+          </fieldset>
+
+          <div class="employer-id-area">
+            <div><span class="accent">*</span> 아이디</div>
+          </div>
+        </form>
+      </section>
+    </div>
+  </div>
+</body>
+
+</html>
