@@ -7,15 +7,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.jobbuilder.project.worker.model.dto.Member;
 import com.jobbuilder.project.worker.model.dto.Worker;
 import com.jobbuilder.project.worker.model.mapper.WorkerMapper;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-@Service
 @Transactional(rollbackFor = Exception.class)
+@Service
 @RequiredArgsConstructor
 @Slf4j
 public class WorkerServiceImpl implements WorkerService{
@@ -36,8 +35,7 @@ public class WorkerServiceImpl implements WorkerService{
 		log.debug("loginWroker ~!:" + loginWorker);
 		// 입력 받은 비밀번호 평문과 암호화된 비밀번호가 일치하는지 확인
 		if(!bcrypt.matches(inputWorker.getMemberPw(), loginWorker.getMemberPw())) {
-			log.debug("인풋 PW" + inputWorker.getMemberPw());
-			log.debug("로그인 PW" + loginWorker.getMemberPw());
+			
 			return null;
 		}
 		
@@ -46,6 +44,7 @@ public class WorkerServiceImpl implements WorkerService{
 		return loginWorker;
 	}
 	
+	// 아이디 중복검사
 	@Override
 	public int checkId(String workerId) {
 		
@@ -71,7 +70,7 @@ public class WorkerServiceImpl implements WorkerService{
 	public int signup(Worker inputWorker, String[] memberAddress) {
 		if(!inputWorker.getWorkerAddress().equals(",,")) {
 			
-			// String.join("구분자" , 배열 ) 		
+				
 			
 			String address = String.join("^^^", memberAddress);
 			
@@ -91,7 +90,6 @@ public class WorkerServiceImpl implements WorkerService{
 		String encPw = bcrypt.encode(inputWorker.getMemberPw()); // 암호화하는과정
 		inputWorker.setMemberPw(encPw);
 		// 회원 가입 매퍼 메서드 호출쓰
-		Map<Object, Object> signupList = new HashMap<>();
 		
 		int result = mapper.signupMember(inputWorker);
 		
@@ -99,9 +97,10 @@ public class WorkerServiceImpl implements WorkerService{
 		if(result > 0 ) {
 			int resultWorker = mapper.signupWorker(inputWorker);
 
-			signupList.put("resultWorker", resultWorker);
-		}		
-		signupList.put("signupMember", result);
+		}	else {
+			return 0;
+		}
+		
 		
 		return result;
 	}

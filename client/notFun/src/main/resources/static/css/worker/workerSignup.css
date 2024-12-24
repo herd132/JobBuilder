@@ -93,6 +93,11 @@ input:focus {
   cursor: pointer;
   
 }
+.signupBtn {
+  background-color: #543a14d8;
+  color: white;
+  
+}
 
 .button-group {
   display: flex;
@@ -111,8 +116,8 @@ input:focus {
 }
 
 .btn-cancel {
-  background-color: #f8f9fa;
-  color: #333;
+  background-color: #F0BB78;
+  color: black;  
 }
 
 .button {

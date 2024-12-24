@@ -11,34 +11,31 @@
 
 <body>
   <th:block th:replace="~{common/main-header}"></th:block>
-  
+
   <div class="signup-container">
     <div class="signup-title" style="  text-align: start;margin-bottom: 30px;font-size: 80px;">
       <h1>개인 회원가입</h1>
     </div>
     <form action="/" method="post">
-      <div class="checkbox-container">
+      <div class="checkbox-container">  
+        <label class="checkAll">
+          <input type="checkbox" id="checkAll" > 전체 동의하기
+        </label>     
         <label class="checkbox-label">
-          <input type="checkbox"> 
-          <span style="font-size: 20px;">
-            전체 동의하기
-          </span>
+          <input type="checkbox" class="chk" required> (필수) 서비스 이용약관동의
         </label>
         <label class="checkbox-label">
-          <input type="checkbox" required> (필수) 서비스 이용약관동의
+          <input type="checkbox" class="chk" required> (필수) 개인정보 취급 이용약관동의
         </label>
         <label class="checkbox-label">
-          <input type="checkbox" required> (필수) 서비스 이용약관동의
+          <input type="checkbox" class="chk" required> (필수) 결제 관련 이용약관 동의
         </label>
-        <label class="checkbox-label">
-          <input type="checkbox" required> (필수) 서비스 이용약관동의
-        </label>        
       </div>
 
 
       <div class="form-group">
         <label>이메일</label>
-        <div style="display: flex; gap: 10px;">
+        <div style="display: flex; ">
           <input type="email" id="memberEmail" required>
           <button type="button" class="verification-btn" id="sendAuthKeyBtn">인증번호 받기</button>
         </div>
@@ -46,12 +43,12 @@
           메일을 받을 수 있는 이메일을 입력해주세요.
         </span>
       </div>
-      
+
 
       <div class="form-group">
         <label>인증번호</label>
         <div style="display: flex; gap: 10px;">
-          <input type="text" id="authKey" required >
+          <input type="text" id="authKey" required>
           <button type="button" class="verification-btn" id="checkAuthKeyBtn">인증번호 확인</button>
           <span id="authKeyMessage"></span>
         </div>
@@ -62,23 +59,25 @@
         <div style="display: flex; gap: 10px;">
           <input type="text" id="workerId" required>
           <button type="button" class="verification-btn" id="checkWorkerIdBtn">아이디 중복확인</button>
-          <span id="workerIdMessage"></span>
         </div>
+        <span id="workerIdMessage"> 특수문자를 제외하고 3 - 20자로 작성해주세요</span>
       </div>
 
       <div class="form-group">
         <label>비밀번호</label>
-        <input type="password" required>
+        <input type="password" id="memberPw" required>
       </div>
 
       <div class="form-group">
         <label>비밀번호 확인</label>
-        <input type="password" required>
+        <input type="password" id="memberPwConfirm" required>
+        <span id="pwMessage"> 비밀번호가 일치하는지 확인해주세요.</span>
       </div>
 
       <div class="form-group">
         <label>생년월일</label>
-        <input type="text" required placeholder="ex ) 19981104">
+        <input type="text" id="workerBirthDate" required placeholder="ex ) 19981104">
+        <span id="workerBirthDateMsg"> 생년월일을 확인해주세요</span>
       </div>
 
       <div class="form-group">
@@ -88,17 +87,19 @@
 
       <div class="form-group">
         <label>닉네임</label>
-        <input type="text" required>
+        <input type="text" id="workerNickname" required>
+        <span id="nickMessage"> 유효하지 않은 닉네임 형식입니다. </span>
       </div>
 
       <div class="form-group">
         <label>이름</label>
-        <input type="text" required>
+        <input type="text" id="memberName" required>
       </div>
 
       <div class="form-group">
         <label>전화번호</label>
-        <input type="tel" placeholder="-를 제외하고 11자로 입력해 주세요" required>
+        <input type="tel" id="memberTel" placeholder="-를 제외하고 11자로 입력해 주세요" required>
+        <span id="telMessage"></span>
       </div>
 
       <div class="form-group">
@@ -120,8 +121,8 @@
       </div>
 
       <div class="button-group">
-        <button type="button" class="btn-cancel">가입취소</button>
-        <button type="submit" class="button">가입하기</button>
+        <button type="button" class="btn-cancel">가입 취소</button>
+        <button type="submit" class="signupBtn" >가입 하기</button>
       </div>
     </form>
   </div>
