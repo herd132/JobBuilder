@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MyPage</title>
+
+    <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+    <th:block th:replace="~{common/common}"></th:block>
+
+    <link rel="stylesheet" href="/css/myPageWorker/updateInfo.css">
+</head>
+
+<body>
+    <!-- 로고 및 검색바 로그인 -->
+    <th:block th:replace="~{common/myPageWorker-header}"></th:block>
+
+    <main class="container">
+        <h1 class="page-title">내 정보 수정</h1>
+
+        <form class="info-form">
+            <div class="profile-image-area">
+
+                <img src="/images/logo.png" alt="로고" class="logo-img" id="profileImg">
+
+                <span id="deleteImage">x</span>
+            </div>
+
+            <div class="profile-btn-area">
+                <label for="imageInput">프로필 선택</label>
+                <input type="file" name="profileImg" id="imageInput" accept="image/*">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">연락처</label>
+                <input type="tel" id="phone">
+            </div>
+
+            <div class="form-group">
+                <label for="email">이메일</label>
+                <input type="email" id="email">
+            </div>
+
+            <div class="form-group">
+                <label for="nickName">닉네임</label>
+                <input type="text" id="nickName">
+            </div>
+
+            <div class="form-group">
+                <label for="mbti">MBTI</label>
+                <input type="text" id="mbti">
+            </div>
+
+            <div class="form-group address-group">
+                <label for="address">주소</label>
+                <div class="address-inputs">
+                    <input type="text" id="postcode" placeholder="우편번호">
+                    <button type="button" class="search-button">검색</button>
+                </div>
+                <input type="text" placeholder="도로명 지번 주소" name="address" class="full-width">
+                <input type="text" placeholder="상세주소" class="detailAddress">
+            </div>
+
+            <div class="button-group">
+                <button type="button" class="cancel-button">취소</button>
+                <button type="submit" class="submit-button">등록</button>
+            </div>
+        </form>
+
+    </main>
+</body>
+<!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+<th:block th:replace="~{common/main-footer}"></th:block>
+<script src="/js/myPageWorker/updateInfo.js"></script>
+</html>

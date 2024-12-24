@@ -21,29 +21,45 @@
 		<div class="member-info-container">
 			<div class="header">
 				<h2 class="title">닉네임 님의 회원정보</h2>
-				<button class="updateBtn" onClick="location.href='updateWorkerInfo.html'"></button>>수정</button>
+				<button class="updateBtn" onClick="location.href='updateInfo'">수정</button>
 			</div>
 
 			<div class="info-container-background">
 				<div class="info-container">
+
+					<div class="form-field">
+						<label class="workerNickname">닉네임</label>
+						<label class="workerNickname">Test123</label>
+					</div>
+
 					<div class="form-field">
 						<label class="memberTel">연락처</label>
 						<label class="memberTel">010-1234-1234</label>
 					</div>
+
 					<div class="form-field">
-						<span class="field-label">이메일</span>
-						<span class="field-value">test@test.com</span>
+						<span class="memberEmail">이메일</span>
+						<span class="memberEmail">test@test.com</span>
 					</div>
+					
 					<div class="form-field">
-						<span class="field-label">주소</span>
-						<span class="field-value">지번주소/도로명주소만</span>
+						<span class="workerAddress1">주소</span>
+						<span class="workerAddress2">지번주소/도로명주소만</span>
 					</div>
+
+					<div class="form-field">
+						<span class="workerMbti1">MBTI</span>
+						<span class="workerMbti2">INTP</span>
+					</div>
+
 				</div>
 			</div>
 		</div>
 
-		 <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
-		 <th:block th:replace="~{common/main-footer}"></th:block>
+	</div>
+
+	<!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+	<th:block th:replace="~{common/main-footer}"></th:block>
 </body>
 
 </html>
