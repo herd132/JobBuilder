@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>고용주 회원가입페이지 입니다</title>
+  <title>사업주 회원가입페이지 입니다</title>
   <th:block th:replace="~{common/common}"></th:block>
 </head>
 
@@ -12,36 +12,37 @@
   <th:block th:replace="~{common/signUp-header}"></th:block>
 
   <!-- 가장 끝 배경(회색)-->
-  <div class="employSignup-background-gray">
+  <div class="employSignUp-background-gray">
 
     <!-- 내용작성 부분-->
-    <div class="employSignup-background-gray">
+    <div class="employSignUp-background-gray">
       <h3>기업 회원 가입</h3>
 
       <section class="form-contioner">
-        <form>
+
+        <form action="/employer/employerSignUp" method="post">
           <fieldset>
             <legend>약관 동의 <span class="accent">*</span>&nbsp;</legend>
             <div class="agree-container">
   
               <div class="all-agree">
-                <input type="checkbox" id="allAgree"> 
+                <input type="checkbox" id="allAgree" name="allAgree"> 
                 <label for="allAgree">전체 동의</label>
                 <p>선택항목 포함 모든 약관에 동의합니다</p>
-              </div> <hr>
+              </div>
   
               <div class="essential-agree">
                 <div>
-                  <input type="checkbox" id="essentialAge">
+                  <input type="checkbox" id="essentialAge" class="checkAll">
                   <label for="essentialAge">(필수) 만 20세 이상입니다.</label>
                 </div>
                 <div>
-                  <input type="checkbox" id="essentialService">
-                  <label for="essentialAge">(필수) 서비스 이용약관 동의</label>
+                  <input type="checkbox" id="essentialService" class="checkAll">
+                  <label for="essentialService">(필수) 서비스 이용약관 동의</label>
                   <button class="fa-solid fa-angle-right"></button>
                 </div>
                 <div>
-                  <input type="checkbox" id="essentialPersonalInfo">
+                  <input type="checkbox" id="essentialPersonalInfo" class="checkAll">
                   <label for="essentialPersonalInfo">(필수) 개인정보 수집 및 이용 동의</label>
                   <button class="fa-solid fa-angle-right"></button>
                 </div>
@@ -49,8 +50,8 @@
   
               <div class="optionaal-agree">
                 <div>
-                  <input type="checkbox" id="optionalNotice">
-                  <label for="optionalNotice">(선택) 공고추천, 멤버십 알림 혜택알림</label>
+                  <input type="checkbox" id="optionalNotice" class="checkAll" name="optionalAgreeFl">
+                  <label for="optionalNotice">(선택) 공고추천, 멤버십혜택 알림</label>
                   <button class="fa-solid fa-angle-right"></button>
                 </div>
               </div>
@@ -58,13 +59,126 @@
             </div>
           </fieldset>
 
-          <div class="employer-id-area">
-            <div><span class="accent">*</span> 아이디</div>
+          <fieldset>
+            <legend>사업자 확인 <span class="accent">*</span>&nbsp;</legend>
+            <div class="business-registration-number-area">
+              <div>
+                <div><span class="accent">*</span> 사업자 등록번호</div>
+                <div>
+                  <input type="text" id="businessRegistrationNumber" name="businessRegistrationNumber"
+                  placeholder="ex) 123-45-67890">
+                </div>
+              </div>
+  
+              <div>
+                <div><span class="accent">*</span> 대표자명</div>
+                <div>
+                  <input type="text" id="representativeName" name="memberName"
+                  placeholder="ex) 홍길동">
+                </div>
+              </div>
+  
+              <div>
+                <div><span class="accent">*</span> 개업일자</div>
+                <div>
+                  <input type="date" name="openingDate" id="openingDate">
+                </div>
+              </div>
+  
+              <div><button type="button">사업자확인하기</button></div>
+            </div>
+          </fieldset>
+
+          <div class="email-certification-container">
+            <div class="employer-email-area">
+              <div><span class="accent">*</span> 이메일</div>
+              <div>
+                <input type="text" name="memberEmail" placeholder="ex) asdf1234@kh.or.kr">
+                <button type="button"> 인증번호 받기</button>
+              </div>
+              <div>
+                <p>인증받을 수 있는 이메일을 입력해주세요</p>
+              </div>
+            </div>
+  
+            <div class="employer-certification-number-area">
+              <div><span class="accent">*</span> 인증번호</div>
+              <div>
+                <input type="text">
+                <button type="button"> 인증하기</button>
+              </div>
+              <div>
+                <p>인증번호 6자리를 입력해주세요</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="password-container">
+            <div class="password-area">
+              <div><span class="accent">*</span> 비밀번호</div>
+              <div>
+                <input type="password" name="memberPw">
+              </div>
+              <div>
+                <p>영어, 숫자, 특수문자(!,@,#,-,_)를 사용하여 6~20자 사이로 입력해주세요</p>
+              </div>
+            </div>
+
+            <div class="password-confirm-area">
+              <div><span class="accent" name="memberPwConfirm">*</span> 비밀번호 확인</div>
+              <div>
+                <input type="password">
+              </div>
+              <div>
+                <p>동일한 비밀번호를 입력해주세요</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="phonenumber-companyname-container">
+            <div class="phonenumber-area">
+              <div><span class="accent">*</span> 전화번호</div>
+              <div>
+                <input type="text" name="memberTel" placeholder="-없이 숫자만 입력해주세요">
+              </div>
+              <div>
+                <p>이메일, 비밀번호 찾기시 이용될 예정입니다.</p>
+              </div>
+            </div>
+
+            <div class="companyname-area">
+              <div><span class="accent">*</span> 회사명/점포명</div>
+              <div>
+                <input type="text" name="businessName">
+              </div>
+            </div>
+          </div>
+
+          <div class="business-address-area">
+            <div><span class="accent">*</span> 사업장주소</div>
+            <div>
+              <input type="text" name="businessAddress" id="postcode" placeholder="우편번호" readonly>
+              <button type="button" id="searchAddress" class="searah-address-btn">검색</button>
+            </div>
+            <div>
+              <input type="text" name="businessAddress" id="address" placeholder="도로명/지번 주소">
+            </div>
+            <div>
+              <input type="text" name="businessAddress" id="detailAddress" placeholder="상세 주소">
+              <button type="button">초기화</button>
+            </div>
+          </div>
+
+          <div>
+            <button>가입 하기</button>
+            <button type="button">가입 취소</button>
           </div>
         </form>
       </section>
     </div>
   </div>
+
+  <script src="/js/employer/employerSignUp.js"></script>
 </body>
 
 </html>
