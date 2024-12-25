@@ -33,8 +33,8 @@
         <th:block th:if="${session.loginEmployer != null}">
           <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
           <div class="nav-mypage hidden">
-              <a href="/myPageEmployer/info">회원정보</a>
-              <a href="/myPageEmployer/recruitmentList">공고 관리</a>
+              <a href="/myPageEmp/info">회원정보</a>
+              <a href="/myPageEmp/recruitmentList">공고 관리</a>
               <a href="/employer/employerLogout">로그아웃</a>
           </div>
         </th:block>

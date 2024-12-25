@@ -93,22 +93,24 @@
             <div class="employer-email-area">
               <div><span class="accent">*</span> 이메일</div>
               <div>
-                <input type="text" name="memberEmail" placeholder="ex) asdf1234@kh.or.kr">
-                <button type="button"> 인증번호 받기</button>
+                <input type="text" name="memberEmail" id="memberEmail"
+                  placeholder="ex) asdf1234@kh.or.kr" autocomplete="off">
+                <button type="button" id="sendAuthKeyBtn"> 인증번호 받기</button>
               </div>
               <div>
-                <p>인증받을 수 있는 이메일을 입력해주세요</p>
+                <span id="emailMessage">인증받을 수 있는 이메일을 입력해주세요</span>
               </div>
             </div>
   
             <div class="employer-certification-number-area">
               <div><span class="accent">*</span> 인증번호</div>
               <div>
-                <input type="text">
-                <button type="button"> 인증하기</button>
+                <input type="text" name="authKey" id="authKey" maxlength="6"
+                  placeholder="인증번호 6자리 입력" autocomplete="off">
+                <button type="button" id="checkAuthKeyBtn"> 인증하기</button>
               </div>
               <div>
-                <p>인증번호 6자리를 입력해주세요</p>
+                <span id="authKeyMessage">인증번호 6자리를 입력해주세요</span>
               </div>
             </div>
           </div>
@@ -117,20 +119,20 @@
             <div class="password-area">
               <div><span class="accent">*</span> 비밀번호</div>
               <div>
-                <input type="password" name="memberPw">
+                <input type="password" name="memberPw" id="memberPw" maxlength="20">
               </div>
               <div>
-                <p>영어, 숫자, 특수문자(!,@,#,-,_)를 사용하여 6~20자 사이로 입력해주세요</p>
+                <span id="pwMessage">영어, 숫자, 특수문자(!,@,#,-,_)를 사용하여 6~20자 사이로 입력해주세요</span>
               </div>
             </div>
 
             <div class="password-confirm-area">
-              <div><span class="accent" name="memberPwConfirm">*</span> 비밀번호 확인</div>
+              <div><span class="accent" >*</span> 비밀번호 확인</div>
               <div>
-                <input type="password">
+                <input type="password" name="memberPwConfirm" id="memberPwConfirm" maxlength="20">
               </div>
               <div>
-                <p>동일한 비밀번호를 입력해주세요</p>
+                <span id="pwConfirmMessage">동일한 비밀번호를 입력해주세요</span>
               </div>
             </div>
           </div>
@@ -139,10 +141,11 @@
             <div class="phonenumber-area">
               <div><span class="accent">*</span> 전화번호</div>
               <div>
-                <input type="text" name="memberTel" placeholder="-없이 숫자만 입력해주세요">
+                <input type="text" name="memberTel" id="memberTel" maxlength="11" placeholder="-없이 숫자만 입력해주세요">
               </div>
               <div>
-                <p>이메일, 비밀번호 찾기시 이용될 예정입니다.</p>
+                <span id="telMessage">전화번호를 입력해주세요(-제외)</span> <br>
+                <span>이메일, 비밀번호 찾기시 이용될 예정입니다.</span>
               </div>
             </div>
 
@@ -158,14 +161,14 @@
             <div><span class="accent">*</span> 사업장주소</div>
             <div>
               <input type="text" name="businessAddress" id="postcode" placeholder="우편번호" readonly>
-              <button type="button" id="searchAddress" class="searah-address-btn">검색</button>
+              <button type="button" id="searchAddressBtn" class="searah-address-btn">검색</button>
             </div>
             <div>
-              <input type="text" name="businessAddress" id="address" placeholder="도로명/지번 주소">
+              <input type="text" name="businessAddress" id="address" placeholder="도로명/지번 주소" readonly>
             </div>
             <div>
               <input type="text" name="businessAddress" id="detailAddress" placeholder="상세 주소">
-              <button type="button">초기화</button>
+              <button type="button" id="addressResetBtn">초기화</button>
             </div>
           </div>
 
@@ -178,6 +181,7 @@
     </div>
   </div>
 
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="/js/employer/employerSignUp.js"></script>
 </body>
 

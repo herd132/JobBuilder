@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -99,6 +100,17 @@ public class EmployerController {
 	
 	/* ********** 고용주 회원가입 ********** */
 	
+	/** 이메일 중복검사(비동기)
+	 * @param memberEmail
+	 * @return
+	 * @author JWJ
+	 */
+	@ResponseBody
+	@GetMapping("checkEmail")
+	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
+		return service.checkEmail(memberEmail);
+	}
+	
 	/** 고용주 회원가입(post)
 	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel,
 	 * 						businessRegistrationNumber, businessName, optionalAgreeFl)
@@ -127,4 +139,5 @@ public class EmployerController {
 		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
 	}
+	
 }
