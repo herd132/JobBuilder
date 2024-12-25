@@ -1,5 +1,7 @@
 package com.jobbuilder.project.payment.model.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,8 +19,10 @@ public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentMapper mapper;
     
-	@Override
-	public Membership getMembershipDetails(Integer employerNo) {
-		return mapper.selectMembershipDetails(employerNo);
+    @Override
+    public List<Membership> getMembershipDetails(int employerNo) {
+        log.debug("Fetching membership details for employerNo: {}", employerNo);
+        return mapper.selectMembershipDetails(employerNo);
     }
+    
 }

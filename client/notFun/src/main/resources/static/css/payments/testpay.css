@@ -1,28 +1,6 @@
-/*--------------- 회색배경영역(제일끝) ---------------*/
-.payments-background-gray {
-  font-family: sans-serif;
-  margin: 0;
-  padding: 2rem 0 2rem 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-  background-color: #f0f0f0;
-}
-
-/*--------------- 흰색배경영역(안쪽)  ---------------*/
-.payments-background-white {
-  width: 45%;
-  height: 100%;
-  padding: 2rem 2rem 0 2rem;
-  background-color: white;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  text-align: left;
-  margin: 0;
-}
 
 /*--------------- 본문 배경영역(in,outside)  ---------------*/
-.payments-background-outside {
+.payments-t-background-outside {
   padding: 1rem;
   border-radius: 10px;
   border: #333;
@@ -33,7 +11,7 @@
   background-color: #F0BB78;
 }
 
-.payments-background-inside {
+.payments-t-background-inside {
   background-color: #FFF0DC;
   border-radius: 10px;
   padding: 1rem;
@@ -42,12 +20,12 @@
 /*-------------------------------------------------------------------*/
 
 /* 상단 제목 */
-.payments-title {
+.payments-t-title {
   text-align: left;
   margin-bottom: 2rem;
 }
 
-.payments-title hr {
+.payments-t-title hr {
   margin-top: 0.5rem;
   background: #F0BB78;
   height:0.5rem;
@@ -55,13 +33,13 @@
 }
 
 /* 상단 부제목 */
-.payments-subtitle {
+.payments-t-subtitle {
   text-align: left;
   margin-bottom: 2rem;
   margin-left: 1rem;
 }
 
-.payments-subtitle hr {
+.payments-t-subtitle hr {
   margin-top: 0.5rem;
   background: #F0BB78;
   height:2px;
@@ -72,13 +50,13 @@
 /*-------------------------------------------------------------------*/
 
 /* 본문 상단 내용 */
-.payments-inside{
+.payments-t-inside{
   display: flex;
   gap: 1rem;
   justify-content: space-between;
 }
 
-.payments-btn-after {
+.payments-t-btn-after {
   padding: 0.8rem;
   background-color: #543A14;
   color: white;
@@ -87,12 +65,12 @@
   margin-bottom: 2rem;
 }
 
-.payments-btn-after:hover {
+.payments-t-btn-after:hover {
   transform: scale(1.1);
 }
 
 /* 본문 중단 내용 */
-.payments-inside-middle-item{
+.payments-t-inside-middle-item{
   margin-top: 1rem;
   width: 100%;
   height: 100%;

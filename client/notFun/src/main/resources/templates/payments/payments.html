@@ -5,165 +5,111 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>맴버십 안내</title>
-  <!-- CSS, font awesome 라이브러리-->
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/payments/payments.css">
+  <link rel="stylesheet" href="/css/payments/testpay.css">
+  <meta name="employerNo" th:content="${session.loginEmployer != null ? session.loginEmployer.employerNo : ''}">
 </head>
 
-
 <body>
-
-  <!-- header (홈버튼, 홈페이지 이름, 로그인버튼, 네비바, 검색창)-->
   <th:block th:replace="~{common/main-header}"></th:block>
 
-  <!--회색배경영역(제일끝)-->
   <div class="payments-background-gray">
+    <div class="payments-background-white" id="background">
+      <h1 class="payments-title">맴버십 혜택 안내 <hr></h1>
+      <h3 class="payments-subtitle">상세 등급별 혜택 <hr></h3>
 
-    <!-- 흰색배경영역(안쪽)  -->
-    <div class="payments-background-white">
-
-      <!-- 상단 제목 스타일 -->
-      <h1 class="payments-title">맴버십 혜택 안내
-        <hr>
-      </h1>
-      <h3 class="payments-subtitle">상세 등급별 혜택
-        <hr>
-      </h3>
-
-      <!-- 본문 바깥  배경-->
       <div class="payments-background-outside">
-        <!-- 본문 안쪽 배경-->
         <div class="payments-background-inside">
-
-          <!-- 본문 상단 내용(각 아이템) -->
           <div class="payments-inside">
 
-            <div class="payments-inside-top-item">
-              <div class="payments-inside-box1">부담없이 무료로</div>
-              <h3>FREE</h3>
-              <h3 class="payments-price1">무료</h3>
-              <div class="payments-inside-content">
-                ✔ 공고 일일 30건 등록<br>
-                ✔ 이력서 열람 100건<br>
-                ✔ 키워드 이력서 검색<br>
-                ✔ 이력서 상세 정보 열람
-              </div>
-
-              <div class="payments-inside-box2">
-                <h4>무제한</h4>
-                <p>로그인시 무제한으로 이력서 탐색</p>
-              </div>
+            <!-- Basic Membership -->
+            <div class="membership-item2">
+                <div class="payments-inside-top-item">
+                  <div class="payments-inside-box1">부담없이 무료로</div>
+                  <h3>FREE</h3>
+                  <h3 class="payments-price1">무료</h3>
+                  <div class="payments-inside-content">
+                    ✔ 공고 일일 30건 등록<br>
+                    ✔ 이력서 열람 100건<br>
+                    ✔ 키워드 이력서 검색<br>
+                    ✔ 이력서 상세 정보 열람
+                  </div>
+                  <div class="payments-inside-box2">
+                    <h4>무제한</h4>
+                    <p>로그인시 무제한으로 이력서 탐색</p>
+                  </div>
+                </div>
+                <div class="grade">
+                  <div class="payments-btn-now"> 기본 상품 입니다</div>
+                </div>
             </div>
 
-            <div class="payments-inside-top-item">
-              <div class="payments-inside-box1">
-                <p class="payments-title-gold">향상된 맴버십 기능</p>
-              </div>
-              <h3 class="payments-title-gold">골드</h3>
-              <h3 class="payments-price1">월 30,000원</h3>
-              <div class="payments-inside-content">
-                ✔ 공고 일일 100건 등록<br>
-                ✔ 이력서 열람 300건<br>
-                ✔ 키워드 이력서 검색<br>
-                ✔ 이력서 상세 정보 열람
-              </div>
-
-              <div class="payments-inside-box2">
-                <h4>할인</h4>
-                <p>1년 구독시 10% 할인</p>
-                <p style="text-decoration:line-through">360,000원</p> <b>330,000원</b>
-              </div>
+            <!-- Gold Membership -->
+            <div class="membership-item" id="goldMembershipContainer" name="test" data-membership-type="2">
+                <div class="payments-inside-top-item">
+                  <div class="payments-inside-box1">
+                    <p class="payments-title-gold">향상된 맴버십 기능</p>
+                  </div>
+                  <h3 class="payments-title-gold">골드</h3>
+                  <h3 class="payments-price1">월 30,000원</h3>
+                  <div class="payments-inside-content">
+                    ✔ 공고 일일 100건 등록<br>
+                    ✔ 이력서 열람 300건<br>
+                    ✔ 키워드 이력서 검색<br>
+                    ✔ 이력서 상세 정보 열람
+                  </div>
+                  <div class="payments-inside-box2">
+                    <h4>할인</h4>
+                    <p>1년 구독시 10% 할인</p>
+                    <p style="text-decoration:line-through">360,000원</p> <b>330,000원</b>
+                  </div>
+                </div>
+                <div class="grade">
+                  <div id="gold" class="payments-btn-now" name="gradeStatus"> 로딩 중...</div>
+                </div>
             </div>
 
-            <div class="payments-inside-top-item">
-              <div class="payments-inside-box1">
-                <p class="payments-title-platinum">더욱 향상된 맴버십</p>
-              </div>
-              <h3 class="payments-title-platinum">플레티넘</h3>
-              <h3 class="payments-price1">월 50,000원</h3>
-              <div class="payments-inside-content">
-                ✔ 공고 일일 300건 등록<br>
-                ✔ 이력서 열람 무제한<br>
-                ✔ 키워드 이력서 검색<br>
-                ✔ 이력서 상세 정보 열람<br>
-                ✔ 공고 즉시 등록<br>
-                ✔ 이력서 추천 기능<br>
-              </div>
-
-              <div class="payments-inside-box2">
-                <h4>할인</h4>
-                <p>1년 구독시 20% 할인</p>
-                <p style="text-decoration:line-through">600,000원</p> <b>500,000원</b>
-              </div>
+            <!-- Platinum Membership -->
+            <div class="membership-item" id="platinumMembershipContainer" name="test" data-membership-type="3">
+                <div class="payments-inside-top-item">
+                  <div class="payments-inside-box1">
+                    <p class="payments-title-platinum">더욱 향상된 맴버십</p>
+                  </div>
+                  <h3 class="payments-title-platinum">플레티넘</h3>
+                  <h3 class="payments-price1">월 50,000원</h3>
+                  <div class="payments-inside-content">
+                    ✔ 공고 일일 300건 등록<br>
+                    ✔ 이력서 열람 무제한<br>
+                    ✔ 키워드 이력서 검색<br>
+                    ✔ 이력서 상세 정보 열람<br>
+                    ✔ 공고 즉시 등록<br>
+                    ✔ 이력서 추천 기능<br>
+                  </div>
+                  <div class="payments-inside-box2">
+                    <h4>할인</h4>
+                    <p>1년 구독시 20% 할인</p>
+                    <p style="text-decoration:line-through">600,000원</p> <b>500,000원</b>
+                  </div>
+                </div>
+                <div class="grade">
+                  <div id="platinum" class="payments-btn-now" name="gradeStatus"> 로딩 중...</div>
+                </div>
             </div>
-
 
           </div>
-
-
-
-
-
-          <th:block th:if="${session.membershipType == 1 || loginEmployer == null}">
-          <div class="payments-inside">
-            <div class="payments-inside-middle-item">
-              <button id="basicBtn" name="disable" class="payments-btn-now" disabled> 기본 상품 입니다</button>
-            </div>
-
-            <div class="payments-inside-middle-item">
-              <button id="goldBtn" class="payments-btn-after"> 시작하기</button>
-            </div>
-
-            <div class="payments-inside-middle-item">
-              <button id="platinumBtn" class="payments-btn-after"> 시작하기</button>
-            </div>
-          </div>
-          </th:block>
-
-          <th:block th:if="${session.membershipType == 2}">
-          <div class="payments-inside">
-            <div class="payments-inside-middle-item">
-              <button id="basicBtn" name="disable" class="payments-btn-now" disabled> 기본 상품 입니다</button>
-            </div>
-
-            <div class="payments-inside-middle-item">
-              <button id="basicBtn" name="disable" class="payments-btn-now" disabled> 이용중인 입니다</button>
-            </div>
-
-            <div class="payments-inside-middle-item">
-              <button id="platinumBtn" class="payments-btn-after" onclick="location.href='/payments/testpay';" style="cursor:pointer;"> 시작하기</button>
-            </div>
-          </div>
-          </th:block>
-
-          <th:block th:if="${session.membershipType == 3}">
-          <div class="payments-inside">
-            <div class="payments-inside-middle-item">
-              <button id="basicBtn" name="disable" class="payments-btn-now" disabled> 기본 상품 입니다</button>
-            </div>
-
-            <div class="payments-inside-middle-item">
-              <button id="basicBtn" name="disable" class="payments-btn-now" disabled> 이용중인 입니다</button>
-            </div>
-
-            <div class="payments-inside-middle-item">
-              <button id="basicBtn" name="disable" class="payments-btn-now" disabled> 이용중인 입니다</button>
-            </div>
-          </div>
-          </th:block>
-
 
           <div class="payments-plussitem">
             <h4 class="payments-inside-bottom-font">맴버십 외 플러스 아이템</h4>
             <div class="payments-mainbtn-area">
-              <div class="payments-bottom-item">
+              <div class="payments-bottom-item" name="test" data-membership-type="4">
                 <h3 class="payments-semifont">급구<br></h3>
                 <p>급구 알바 페이지 상단 노출<br>
-                공고 즉시 게시<br>
-                7일 이상 구매 시 20% 할인<br></p>
+                  공고 즉시 게시<br>
+                  7일 이상 구매 시 20% 할인<br></p>
                 <h3 class="payments-semifont">1일당 3,000원</h3>
               </div>
-              <div class="payments-bottom-item">
+              <div class="payments-bottom-item" name="test" data-membership-type="5">
                 <h3 class="payments-semifont">HOT<br></h3>
                 공고에 HOT 표시를 붙여 노출<br>
                 공고 즉시 게재<br>
@@ -171,40 +117,29 @@
                 <h3 class="payments-semifont">1일당 3,000원</h3>
               </div>
             </div>
+            <div class="payments-plussitem-bottom">
+              <div id="plus1"></div>
+              <div id="plus2"></div>
+            </div>
           </div>
+        </div>
+      </div>
 
-        </div> <!-- 첫번째 안쪽 배경-->
-      </div> <!-- 첫번째 바깥 배경-->
-
-
-      <!-- 두번째 영역 시작-->
-      <h3 class="payments-subtitle">추가 안내사항
-        <hr>
-      </h3>
-      <!-- 두번째 배경 -->
+      <h3 class="payments-subtitle">추가 안내사항 <hr></h3>
       <div class="payments-background-outside">
         <div class="payments-background-inside">
-          <!-- 본문 내용 -->
           <ul class="payments-bottom-extra">
             <li>유료상품을 이용 중이신 경우, 공고를 조기 마감하더라도 남은 기간에 대한 차액은 환불 되지 않습니다.</li>
             <li>단, 공고가 게재되지 않았거나 공고가 게재된 시점으로부터 1시간 이내 취소를 원하시는 경우 고객센터로 문의주시기 바랍니다.</li>
             <li>등록당일무료는 결제한 유료상품 최소 구매일수 이상 사용한 경우에만 제공됩니다.</li>
           </ul>
-        </div><!-- 두번째 안쪽 배경-->
-      </div><!-- 두번째 바깥배경-->
+        </div>
+      </div>
+    </div>
+  </div>
 
-
-
-
-    </div> <!-- 흰색부분 -->
-  </div> <!-- 회색부분 -->
-
-
-  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
   <th:block th:replace="~{common/main-footer}"></th:block>
-
   <script src="/js/payments/payments.js"></script>
 
 </body>
-
 </html>

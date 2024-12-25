@@ -2,7 +2,7 @@
 .payments-background-gray {
   font-family: sans-serif;
   margin: 0;
-  padding: 2rem 0 2rem 0;
+  padding: 2rem 0;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -10,32 +10,27 @@
   background-color: #f0f0f0;
 }
 
-
-/*--------------- 흰색배경영역(안쪽)  ---------------*/
+/*--------------- 흰색배경영역(안쪽) ---------------*/
 .payments-background-white {
   width: 45%;
-  height: 100%;
-  padding: 2rem 2rem 0 2rem;
+  padding: 2rem;
   background-color: white;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   text-align: left;
-  margin: 0;
 }
 
-/*--------------- 본문 배경영역(in,outside)  ---------------*/
+/*--------------- 본문 배경영역(in, outside) ---------------*/
 .payments-background-outside {
   padding: 1rem;
   border-radius: 10px;
-  border: #333;
-  border-style: double ;
-  border-width: 1px;
+  border: #333 double 1px;
   margin: 0.5rem;
   margin-bottom: 2rem;
-  background-color: #F0BB78;
+  background-color: #f0bb78;
 }
 
 .payments-background-inside {
-  background-color: #FFF0DC;
+  background-color: #fff0dc;
   border-radius: 10px;
   padding: 1rem;
 }
@@ -50,9 +45,9 @@
 
 .payments-title hr {
   margin-top: 0.5rem;
-  background: #F0BB78;
-  height:0.5rem;
-  border:0;
+  background: #f0bb78;
+  height: 0.5rem;
+  border: 0;
 }
 
 /* 상단 부제목 */
@@ -64,48 +59,51 @@
 
 .payments-subtitle hr {
   margin-top: 0.5rem;
-  background: #F0BB78;
-  height:2px;
+  background: #f0bb78;
+  height: 2px;
   width: 50%;
-  border:0;
+  border: 0;
 }
 
 /*-------------------------------------------------------------------*/
 
 /* 본문 상단 내용 */
-.payments-inside{
+.payments-inside {
   display: flex;
   gap: 1rem;
   justify-content: space-between;
 }
 
-.payments-inside-top-item{
+.payments-inside-top-item {
   display: block;
   justify-content: center;
-  background-color: #FAFAFA;
-  width: 100%;
-  height: 100%;
+  background-color: #fafafa;
   text-align: center;
   padding: 2rem;
   padding-bottom: 1rem;
   padding-left: 1rem;
   padding-right: 1rem;
-  gap: 1rem;
+  border-radius: 1rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
-.payments-inside-box1{
-  background-color: #D9D9D9;
+.membership-item:hover .payments-inside-top-item {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.payments-inside-box1 {
+  background-color: #d9d9d9;
   border-radius: 1rem;
   padding: 0.3rem;
   margin-bottom: 0.5rem;
   font-size: 80%;
 }
 
-.payments-price1{
+.payments-price1 {
   margin-top: 2rem;
   margin-bottom: 1rem;
 }
-
 
 .payments-inside-content {
   font-size: 14px;
@@ -113,85 +111,77 @@
   height: 130px;
   display: flex;
   flex-direction: column;
-  justify-content: space-evenly; 
+  justify-content: space-evenly;
 }
 
-.payments-inside-box2{
-  background-color: #EAE0E0;
+.payments-inside-box2 {
+  background-color: #eae0e0;
   border-radius: 0.3rem;
-  padding-top: 0.5rem;
-  padding-bottom: 1rem;
+  padding: 0.5rem 0;
   margin-top: 1rem;
 }
 
-.payments-inside-box2 p{
+.payments-inside-box2 p {
   margin-top: 0.5rem;
   font-size: 50%;
 }
 
-.payments-btn-now {
-  padding: 0.8rem;
-  background-color: #CECDCD;
-  color: white;
-  border: none;
-  margin-bottom: 2rem;
+/*-------------------------------------------------------------------*/
+
+/* 하단의 버튼 영역 */
+.grade {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.membership-item:hover .grade {
+  transform: translateY(5px);
 }
 
 .payments-btn-after {
   padding: 0.8rem;
-  background-color: #543A14;
+  background-color: #543a14;
   color: white;
   border: none;
-  cursor: pointer;
-  margin-bottom: 2rem;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
-.payments-btn-after:hover {
-  transform: scale(1.1);
+.payments-btn-now {
+  padding: 0.8rem;
+  background-color: #eae0e0;
+  color: white;
+  border: none;
+  margin-bottom: 1rem;
+  text-align: center;
 }
 
+/*-------------------------------------------------------------------*/
 
+/* 맴버십 강조 텍스트 */
 .payments-title-gold {
   color: #ffd700;
   text-shadow: 
-    -0.3px -0.3px 0 rgba(200, 200, 200, 0.8), /* 흰색에서 약간 어두운 회색으로 변경 */
+    -0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
     0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
     -0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
     0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
-    1px 1px 2px rgba(0, 0, 0, 0.3); /* 기존 검은 그림자 유지 */
+    1px 1px 2px rgba(0, 0, 0, 0.3);
 }
 
-
 .payments-title-platinum {
-  color: #E5F4F7;
+  color: #e5f4f7;
   text-shadow: 
     -0.5px -0.5px 0 rgba(80, 80, 80, 0.4),
     0.5px -0.5px 0 rgba(80, 80, 80, 0.4),
     -0.5px 0.5px 0 rgba(80, 80, 80, 0.4),
     0.5px 0.5px 0 rgba(80, 80, 80, 0.4),
     1px 1px 3px rgba(60, 60, 60, 0.3);
- }
-
-
-
-
-
-
-
-/* 본문 중단 내용 */
-.payments-inside-middle-item{
-  margin-top: 1rem;
-  width: 100%;
-  height: 100%;
-  text-align: center;
 }
 
-.payments-mainbtn-area{
-  display: flex;
-  justify-content: center;
-  gap: 7rem;
-}
-
+/*-------------------------------------------------------------------*/
 
 /* 본문 하단 내용 */
 
@@ -206,6 +196,13 @@
   display: flex;
   justify-content: center;
 }
+
+.payments-mainbtn-area{
+  display: flex;
+  justify-content: center;
+  gap: 7rem;
+}
+
 
 .payments-bottom-item {
   padding-left: 0.8rem;
@@ -226,12 +223,42 @@
   margin-top: 0.5rem;
   margin-bottom: 0.5rem;
 }
+/*-------------------------------------------------------------------*/
+
+/* 추가 안내사항 스타일 */
+.payments-bottom-extra {
+  font-size: 90%;
+  padding-left: 1rem;
+}
 
 /*-------------------------------------------------------------------*/
 
-/* 두번째 영역 */
+/* membership-item - hover 효과 */
+.membership-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: transparent;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
 
-.payments-bottom-extra{
-  font-size: 90%;
-  padding-left: 1rem;
+.membership-item2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: transparent;
+  padding: 1rem;
+}
+
+.membership-item:hover {
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+.payments-plussitem-bottom{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 9.5rem;
+  margin-right: 9.5rem;
 }
