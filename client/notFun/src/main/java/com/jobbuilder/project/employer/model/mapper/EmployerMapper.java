@@ -12,6 +12,7 @@ public interface EmployerMapper {
 
 
 	/* ********** 회원가입 ********** */
+	int checkEmail(String memberEmail);		// 이메일 중복검사(비동기)
 	
 	/** 고용주 회원가입 (EMPLOYER TABLE)
 	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel, businessAddress
@@ -30,4 +31,7 @@ public interface EmployerMapper {
 	 * @author JWJ
 	 */
 	int signUpEmplyoer(Employer inputEmployer);
+
+
+
 }

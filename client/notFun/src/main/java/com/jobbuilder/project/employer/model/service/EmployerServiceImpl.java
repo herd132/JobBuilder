@@ -34,6 +34,10 @@ public class EmployerServiceImpl implements EmployerService {
 	}
 	
 	/* ********** 회원가입 관련 ********** */
+	@Override	// 이메일 중복검사(비동기)
+	public int checkEmail(String memberEmail) {
+		return mapper.checkEmail(memberEmail);
+	}
 	
 	@Override	// 고용주 회원가입
 	public int signUp(Employer inputEmployer, String[] businessAddress) {

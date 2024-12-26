@@ -7,10 +7,18 @@ public interface EmployerService {
 	/** 고용주 로그인
 	 * @param inputEmployer(memberEmail, memberPw)
 	 * @return
+	 * @author JWJ
 	 */
 	Employer login(Employer inputEmployer);
 
 	/* ********** 고용주 회원가입 관련 ********** */
+	
+	/** 이메일 중복검사(비동기)
+	 * @param memberEmail
+	 * @return
+	 * @author JWJ
+	 */
+	int checkEmail(String memberEmail);
 	
 	/** 회원가입
 	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel,
@@ -20,6 +28,8 @@ public interface EmployerService {
 	 * @author JWJ
 	 */
 	int signUp(Employer inputEmployer, String[] businessAddress);
+
+
 
 
 
