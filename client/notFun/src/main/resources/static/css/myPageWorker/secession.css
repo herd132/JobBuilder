@@ -1,0 +1,61 @@
+body {
+  font-family: Arial, sans-serif;
+  max-width: 500px;
+  margin: 20px auto;
+  padding: 0 20px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+.content-box {
+  border: 2px solid #FFA500;
+  border-radius: 15px;
+  padding: 20px;
+  margin-top: 20px;
+  background-color: #FFF;
+}
+
+h2 {
+  margin: 0 0 20px 0;
+  font-size: 20px;
+}
+
+ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+li {
+  margin-bottom: 15px;
+  line-height: 1.5;
+  color: #333;
+}
+
+.notice {
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+.checkbox-container {
+  margin-top: 20px;
+}
+
+.submit-btn {
+  display: block;
+  width: 100px;
+  margin: 20px auto;
+  padding: 10px;
+  background-color: #4A3425;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}

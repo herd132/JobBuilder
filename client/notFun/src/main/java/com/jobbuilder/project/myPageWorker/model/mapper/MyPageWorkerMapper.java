@@ -17,4 +17,8 @@ public interface MyPageWorkerMapper {
 	 */
 	int checkMemberTel(String memberTel);
 
+	String checkPwSet(int memberNo);
+
+	
+
 }

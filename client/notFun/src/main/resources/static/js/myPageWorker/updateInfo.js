@@ -61,7 +61,7 @@ document.querySelector(".search-button").addEventListener("click", execDaumPostc
   const memberTelMessage = document.querySelector("#memberTelMessage");
   
   memberTel.addEventListener("input", () => {
-    const regExp = /^(010)[0-9]{4}[0-9]{4}$/;
+    const regExp = /^01[0-9]{1}[0-9]{3,4}[0-9]{4}$/;
     if (memberTel.value.trim().length === 0) {
       memberTelMessage.innerText = "연락처를 입력해 주세요";
       memberTelMessage.classList.remove("confirm", "error");
@@ -441,9 +441,6 @@ checkAuthKeyBtn.addEventListener("click", () => {
             authKeyMessage.classList.add("confirm");
 
             checkObj.authKey = true; // 인증번호 검사여부 true 변경
-
-
-
 
         });
 });
