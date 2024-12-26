@@ -23,7 +23,7 @@
         <form action="/myPageWorkee/updateInfo" class="update-form" method="post">
             <div class="profile-image-area">
 
-                <img src="/images/logo.png" alt="로고" class="logo-img" id="profileImg">
+                <img src="/images/avatar.png" alt="로고" class="logo-img" id="profileImg">
                 <!-- 기본 이미지 경로 적을 것 -->
 
                 <span id="deleteImage">x</span>
@@ -59,6 +59,7 @@
                 <label for="memberEmail">이메일</label>
                 <div class="email-input-area">
                     <input type="email" id="memberEmail" name="memberEmail">
+                    <span class="email-input-message"></span>
                     <button type="button" id="sendAuthKeyBtn" class="btn-secondary">인증번호 받기</button>
                 </div>
                 <span class="workerEmailMessage" id="workerEmailMessage"></span>
@@ -69,8 +70,8 @@
                 <div class="authkey-input-area">
                   <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력">
                   <button type="button" id="checkAuthKeyBtn" class="btn-secondary2">확인</button>
-                  <span id="authKeyMessage"></span>
                 </div>
+                <span id="authKeyMessage"></span>
             </div>
 
 

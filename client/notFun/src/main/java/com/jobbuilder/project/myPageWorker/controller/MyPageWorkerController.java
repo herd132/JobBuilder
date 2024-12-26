@@ -6,16 +6,19 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.jobbuilder.project.myPageWorker.model.service.MyPageWorkerService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+
 @Controller
 @RequestMapping("myPageWorkee")
 @RequiredArgsConstructor
 @Slf4j
+@SessionAttributes({ "loginMember" })
 public class MyPageWorkerController {
 
 	private final MyPageWorkerService service;
