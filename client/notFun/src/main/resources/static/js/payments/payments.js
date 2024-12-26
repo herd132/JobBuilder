@@ -163,8 +163,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 <hr>
             </h3>
             <div id="product-addpart" class="product-addpart"></div>
-            <button id="add-product-btn"> + </button>
-    
+            <div class="btn-area">
+            <button id="add-product-btn" class="add-product-btn"> + </button>
+            </div>
+
             <h3 class="payments-t-subtitle">변경 되는 정보
                 <hr>
             </h3>
