@@ -18,6 +18,7 @@ import com.jobbuilder.project.worker.model.service.WorkerService;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -28,6 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class WorkerController {
 
 	private final WorkerService service;
+	
 	
 	/*                        단순 페이지 보여주는 경우                       */
 	
@@ -71,6 +73,9 @@ public class WorkerController {
 	public String workerFindChangePw() {
 		return "worker/workerFindChangePw";
 	}
+	
+
+	
 	
 	/** 회원 로그인 ( 근로자 )
 	 * @param workerMember
@@ -201,7 +206,7 @@ public class WorkerController {
 		@GetMapping("checkEmail") // Get요청 /member/checkEmail
 		public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 			
-			
+			log.debug("inputEmail" + memberEmail);
 			return service.checkEmail(memberEmail); // 0 or 1
 		}
 		
@@ -212,7 +217,7 @@ public class WorkerController {
 		@ResponseBody
 		@GetMapping("checkNickname")
 		public int checkNickname(@RequestParam("workerNickname") String workerNickname) {
-			
+			log.debug("워커닉네임 " + workerNickname);
 			return service.checkNickname(workerNickname); 
 		}
 	

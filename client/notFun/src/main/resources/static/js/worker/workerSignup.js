@@ -1,3 +1,4 @@
+console.log("workerSignUp.html과 연결됨");
 //취소버튼 누를 경우
 
 const cancelBtn = document.querySelector(".btn-cancel");
@@ -45,9 +46,13 @@ for (const checkbox of checkboxes) {
 }
 
 // 주소 검색 버튼 클릭 시
-document
-  .querySelector("#searchAddress")
-  .addEventListener("click", execDaumPostcode);
+const postcode = document.querySelector("#postcode"); // input 태그
+const address = document.querySelector("#address"); // input 태그
+const detailAddress = document.querySelector("#detailAddress"); // input 태그
+const searchAddressBtn = document.querySelector("#searchAddressBtn"); // button 태그
+const addressResetBtn = document.querySelector("#addressResetBtn"); // button 태그
+
+searchAddressBtn.addEventListener("click", execDaumPostcode);
 
 // ----------------------------------------------
 // **** 회원 가입 유효성 검사 *****
@@ -65,8 +70,11 @@ const checkObj = {
   workerId: false,
   workerBirthDate: false,
 };
+/* 이메일 유효성 검사 */
 
-// ---------------------------------
+// 1) 이메일 유효성 검사에 사용될 요소 얻어오기
+const memberEmail = document.querySelector("#memberEmail");
+const workerEmailMessage = document.querySelector("#workerEmailMessage");
 // 인증번호 받기 버튼
 const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn");
 
@@ -88,14 +96,6 @@ const initTime = "05:00";
 // 실제 줄어드는 시간을 저장할 변수
 let min = initMin;
 let sec = initSec;
-
-//---------------------------------------------------
-
-/* 이메일 유효성 검사 */
-
-// 1) 이메일 유효성 검사에 사용될 요소 얻어오기
-const memberEmail = document.querySelector("#memberEmail");
-const emailMessage = document.querySelector("#workerEmailMessage");
 
 // 2) 이메일이 입력(input) 될 때 마다 유효성 검사 수행
 memberEmail.addEventListener("input", (e) => {
@@ -157,8 +157,8 @@ memberEmail.addEventListener("input", (e) => {
         workerEmailMessage.classList.add("error");
         workerEmailMessage.classList.remove("confirm");
         checkObj.memberEmail = false; // 중복은 유효하지 않은 상태이다.
+        console.log(count);
         return;
-
       }
       // 중복 X인 경우
       workerEmailMessage.innerText = "사용 가능한 이메일 입니다";
@@ -238,6 +238,7 @@ sendAuthKeyBtn.addEventListener("click", () => {
       clearInterval(authTimer); // interval 멈춤
       authKeyMessage.classList.add("error");
       authKeyMessage.classList.remove("confirm");
+
       return;
     }
 
@@ -364,7 +365,7 @@ checkWorkerIdBtn.addEventListener("click", () => {
   // 5) 유효한 이메일 형식인 경우 중복 검사 수행
   // 비동기(ajax)
 
-  fetch("/worker/checkWorkerId?memberEmail=" + inputId)
+  fetch("/worker/checkWorkerId?workerId=" + inputId)
     .then((resp) => resp.text())
     .then((count) => {
       // count : 1이면 중복, 0이면 중복 아님
@@ -467,8 +468,6 @@ memberPwConfirm.addEventListener("input", () => {
     return;
   }
 
-  // memberPw가 유효하지 않은 경우
-  // memberPwConfirm 검사 X
   checkObj.memberPwConfirm = false;
 });
 
@@ -501,7 +500,7 @@ workerNickname.addEventListener("input", (e) => {
   }
 
   // 3) 중복 검사 (유효한 경우)
-  fetch("/member/checkNickname?memberNickname=" + inputNickname)
+  fetch("/worker/checkNickname?workerNickname=" + inputNickname)
     .then((resp) => resp.text())
     .then((count) => {
       if (count == 1) {
@@ -522,6 +521,35 @@ workerNickname.addEventListener("input", (e) => {
 });
 
 // --------------------------------------
+
+const workerMbti = document.querySelector("#workerMbti");
+const workerMbtiMessage = document.querySelector("#workerMbtiMessage");
+
+function handleOnInput(e) {
+  e.value = e.value.replace(/[^A-Z]/g, "");
+}
+
+workerMbti.addEventListener("input", () => {
+  const regExp = /^[EI][SN][TF][PJ]$/g;
+  if (workerMbti.value.trim().length === 0) {
+    workerMbtiMessage.innerText = ""; // 메시지를 지운다
+    workerMbtiMessage.classList.remove("confirm", "error"); // 클래스도 초기화
+    checkObj.workerMbti = true; // 필요에 따라 설정 (입력값이 없을 때 false로 할 수도 있음)
+    return;
+  }
+
+  if (regExp.test(workerMbti.value)) {
+    workerMbtiMessage.innerText = "유효한 MBTI 형식입니다.";
+    workerMbtiMessage.classList.add("confirm");
+    workerMbtiMessage.classList.remove("error");
+    checkObj.workerMbti = true;
+  } else {
+    workerMbtiMessage.innerText = "유효하지 않은 MBTI 형식입니다.";
+    workerMbtiMessage.classList.add("error");
+    workerMbtiMessage.classList.remove("confirm");
+    checkObj.workerMbti = false;
+  }
+});
 
 // 생년월일 정규표현식
 const workerBirthDate = document.querySelector("#workerBirthDate");
@@ -596,13 +624,8 @@ memberTel.addEventListener("input", (e) => {
 function execDaumPostcode() {
   new daum.Postcode({
     oncomplete: function (data) {
-      // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
-
-      // 각 주소의 노출 규칙에 따라 주소를 조합한다.
-      // 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
       var addr = ""; // 주소 변수
 
-      //사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
       if (data.userSelectedType === "R") {
         // 사용자가 도로명 주소를 선택했을 경우
         addr = data.roadAddress;
@@ -619,7 +642,7 @@ function execDaumPostcode() {
     },
   }).open();
 }
-const signUpForm = document.querySelector("#signup-container");
+const signUpForm = document.querySelector(".signup-container");
 
 // 회원 가입 폼 제출 시
 signUpForm.addEventListener("submit", (e) => {
@@ -663,7 +686,7 @@ signUpForm.addEventListener("submit", (e) => {
           str = "아이디가 유효하지 않습니다";
           break;
         case "workerBirthDate":
-          str = "생년월일이 유효하지 않습니다"
+          str = "생년월일이 유효하지 않습니다";
           break;
       }
 

@@ -16,11 +16,11 @@
     <div class="signup-title" style="  text-align: start;margin-bottom: 30px;font-size: 80px;">
       <h1>개인 회원가입</h1>
     </div>
-    <form action="/" method="post">
-      <div class="checkbox-container">  
+    <form action="/worker/workerSignUp" method="post">
+      <div class="checkbox-container">
         <label class="checkAll">
-          <input type="checkbox" id="checkAll" > 전체 동의하기
-        </label>     
+          <input type="checkbox" id="checkAll"> 전체 동의하기
+        </label>
         <label class="checkbox-label">
           <input type="checkbox" class="chk" required> (필수) 서비스 이용약관동의
         </label>
@@ -36,7 +36,7 @@
       <div class="form-group">
         <label>이메일</label>
         <div style="display: flex; ">
-          <input type="email" id="memberEmail" required>
+          <input type="email" id="memberEmail" name="memberEmail" required>
           <button type="button" class="verification-btn" id="sendAuthKeyBtn">인증번호 받기</button>
         </div>
         <span class="signUp-message" id="workerEmailMessage" style="font-size: 12px;">
@@ -48,7 +48,7 @@
       <div class="form-group">
         <label>인증번호</label>
         <div style="display: flex; gap: 10px;">
-          <input type="text" id="authKey" required>
+          <input type="text" id="authKey" name="authKey" required>
           <button type="button" class="verification-btn" id="checkAuthKeyBtn">인증번호 확인</button>
           <span id="authKeyMessage"></span>
         </div>
@@ -57,7 +57,7 @@
       <div class="form-group">
         <label> 아이디 </label>
         <div style="display: flex; gap: 10px;">
-          <input type="text" id="workerId" required>
+          <input type="text" id="workerId" name="workerId" required>
           <button type="button" class="verification-btn" id="checkWorkerIdBtn">아이디 중복확인</button>
         </div>
         <span id="workerIdMessage"> 특수문자를 제외하고 3 - 20자로 작성해주세요</span>
@@ -65,7 +65,7 @@
 
       <div class="form-group">
         <label>비밀번호</label>
-        <input type="password" id="memberPw" required>
+        <input type="password" id="memberPw" name="memberPw"  required>
       </div>
 
       <div class="form-group">
@@ -76,29 +76,30 @@
 
       <div class="form-group">
         <label>생년월일</label>
-        <input type="text" id="workerBirthDate" required placeholder="ex ) 19981104">
+        <input type="text" id="workerBirthDate" name="workerBirthDate" required placeholder="ex ) 19981104">
         <span id="workerBirthDateMsg"> 생년월일을 확인해주세요</span>
       </div>
 
       <div class="form-group">
         <label>MBTI</label>
-        <input type="text" required>
+        <input type="text" id="workerMbti" name="workerMbti" placeholder="대문자로 입력하여야 합니다." required>
+        <span id="workerMbtiMessage"> MBTI를 입력해주세요 </span>
       </div>
 
       <div class="form-group">
         <label>닉네임</label>
-        <input type="text" id="workerNickname" required>
+        <input type="text" id="workerNickname" name="workerNickname" placeholder="한글, 영어, 숫자로 10글자까지 가능합니다." required>
         <span id="nickMessage"> 유효하지 않은 닉네임 형식입니다. </span>
       </div>
 
       <div class="form-group">
         <label>이름</label>
-        <input type="text" id="memberName" required>
+        <input type="text" id="memberName" name="memberName" required>
       </div>
 
       <div class="form-group">
         <label>전화번호</label>
-        <input type="tel" id="memberTel" placeholder="-를 제외하고 11자로 입력해 주세요" required>
+        <input type="tel" id="memberTel" name="memberTel" placeholder="-를 제외하고 11자로 입력해 주세요" required>
         <span id="telMessage"></span>
       </div>
 
@@ -106,8 +107,8 @@
         <label for="memberAddress">주소</label>
         <div class="signUp-input-area">
           <div style="display: flex; gap: 10px;">
-            <input type="text" name="memberAddress" placeholder="우편번호" maxlength="6" id="postcode">
-            <button type="button" id="searchAddress">주소 상세 검색</button>
+            <input type="text" name="workerAddress" placeholder="우편번호" maxlength="6" id="postcode">
+            <button type="button" id="searchAddressBtn">주소 상세 검색</button>
           </div>
         </div>
 
@@ -122,7 +123,7 @@
 
       <div class="button-group">
         <button type="button" class="btn-cancel">가입 취소</button>
-        <button type="submit" class="signupBtn" >가입 하기</button>
+        <button type="submit" class="signupBtn">가입 하기</button>
       </div>
     </form>
   </div>

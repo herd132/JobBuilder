@@ -84,7 +84,7 @@ public class WorkerServiceImpl implements WorkerService{
 		// 주소가 입력되지 않은 경우
 			inputWorker.setWorkerAddress(null); // null 저장	
 		}
-		
+		log.debug("인풋멤버비번" + inputWorker.getMemberPw());
 		// inputMember 안의 memberPw -> 평문	
 		// 비밀번호를 암호화하여 inputMember에 세팅
 		String encPw = bcrypt.encode(inputWorker.getMemberPw()); // 암호화하는과정
