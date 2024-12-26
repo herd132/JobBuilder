@@ -23,7 +23,7 @@ public class Employer {
 	private String businessName;				// 사업장 이름
 	private String businessAddress;				// 사업장 주소
 	private String membershipLevel;				// 멤버십 등급
-	private String optionalAgreeFl;				// 선택약관 동의여부
+	private String optionalAgreeFl;				// 선택약관 동의여부(기본값 Y)
 	
 	/* ***** MEMBER TABLE ***** */
 	private int memberNo;						// 회원 번호(PK)

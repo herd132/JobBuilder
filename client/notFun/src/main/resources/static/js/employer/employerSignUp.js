@@ -1,7 +1,26 @@
 console.log("employerSignUp.html과 연결됨");
 
+// 회원가입 유효성 검사 객체
+const checkObj = {
+  "essentialAge": false,                // 나이 필수 약관
+  "essentialService": false,            // 서비스 필수 약관
+  "essentialPersonalInfo": false,       // 개인정보 필수 약관
+  "businessRegistrationNumber": false,  // 사업자등록번호
+  "representativeName": false,          // 대표자명
+  "memberEmail": false,                 // 멤버 이메일
+  "authKey": false,                     // 인증키
+  "memberPw": false,                    // 비밀번호
+  "memberPwConfirm": false,             // 비밀번호 확인
+  "memberTel": false,                   // 전화번호
+  "businessName": false,                // 회사명, 점포명
+  "postcode": false,                    // 우편번호 (첫번째)
+  "detailAddress": false                // 세부주소 (세번째)
+}
+
 // 사업자 진위확인 API
 const confirmBusinessBtn = document.querySelector("#confirmBusinessBtn");
+const businessMessage = document.querySelector("#businessMessage");
+
 confirmBusinessBtn.addEventListener("click", async () => {
 
   const businessRegistrationNumber = document.querySelector("#businessRegistrationNumber"); // input 태그
@@ -9,22 +28,42 @@ confirmBusinessBtn.addEventListener("click", async () => {
   const openingDate = document.querySelector("#openingDate");                               // input 태그
 
   const requestBody = {
-    "business" : [
+    "businesses": [
       {
         "b_no": businessRegistrationNumber.value,
-        "start-dt": openingDate.value,
+        "start_dt": openingDate.value,
         "p_nm": representativeName.value
-      }
+      } 
     ]
-  }
+  };
 
-  const result = await fetch("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=HEWaOsjZrFL5dYVD0%2B6QfWGgXcA5BAicqbDf2VdmPOvzzB10V8hCXC8MgXPM85%2BLjPr81M2CLm01jGZs8fRvrA%3D%3D", {
+  const resp = await fetch("https://api.odcloud.kr/api/nts-businessman/v1/validate?serviceKey=HEWaOsjZrFL5dYVD0%2B6QfWGgXcA5BAicqbDf2VdmPOvzzB10V8hCXC8MgXPM85%2BLjPr81M2CLm01jGZs8fRvrA%3D%3D", {
     method: "POST",
     headers : {"Content-Type" : "application/json"},
     body : JSON.stringify(requestBody)
   });
 
-  console.log(result);
+  if(resp.status == 200){
+
+    const result = await resp.json();
+    const valid = result.data[0].valid;
+
+    if(valid == '01'){
+      businessMessage.innerText = "확인되었습니다";
+
+      businessRegistrationNumber.readOnly = true;
+      representativeName.readOnly = true;
+      openingDate.readOnly = true;
+
+      checkObj.businessRegistrationNumber = true;
+      checkObj.representativeName = true;
+      return;
+
+    }
+    
+    businessMessage.innerText = "존재하지 않습니다.";
+
+  }
 })
 
 // 다음 주소 API
@@ -56,6 +95,7 @@ function execDaumPostcode() {
 
 
 /* ********** 약관동의 부분 (아직 checkObj 안넣음) ********** */
+/* ***** 전체동의 체크 부분 ***** */
 const allAgree = document.querySelector("#allAgree"); // 전체동의 input(checkbox) 태그
 const checkAllList = document.querySelectorAll(".checkAll"); // 약관 input(checkbox)태그
 
@@ -74,6 +114,28 @@ checkAllList.forEach((checkAll) => {
   });
 });
 
+/* ***** 필수약관 유효성 검사 ***** */
+const essentialAge = document.querySelector("#essentialAge");                   // input(checkbox)
+const essentialService = document.querySelector("#essentialService");           // input(checkbox)
+const essentialPersonalInfo = document.querySelector("#essentialPersonalInfo"); // input(checkbox)
+
+// 나이 필수 약관
+essentialAge.addEventListener("click", () => {
+  if(essentialAge.checked) checkObj.essentialAge = true;
+  else checkObj.essentialAge = false;
+})
+
+// 서비스 이용 필수 약관
+essentialService.addEventListener("click", () => {
+  if(essentialService.checked) checkObj.essentialService = true;
+  else checkObj.essentialService = false;
+})
+
+// 개인정보 수집 및 이용 필수 약관
+essentialPersonalInfo.addEventListener("click", () => {
+  if(essentialPersonalInfo.checked) checkObj.essentialPersonalInfo = true;
+  else checkObj.essentialPersonalInfo = false;
+})
 
 /* ********** 이메일 부분 ********** */
 let authTimer;      // Timer 역할을 할 setInterval을 저장할 변수(인증시간 관련)
@@ -86,8 +148,9 @@ const authKeyMessage = document.querySelector("#authKeyMessage");   // span 태�
 
 /* ***** 이메일 유효성 검사 ***** */
 memberEmail.addEventListener("input", e => {
-  // checkObj.memberEmail 추가(false)해야 함
-  // checkObj.authKey 추가(false)해야 함
+
+  checkObj.memberEmail = false;
+  checkObj.authKey = false;
 
   authKeyMessage.innerText = "";
   clearInterval(authTimer);
@@ -126,12 +189,12 @@ memberEmail.addEventListener("input", e => {
     emailMessage.innerText = "사용가능한 이메일입니다";
     emailMessage.classList.add('confirm');
     emailMessage.classList.remove('error');
+
+    checkObj.memberEmail = true;
   })
   .catch(error => {
     console.error(error);
   });
-
-  // checkObj.memberEmail 추가(true)해야 함
 });
 
 /* ***** 인증번호 유효성 검사 ***** */
@@ -148,13 +211,15 @@ function addZero(number) {
 
 // 인증번호 받기 버튼 클릭 시
 sendAuthKeyBtn.addEventListener("click", () => {
-  // checkObj.authKey 추가(false)해야 함
+
+  checkObj.authKey = false;
   authKeyMessage.innerText = "";
 
-  // if (!checkObj.memberEmail) {   // checkObj 만든 후 각주 없애기
-  //   alert("유효한 이메일을 작성 후 클릭해 주세요");
-  //   return;
-  // }
+  // 이메일 유효성 검사 통과시에만 인증번호 유효성 검사 진행
+  if (!checkObj.memberEmail) {
+    alert("유효한 이메일을 작성 후 클릭해 주세요");
+    return;
+  }
 
   min = initMin;
   sec = initSec;
@@ -200,6 +265,8 @@ sendAuthKeyBtn.addEventListener("click", () => {
 // 인증번호 확인 버튼 클릭 시
 checkAuthKeyBtn.addEventListener("click", () => {
 
+  checkObj.authKey = false;
+
   if (min == 0 && sec == 0) {
     alert("인증번호 입력 제한시간을 초과하였습니다.");
     return;
@@ -234,7 +301,7 @@ checkAuthKeyBtn.addEventListener("click", () => {
       authKeyMessage.classList.remove("error");
       memberEmail.readOnly = true;
       authKey.readOnly = true;
-      // checkObj.authKey = true;
+      checkObj.authKey = true;
     });
 
 });
@@ -249,22 +316,29 @@ const pwConfirmMessage = document.querySelector("#pwConfirmMessage"); // span �
 // 비밀번호, 비밀번호 확인 일치여부 검사 함수
 const checkPw = () => {
 
+  checkObj.memberPwConfirm = false;
+  pwConfirmMessage.innerText = "";
+
   if(memberPw.value === memberPwConfirm.value){
     pwConfirmMessage.innerText = "비밀번호가 일치합니다";
     pwConfirmMessage.classList.add("confirm");
     pwConfirmMessage.classList.remove("error");
-    // checkObj.memberPwConfirm = true;
+    checkObj.memberPwConfirm = true;
     return;
   }
 
   pwConfirmMessage.innerText = "비밀번호가 일치하지 않습니다";
   pwConfirmMessage.classList.add("error");
   pwConfirmMessage.classList.remove("confirm");
-  // checkObj.memberPwConfirm = false;
 }
 
 /* ***** 비밀번호 유효성 검사 ***** */
 memberPw.addEventListener("input", e => {
+
+  checkObj.memberPw = false;
+  checkObj.memberPwConfirm = false;
+  pwConfirmMessage.innerText = "";
+
   const inputPw = e.target.value;
 
   // space 입력 시
@@ -272,7 +346,6 @@ memberPw.addEventListener("input", e => {
     pwMessage.innerText = "공백없이 영어, 숫자, 특수문자(!,@,#,-,_) 포함 6~20자 입력해주세요";
     pwMessage.classList.remove("confirm", "error");
     memberPw.value = "";
-    // checkObj.memberPw = false;
     return;
   }
 
@@ -283,14 +356,13 @@ memberPw.addEventListener("input", e => {
     pwMessage.innerText = "비밀번호가 유효하지 않습니다";
     pwMessage.classList.add("error");
     pwMessage.classList.remove("confirm");
-    // checkObj.memberPw = false;
     return;
   }
 
   pwMessage.innerText = "유효한 비밀번호 형식입니다";
   pwMessage.classList.add("confrim");
   pwMessage.classList.remove("error");
-  // checkObj.memberPw = true;
+  checkObj.memberPw = true;
   
   // 비밀번호 확인란에 값이 있는 경우 일치여부 검사
   if(memberPwConfirm.value.length > 0) {
@@ -302,10 +374,10 @@ memberPw.addEventListener("input", e => {
 memberPwConfirm.addEventListener("input", () => {
   
   // 비밀번호 유효성 통과한 경우만 checkPW() 수행
-  // if (!checkObj.memberPw) {
-  //   checkObj.memberPwConfirm = false;
-  //   return;
-  // }
+  if (!checkObj.memberPw) {
+    checkObj.memberPwConfirm = false;
+    return;
+  }
 
   checkPw();
 });
@@ -316,7 +388,8 @@ const memberTel = document.querySelector("#memberTel");     // input 태그
 const telMessage = document.querySelector("#telMessage");   // span 태그
 
 memberTel.addEventListener("input", e => {
-  // checkObj.memberTel = false;
+
+  checkObj.memberTel = false;
   const inputTel = e.target.value;
 
   // space 입력 시
@@ -340,7 +413,20 @@ memberTel.addEventListener("input", e => {
   telMessage.innerText = "유효한 전화번호 형식입니다.";
   telMessage.classList.add("confirm");
   telMessage.classList.remove("error");
-  // checkObj.memberTel = true;
+
+  checkObj.memberTel = true;
+})
+
+/* ********** 회사명/점포명 부분 ********** */
+const businessName = document.querySelector("#businessName");
+businessName.addEventListener("input", e => {
+
+  checkObj.businessName = false;
+  const inputBusinessName = e.target.value;
+
+  if(inputBusinessName.trim().length === 0) return;
+
+  checkObj.businessName = true;
 })
 
 
@@ -359,9 +445,87 @@ addressResetBtn.addEventListener("click", () => {
 })
 
 
-/* ********** 사업자 확인 부분 ********** */
-// 인증 완료되면 수정할 수 없도록 막기(readonly)
-
 /* ********** 회원가입 버튼 클릭 시 ********** */
+const signUpEmpForm = document.querySelector("#signUpEmpForm");         // form 태그
+signUpEmpForm.addEventListener("submit", e => {
+
+  if(postcode.value.trim().length > 0) {
+    checkObj.postcode = true;
+  }
+
+  if(detailAddress.value.trim().length > 0) {
+    checkObj.detailAddress = true;
+  }
+
+  for(let key in checkObj){
+    if(!checkObj[key]){
+
+      let str;
+
+      switch(key){
+        case "essentialAge" : str = "필수약관(나이)에 동의하지 않았습니다"; break;
+        case "essentialService" : str = "필수약관(서비스)에 동의하지 않았습니다"; break;
+        case "essentialPersonalInfo" : str = "필수약관(개인정보)에 동의하지 않았습니다"; break;
+        case "businessRegistrationNumber" : str = "유효하지 않은 사업자등록번호입니다"; break;
+        case "representativeName" : str = "유효하지 않은 대표자명입니다"; break;
+        case "memberEmail" : str = "유효하지 않은 이메일입니다"; break;
+        case "authKey" : str = "인증되지 않은 이메일입니다"; break;
+        case "memberPw" : str = "비밀번호가 유효하지 않습니다"; break;
+        case "memberPwConfirm" : str = "비밀번호가 일치하지 않습니다"; break;
+        case "memberTel" : str = "전화번호가 유효하지 않습니다"; break;
+        case "businessName" : str = "회사명/점포명이 입력되지 않았습니다"; break;
+        case "postcode" : str = "우편번호를 입력해주세요"; break;
+        case "detailAddress" : str = "사업장 세부주소를 입력해주세요"; break;
+      }
+
+      alert(str);
+      document.getElementById(key).focus();
+      e.preventDefault();
+      return;
+    }
+  }
+})
 // 회사명/점포명 입력안 된 경우 제출 막기
 // 사업장 주소 입력안 된 경우 제출 막기
+
+/* 
+  "essentialAge": false,                // 나이 필수 약관
+  "essentialService": false,            // 서비스 필수 약관
+  "essentialPersonalInfo": false,       // 개인정보 필수 약관
+  "businessRegistrationNumber": false,  // 사업자등록번호
+  "representativeName": false,          // 대표자명
+  "memberEmail": false,                 // 멤버 이메일
+  "authKey": false,                     // 인증키
+  "memberPw": false,                    // 비밀번호
+  "memberPwConfirm": false,             // 비밀번호 확인
+  "memberTel": false,                   // 전화번호
+  "businessName": false,                // 회사명, 점포명
+  "postcode": false,                    // 우편번호 (첫번째)
+  "detailAddress": false                // 세부주소 (세번째)
+*/
+
+
+
+
+
+
+
+
+// 사업자 상태조회 API(연습용)
+// const statusBusiness = document.querySelector("#statusBusiness");
+// statusBusiness.addEventListener("click", async () => {
+//   const sampleNumber = document.querySelector("#sampleNumber");
+
+//   const requestBody = {
+//     "b_no": [`${sampleNumber.value}`]
+//   }
+
+//   const resp = await fetch("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=HEWaOsjZrFL5dYVD0%2B6QfWGgXcA5BAicqbDf2VdmPOvzzB10V8hCXC8MgXPM85%2BLjPr81M2CLm01jGZs8fRvrA%3D%3D", {
+//     method: "POST",
+//     headers : {"Content-Type" : "application/json"},
+//     body : JSON.stringify(requestBody)
+//   })
+
+//   const data = resp.json();
+//   console.log(data);
+// })

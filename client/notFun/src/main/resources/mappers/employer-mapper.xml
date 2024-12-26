@@ -15,11 +15,33 @@
 	</select>
 	
 <!-- 고용주 회원가입 -->
-	<!-- 이메일 중복검사 -->
+	<!-- 이메일 중복검사(고용주만 검색) -->
 	<select id="checkEmail">
 	SELECT COUNT(*)
 	FROM "MEMBER"
 	WHERE MEMBER_DEL_FL = 'N'
 		AND MEMBER_EMAIL = #{memberEmail}
+		AND AUTHORITY = 1
 	</select>
+	
+	<!-- MEMBER TABLE 에 기본정보 삽입 -->
+	<insert id="signUpMember">
+	INSERT INTO "MEMBER"
+	VALUES(SEQ_MEMBER_NO.NEXTVAL, #{memberEmail}, #{memberPw}, #{memberName}, #{memberTel},
+		SYSDATE, 'N', 1)
+	</insert>
+	
+	<!-- 회원가입한 고용주의 memberNo 얻어오기 -->
+	<select id="selectEmpNo" resultType="_int">
+	SELECT MEMBER_NO
+	FROM "MEMBER"
+	WHERE MEMBER_EMAIL = #{memberEmail}
+	</select>
+	
+	<!-- EMPLOYER TABLE 에 추가정보 삽입 -->
+	<insert id="signUpEmployer">
+	INSERT INTO "EMPLOYER"
+	VALUES(SEQ_EMPLOYER_NO.NEXTVAL, #{businessRegistrationNumber}, #{businessName}, #{businessAddress},
+		DEFAULT, ${memberNo}, #{optionalAgreeFl})
+	</insert>
 </mapper>
