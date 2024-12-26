@@ -21,7 +21,7 @@
 		<div class="member-info-container">
 			<div class="header">
 				<h2 class="title">회원정보</h2>
-				<button class="updateBtn" onClick="location.href='updateInfo'">수정</button>
+				<button class="updateBtn">수정</button>
 			</div>
 
 			<div class="info-container-background">
@@ -40,7 +40,7 @@
 						<span class="memberEmail">이메일</span>
 						<span class="memberEmail" th:text="${session.loginWorker.memberEmail}"></span>
 					</div>
-					
+
 					<div class="form-field">
 						<span class="workerAddress1">주소</span>
 						<span class="workerAddress2" th:text="${session.loginWorker.workerAddress}"></span>
@@ -55,10 +55,24 @@
 			</div>
 		</div>
 
+		<!-- 모달 구조 -->
+		<div id="passwordModal" class="modal">
+			<div class="modal-content">
+				<span class="close">X</span>
+				<h2>비밀번호 입력</h2>
+				
+					<input type="password" class="currentPassword" placeholder="현재 비밀번호" required />
+					<button type="submit" class="checkPwbtn">확인</button>
+				
+			</div>
+		</div>
+
 	</div>
 
 	<!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
 	<th:block th:replace="~{common/main-footer}"></th:block>
+
+	<script src="/js/myPageWorker/info.js"></script>
 </body>
 
 </html>
