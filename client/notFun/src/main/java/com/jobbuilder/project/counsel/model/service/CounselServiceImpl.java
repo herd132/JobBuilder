@@ -1,8 +1,13 @@
 package com.jobbuilder.project.counsel.model.service;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.jobbuilder.project.chatting.model.dto.ChattingRoom;
 import com.jobbuilder.project.chatting.model.mapper.ChattingMapper;
 import com.jobbuilder.project.counsel.model.dto.Counselor;
 import com.jobbuilder.project.counsel.model.mapper.CounselMapper;
@@ -33,6 +38,8 @@ public class CounselServiceImpl implements CounselService {
 		}
 		
 		loginCounseolr.setMemberPw(null);
+		
+		Map<String, Object> map = new HashMap<>();
 		
 		return loginCounseolr;
 	}
