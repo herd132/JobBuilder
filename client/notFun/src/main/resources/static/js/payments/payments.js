@@ -1,140 +1,148 @@
 document.addEventListener("DOMContentLoaded", () => {
-    let globalMembershipList = []; // 글로벌 상태로 데이터 저장
+  let globalMembershipList = []; // 글로벌 상태로 데이터 저장
 
-    // 모든 버튼 초기화 함수
-    const resetStatus = () => {
-        const resetButtons = document.querySelectorAll('[name="gradeStatus"]');
-        resetButtons.forEach((button) => {
-            button.classList.remove("payments-btn-now", "payments-btn-after");
-            button.classList.add("payments-btn-after");
-            button.innerHTML = "시작하기";
-        });
-    };
-
-    // employerNo 가져오기
-    const employerNoMeta = document.querySelector('meta[name="employerNo"]');
-    const employerNo = employerNoMeta?.content || null;
-
-    // 맴버십 정보 초기화
-    const initializeMembershipStatus = () => {
-        if (!employerNo) {
-            resetStatus();
-            return;
-        }
-
-        fetch(`/payments/details`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ employerNo: employerNo }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                const membershipList = data.membershipDetails;
-                if (!membershipList || !Array.isArray(membershipList)) return;
-
-                globalMembershipList = membershipList; // 글로벌 상태에 저장
-                updateMembershipUI(membershipList);
-            })
-            .catch((error) => console.error("Error fetching membership details:", error));
-    };
-
-
-
-    // 맴버십 UI 업데이트
-    const updateMembershipUI = (membershipList) => {
-        resetStatus();
-        membershipList.forEach((membership) => {
-            const { membershipType, remainingDays } = membership;
-
-            if (membershipType == 2) {
-                const goldElement = document.querySelector("#gold");
-                goldElement.classList.add("payments-btn-after");
-                goldElement.innerHTML = `${remainingDays} 남음`;
-            } else if (membershipType == 3) {
-                const goldElement = document.querySelector("#gold");
-                goldElement.classList.add("payments-btn-now");
-                goldElement.innerHTML = "이미 적용중인 혜택";
-
-                const goldContainer = document.querySelector("#goldMembershipContainer");
-                if (goldContainer) {
-                    goldContainer.style.pointerEvents = "none";
-                }
-
-                const platinumElement = document.querySelector("#platinum");
-                platinumElement.classList.add("payments-btn-after");
-                platinumElement.innerHTML = `${remainingDays} 남음`;
-            } else if (membershipType == 4) {
-                const plus1Element = document.querySelector("#plus1");
-                plus1Element.classList.add("payments-btn-after");
-                plus1Element.innerHTML = `${remainingDays} 남음`;
-            } else if (membershipType == 5) {
-                const plus2Element = document.querySelector("#plus2");
-                plus2Element.classList.add("payments-btn-after");
-                plus2Element.innerHTML = `${remainingDays} 남음`;
-            }
-        });
-    };
-
-    // 초기 맴버십 상태 초기화
-    initializeMembershipStatus();
-
-    // 클릭 이벤트 처리 
-    document.querySelectorAll('[name="paymentsClick"]').forEach((element) => {
-        element.addEventListener("click", () => {
-            const membershipType = element.getAttribute("data-membership-type");
-            if (membershipType) {
-                payment(Number(membershipType));
-            } else {
-                console.error("Membership type not found for clicked element.");
-            }
-        });
+  // 모든 버튼 초기화 함수
+  const resetStatus = () => {
+    const resetButtons = document.querySelectorAll('[name="gradeStatus"]');
+    resetButtons.forEach((button) => {
+      button.classList.remove("payments-btn-now", "payments-btn-after");
+      button.classList.add("payments-btn-after");
+      button.innerHTML = "시작하기";
     });
+  };
 
-    // payment 함수
-    const payment = (membershipType) => {
-        // `employerNo`가 없으면 데이터 초기화 없이 페이지를 렌더링
-        if (!employerNo) {
-            renderPaymentPage(membershipType, null);
-            return;
+  // employerNo 가져오기
+  const employerNoMeta = document.querySelector('meta[name="employerNo"]');
+  const employerNo = employerNoMeta?.content || null;
+
+  // 맴버십 정보 초기화
+  const initializeMembershipStatus = () => {
+    if (!employerNo) {
+      resetStatus();
+      return;
+    }
+
+    fetch(`/payments/details`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ employerNo: employerNo }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const membershipList = data.membershipDetails;
+        if (!membershipList || !Array.isArray(membershipList)) return;
+
+        globalMembershipList = membershipList; // 글로벌 상태에 저장
+        updateMembershipUI(membershipList);
+      })
+      .catch((error) =>
+        console.error("Error fetching membership details:", error)
+      );
+  };
+
+  // 맴버십 UI 업데이트
+  const updateMembershipUI = (membershipList) => {
+    resetStatus();
+    membershipList.forEach((membership) => {
+      const { membershipType, remainingDays } = membership;
+
+      if (membershipType == 2) {
+        const goldElement = document.querySelector("#gold");
+        goldElement.classList.add("payments-btn-after");
+        goldElement.innerHTML = `${remainingDays} 남음`;
+      } else if (membershipType == 3) {
+        const goldElement = document.querySelector("#gold");
+        goldElement.classList.add("payments-btn-now");
+        goldElement.innerHTML = "이미 적용중인 혜택";
+
+        const goldContainer = document.querySelector(
+          "#goldMembershipContainer"
+        );
+        if (goldContainer) {
+          goldContainer.style.pointerEvents = "none";
         }
 
-        // 기존 데이터가 없는 경우 패치 요청
-        if (!globalMembershipList.length) {
-            fetch(`/payments/details`, {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ employerNo }),
-            })
-                .then((response) => response.json())
-                .then((data) => {
-                    globalMembershipList = data.membershipDetails || [];
-                    renderPaymentPage(membershipType, globalMembershipList);
-                })
-                .catch((error) => console.error("Error fetching membership details:", error));
-        } else {
-            renderPaymentPage(membershipType, globalMembershipList);
-        }
-    };
+        const platinumElement = document.querySelector("#platinum");
+        platinumElement.classList.add("payments-btn-after");
+        platinumElement.innerHTML = `${remainingDays} 남음`;
+      } else if (membershipType == 4) {
+        const plus1Element = document.querySelector("#plus1");
+        plus1Element.classList.add("payments-btn-after");
+        plus1Element.innerHTML = `${remainingDays} 남음`;
+      } else if (membershipType == 5) {
+        const plus2Element = document.querySelector("#plus2");
+        plus2Element.classList.add("payments-btn-after");
+        plus2Element.innerHTML = `${remainingDays} 남음`;
+      }
+    });
+  };
 
-    // 결제 페이지 렌더링 함수
-    const generateMembershipDetailsHtml = (membershipList, count) => {
-        if (membershipList.length !== 0 || count !== null) {
-            return membershipList
-                .map(
-                    (membership) => `
+  // 초기 맴버십 상태 초기화
+  initializeMembershipStatus();
+
+  // 클릭 이벤트 처리
+  document.querySelectorAll('[name="paymentsClick"]').forEach((element) => {
+    element.addEventListener("click", () => {
+      const membershipType = element.getAttribute("data-membership-type");
+      if (membershipType) {
+        payment(Number(membershipType));
+      } else {
+        console.error("Membership type not found for clicked element.");
+      }
+    });
+  });
+
+  // payment 함수
+  const payment = (membershipType) => {
+    // `employerNo`가 없으면 데이터 초기화 없이 페이지를 렌더링
+    if (!employerNo) {
+      renderPaymentPage(membershipType, null);
+      return;
+    }
+
+    // 기존 데이터가 없는 경우 패치 요청
+    if (!globalMembershipList.length) {
+      fetch(`/payments/details`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ employerNo }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          globalMembershipList = data.membershipDetails || [];
+          renderPaymentPage(membershipType, globalMembershipList);
+        })
+        .catch((error) =>
+          console.error("Error fetching membership details:", error)
+        );
+    } else {
+      renderPaymentPage(membershipType, globalMembershipList);
+    }
+  };
+
+  // 결제 페이지 렌더링 함수
+  const generateMembershipDetailsHtml = (membershipList, count) => {
+    if (membershipList.length !== 0 || count !== null) {
+      return membershipList
+        .map(
+          (membership) => `
                     <div class="test3">
                         <div class="test4">
-                            <p>맴버십: ${membership.membershipType}</p>
-                            <p>${membership.membershipContent || "정보 없음"}</p>
+                            <p>${membership.membershipName}</p>
+                            <p>${
+                              membership.membershipContent || "정보 없음"
+                            }</p>
                         </div>
-                        <p>남은 기간: ${membership.remainingDays || "정보 없음"}</p>
+                        <p>남은 기간: ${
+                          membership.remainingDays || "정보 없음"
+                        }</p>
                     </div>
                     
                    `
-                )
-                .join("");
-        } else {
-            return `
+        )
+        .join("");
+    } else {
+      return `
                 <div class="afteremembership">
                     ✔ 공고 일일 30건 등록<br>
                     ✔ 이력서 열람 100건<br>
@@ -142,19 +150,21 @@ document.addEventListener("DOMContentLoaded", () => {
                     ✔ 이력서 상세 정보 열람
                 </div>
             `;
-        }
-    };
-    
-    const renderPaymentPage = (membershipType) => {
-     
-        const backgroundElement = document.querySelector("#background");
-    
-        const count = globalMembershipList.find((num) => num === 1);
-        const membershipDetailsHtml = generateMembershipDetailsHtml(globalMembershipList, count);
+    }
+  };
 
-        console.log(globalMembershipList);
+  const renderPaymentPage = (membershipType) => {
+    const backgroundElement = document.querySelector("#background");
 
-        backgroundElement.innerHTML = `
+    const count = globalMembershipList.find((num) => num === 1);
+    const membershipDetailsHtml = generateMembershipDetailsHtml(
+      globalMembershipList,
+      count
+    );
+
+    console.log(globalMembershipList);
+
+    backgroundElement.innerHTML = `
             <h1 class="payments-t-title">결제 서비스
                 <hr>
             </h1>
@@ -174,7 +184,12 @@ document.addEventListener("DOMContentLoaded", () => {
                 <div>
                     <p>기존</p><br>
                     <div class="afteremembership">
-                        ${membershipDetailsHtml}
+                            ${
+                                globalMembershipList.length > 0 && 
+                                globalMembershipList.some(membership => membership.membershipType !== 1)
+                                    ? membershipDetailsHtml
+                                    : "✔ 공고 일일 30건 등록<br>✔ 이력서 열람 100건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람"
+                                }
                     </div>
                 </div>
     →
@@ -199,21 +214,29 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             </div>
         `;
-    
-        // 초기 상품 추가
-        const productContainer = document.querySelector("#product-addpart");
-        const productGroup = document.createElement("div");
-        productGroup.classList.add("product-addpart");
-        productGroup.id = `div-${membershipType}`;
-        productGroup.innerHTML = `
+
+    // 초기 상품 추가
+    const productContainer = document.querySelector("#product-addpart");
+    const productGroup = document.createElement("div");
+    productGroup.classList.add("product-addpart");
+    productGroup.id = `div-${membershipType}`;
+    productGroup.innerHTML = `
             <div class="item">
                 <form>
                     <select id="productTitle-${count}" class="test4">
                         <option value="none">=== 선택 ===</option>
-                        <option value="2" ${membershipType == 2 ? "selected" : ""}>골드</option>
-                        <option value="3" ${membershipType == 3 ? "selected" : ""}>플레티넘</option>
-                        <option value="4" ${membershipType == 4 ? "selected" : ""}>아이템 : 급구</option>
-                        <option value="5" ${membershipType == 5 ? "selected" : ""}>아이템 : Hot</option>
+                        <option value="2" ${
+                          membershipType == 2 ? "selected" : ""
+                        }>골드 이용권</option>
+                        <option value="3" ${
+                          membershipType == 3 ? "selected" : ""
+                        }>플레티넘 이용권</option>
+                        <option value="4" ${
+                          membershipType == 4 ? "selected" : ""
+                        }>급구 이용권</option>
+                        <option value="5" ${
+                          membershipType == 5 ? "selected" : ""
+                        }>Hot 이용권</option>
                     </select>
                 </form>
                 <form>
@@ -226,171 +249,282 @@ document.addEventListener("DOMContentLoaded", () => {
                               i + 1 === 1 ? "selected" : ""
                             }>${i + 1}개월</option>`
                         ).join("")}
+                        <option value="24">24개월</option>
+                        <option value="36">36개월</option>
                     </select>
                 </form>
                 <button data-id="${membershipType}" class="delete-btn">-</button>
             </div>`;
-        productContainer.appendChild(productGroup);
-    
-        handleDynamicButtons();
-    };
-    
-    
+    productContainer.appendChild(productGroup);
 
-    // 동적 버튼 연결 처리 함수
-    const handleDynamicButtons = () => {
+
+    handleDynamicButtons();
+  };
+// 동적 버튼 연결 처리 함수
+const handleDynamicButtons = () => {
     const productContainer = document.querySelector("#product-addpart");
-
-    // 재료 추가 버튼 동작
+  
+    // beforeMembershipContainer 업데이트 함수
+    const updateBeforeMembershipContainer = () => {
+      const beforeMembershipContainer = document.querySelector(".beforemembership");
+      beforeMembershipContainer.innerHTML = ""; // 초기화
+  
+      // 현재 product-addpart에 있는 항목을 기반으로 beforeMembershipContainer 구성
+      const productItems = document.querySelectorAll(".product-addpart .item");
+      productItems.forEach((item) => {
+        const selectedValue = item.querySelector("select.test4").value;
+  
+        if (selectedValue === "none") return; // 선택되지 않은 항목은 무시
+  
+        let newDiv = document.createElement("div");
+        newDiv.setAttribute("data-value", selectedValue);
+  
+        switch (selectedValue) {
+          case "2":
+            newDiv.innerHTML = `
+                <div class="test3">
+                    <div class="test4">
+                        <p>골드 맴버십 이용권</p>
+                        <p>✔ 공고 일일 100건 등록<br>
+                           ✔ 이력서 열람 300건<br>
+                           ✔ 키워드 이력서 검색<br>
+                           ✔ 이력서 상세 정보 열람</p>
+                    </div>
+                    <p>남은 기간: </p>
+                </div>`;
+            break;
+          case "3":
+            newDiv.innerHTML = `
+                <div class="test3">
+                    <div class="test4">
+                        <p>플레티넘 맴버십 이용권</p>
+                        <p>✔ 공고 일일 300건 등록<br>
+                           ✔ 이력서 열람 무제한<br>
+                           ✔ 키워드 이력서 검색<br>
+                           ✔ 이력서 상세 정보 열람<br>
+                           ✔ 공고 즉시 등록<br>
+                           ✔ 이력서 추천 기능</p>
+                    </div>
+                    <p>남은 기간: </p>
+                    </div>`;
+            break;
+          case "4":
+            newDiv.innerHTML = `
+                            <div class="test3">
+                    <div class="test4"><p>급구 플러스 이용권</p>
+                급구 알바 페이지 상단 노출<br>
+                공고 즉시 게시<br>
+                7일 이상 구매 시 20% 할인</p>
+                    </div>
+                    <p>남은 기간: </p>
+                    </div>`;
+            break;
+          case "5":
+            newDiv.innerHTML = `
+                            <div class="test3">
+                    <div class="test4"><p>Hot 플러스 이용권</p>
+                급구 HOT 표시를 붙여 노출<br>
+                공고 즉시 게시<br>
+                7일 이상 구매 시 20% 할인</p>
+                    </div>
+                    <p>남은 기간: </p>
+                    </div>`;
+            break;
+          default:
+            newDiv.innerHTML = `<p>선택된 멤버십이 없습니다.</p>`;
+            break;
+        }
+  
+        beforeMembershipContainer.appendChild(newDiv);
+      });
+    };
+  
     document.querySelector("#add-product-btn").addEventListener("click", () => {
-        const count = document.querySelectorAll(".product-addpart .item").length + 1;
-
+        const count = document.querySelectorAll(".product-addpart .item").length;
+      
+        if (count >= 3) {
+          alert("더 이상 추가할 수 없습니다. 최대 3개의 상품만 선택 가능합니다.");
+          return;
+        }
+      
         const productGroup = document.createElement("div");
         productGroup.classList.add("product-addpart");
         productGroup.id = `div-${count}`;
         productGroup.innerHTML = `
-            <div class="item">
-                <form>
-                    <select id="productTitle-${count}" class="test4">
-                        <option value="none" selected>=== 선택 ===</option>
-                        <option value="2">골드</option>
-                        <option value="3">플레티넘</option>
-                        <option value="4">아이템 : 급구</option>
-                        <option value="5">아이템 : Hot</option>
-                    </select>
-                </form>
-                <form>
-                    <select id="productDate-${count}">
-                        <option value="none">=== 선택 ===</option>
-                        ${Array.from(
-                          { length: 12 },
-                          (_, i) =>
-                            `<option value="${i + 1}" ${
-                              i + 1 === 1 ? "selected" : ""
-                            }>${i + 1}개월</option>`
-                        ).join("")}
-                    </select>
-                </form>
-                <button data-id="${count}" class="delete-btn">-</button>
-            </div>`;
+          <div class="item">
+              <form>
+                  <select id="productTitle-${count}" class="test4">
+                      <option value="none" selected>=== 선택 ===</option>
+                      <option value="2">골드 이용권</option>
+                      <option value="3">플래티넘 이용권</option>
+                      <option value="4">급구 이용권</option>
+                      <option value="5">Hot 이용권</option>
+                  </select>
+              </form>
+              <form>
+                  <select id="productDate-${count}" class="test-date">
+                      <option value="none">=== 선택 ===</option>
+                      ${Array.from(
+                        { length: 12 },
+                        (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
+                      ).join("")}
+                      <option value="24">24개월</option>
+                      <option value="36">36개월</option>
+                      <option value="custom">직접입력</option>
+                  </select>
+              </form>
+              <button data-id="${count}" class="delete-btn">-</button>
+          </div>`;
         productContainer.appendChild(productGroup);
-    });
-
-    // 삭제 버튼 이벤트 처리
-    productContainer.addEventListener("click", (event) => {
-        if (event.target.classList.contains("delete-btn")) {
+      
+        // 조건문 추가: productTitle 값이 변경될 때 처리
+        document.querySelector(`#productTitle-${count}`).addEventListener("change", (event) => {
+          const selectedValue = event.target.value;
+          const productDateElement = document.querySelector(`#productDate-${count}`);
+          const customInputId = `custom-date-${count}`;
+      
+          if (selectedValue === "4" || selectedValue === "5") {
+            // 급구 이용권 또는 Hot 이용권 선택 시 일수 옵션으로 변경
+            productDateElement.innerHTML = `
+              <option value="none">=== 선택 ===</option>
+              ${Array.from(
+                { length: 10 },
+                (_, i) => `<option value="${i + 1}">${i + 1}일</option>`
+              ).join("")}
+              <option value="20">20일</option>
+              <option value="30">30일</option>
+              <option value="custom">직접입력</option>
+            `;
+          } else {
+            // 기본 개월수 옵션으로 복구
+            productDateElement.innerHTML = `
+              <option value="none">=== 선택 ===</option>
+              ${Array.from(
+                { length: 12 },
+                (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
+              ).join("")}
+              <option value="24">24개월</option>
+              <option value="36">36개월</option>
+              <option value="custom">직접입력</option>
+            `;
+          }
+      
+          // 기존에 남아있는 인풋박스 제거
+          const existingCustomInput = document.querySelector(`#${customInputId}`);
+          if (existingCustomInput) {
+            existingCustomInput.remove();
+          }
+      
+          // 직접입력 선택 시 동작
+          productDateElement.addEventListener("change", (e) => {
+            const customInput = document.querySelector(`#${customInputId}`);
+            if (e.target.value === "custom") {
+              if (!customInput) {
+                // 인풋박스 생성
+                const newCustomInput = document.createElement("input");
+                newCustomInput.type = "number";
+                newCustomInput.placeholder =
+                  selectedValue === "4" || selectedValue === "5" ? "직접 입력 (일)" : "직접 입력 (개월)";
+                newCustomInput.id = customInputId;
+                newCustomInput.addEventListener("input", () => {
+                  productDateElement.setAttribute("data-custom-value", newCustomInput.value);
+                });
+                e.target.parentNode.appendChild(newCustomInput);
+              }
+            } else if (customInput) {
+              // 직접입력이 아닌 경우 기존 인풋박스 제거
+              customInput.remove();
+            }
+          });
+        });
+      
+        // 삭제 버튼 동작
+        productContainer.addEventListener("click", (event) => {
+          if (event.target.classList.contains("delete-btn")) {
             const id = event.target.getAttribute("data-id");
             const targetDiv = document.getElementById(`div-${id}`);
-            if (targetDiv) {
-                targetDiv.remove();
+            const remainingItems = document.querySelectorAll(".product-addpart .item");
+      
+            if (remainingItems.length === 1) {
+              alert("최소 1개의 상품은 있어야 합니다.");
+              return;
             }
-        }
+      
+            if (targetDiv) {
+              targetDiv.remove();
+      
+              // 인풋박스가 있으면 제거
+              const customInput = document.querySelector(`#custom-date-${id}`);
+              if (customInput) {
+                customInput.remove();
+              }
+      
+              // 항목 제거 후 상태 업데이트
+              updateBeforeMembershipContainer();
+            }
+          }
+        });
     });
-
-
-
-
-    // 중복 선택 방지 이벤트 처리
+      
+    // 중복 선택 방지 및 변경 이벤트
     productContainer.addEventListener("change", (event) => {
         if (event.target.classList.contains("test4")) {
-            const selectedValue = event.target.value;
-
-            // 현재 select를 제외한 다른 select 값 확인
-            const otherSelects = document.querySelectorAll("select.test4");
-            let isDuplicate = false;
-
-            otherSelects.forEach((select) => {
-                if (select !== event.target && select.value === selectedValue && selectedValue !== "none") {
-                    isDuplicate = true;
-                }
-            });
-
-            if (isDuplicate) {
-                alert("중복 선택은 허용되지 않습니다.");
-                // 이전 값으로 되돌리기
-                event.target.value = "none";
+          const selectedValue = event.target.value;
+  
+          // 중복 선택 방지
+          const otherSelects = document.querySelectorAll("select.test4");
+          let isDuplicate = false;
+  
+          otherSelects.forEach((select) => {
+            if (
+              select !== event.target &&
+              select.value === selectedValue &&
+              selectedValue !== "none"
+            ) {
+              isDuplicate = true;
             }
-
-
-        
-                    // beforemembership 요소 선택
-                    const beforeMembershipContainer = document.querySelector(".beforemembership");
-        
-                    // 값이 변경될 때 기존 추가된 항목 제거
-                    beforeMembershipContainer.innerHTML = "";
-        
-                    // 선택된 값에 따라 div 추가
-                    let newDiv = document.createElement("div");
-                    newDiv.classList.add("beforemembership");
-        
-                    switch (selectedValue) {
-                        case "2":
-                            newDiv.innerHTML = `<div class="test3">
-                                                    <div class="test4">
-                                                        <p>맴버십: 2</p>
-                                                        <p>✔ 공고 일일 100건 등록<br>
-                                                           ✔ 이력서 열람 300건<br>
-                                                           ✔ 키워드 이력서 검색<br>
-                                                           ✔ 이력서 상세 정보 열람</p>
-                                                    </div>
-                                                    <p>남은 기간: </p>
-                                                </div>`;
-                            break;
-                        case "3":
-                            newDiv.innerHTML = `<div class="test3">
-                                                    <div class="test4">
-                                                        <p>맴버십: 3</p>
-                                                        <p>✔ 공고 일일 300건 등록<br>
-                                                           ✔ 이력서 열람 무제한<br>
-                                                           ✔ 키워드 이력서 검색<br>
-                                                           ✔ 이력서 상세 정보 열람<br>
-                                                           ✔ 공고 즉시 등록<br>
-                                                           ✔ 이력서 추천 기능</p>
-                                                    </div>
-                                                    <p>남은 기간: </p>
-                                                </div>`;
-                            break;
-                        case "4":
-                            newDiv.innerHTML = `<p>아이템 : 급구</p>
-                                                    급구 알바 페이지 상단 노출<br>
-                                                    공고 즉시 게시<br>
-                                                    7일 이상 구매 시 20% 할인</p>`;
-                            break;
-                        case "5":
-                            newDiv.innerHTML = `<p>아이템 : Hot</p>
-                                                <ul>
-                                                    <li>혜택 1: Hot 태그 추가</li>
-                                                    <li>혜택 2: 추천 리스트 포함</li>
-                                                </ul>`;
-                            break;
-                        default:
-                            newDiv.innerHTML = `<p>선택된 멤버십이 없습니다.</p>`;
-                            break;
-                    }
-        
-                    // beforemembership에 새 div 추가
-                    beforeMembershipContainer.appendChild(newDiv);
-
-
+          });
+  
+          if (isDuplicate) {
+            alert("중복 선택은 허용되지 않습니다.");
+            event.target.value = "none";
+            return;
+          }
+  
+          // 현재 등급보다 낮은 등급 선택 방지
+          const userMembership = globalMembershipList.find(
+            (membership) => membership.membershipType === 3
+          ); // 3은 예시
+          if (
+            userMembership &&
+            parseInt(selectedValue, 10) < userMembership.membershipType
+          ) {
+            alert(
+              `현재 등급 보다 낮은 등급은 선택할 수 없습니다.`
+            );
+            event.target.value = "none";
+            return;
+          }
+  
+          // 골드(2)와 플래티넘(3) 동시 선택 방지
+          const selectedMemberships = Array.from(otherSelects).map(
+            (select) => select.value
+          );
+          if (
+            (selectedMemberships.includes("2") && selectedValue === "3") ||
+            (selectedMemberships.includes("3") && selectedValue === "2")
+          ) {
+            alert("맴버십 상품은 1개만 선택해야 합니다.");
+            event.target.value = "none";
+            return;
+          }
         }
     });
-};
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    
+  
+    // 추가: 페이지 초기화 시 `updateBeforeMembershipContainer` 호출
+    updateBeforeMembershipContainer();
+  };
+  
+   
+  
 });
-

@@ -2,31 +2,57 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jobbuilder.project.payment.model.mapper.PaymentMapper">
 
+<!-- 통합된 resultMap -->
 <resultMap id="membershipResultMap" type="Membership">
     <result property="employerNo" column="EMPLOYER_NO"/>
+    <result property="membershipNo" column="MEMBERSHIP_NO"/>
     <result property="membershipType" column="MEMBERSHIP_TYPE"/>
     <result property="membershipContent" column="MEMBERSHIP_CONTENT"/>
+    <result property="membershipDelFl" column="MEMBERSHIP_DEL_FL"/>
+    <result property="membershipStartDate" column="MEMBERSHIP_START_DATE"/>
+    <result property="membershipEndDate" column="MEMBERSHIP_END_DATE"/>
+    <result property="membershipExpirationDate" column="MEMBERSHIP_EXPIRATION_DATE"/>
+    <result property="membershipSubscriptionFl" column="MEMBERSHIP_SUBSCRIPTION_FL"/>
     <result property="remainingDays" column="REMAINING_DAYS"/>
+    <result property="membershipName" column="MEMBERSHIP_NAME"/>
 </resultMap>
 
+<!-- 통합된 쿼리 -->
 <select id="selectMembershipDetails" resultMap="membershipResultMap">
     SELECT 
-    	A.MEMBER_NO AS MEMBER_NO,
         A.EMPLOYER_NO AS EMPLOYER_NO,
         B.MEMBERSHIP_NO AS MEMBERSHIP_NO,
+        B.MEMBERSHIP_TYPE AS MEMBERSHIP_TYPE,
         B.MEMBERSHIP_DEL_FL AS MEMBERSHIP_DEL_FL,
         B.MEMBERSHIP_START_DATE AS MEMBERSHIP_START_DATE,
         B.MEMBERSHIP_END_DATE AS MEMBERSHIP_END_DATE,
         B.MEMBERSHIP_EXPIRATION_DATE AS MEMBERSHIP_EXPIRATION_DATE,
         B.MEMBERSHIP_SUBSCRIPTION_FL AS MEMBERSHIP_SUBSCRIPTION_FL,
-        B.MEMBERSHIP_TYPE AS MEMBERSHIP_TYPE,
-        B.MEMBERSHIP_CONTENT AS MEMBERSHIP_CONTENT,
-        (TRUNC(B.MEMBERSHIP_END_DATE) - TRUNC(B.MEMBERSHIP_START_DATE)) || '일' AS REMAINING_DAYS
+        (TRUNC(B.MEMBERSHIP_END_DATE) - TRUNC(B.MEMBERSHIP_START_DATE)) || '일' AS REMAINING_DAYS,
+        (SELECT C.MEMBERSHIP_NAME
+            FROM MEMBERSHIP_LEVEL C
+            WHERE C.MEMBERSHIP_NO = B.MEMBERSHIP_TYPE) AS MEMBERSHIP_NAME,
+		(SELECT C.MEMBERSHIP_CONTENT
+        FROM MEMBERSHIP_LEVEL C
+        WHERE C.MEMBERSHIP_NO = B.MEMBERSHIP_TYPE) AS MEMBERSHIP_CONTENT
     FROM EMPLOYER A
     JOIN MEMBERSHIP B ON A.EMPLOYER_NO = B.EMPLOYER_NO
     WHERE A.EMPLOYER_NO = #{employerNo}
       AND B.MEMBERSHIP_DEL_FL = 'N'
 </select>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     
 </mapper>
