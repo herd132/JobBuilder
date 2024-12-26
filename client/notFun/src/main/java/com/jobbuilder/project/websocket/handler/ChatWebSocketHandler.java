@@ -1,4 +1,4 @@
-package com.jobbuilder.project.common.websocket.handler;
+package com.jobbuilder.project.websocket.handler;
 
 import java.util.Collections;
 import java.util.HashSet;

@@ -3,6 +3,7 @@ package com.jobbuilder.project.counsel.model.service;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import com.jobbuilder.project.chatting.model.mapper.ChattingMapper;
 import com.jobbuilder.project.counsel.model.dto.Counselor;
 import com.jobbuilder.project.counsel.model.mapper.CounselMapper;
 
@@ -15,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 public class CounselServiceImpl implements CounselService {
 	
 	private final CounselMapper mapper;
+	private final ChattingMapper chattingMapper;
 
 	private final BCryptPasswordEncoder bcrypt;
 	
