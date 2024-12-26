@@ -1,5 +1,32 @@
 console.log("employerSignUp.html과 연결됨");
 
+// 사업자 진위확인 API
+const confirmBusinessBtn = document.querySelector("#confirmBusinessBtn");
+confirmBusinessBtn.addEventListener("click", async () => {
+
+  const businessRegistrationNumber = document.querySelector("#businessRegistrationNumber"); // input 태그
+  const representativeName = document.querySelector("#representativeName");                 // input 태그
+  const openingDate = document.querySelector("#openingDate");                               // input 태그
+
+  const requestBody = {
+    "business" : [
+      {
+        "b_no": businessRegistrationNumber.value,
+        "start-dt": openingDate.value,
+        "p_nm": representativeName.value
+      }
+    ]
+  }
+
+  const result = await fetch("https://api.odcloud.kr/api/nts-businessman/v1/status?serviceKey=HEWaOsjZrFL5dYVD0%2B6QfWGgXcA5BAicqbDf2VdmPOvzzB10V8hCXC8MgXPM85%2BLjPr81M2CLm01jGZs8fRvrA%3D%3D", {
+    method: "POST",
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify(requestBody)
+  });
+
+  console.log(result);
+})
+
 // 다음 주소 API
 function execDaumPostcode() {
   new daum.Postcode({
