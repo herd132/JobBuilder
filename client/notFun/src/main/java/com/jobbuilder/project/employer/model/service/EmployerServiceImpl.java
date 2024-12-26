@@ -40,24 +40,48 @@ public class EmployerServiceImpl implements EmployerService {
 	}
 	
 	@Override	// 고용주 회원가입
-	public int signUp(Employer inputEmployer, String[] businessAddress) {
+	public int signUp(Employer inputEmployer, String[] businessAddress, String optionalAgree) {
+				
+		// 선택약관 동의여부 처리
+		if(optionalAgree != null) inputEmployer.setOptionalAgreeFl("Y");
+		else inputEmployer.setOptionalAgreeFl("N");
 		
-		if(!inputEmployer.getBusinessAddress().equals(",,")) {
-			String address = String.join("^^^", businessAddress);
-			inputEmployer.setBusinessAddress(address);
-		} else {
-			inputEmployer.setBusinessAddress(null);
-		}
+		// 사업장주소 처리(필수입력 사항)
+		String address = String.join("^^^", businessAddress);
+		inputEmployer.setBusinessAddress(address);
 		
+		// 비밀번호 암호화(필수입력 사항)
 		String encPw = bcrypt.encode(inputEmployer.getMemberPw());
 		inputEmployer.setMemberPw(encPw);
 		
+		// businessRegistrationNumber 재가공(1234567890 -> 123-45-67890)
+		String brNo = inputEmployer.getBusinessRegistrationNumber().substring(0, 3) + "-" +
+						inputEmployer.getBusinessRegistrationNumber().substring(4, 6) + "-" +
+						inputEmployer.getBusinessRegistrationNumber().substring(7);
+		inputEmployer.setBusinessRegistrationNumber(brNo);
+		
+		log.debug("inputEmployer : " + inputEmployer);
+		/* inputEmployer : Employer(employerNo=0, businessRegistrationNumber=312-31-797, 
+		 * businessName=샘플회사명, 
+		 * businessAddress=08386^^^서울 구로구 구로동로 2^^^샘플 사업장 세부주소, 
+		 * membershipLevel=null, optionalAgreeFl=N, memberNo=0, memberEmail=test123@awe.com, 
+		 * memberPw=$2a$10$MV6JQb6h3R0rGHykL4cI8usUBVky5H7Tt1moi8TdhEzr.0h1DLI6S, 
+		 * memberName=김용유, memberTel=01078941234, enrollDate=null, memberDelFl=null, authority=0, 
+		 * businessWorktypeList=null, businessImgList=null)
+		 * */
+		
+		// MEMBER TABLE 에 삽입
 		int result = mapper.signUpMember(inputEmployer);
-				
 		if(result == 0) return 0;
 		
-		result = mapper.signUpEmplyoer(inputEmployer);
+		int memberNo = mapper.selectEmpNo(inputEmployer.getMemberEmail());
+		if(memberNo == 0) return 0;
 		
-		return 0;
+		inputEmployer.setMemberNo(memberNo);
+		
+		// EMPLOYER TABLE 에 삽입
+		result = mapper.signUpEmployer(inputEmployer);
+		
+		return result;
 	}
 }

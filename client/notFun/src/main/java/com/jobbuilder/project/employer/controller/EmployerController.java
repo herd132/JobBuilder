@@ -113,16 +113,18 @@ public class EmployerController {
 	
 	/** 고용주 회원가입(post)
 	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel,
-	 * 						businessRegistrationNumber, businessName, optionalAgreeFl)
+	 * 						businessRegistrationNumber, businessName)
 	 * @param businessAddress(우편번호, 도로명/지번주소, 상세주소)
+	 * @param optionalAgree(선택약관 동의여부)
 	 * @return
 	 */
 	@PostMapping("employerSignUp")
 	public String EmployerSignUp(Employer inputEmployer,
 								@RequestParam("businessAddress") String[] businessAddress,
+								@RequestParam(value="optionalAgree", required=false) String optionalAgree,
 								RedirectAttributes ra) {
 		
-		int result = service.signUp(inputEmployer, businessAddress);
+		int result = service.signUp(inputEmployer, businessAddress, optionalAgree);
 		
 		String path = null;
 		String message = null;

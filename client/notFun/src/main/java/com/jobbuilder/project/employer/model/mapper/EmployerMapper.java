@@ -14,23 +14,27 @@ public interface EmployerMapper {
 	/* ********** 회원가입 ********** */
 	int checkEmail(String memberEmail);		// 이메일 중복검사(비동기)
 	
-	/** 고용주 회원가입 (EMPLOYER TABLE)
-	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel, businessAddress
-	 * 						businessRegistrationNumber, businessName, optionalAgreeFl)
+
+	/** 고용주 회원가입 (MEMBER TABLE)
+	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel)
 	 * @param businessAddress(우편번호, 도로명/지번주소, 상세주소)
 	 * @return
 	 * @author JWJ
 	 */
 	int signUpMember(Employer inputEmployer);
 	
-	/** 고용주 회원가입 (MEMBER TABLE 먼저)
-	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel, businessAddress
+	int selectEmpNo(String memberEmail);		// 방금 insert 한 고용주의 memberNo 얻어오기 
+
+	/** 고용주 회원가입 (EMPLOYER TABLE)
+	 * @param inputEmployer(memberNo, businessAddress
 	 * 						businessRegistrationNumber, businessName, optionalAgreeFl)
 	 * @param businessAddress(우편번호, 도로명/지번주소, 상세주소)
 	 * @return
 	 * @author JWJ
 	 */
-	int signUpEmplyoer(Employer inputEmployer);
+	int signUpEmployer(Employer inputEmployer);
+
+
 
 
 

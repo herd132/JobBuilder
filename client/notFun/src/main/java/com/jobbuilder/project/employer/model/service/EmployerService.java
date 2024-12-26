@@ -22,12 +22,13 @@ public interface EmployerService {
 	
 	/** 회원가입
 	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel,
-	 * 						businessRegistrationNumber, businessName, optionalAgreeFl)
+	 * 						businessRegistrationNumber, businessName)
 	 * @param businessAddress(우편번호, 도로명/지번주소, 상세주소)
+	 * @param optionalAgree
 	 * @return
 	 * @author JWJ
 	 */
-	int signUp(Employer inputEmployer, String[] businessAddress);
+	int signUp(Employer inputEmployer, String[] businessAddress, String optionalAgree);
 
 
 

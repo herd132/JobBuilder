@@ -20,7 +20,7 @@
 
       <section class="form-contioner">
 
-        <form action="/employer/employerSignUp" method="post">
+        <form action="/employer/employerSignUp" method="post" id="signUpEmpForm">
           <fieldset>
             <legend>약관 동의 <span class="accent">*</span>&nbsp;</legend>
             <div class="agree-container">
@@ -50,7 +50,7 @@
   
               <div class="optionaal-agree">
                 <div>
-                  <input type="checkbox" id="optionalNotice" class="checkAll" name="optionalAgreeFl">
+                  <input type="checkbox" id="optionalNotice" class="checkAll" name="optionalAgree">
                   <label for="optionalNotice">(선택) 공고추천, 멤버십혜택 알림</label>
                   <button class="fa-solid fa-angle-right"></button>
                 </div>
@@ -58,6 +58,8 @@
 
             </div>
           </fieldset>
+          <!-- <input type="text" id="sampleNumber" value="1248100998">
+          <button type="button" id="statusBusiness">상태조회하기</button> -->
 
           <fieldset>
             <legend>사업자 확인 <span class="accent">*</span>&nbsp;</legend>
@@ -66,7 +68,10 @@
                 <div><span class="accent">*</span> 사업자 등록번호</div>
                 <div>
                   <input type="text" id="businessRegistrationNumber" name="businessRegistrationNumber"
-                  placeholder="ex) 123-45-67890">
+                  placeholder="ex) 1234567890" value="3123314797">
+                </div>
+                <div>
+                  <span id="brNoMessage">'-' 없이 입력해주세요</span>
                 </div>
               </div>
   
@@ -74,18 +79,22 @@
                 <div><span class="accent">*</span> 대표자명</div>
                 <div>
                   <input type="text" id="representativeName" name="memberName"
-                  placeholder="ex) 홍길동">
+                  placeholder="ex) 홍길동" value="김용유">
                 </div>
               </div>
   
               <div>
                 <div><span class="accent">*</span> 개업일자</div>
                 <div>
-                  <input type="date" name="openingDate" id="openingDate">
+                  <input type="text" name="openingDate" id="openingDate" value="20141210">
                 </div>
               </div>
   
-              <div><button type="button" name="confirmBusinessBtn" id="confirmBusinessBtn">사업자확인하기</button></div>
+              <div>
+                <button type="button" name="confirmBusinessBtn" id="confirmBusinessBtn">사업자확인하기</button>
+                <br>
+                <span id="businessMessage">진위여부를 확인해 주세요</span>
+              </div>
             </div>
           </fieldset>
 
@@ -152,7 +161,7 @@
             <div class="companyname-area">
               <div><span class="accent">*</span> 회사명/점포명</div>
               <div>
-                <input type="text" name="businessName">
+                <input type="text" name="businessName" id="businessName">
               </div>
             </div>
           </div>
