@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .catch((error) => console.error("Error fetching membership details:", error));
     };
 
+
+
     // 맴버십 UI 업데이트
     const updateMembershipUI = (membershipList) => {
         resetStatus();
@@ -115,28 +117,43 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     // 결제 페이지 렌더링 함수
-    const renderPaymentPage = (membershipType) => {
-        const backgroundElement = document.querySelector("#background");
-    
-        let membershipDetailsHtml = "";
-
-        // 모든 맴버십 정보를 순회하여 HTML로 생성
-        if(membershipType > 2) {
-           membershipDetailsHtml = globalMembershipList
-            .map(
-                (membership) => `
-                <p>맴버십: ${membership.membershipType}</p>
-                <p>남은 기간: ${membership.remainingDays || "정보 없음"}</p>
-                <p>${membership.membershipContent || "정보 없음"}</p><br>
-            `
-            )
-            .join("");
+    const generateMembershipDetailsHtml = (membershipList, count) => {
+        if (membershipList.length !== 0 || count !== null) {
+            return membershipList
+                .map(
+                    (membership) => `
+                    <div class="test3">
+                        <div class="test4">
+                            <p>맴버십: ${membership.membershipType}</p>
+                            <p>${membership.membershipContent || "정보 없음"}</p>
+                        </div>
+                        <p>남은 기간: ${membership.remainingDays || "정보 없음"}</p>
+                    </div>
+                    
+                   `
+                )
+                .join("");
         } else {
-            membershipDetailsHtml = `
-                <p>멤버십 정보가 없습니다.</p>
+            return `
+                <div class="afteremembership">
+                    ✔ 공고 일일 30건 등록<br>
+                    ✔ 이력서 열람 100건<br>
+                    ✔ 키워드 이력서 검색<br>
+                    ✔ 이력서 상세 정보 열람
+                </div>
             `;
         }
-        
+    };
+    
+    const renderPaymentPage = (membershipType) => {
+     
+        const backgroundElement = document.querySelector("#background");
+    
+        const count = globalMembershipList.find((num) => num === 1);
+        const membershipDetailsHtml = generateMembershipDetailsHtml(globalMembershipList, count);
+
+        console.log(globalMembershipList);
+
         backgroundElement.innerHTML = `
             <h1 class="payments-t-title">결제 서비스
                 <hr>
@@ -146,30 +163,27 @@ document.addEventListener("DOMContentLoaded", () => {
                 <hr>
             </h3>
             <div id="product-addpart" class="product-addpart"></div>
-            <button id="add-ingredient-btn"> + </button>
+            <button id="add-product-btn"> + </button>
     
             <h3 class="payments-t-subtitle">변경 되는 정보
                 <hr>
             </h3>
-                <div class="details-container">
-                    <div>
-                        <p>기존</p><br>
-                        <div class="beforemembership">
-                            ${membershipDetailsHtml}
-                        </div>
+            <div class="details-container">
+                <div>
+                    <p>기존</p><br>
+                    <div class="afteremembership">
+                        ${membershipDetailsHtml}
                     </div>
-        
-                →
-
-                    <div>
-                        <p>결제 후</p><br>
-                        <div class="beforemembership">
-                            ${membershipDetailsHtml}
-                        </div>
-                    </div>
-
                 </div>
-
+    →
+                <div>
+                    <p>변경</p><br>
+                    <div class="beforemembership" id="beforemembership">
+                    
+                    </div>
+                </div>
+            </div>
+    
             <h3 class="payments-t-subtitle">최종 결제 금액
                 <hr>
             </h3>
@@ -184,7 +198,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
         `;
     
-        // 초기 재료 추가
+        // 초기 상품 추가
         const productContainer = document.querySelector("#product-addpart");
         const productGroup = document.createElement("div");
         productGroup.classList.add("product-addpart");
@@ -192,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
         productGroup.innerHTML = `
             <div class="item">
                 <form>
-                    <select name="productTitle">
+                    <select id="productTitle-${count}" class="test4">
                         <option value="none">=== 선택 ===</option>
                         <option value="2" ${membershipType == 2 ? "selected" : ""}>골드</option>
                         <option value="3" ${membershipType == 3 ? "selected" : ""}>플레티넘</option>
@@ -219,55 +233,162 @@ document.addEventListener("DOMContentLoaded", () => {
         handleDynamicButtons();
     };
     
+    
 
     // 동적 버튼 연결 처리 함수
     const handleDynamicButtons = () => {
-        const productContainer = document.querySelector("#product-addpart");
+    const productContainer = document.querySelector("#product-addpart");
 
-        // 재료 추가 버튼 동작
-        document.querySelector("#add-ingredient-btn").addEventListener("click", () => {
-            const count = document.querySelectorAll(".product-addpart .item").length + 1;
+    // 재료 추가 버튼 동작
+    document.querySelector("#add-product-btn").addEventListener("click", () => {
+        const count = document.querySelectorAll(".product-addpart .item").length + 1;
 
-            const productGroup = document.createElement("div");
-            productGroup.classList.add("product-addpart");
-            productGroup.id = `div-${count}`;
-            productGroup.innerHTML = `
-                <div class="item">
-                    <form>
-                        <select id="productTitle">
-                            <option value="none" selected>=== 선택 ===</option>
-                            <option value="2">골드</option>
-                            <option value="3">플레티넘</option>
-                            <option value="4">아이템 : 급구</option>
-                            <option value="5">아이템 : Hot</option>
-                        </select>
-                    </form>
-                    <form>
-                        <select id="productDate">
-                            <option value="none">=== 선택 ===</option>
-                            ${Array.from(
-                              { length: 12 },
-                              (_, i) =>
-                                `<option value="${i + 1}" ${
-                                  i + 1 === 1 ? "selected" : ""
-                                }>${i + 1}개월</option>`
-                            ).join("")}
-                        </select>
-                    </form>
-                    <button data-id="${count}" class="delete-btn">-</button>
-                </div>`;
-            productContainer.appendChild(productGroup);
-        });
+        const productGroup = document.createElement("div");
+        productGroup.classList.add("product-addpart");
+        productGroup.id = `div-${count}`;
+        productGroup.innerHTML = `
+            <div class="item">
+                <form>
+                    <select id="productTitle-${count}" class="test4">
+                        <option value="none" selected>=== 선택 ===</option>
+                        <option value="2">골드</option>
+                        <option value="3">플레티넘</option>
+                        <option value="4">아이템 : 급구</option>
+                        <option value="5">아이템 : Hot</option>
+                    </select>
+                </form>
+                <form>
+                    <select id="productDate-${count}">
+                        <option value="none">=== 선택 ===</option>
+                        ${Array.from(
+                          { length: 12 },
+                          (_, i) =>
+                            `<option value="${i + 1}" ${
+                              i + 1 === 1 ? "selected" : ""
+                            }>${i + 1}개월</option>`
+                        ).join("")}
+                    </select>
+                </form>
+                <button data-id="${count}" class="delete-btn">-</button>
+            </div>`;
+        productContainer.appendChild(productGroup);
+    });
 
-        // 삭제 버튼 이벤트 처리
-        productContainer.addEventListener("click", (event) => {
-            if (event.target.classList.contains("delete-btn")) {
-                const id = event.target.getAttribute("data-id");
-                const targetDiv = document.getElementById(`div-${id}`);
-                if (targetDiv) {
-                    targetDiv.remove();
-                }
+    // 삭제 버튼 이벤트 처리
+    productContainer.addEventListener("click", (event) => {
+        if (event.target.classList.contains("delete-btn")) {
+            const id = event.target.getAttribute("data-id");
+            const targetDiv = document.getElementById(`div-${id}`);
+            if (targetDiv) {
+                targetDiv.remove();
             }
-        });
-    };
+        }
+    });
+
+
+
+
+    // 중복 선택 방지 이벤트 처리
+    productContainer.addEventListener("change", (event) => {
+        if (event.target.classList.contains("test4")) {
+            const selectedValue = event.target.value;
+
+            // 현재 select를 제외한 다른 select 값 확인
+            const otherSelects = document.querySelectorAll("select.test4");
+            let isDuplicate = false;
+
+            otherSelects.forEach((select) => {
+                if (select !== event.target && select.value === selectedValue && selectedValue !== "none") {
+                    isDuplicate = true;
+                }
+            });
+
+            if (isDuplicate) {
+                alert("중복 선택은 허용되지 않습니다.");
+                // 이전 값으로 되돌리기
+                event.target.value = "none";
+            }
+
+
+        
+                    // beforemembership 요소 선택
+                    const beforeMembershipContainer = document.querySelector(".beforemembership");
+        
+                    // 값이 변경될 때 기존 추가된 항목 제거
+                    beforeMembershipContainer.innerHTML = "";
+        
+                    // 선택된 값에 따라 div 추가
+                    let newDiv = document.createElement("div");
+                    newDiv.classList.add("beforemembership");
+        
+                    switch (selectedValue) {
+                        case "2":
+                            newDiv.innerHTML = `<div class="test3">
+                                                    <div class="test4">
+                                                        <p>맴버십: 2</p>
+                                                        <p>✔ 공고 일일 100건 등록<br>
+                                                           ✔ 이력서 열람 300건<br>
+                                                           ✔ 키워드 이력서 검색<br>
+                                                           ✔ 이력서 상세 정보 열람</p>
+                                                    </div>
+                                                    <p>남은 기간: </p>
+                                                </div>`;
+                            break;
+                        case "3":
+                            newDiv.innerHTML = `<div class="test3">
+                                                    <div class="test4">
+                                                        <p>맴버십: 3</p>
+                                                        <p>✔ 공고 일일 300건 등록<br>
+                                                           ✔ 이력서 열람 무제한<br>
+                                                           ✔ 키워드 이력서 검색<br>
+                                                           ✔ 이력서 상세 정보 열람<br>
+                                                           ✔ 공고 즉시 등록<br>
+                                                           ✔ 이력서 추천 기능</p>
+                                                    </div>
+                                                    <p>남은 기간: </p>
+                                                </div>`;
+                            break;
+                        case "4":
+                            newDiv.innerHTML = `<p>아이템 : 급구</p>
+                                                    급구 알바 페이지 상단 노출<br>
+                                                    공고 즉시 게시<br>
+                                                    7일 이상 구매 시 20% 할인</p>`;
+                            break;
+                        case "5":
+                            newDiv.innerHTML = `<p>아이템 : Hot</p>
+                                                <ul>
+                                                    <li>혜택 1: Hot 태그 추가</li>
+                                                    <li>혜택 2: 추천 리스트 포함</li>
+                                                </ul>`;
+                            break;
+                        default:
+                            newDiv.innerHTML = `<p>선택된 멤버십이 없습니다.</p>`;
+                            break;
+                    }
+        
+                    // beforemembership에 새 div 추가
+                    beforeMembershipContainer.appendChild(newDiv);
+
+
+        }
+    });
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    
 });
+
