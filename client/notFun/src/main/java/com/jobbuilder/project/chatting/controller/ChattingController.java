@@ -41,10 +41,10 @@ public class ChattingController {
 		return "chatting/counselMain";
 	}
 	
-	@GetMapping("selectMessage")
-	@ResponseBody
-	public List<Message> selectMessageList() {
-		return service.selectMessageList;
-	}
+//	@GetMapping("selectMessage")
+//	@ResponseBody
+//	public List<Message> selectMessageList() {
+//		return service.selectMessageList;
+//	}
 
 }
