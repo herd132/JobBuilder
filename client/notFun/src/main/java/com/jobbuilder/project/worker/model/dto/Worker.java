@@ -20,7 +20,7 @@ public class Worker {
 	private String memberName;		// 회원 이름
 	private int memberTel;			// 회원 전화번호 (비밀번호 찾기용)
 	private String enrollDate;		// 회원 탈퇴여부
-	private int authority;			// 권한
+	private int authorityNo;		// 권한
 	
 	// 알바생 기본정보 ( Join ) 
 	private int workerNo;			// 알바생번호

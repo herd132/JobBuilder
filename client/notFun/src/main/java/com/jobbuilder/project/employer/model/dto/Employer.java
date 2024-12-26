@@ -22,8 +22,12 @@ public class Employer {
 	private String businessRegistrationNumber;	// 사업자 등록번호
 	private String businessName;				// 사업장 이름
 	private String businessAddress;				// 사업장 주소
-	private String membershipLevel;				// 멤버십 등급
 	private String optionalAgreeFl;				// 선택약관 동의여부(기본값 Y)
+	private String businessNickname;			// 사업장 별칭(기본값 본점)
+	private String businessTel;					// 사업장 전화번호
+	
+	private String membershipLevel;				// 멤버십 등급
+	private String membershipName;				// 멤버십 이름
 	
 	/* ***** MEMBER TABLE ***** */
 	private int memberNo;						// 회원 번호(PK)
@@ -33,7 +37,7 @@ public class Employer {
 	private String memberTel;					// 회원 전화번호
 	private String enrollDate;					// 회원 가입일
 	private String memberDelFl;					// 회원 탈퇴여부(Y/N)
-	private int authority;						// 회원 권한(고용주 : 1)
+	private int authorityNo;					// 회원 권한(고용주 : 1)
 	
 	/* ***** BUSINESS_WORKTYPE TABLE (사업장 업직종 해소용) ***** */
 	private List<BusinessWorktype> businessWorktypeList;

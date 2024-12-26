@@ -103,12 +103,17 @@ allAgree.addEventListener("click", (e) => {
   checkAllList.forEach((checkAll) => {
     checkAll.checked = e.target.checked;
   });
+  
+  checkObj.essentialAge = e.target.checked;
+  checkObj.essentialService = e.target.checked;
+  checkObj.essentialPersonalInfo = e.target.checked;
+  
 });
 
 checkAllList.forEach((checkAll) => {
   checkAll.addEventListener("click", () => {
     const checked = document.querySelectorAll(".checkAll:checked");
-
+    
     if (checkAllList.length === checked.length) allAgree.checked = true;
     else allAgree.checked = false;
   });
@@ -120,19 +125,19 @@ const essentialService = document.querySelector("#essentialService");           
 const essentialPersonalInfo = document.querySelector("#essentialPersonalInfo"); // input(checkbox)
 
 // 나이 필수 약관
-essentialAge.addEventListener("click", () => {
+essentialAge.addEventListener("change", () => {
   if(essentialAge.checked) checkObj.essentialAge = true;
   else checkObj.essentialAge = false;
 })
 
 // 서비스 이용 필수 약관
-essentialService.addEventListener("click", () => {
+essentialService.addEventListener("change", () => {
   if(essentialService.checked) checkObj.essentialService = true;
   else checkObj.essentialService = false;
 })
 
 // 개인정보 수집 및 이용 필수 약관
-essentialPersonalInfo.addEventListener("click", () => {
+essentialPersonalInfo.addEventListener("change", () => {
   if(essentialPersonalInfo.checked) checkObj.essentialPersonalInfo = true;
   else checkObj.essentialPersonalInfo = false;
 })
