@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
     initializeMembershipStatus();
 
     // 클릭 이벤트 처리 
-    document.querySelectorAll('[name="test"]').forEach((element) => {
+    document.querySelectorAll('[name="paymentsClick"]').forEach((element) => {
         element.addEventListener("click", () => {
             const membershipType = element.getAttribute("data-membership-type");
             if (membershipType) {
@@ -118,17 +118,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const renderPaymentPage = (membershipType) => {
         const backgroundElement = document.querySelector("#background");
     
+        let membershipDetailsHtml = "";
+
         // 모든 맴버십 정보를 순회하여 HTML로 생성
-        const membershipDetailsHtml = globalMembershipList
+        if(membershipType > 2) {
+           membershipDetailsHtml = globalMembershipList
             .map(
                 (membership) => `
                 <p>맴버십: ${membership.membershipType}</p>
                 <p>남은 기간: ${membership.remainingDays || "정보 없음"}</p>
-                <p>${membership.membershipContent || "정보 없음"}</p>
+                <p>${membership.membershipContent || "정보 없음"}</p><br>
             `
             )
             .join("");
-    
+        } else {
+            membershipDetailsHtml = `
+                <p>멤버십 정보가 없습니다.</p>
+            `;
+        }
+        
         backgroundElement.innerHTML = `
             <h1 class="payments-t-title">결제 서비스
                 <hr>
@@ -137,17 +145,31 @@ document.addEventListener("DOMContentLoaded", () => {
             <h3 class="payments-t-subtitle">상품 정보
                 <hr>
             </h3>
-            <div id="findrecipe-addpart" class="findrecipe-addpart"></div>
+            <div id="product-addpart" class="product-addpart"></div>
             <button id="add-ingredient-btn"> + </button>
     
             <h3 class="payments-t-subtitle">변경 되는 정보
                 <hr>
             </h3>
-            <p>현재 회원 정보</p>
-            <div id="details-container">
-                ${membershipDetailsHtml}
-            </div>
-    
+                <div class="details-container">
+                    <div>
+                        <p>기존</p><br>
+                        <div class="beforemembership">
+                            ${membershipDetailsHtml}
+                        </div>
+                    </div>
+        
+                →
+
+                    <div>
+                        <p>결제 후</p><br>
+                        <div class="beforemembership">
+                            ${membershipDetailsHtml}
+                        </div>
+                    </div>
+
+                </div>
+
             <h3 class="payments-t-subtitle">최종 결제 금액
                 <hr>
             </h3>
@@ -163,21 +185,23 @@ document.addEventListener("DOMContentLoaded", () => {
         `;
     
         // 초기 재료 추가
-        const ingredientContainer = document.querySelector("#findrecipe-addpart");
-        const newIngredientGroup = document.createElement("div");
-        newIngredientGroup.classList.add("findrecipe-addpart");
-        newIngredientGroup.id = `div-${membershipType}`;
-        newIngredientGroup.innerHTML = `
+        const productContainer = document.querySelector("#product-addpart");
+        const productGroup = document.createElement("div");
+        productGroup.classList.add("product-addpart");
+        productGroup.id = `div-${membershipType}`;
+        productGroup.innerHTML = `
             <div class="item">
                 <form>
-                    <select name="membership">
+                    <select name="productTitle">
                         <option value="none">=== 선택 ===</option>
                         <option value="2" ${membershipType == 2 ? "selected" : ""}>골드</option>
                         <option value="3" ${membershipType == 3 ? "selected" : ""}>플레티넘</option>
+                        <option value="4" ${membershipType == 4 ? "selected" : ""}>아이템 : 급구</option>
+                        <option value="5" ${membershipType == 5 ? "selected" : ""}>아이템 : Hot</option>
                     </select>
                 </form>
                 <form>
-                    <select name="date">
+                    <select name="productDate">
                         <option value="none">=== 선택 ===</option>
                         ${Array.from(
                           { length: 12 },
@@ -190,7 +214,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 </form>
                 <button data-id="${membershipType}" class="delete-btn">-</button>
             </div>`;
-        ingredientContainer.appendChild(newIngredientGroup);
+        productContainer.appendChild(productGroup);
     
         handleDynamicButtons();
     };
@@ -198,26 +222,28 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 동적 버튼 연결 처리 함수
     const handleDynamicButtons = () => {
-        const ingredientContainer = document.querySelector("#findrecipe-addpart");
+        const productContainer = document.querySelector("#product-addpart");
 
         // 재료 추가 버튼 동작
         document.querySelector("#add-ingredient-btn").addEventListener("click", () => {
-            const count = document.querySelectorAll(".findrecipe-addpart .item").length + 1;
+            const count = document.querySelectorAll(".product-addpart .item").length + 1;
 
-            const newIngredientGroup = document.createElement("div");
-            newIngredientGroup.classList.add("findrecipe-addpart");
-            newIngredientGroup.id = `div-${count}`;
-            newIngredientGroup.innerHTML = `
+            const productGroup = document.createElement("div");
+            productGroup.classList.add("product-addpart");
+            productGroup.id = `div-${count}`;
+            productGroup.innerHTML = `
                 <div class="item">
                     <form>
-                        <select name="membership">
+                        <select id="productTitle">
                             <option value="none" selected>=== 선택 ===</option>
                             <option value="2">골드</option>
                             <option value="3">플레티넘</option>
+                            <option value="4">아이템 : 급구</option>
+                            <option value="5">아이템 : Hot</option>
                         </select>
                     </form>
                     <form>
-                        <select name="date">
+                        <select id="productDate">
                             <option value="none">=== 선택 ===</option>
                             ${Array.from(
                               { length: 12 },
@@ -230,11 +256,11 @@ document.addEventListener("DOMContentLoaded", () => {
                     </form>
                     <button data-id="${count}" class="delete-btn">-</button>
                 </div>`;
-            ingredientContainer.appendChild(newIngredientGroup);
+            productContainer.appendChild(productGroup);
         });
 
         // 삭제 버튼 이벤트 처리
-        ingredientContainer.addEventListener("click", (event) => {
+        productContainer.addEventListener("click", (event) => {
             if (event.target.classList.contains("delete-btn")) {
                 const id = event.target.getAttribute("data-id");
                 const targetDiv = document.getElementById(`div-${id}`);

@@ -85,3 +85,11 @@
   gap: 1rem;
   padding: 5rem;
 }
+
+.details-container{
+  padding-left: 6rem;
+  padding-right: 6rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
