@@ -15,38 +15,27 @@
 
     <div class="user-menu">
       <!-- 로그인 시 -->
-      <th:block th:if="${session.loginMember == null}">
+      <th:block th:if="${session.loginWorker == null}">
         <a href="#" class="nav-login">로그인</a>
         <a href="#" class="nav-singup">회원가입</a>
       </th:block>
 
-      <th:block th:if="${session.loginMember != null}">
-        <span class="nav-nickname">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+      <th:block th:if="${session.loginWorker != null}">
+        <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
       </th:block>
     </div>
-
   </nav>
 
-
-  <!-- 게시판 네비바 -->
-    <div class="mega-dropdown">
-        <div class="dropdown-section">
-            <a href="http://localhost/myPageWorkee/myPageWorkerInfo">회원정보</a>
-        </div>
-        <div class="dropdown-section">
-            
-            <a href="#">내글보기</a>
-        </div>
-        <div class="dropdown-section">
-            <a href="#">이력서 관리</a>
-        </div>
-        <div class="dropdown-section">
-            <a href="#">비밀번호변경</a>
-        </div>
-        <div class="dropdown-section">
-            <a href="#">회원탈퇴</a>
-        </div>
-    </div>
+  <div id="menu" class="menu">
+    <ul>
+      <li><a href="#">메뉴 1</a></li>
+      <li><a href="#">메뉴 2</a></li>
+      <li><a href="#">메뉴 3</a></li>
+      <li><a href="#">메뉴 4</a></li>
+      <li><a href="#">메뉴 5</a></li>
+    </ul>
+  </div>
+  
 
 
 </header>
