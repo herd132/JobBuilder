@@ -163,3 +163,14 @@ SELECT 	(SEQ_MEMBER_NO.NEXTVAL - 1 ) FROM DUAL;
 COMMIT;
 ROLLBACK;
 
+INSERT INTO "WORKER"
+		VALUES(SEQ_WORKER_NO.NEXTVAL,
+			#{workerId},
+			#{workerNickname},
+			#{workerAddress},
+			DEFAULT,
+			#{signUpPath},
+			#{fastLoginToken},
+			#{blindLoginId},
+			#{workerMbti},
+			#{memberNo}

@@ -28,11 +28,12 @@ public class Worker {
 	private String workerNickname;	// 알바생 닉네임 ( 게시글용 )
 	private String workerAddress;	// 알바생 주소
 	private String profileImg;		// 알바생 프로필 이미지 ( 마이페이지 )
+	
 	private int signUpPath;			// 알바생 가입 경로 ( 1 - 6 )
 	private String fastLoginToken;	// 빠른 로그인 ( 카카오톡 등 )
 	private String blindLoginId;	// 블라인드 게시판 이용할 경우
 	private String workerMbti;		// 알바생 MBTI
-	private String workerBrithDate; // 알바생 생년월일
+	private String workerBirthDate; // 알바생 생년월일
 	
 
 	

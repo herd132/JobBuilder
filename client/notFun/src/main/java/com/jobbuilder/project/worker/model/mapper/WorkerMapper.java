@@ -13,7 +13,7 @@ public interface WorkerMapper {
 
 	/* **************** 회원가입 ******************* */
 	
-	int checkEmail(String memberEmail); 		// 근로자 이메일 중복확인
+	int checkEmail(String memberEmail); 		// 근로자 이메일 중복확인	
 	int checkNickname(String workerNickname);	// 근로자 닉네임 중복확인
 	int checkId(String workerId);				// 근로자 아이디 중복확인
 	int signupMember(Worker inputMember);		// 근로자 회원가입	

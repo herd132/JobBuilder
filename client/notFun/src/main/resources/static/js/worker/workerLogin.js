@@ -35,8 +35,61 @@ const getCookie = (key) => {
 }
 
 const saveId = getCookie("saveId");
+if(saveId != undefined){
+  loginId.value = saveId;
+  document.querySelector("input[name='saveId']").checked = true;
+}
 
-// if(saveId != undefined){
-//   loginId.value = saveId;
-//   document.querySelector("input[name='saveId']").checked = true;
-// }
+// 카카오톡 로그인
+
+function loginWithKakao() {
+  Kakao.Auth.authorize({
+    redirectUri: 'https://developers.kakao.com/tool/demo/oauth',
+  });
+}
+
+// 아래는 데모를 위한 UI 코드입니다.
+displayToken()
+function displayToken() {
+  var token = getCookie('authorize-access-token');
+
+  if(token) {
+    Kakao.Auth.setAccessToken(token);
+    Kakao.Auth.getStatusInfo()
+      .then(function(res) {
+        if (res.status === 'connected') {
+          document.getElementById('token-result').innerText
+            = 'login success, token: ' + Kakao.Auth.getAccessToken();
+        }
+      })
+      .catch(function(err) {
+        Kakao.Auth.setAccessToken(null);
+      });
+  }
+}
+
+function loginWithKakao() {
+  Kakao.Auth.authorize({
+    redirectUri: 'https://developers.kakao.com/tool/demo/oauth',
+  });
+}
+
+// 아래는 데모를 위한 UI 코드입니다.
+displayToken()
+function displayToken() {
+  var token = getCookie('authorize-access-token');
+
+  if(token) {
+    Kakao.Auth.setAccessToken(token);
+    Kakao.Auth.getStatusInfo()
+      .then(function(res) {
+        if (res.status === 'connected') {
+          document.getElementById('token-result').innerText
+            = 'login success, token: ' + Kakao.Auth.getAccessToken();
+        }
+      })
+      .catch(function(err) {
+        Kakao.Auth.setAccessToken(null);
+      });
+  }
+}
