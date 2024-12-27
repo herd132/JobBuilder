@@ -322,21 +322,19 @@ const checkWorkerIdBtn = document.querySelector("#checkWorkerIdBtn");
 
 checkWorkerIdBtn.addEventListener("click", () => {
   // 이메일 인증 후 이메일이 변경된 경우
-  checkObj.authKey = false;
-  document.querySelector("#authKeyMessage").innerText = "";
-  clearInterval(authTimer);
+  checkObj.workerId = false;
 
-  // 작성된 이메일 값 얻어오기
+  // 작성된 아이디 값 얻어오기
   const inputId = workerId.value;
 
-  // 3) 입력된 이메일이 없을 경우
+  // 3) 입력된 아이디가 없을 경우
   if (inputId.trim().length === 0) {
     workerIdMessage.innerText = "아이디를 입력해주세요.";
 
     // 메시지에 색상을 추가하는 클래스 모두 제거
     workerIdMessage.classList.remove("confirm", "error");
 
-    // 이메일 유효성 검사 여부를 false 변경
+    // 아이디 유효성 검사 여부를 false 변경
     checkObj.workerId = false;
 
     // 잘못 입력한 띄어쓰기가 있을 경우 없앰
