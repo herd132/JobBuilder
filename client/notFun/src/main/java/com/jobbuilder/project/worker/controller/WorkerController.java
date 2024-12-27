@@ -1,6 +1,7 @@
 package com.jobbuilder.project.worker.controller;
 
 import org.springframework.stereotype.Controller;
+
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -17,6 +18,7 @@ import com.jobbuilder.project.worker.model.service.WorkerService;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
@@ -50,11 +52,30 @@ public class WorkerController {
 		return "worker/workerLogin";
 	}
 	
-	// 이메일 찾기
+	// 이메일로 아이디 찾기 페이지 이동
 	@GetMapping("workerFindEmail")
-	public String workerFindEmail() {
+	public String findEmailPage() {
 		return "worker/workerFindEmail";
 	}
+	
+	
+	// 이메일로 아이디 찾기
+	@PostMapping("workerFindEmail")
+	public String workerFindEmailResult(Worker inputWorker, RedirectAttributes ra) {
+		
+		Worker workerFindEmail = service.workerFindEmail(inputWorker);
+		String message = null;
+		
+		if(workerFindEmail == null) {
+            message = "회원정보가 존재하지 않습니다";
+            ra.addFlashAttribute("message", message); 
+        } else {
+            ra.addFlashAttribute("workerFindEmail", workerFindEmail); 
+        }
+		
+		return "redirect:/worker/workerFindEmail";
+	}	
+	
 	
 	// 비밀번호 찾기
 	@GetMapping("workerFindPw")
@@ -160,9 +181,11 @@ public class WorkerController {
 		@PostMapping("workerSignUp")
 		public String signup(@ModelAttribute/*생략가능*/ Worker inputWorker,							
 							@RequestParam("memberAddress") String[] memberAddress,
+							@RequestParam("signUpPath") int signUpPath,
 							RedirectAttributes ra) {
 			
 			// 회원가입 서비스 호출
+			log.debug("signUpPath" + signUpPath);
 			int result = service.signup(inputWorker, memberAddress);
 			
 			String path = null;
@@ -183,6 +206,68 @@ public class WorkerController {
 				
 			return "redirect:"+path;
 		}
+		
+		// 비밀번호 찾기
+		@PostMapping("workerFindPw")
+		public String findPw(Worker inputWorker, RedirectAttributes ra, HttpSession session) {
+			Worker findPw = service.workerFindPw(inputWorker);
+		    
+		    if (findPw == null) {
+		        ra.addFlashAttribute("message", "회원정보가 존재하지 않습니다");    
+		    } else {
+		        session.setAttribute("findPw", findPw); // HttpSession에 저장
+		    }											// 조회된 회원정보를 바뀐 페이지로 출력하기 때문에
+		    											// 세션에 실린값을 리다이렉트
+		    return "redirect:/worker/workerFindPw";                
+		}
+	    
+	    
+		/** 비밀번호 찾기 기능 - 2/2 조회된 회원의 비밀번호 변경
+		 * @param session
+		 * @param newPw
+		 * @param ra
+		 * @return
+		 * @author 
+		 */
+		@PostMapping("WorkerFindChangePw")
+		public String findChangePw(HttpSession session,
+		                           @RequestParam("newPw") String newPw,
+		                           RedirectAttributes ra) {
+			Worker findPw = (Worker)session.getAttribute("findPw");
+		    
+		    if (findPw == null) {
+		        ra.addFlashAttribute("message", "세션이 만료되었습니다. 다시 시도해주세요.");
+		        return "redirect:/member/findPw";
+		    }
+		    
+		    int result = service.findChangePw(findPw.getMemberNo(), newPw);
+		    String message = result > 0 ? "비밀번호가 변경되었습니다" : "비밀번호 변경 실패";
+		    
+		    ra.addFlashAttribute("message", message);
+		    session.removeAttribute("findPw");             // 사용 완료된 조회값을 세션에서 제거
+		    											   // 로그인화면으로 리다이렉트
+		    return "redirect:/worker/login";
+		}
+	    
+		/** 비밀번호 찾기 내 전화번호 중복검사(비동기)
+		 * @param memberTel
+		 * @return
+		 */
+		@ResponseBody
+		@GetMapping("checkMemberTel2")
+		public int checkMemberTel2(@RequestParam("memberTel") String memberTel, 
+		                           @RequestParam("memberName") String memberName) {
+			Worker inputWorker = new Worker();
+		    inputWorker.setMemberTel(memberTel);
+		    inputWorker.setMemberName(memberName);
+
+		    return service.checkMemberTel2(inputWorker);
+		}
+
+		
+		
+		
+		
 	
 		/**********************   중복검사  ***************/
 		/** 아이디 중복검사 ( 비동기 요청 ) 

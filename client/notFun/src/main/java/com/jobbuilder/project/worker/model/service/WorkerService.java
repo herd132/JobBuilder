@@ -17,4 +17,17 @@ public interface WorkerService {
 	// 회원가입
 	int signup(Worker workerMember, String[] memberAddress);
 
+	// 이메일로 아이디 찾기
+	Worker workerFindEmail(Worker inputWorker);
+
+	// 비밀번호 찾기시 전화번호 중복검사
+	int checkMemberTel2(Worker inputWorker);
+
+	// 비밀번호 변경
+	int findChangePw(int memberNo, String newPw);
+
+	// 비밀번호 찾기
+	Worker workerFindPw(Worker inputWorker);
+
+
 }
