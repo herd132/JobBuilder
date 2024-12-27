@@ -15,7 +15,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class Membership {
 	private int membershipNo;					// 맴버십 번호
-	private int membershipType;				// 맴버 등급
+	private int membershipType;					// 맴버 등급
 	private String membershipContent;			// 혜택 내용
 	private String membershipDelFl;				// 가입여부 확인
 	private String membershipStartDate;			// 가입일
@@ -26,7 +26,9 @@ public class Membership {
 	private int employerNo; 					// 고용주 번호 (연동자료)
 	private int memberNo;						// 회원 번호 (연동자료)
 	
-    private String remainingDays;
+    private String remainingDays;				// 잔여일 (셀렉자료)
+    
+    private String membershipName;				// 맴버 등급 이름변환 (해소테이블)
 
 
 }

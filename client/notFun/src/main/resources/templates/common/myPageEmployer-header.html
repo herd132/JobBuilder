@@ -1,7 +1,15 @@
 <header>
   <nav class="main-nav">
-    <div class="sub-nav">
-    <i class="fa-solid fa-bars"></i>
+    <div class="hamburger">  
+      <i class="fa-solid fa-bars"></i>
+      <div class="nav-mypagemenu">
+        <a href="http://localhost/myPageWorkee/myPageWorkerInfo">회원정보</a></li>
+        <a href="#">내글보기</a></li>
+        <a href="#">이력서관리</a></li>
+        <a href="#">비밀번호변경</a></li>
+        <a href="http://localhost/myPageWorkee/myPageWorkerSecession">회원탈퇴</a></li>
+      </div>
+    </div>
     </div>
     <div class="logo">
       <a href="/">
@@ -21,21 +29,15 @@
       </th:block>
 
       <th:block th:if="${session.loginWorker != null}">
-        <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
-      </th:block>
+          <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+          <div class="nav-mypage hidden">
+              <a href="/myPageWorkee/myPageWorkerInfo">회원 정보</a>
+              <a href="/myPageWorkee/resume">이력서 관리</a>
+              <a href="/worker/workerLogout">로그아웃</a>
+          </div>
+        </th:block>
     </div>
   </nav>
 
-  <div id="menu" class="menu">
-    <ul>
-      <li><a href="#">메뉴 1</a></li>
-      <li><a href="#">메뉴 2</a></li>
-      <li><a href="#">메뉴 3</a></li>
-      <li><a href="#">메뉴 4</a></li>
-      <li><a href="#">메뉴 5</a></li>
-    </ul>
-  </div>
-  
-
-
+  <script src="/js/myPageWorker/workerHeader.js"></script>
 </header>

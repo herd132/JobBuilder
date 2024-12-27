@@ -34,7 +34,7 @@ public class MyPageEmployerController {
 								Model model) {
 		log.debug("loginEmployer : " + loginEmployer);
 		
-		return "myPageEmployer/myPageEmployerInfo";
+		return "myPageEmployer/info";
 	}
 
 }

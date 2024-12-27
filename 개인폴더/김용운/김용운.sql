@@ -165,12 +165,12 @@ ROLLBACK;
 
 INSERT INTO "WORKER"
 		VALUES(SEQ_WORKER_NO.NEXTVAL,
-			#{workerId},
-			#{workerNickname},
-			#{workerAddress},
+			'용운',
+			'용운',
+			'용운',
 			DEFAULT,
-			#{signUpPath},
-			#{fastLoginToken},
-			#{blindLoginId},
-			#{workerMbti},
-			#{memberNo}
+			'용운',
+			'용운',
+			'용운',
+			'용운',
+		1;
