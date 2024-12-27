@@ -2,4 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.myPageEmployer.model.mapper.MyPageEmployerMapper">
 
+	<!-- 고용주 1명의 사업장 리스트 얻어오기 -->
+	<select id="selectBusinessList">
+	SELECT EMPLOYER_NO, BUSINESS_NICKNAME, BUSINESS_ADDRESS, BUSINESS_TEL
+	FROM "EMPLOYER"
+	WHERE MEMBER_NO = ${memberNo}
+	</select>
+	
+	<!-- 사업장 1개마다 업직종 얻어오기 -->
+	<select id="selectWorktype">
+	SELECT BUSINESS_WORKTYPE_NO, WORKTYPE_CATEGORY, EMPLOYER_NO 
+	FROM BUSINESS_WORKTYPE b
+	JOIN EMPLOYER_WORKTYPE ew ON (b.WORKTYPE_NO = ew.WORKTYPE_NO)
+	WHERE EMPLOYER_NO = ${employerNo}
+	</select>
+	
+	<!-- 사업장 1개마다 이미지 얻어오기 -->
+	<select id="selectImage">
+	SELECT *
+	FROM "BUSINESS_IMG"
+	WHERE EMPLOYER_NO = ${employerNo}
+	</select>
+
 </mapper>

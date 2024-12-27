@@ -37,7 +37,9 @@ public class Employer {
 	private String memberTel;					// 회원 전화번호
 	private String enrollDate;					// 회원 가입일
 	private String memberDelFl;					// 회원 탈퇴여부(Y/N)
+	
 	private int authorityNo;					// 회원 권한(고용주 : 1)
+	private String authorityName;				// 회원 종류
 	
 	/* ***** BUSINESS_WORKTYPE TABLE (사업장 업직종 해소용) ***** */
 	private List<BusinessWorktype> businessWorktypeList;

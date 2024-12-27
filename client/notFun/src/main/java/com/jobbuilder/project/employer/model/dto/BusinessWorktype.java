@@ -14,8 +14,8 @@ import lombok.ToString;
 public class BusinessWorktype {
 
 	/* ***** BUSINESS_WORKTYPE ***** */
-	private int businesWorktypeNo;
-	private int worktypeNo;
+	private int businessWorktypeNo;
+	private String worktypeNo;
 	
 	/* ***** EMPLOYER_WORKTYPE ***** */
 	private String worktypeCategory; 

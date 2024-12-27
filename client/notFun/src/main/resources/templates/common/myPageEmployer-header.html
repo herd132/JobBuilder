@@ -1,14 +1,18 @@
 <header>
   <nav class="main-nav">
-    <div class="hamburger">  
+    <div class="hamburger">
       <i class="fa-solid fa-bars"></i>
-      <div class="nav-mypagemenu">
-        <a href="http://localhost/myPageWorkee/myPageWorkerInfo">회원정보</a></li>
-        <a href="#">내글보기</a></li>
-        <a href="#">이력서관리</a></li>
-        <a href="#">비밀번호변경</a></li>
-        <a href="http://localhost/myPageWorkee/myPageWorkerSecession">회원탈퇴</a></li>
-      </div>
+      <ul class="nav-mypagemenu">
+        <li href="/myPageEmp/info">내 정보 보기</li>
+        <li href="/myPageEmp/updateInfo">기본 정보 수정</li>
+        <li href="/myPageEmp/changePw">비밀번호 변경</li>
+        <li href="/myPageEmp/recruitmentList">내가 쓴 공고</li>
+        <li href="/myPageEmp/myWrite">내가 쓴 글</li>
+        <li href="/myPageEmp/addBusiness">사업장 추가</li>
+        <li href="/myPageEmp/promoteBusiness">사업장 홍보</li>
+        <li href="/myPageEmp/viewRecruitments">제출된 이력서 보기</li>
+        <li href="/myPageEmp/secession">회원탈퇴</li>
+      </ul>
     </div>
     </div>
     <div class="logo">
@@ -16,28 +20,22 @@
         <img src="/images/logo.png" alt="로고" class="logo-img">
     </div>
     <div class="search-bar">
-      <a class="myPageBtn" href="http://localhost/myPageWorkee/myPageWorkerInfo">
-      <h3>마이페이지</h3>
-      </a>
+      <a class="myPageBtn" href="/myPageEmp/info"><span>마이페이지</span></a>
     </div>
 
     <div class="user-menu">
-      <!-- 로그인 시 -->
-      <th:block th:if="${session.loginWorker == null}">
-        <a href="#" class="nav-login">로그인</a>
-        <a href="#" class="nav-singup">회원가입</a>
+
+      <th:block th:if="${session.loginEmployer != null}">
+
+        <ul class="nav-mypage">
+          <li><a href="/myPageEmp/info">회원 정보</a></li>
+          <li><a href="/myPageEmp/recruitmentList">내가 쓴 공고</a></li>
+          <li><a href="/employer/employerLogout">로그아웃</a></li>
+        </ul>
       </th:block>
 
-      <th:block th:if="${session.loginWorker != null}">
-          <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
-          <div class="nav-mypage hidden">
-              <a href="/myPageWorkee/myPageWorkerInfo">회원 정보</a>
-              <a href="/myPageWorkee/resume">이력서 관리</a>
-              <a href="/worker/workerLogout">로그아웃</a>
-          </div>
-        </th:block>
     </div>
   </nav>
 
-  <script src="/js/myPageWorker/workerHeader.js"></script>
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
 </header>
