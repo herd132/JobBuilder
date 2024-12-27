@@ -33,11 +33,22 @@
   color: black;
 }
 
+.cancel-button, .submit-button {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
 /* 기존 스타일 수정 없이, 나머지 버튼과 폼 그룹은 그대로 유지 */
 .cancel-button {
-  background-color: white;
-  border: 1px solid #ddd;
-  color: #333;
+  
+    background-color: white;
+    color: #333;
+    border: 1px solid #ccc;
+  
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
@@ -102,15 +113,6 @@ input::placeholder {
   margin-top: 30px;
 }
 
-.cancel-button, .submit-button {
-  flex: 1;
-  padding: 12px;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
-}
-
 .full-width{
   margin-bottom: 15px;
 }
@@ -123,6 +125,21 @@ input::placeholder {
   cursor: pointer;
 }
 
+.title {
+  font-size: 30px;
+}
+
+.header {
+  width: 1000px;
+  margin-top: 45px;
+  margin-left: 200px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  text-align: justify;
+  align-items: center;
+}
+
 /* 이미지 버튼 영역 */
 .profile-btn-area{
   width: 230px;
@@ -132,7 +149,10 @@ input::placeholder {
   justify-content: center;
   align-items: center;
 }
-
+.profile-img{
+width: 200px;
+height: 100px;
+}
 .profile-image-area{
   margin-left: 100px;
   position: relative;

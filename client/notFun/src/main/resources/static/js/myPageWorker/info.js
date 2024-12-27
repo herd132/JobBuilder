@@ -16,10 +16,11 @@ closeModal.addEventListener("click", () => {
 checkPwbtn.addEventListener("click", () => {
 
   const obj = currentPassword.value;
+
   fetch("/myPageWorkee/checkPw", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(obj)
+    body: obj
 })
 .then(resp => resp.text())
 .then(result => {
@@ -31,7 +32,7 @@ checkPwbtn.addEventListener("click", () => {
     }
 
     // 비밀번호 일치할 때
-    window.location.href = 'http://localhost/myPageWorkee/update';
+    window.location.href = 'http://localhost/myPageWorkee/updateInfo';
 
 });
 

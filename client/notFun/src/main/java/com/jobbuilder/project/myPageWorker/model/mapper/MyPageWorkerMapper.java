@@ -2,6 +2,8 @@ package com.jobbuilder.project.myPageWorker.model.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.jobbuilder.project.worker.model.dto.Worker;
+
 @Mapper
 public interface MyPageWorkerMapper {
 
@@ -18,6 +20,7 @@ public interface MyPageWorkerMapper {
 	int checkMemberTel(String memberTel);
 
 	String checkPwSet(int memberNo);
+
 
 	
 

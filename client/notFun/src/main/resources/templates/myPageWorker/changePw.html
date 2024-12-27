@@ -1,39 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>비밀번호 변경</title>
 
-  <!-- 서버 연결 시 주소 변경 할 것!!!!! -->
-  <link rel="stylesheet" href="/notFun/src/main/resources/static/css/myPageWorker/changePw.css">
+  <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+  <th:block th:replace="~{common/common}"></th:block>
+
+  <link rel="stylesheet" href="/css/myPageWorker/changePw.css">
 </head>
+
 <body>
-  <h2>비밀번호 변경</h2>
+  <!-- 로고 및 검색바 로그인 -->
+  <th:block th:replace="~{common/myPageWorker-header}"></th:block>
 
-<form>
-    <div class="form-group">
-        <label>현재 비밀번호</label>
-        <input type="password" class="form-control">
+  <div>
+
+    <div class="member-info-container">
+      <div class="header">
+        <h2 class="title">비밀번호 변경</h2>
+      </div>
+
+      <div class="info-container-background">
+        <div class="info-container">
+
+          <form action="/myPageWorkee/changePw" method="POST" class="formSection">
+            <div class="form-group1" id="form-group1">
+              <label>현재 비밀번호</label>
+              <input type="password" class="form-control" id="workerCurrentPw" required>
+              <span class="change-message" id="checkCurrentPw"></span>
+            </div>
+
+            <div class="form-group2">
+              <label>신규 비밀번호</label>
+              <input type="password" class="form-control" id="memberPw" maxlength='20' placeholder="6~20 영문/숫자/특수문자" required>
+            </div>
+
+            <div class="form-group3">
+              <label>신규 비밀번호 확인</label>
+              <input type="password" class="form-control" id="memberPwConfirm" required>
+              <span class="confirm-message" id="pwMessage"></span>
+            </div>
+
+            <div class="button-group">
+              <button type="submit" id="changePwForm" class="btn btn-primary">변경</button>
+              <button type="button" class="btn btn-secondary"
+                    onclick="location.href='http://localhost/myPageWorkee/myPageWorkerInfo'";>취소</button>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+
     </div>
 
-    <div class="form-group">
-        <label>신규 비밀번호</label>
-        <input type="password" class="form-control" placeholder="8~16 영문/숫자/특수문자">
-    </div>
+    <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+    <th:block th:replace="~{common/main-footer}"></th:block>
 
-    <div class="form-group">
-        <label>신규 비밀번호 확인</label>
-        <input type="password" class="form-control">
-    </div>
-
-    <div class="button-group">
-        <button type="submit" class="btn btn-primary">변경</button>
-        <button type="button" class="btn btn-secondary">취소</button>
-    </div>
-</form>
-
-
-
+    <script src="/js/myPageWorker/changePw.js"></script>
 </body>
+
 </html>

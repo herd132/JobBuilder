@@ -17,13 +17,15 @@
     <!-- myPageWorker 헤더 -->
     <th:block th:replace="~{common/myPageWorker-header}"></th:block>
 
+    <div class="header">
+    <h2 class="title">내 정보 수정</h2>
+    </div>
     <main class="container">
-        <h1 class="page-title">내 정보 수정</h1>
-
         <form action="/myPageWorkee/updateInfo" class="update-form" method="post">
             <div class="profile-image-area">
 
-                <img src="/images/avatar.png" alt="로고" class="logo-img" id="profileImg">
+                <img th:with="user=#{avatar.default.image}" th:src="${session.loginWorker.profileImg ?: user}"
+                    id="profileImg" class="profile-img">
                 <!-- 기본 이미지 경로 적을 것 -->
 
                 <span id="deleteImage">x</span>
@@ -92,9 +94,9 @@
             </div>
 
             <div class="button-group">
+                <button type="submit" class="submit-button">등록</button>
                 <button type="button" class="cancel-button"
                     onclick="location.href='http://localhost/myPageWorkee/myPageWorkerInfo'";>취소</button>
-                <button type="submit" class="submit-button">등록</button>
             </div>
         </form>
 
