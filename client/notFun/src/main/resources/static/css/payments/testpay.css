@@ -165,3 +165,19 @@
   padding: 0rem;
 
 }
+
+
+.payments-expense-bgr{
+  display: flex;
+  justify-content: space-between;
+}
+
+.payments-expense-center{
+  display: flex;
+  justify-content: space-between;
+  gap: 4rem;
+}
+
+.payments-expense-result{
+  align-items: center;
+}
