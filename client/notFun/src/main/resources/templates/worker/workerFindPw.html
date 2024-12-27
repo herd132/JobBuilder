@@ -10,22 +10,28 @@
 <body>
   <main>
     <h1> 비밀번호 찾기 </h1>
-    <form action="/worker/workerFindPw" method="post">
-      <div>이름 : <input type="text" name="memberName"> </div>
-      <div>아이디 : <input type="text" name="workerId"></div>
-      <div>이메일 인증하기</div>
-      <div>
-        <input type="text" name="memberEmail" placeholder="가입시 입력했던 비밀번호를 통해 인증해주세요">
-        <button type="button" class="authKeyBtn"> 인증번호 발송하기</button>
-      </div>
-      <div>
-        <input type="text" name="authKey" placeholder="수신받은 인증번호를 입력해 주세요">
-        <button type="button" class="checkauthKey"> 인증번호 확인하기</button>
-      </div>
-      <div>연락처 : <input type="tel" name="memberTel"> </div>
+    <th:block th:if="{}">
+      <form action="/worker/workerFindPw" method="post">
+        <div>이름 : <input type="text" name="memberName"> </div>
+        <div>아이디 : <input type="text" name="workerId"></div>
+        <div>이메일 인증하기</div>
+        <div>
+          <input type="text" name="memberEmail" placeholder="가입시 입력했던 비밀번호를 통해 인증해주세요">
+          <button type="button" class="authKeyBtn"> 인증번호 발송하기</button>
+        </div>
+        <div>
+          <input type="text" name="authKey" placeholder="수신받은 인증번호를 입력해 주세요">
+          <button type="button" class="checkauthKey"> 인증번호 확인하기</button>
+        </div>
+        <div>연락처 : <input type="tel" name="memberTel"> </div>
+  
+        <button type="submit"> 비밀번호 찾기</button>
+      </form>
+      
+    </th:block>
+    <th:block th:if="{}">
 
-      <button type="submit"> 비밀번호 찾기</button>
-    </form>
+    </th:block>
   </main>
 
 

@@ -57,26 +57,7 @@ public class WorkerController {
 	public String findEmailPage() {
 		return "worker/workerFindEmail";
 	}
-	
-	
-	// 이메일로 아이디 찾기
-	@PostMapping("workerFindEmail")
-	public String workerFindEmailResult(Worker inputWorker, RedirectAttributes ra) {
 		
-		Worker workerFindEmail = service.workerFindEmail(inputWorker);
-		String message = null;
-		
-		if(workerFindEmail == null) {
-            message = "회원정보가 존재하지 않습니다";
-            ra.addFlashAttribute("message", message); 
-        } else {
-            ra.addFlashAttribute("workerFindEmail", workerFindEmail); 
-        }
-		
-		return "redirect:/worker/workerFindEmail";
-	}	
-	
-	
 	// 비밀번호 찾기
 	@GetMapping("workerFindPw")
 	public String workerFindPw() {
@@ -264,7 +245,22 @@ public class WorkerController {
 		    return service.checkMemberTel2(inputWorker);
 		}
 
-		
+		// 이메일로 아이디 찾기
+		@PostMapping("workerFindEmail")
+		public String workerFindEmailResult(Worker inputWorker, RedirectAttributes ra) {
+			
+			Worker workerFindEmail = service.workerFindEmail(inputWorker);
+			String message = null;
+			
+			if(workerFindEmail == null) {
+	            message = "회원정보가 존재하지 않습니다";
+	            ra.addFlashAttribute("message", message); 
+	        } else {
+	            ra.addFlashAttribute("workerFindEmail", workerFindEmail); 
+	        }
+			
+			return "redirect:/worker/workerFindEmail";
+		}	
 		
 		
 		
