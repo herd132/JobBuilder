@@ -30,8 +30,8 @@ checkPwbtn.addEventListener("click", () => {
         return;
     }
 
-    // 인증번호 일치할 때
-    window.location.href="/"
+    // 비밀번호 일치할 때
+    window.location.href = 'http://localhost/myPageWorkee/update';
 
 });
 
