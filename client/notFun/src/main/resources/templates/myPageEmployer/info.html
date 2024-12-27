@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>고용주 My Page</title>
+
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpInfo.css">
+</head>
+
+<body>
+  <!-- 로고 및 검색바 로그인 -->
+	<th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+
+  <section class="mypageEmpInfo-gray">
+    <main class="myPageEmpInfo-white">
+      <div>
+        <h3>회원정보</h3>
+      </div>
+
+      <div>
+        
+      </div>
+
+    </main>
+  </section>
+
+
+
+	<!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+	<th:block th:replace="~{common/main-footer}"></th:block>
+
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
+  <script src="/js/myPageEmployer/myPageEmpInfo.js"></script>
+</body>
+
+</html>
