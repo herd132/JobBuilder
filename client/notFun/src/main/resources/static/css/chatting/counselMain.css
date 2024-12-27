@@ -111,7 +111,12 @@ body {
   border-radius: 0 15px 0 0;
 }
 
-.chat-header
+.end-btn {
+  border: none;
+  background-color: #543A14;
+  color: white;
+  border-radius: 10px;
+}
 
 .messages {
   height: 40;
