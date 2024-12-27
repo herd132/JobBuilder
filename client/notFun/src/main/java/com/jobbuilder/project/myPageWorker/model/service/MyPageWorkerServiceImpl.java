@@ -40,11 +40,8 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService{
 	 */
 	@Override
 	public int checkPw(String currentPassword, Worker loginWorker) {
-		loginWorker.setMemberPw(mapper.checkPwSet(loginWorker.getMemberNo()));
-		log.debug("currentPassword : " + currentPassword);
-		log.debug(loginWorker.getMemberPw());
-		if(!bcrypt.matches(currentPassword, loginWorker.getMemberPw())) {
-			// 입력받은 비밀번호(평문)와 암호화 된 비밀번호가 일치하지 않는다면
+		String originPw = mapper.checkPwSet(loginWorker.getMemberNo());
+		if(!bcrypt.matches(currentPassword, originPw)) {
 			return 0;
 		}
 		

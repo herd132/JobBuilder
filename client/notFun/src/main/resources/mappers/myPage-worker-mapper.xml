@@ -12,7 +12,6 @@
 	 </select>
 	 
 	 <!-- 연락처 중복검사 -->
-	 
 	 <select id="checkMemberTel" resultType="_int">
 	 	SELECT COUNT(*)
 		FROM "MEMBER"
@@ -20,9 +19,12 @@
 		AND MEMBER_TEL = #{memberTel}
 	 </select>
 	 
-	<select id="checkPwSet">
-		SELECT MEMBER_PW
-		FROM "MEMBER"
-		WHERE MEMBER_NO = #{memberNo};
+	 <!-- 비밀번호 가져오기 -->
+	<select id="checkPwSet" resultType="String">
+    SELECT MEMBER_PW
+    FROM "MEMBER"
+    WHERE MEMBER_NO = #{memberNo}
 	</select>
+	
+	
 </mapper>
