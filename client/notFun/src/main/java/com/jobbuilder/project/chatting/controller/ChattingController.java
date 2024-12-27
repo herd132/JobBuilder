@@ -43,6 +43,7 @@ public class ChattingController {
 		return "chatting/counselMain";
 	}
 	
+
 	@GetMapping("selectMessage")
 	@ResponseBody
 	public List<Message> selectMessageList(@RequestParam Map<String, Integer> paramMap) {

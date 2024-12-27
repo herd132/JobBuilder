@@ -43,6 +43,11 @@ public class MyPageWorkerController {
 		return "myPageWorker/secession";
 	}
 	
+	@GetMapping("myPageWorkerChangePw")
+	public String myPageWorkerChangePw() {
+		return "myPageWorker/changePw";
+	}
+	
 	@ResponseBody
 	@GetMapping("checkNickname")
 	public int checkNickname(@RequestParam("workerNickname") String workerNickname ) {
