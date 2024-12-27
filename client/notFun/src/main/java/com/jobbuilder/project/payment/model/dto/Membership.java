@@ -26,9 +26,10 @@ public class Membership {
 	private int employerNo; 					// 고용주 번호 (연동자료)
 	private int memberNo;						// 회원 번호 (연동자료)
 	
-    private String remainingDays;				// 잔여일 (셀렉자료)
+    private int remainingDays;					// 잔여일 (셀렉자료)
     
     private String membershipName;				// 맴버 등급 이름변환 (해소테이블)
+    private String membershipExpense;			// 맴버 등급 비용 (해소테이블)
 
 
 }

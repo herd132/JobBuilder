@@ -46,6 +46,15 @@ public class PaymentController {
         response.put("membershipDetails", membershipDetails);
         return response;
     }
+    
+    @PostMapping("/default")
+    @ResponseBody
+    public Map<String, Object> getMembershipDefault(@SessionAttribute("loginEmployer") Employer loginEmployer) {
+        Map<String, Object> response = new HashMap<>();
+        List<Membership> membershipDetails = service.getMembershipDetails(loginEmployer.getEmployerNo());
+        response.put("membershipDetails", membershipDetails);
+        return response;
+    }
 
 
 
