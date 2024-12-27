@@ -12,11 +12,11 @@
 			MEMBER_NAME, 
 			MEMBER_TEL, 
 			ENROLL_DATE, 
-			AUTHORITY  
+			AUTHORITY_NO
 		
 		FROM "MEMBER"
 		WHERE MEMBER_EMAIL = #{memberEmail}
-		AND AUTHORITY = 4
+		AND AUTHORITY_NO = 4
 	</select>
 	
 </mapper>

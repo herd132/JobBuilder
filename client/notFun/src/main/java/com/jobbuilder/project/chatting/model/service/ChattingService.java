@@ -1,8 +1,10 @@
 package com.jobbuilder.project.chatting.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jobbuilder.project.chatting.model.dto.ChattingRoom;
+import com.jobbuilder.project.chatting.model.dto.Message;
 
 public interface ChattingService {
 
@@ -12,5 +14,11 @@ public interface ChattingService {
 	 * @return
 	 */
 	List<ChattingRoom> selectRoomList(int memberNo);
+
+	/** 채팅 상세 내용 가져오기
+	 * @param paramMap
+	 * @return
+	 */
+	List<Message> selectMessageList(Map<String, Integer> paramMap);
 
 }
