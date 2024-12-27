@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>상담 채팅 시스템</title>
     <link rel="stylesheet" href="/css/chatting/counselMain.css">
+    <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 <body>
     <div class="header">
@@ -56,11 +57,11 @@
         
     </div>
 
-    <script src="/js/chatting/counselMain.js"></script>
     <script th:inline="javascript">
 		// 로그인한 회원 번호
 		const loginMemberNo = /*[[${session.loginCounselor?.memberNo}]]*/ "로그인 회원 번호";
 
 	</script>
+    <script src="/js/chatting/counselMain.js"></script>
 </body>
 </html>
