@@ -41,10 +41,12 @@
       <section class="business-info-container">
         <h3>사업장 정보</h3>
         <th:block th:each="business, iterStat: ${businessList}" th:object="${business}">
-          <div th:class="|business-box${iterStat.count}|">
+          <div th:class="|business-box${iterStat.count}|" style="border: 1px solid black;">
             <div>
-              <img th:unless="*{businessImgList}" src="#" alt="이미지필요">
-              <span th:if="*{businessImgList}">등록된 사업장 이미지가 없습니다.</span>
+              <th:block th:if="${#lists.size(business.businessImgList) != 0}">
+                <span>이미지 있음!</span>
+              </th:block>
+              <span th:if="${#lists.size(business.businessImgList) == 0}"> 이미지리스트 크기 = 0</span>
             </div>
             <div>
               <span>사업장위치 : </span>
