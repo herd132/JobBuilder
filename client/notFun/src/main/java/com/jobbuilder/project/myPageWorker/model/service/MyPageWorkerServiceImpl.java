@@ -41,7 +41,6 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService{
 	@Override
 	public int checkPw(String currentPassword, Worker loginWorker) {
 		loginWorker.setMemberPw(mapper.checkPwSet(loginWorker.getMemberNo()));
-		log.debug(loginWorker.getMemberNo());
 		log.debug("currentPassword : " + currentPassword);
 		log.debug(loginWorker.getMemberPw());
 		if(!bcrypt.matches(currentPassword, loginWorker.getMemberPw())) {
