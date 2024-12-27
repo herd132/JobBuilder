@@ -2,15 +2,21 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.employer.model.mapper.EmployerMapper">
 
-<!-- 고용주 로그인 -->
+<!-- 고용주 로그인 (BUSINESS_NICKNAME = '본점' 1개만 얻어오기) -->
 	<select id="login">
-	SELECT e.MEMBER_NO, EMPLOYER_NO, BUSINESS_REGISTRATION_NUMBER, BUSINESS_NAME, BUSINESS_ADDRESS,
-		MEMBERSHIP_LEVEL, MEMBER_EMAIL, MEMBER_PW, MEMBER_NAME, MEMBER_TEL,
+	SELECT e.MEMBER_NO, EMPLOYER_NO, 
+		BUSINESS_REGISTRATION_NUMBER, BUSINESS_NAME, BUSINESS_ADDRESS, BUSINESS_NICKNAME,
+		MEMBERSHIP_LEVEL, MEMBERSHIP_NAME,
+		MEMBER_EMAIL, MEMBER_PW, MEMBER_NAME, MEMBER_TEL,
 		TO_CHAR(ENROLL_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') ENROLL_DATE,
-		AUTHORITY_NO, BUSINESS_NICKNAME
+		m.AUTHORITY_NO, AUTHORITY_NAME
 	FROM "EMPLOYER" e
 	JOIN "MEMBER" m ON(e.MEMBER_NO = m.MEMBER_NO)
+	JOIN MEMBERSHIP_LEVEL ml ON(e.MEMBERSHIP_LEVEL = ml.MEMBERSHIP_NO)
+	JOIN AUTHORITY a ON(m.AUTHORITY_NO = a.AUTHORITY_NO)
 	WHERE MEMBER_EMAIL = #{memberEmail}
+		AND m.AUTHORITY_NO = 1
+		AND BUSINESS_NICKNAME = '본점'
 		AND MEMBER_DEL_FL = 'N'
 	</select>
 	
@@ -42,6 +48,6 @@
 	<insert id="signUpEmployer">
 	INSERT INTO "EMPLOYER"
 	VALUES(SEQ_EMPLOYER_NO.NEXTVAL, #{businessRegistrationNumber}, #{businessName}, #{businessAddress},
-		DEFAULT, ${memberNo}, #{optionalAgreeFl})
+		DEFAULT, ${memberNo}, #{optionalAgreeFl}, DEFAULT, NULL)
 	</insert>
 </mapper>

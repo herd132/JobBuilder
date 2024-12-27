@@ -1,5 +1,7 @@
 package com.jobbuilder.project.myPageEmployer.controller;
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,8 +27,8 @@ public class MyPageEmployerController {
 	
 	/* ********** 메서드 ********** */
 	
-	/** 고용주 마이페이지 이동(get)
-	 * @return
+	/** 마이페이지 이동(get)
+	 * @return myPageEmployer/info.html
 	 * @author JWJ
 	 */
 	@GetMapping("info")
@@ -34,7 +36,93 @@ public class MyPageEmployerController {
 								Model model) {
 		log.debug("loginEmployer : " + loginEmployer);
 		
+		/* 로직 순서
+		 * 1. loginEmployer에서 정보 꺼내오기(memberNo, membershipName, memberTel, businessName)
+		 * 2. memberNo 가 동일한 고용주의 EMPLOYER(사업장당 1개) list 얻어오기(최소1개,본점)
+		 * 3. list 마다 데이터 얻기(businessNickname, businessTel, busnessAddress, 
+		 * 		businessImgList, businessWorktypeList)
+		 * */
+		
+		// 고용주 1명의 사업장 리스트 얻어오기
+		List<Employer> businessList = service.selectBusinessList(loginEmployer.getMemberNo());
+		model.addAttribute("businessList", businessList);
+		
 		return "myPageEmployer/info";
+	}
+	
+	/** 기본정보 수정 페이지 이동(get)
+	 * @param loginEmployer
+	 * @param model (주소 전달용)
+	 * @return myPageEmployer/updateInfo.html
+	 * @author JWJ
+	 */
+	@GetMapping("updateInfo")
+	public String MyPageUpdateInfo(@SessionAttribute("loginEmployer") Employer loginEmployer,
+								Model model) {
+		return "myPageEmployer/updateInfo";
+	}
+	
+	/** 비밀번호 변경 페이지 이동(get)
+	 * @return myPageEmployer/changePw.html
+	 * @author JWJ
+	 */
+	@GetMapping("changePw")
+	public String MyPageEmpChangePw() {
+		return "myPageEmployer/changePw";
+	}
+	
+	/** 내가 쓴 공고 페이지 이동(get)
+	 * @return myPageEmployer/recruitmentList.html
+	 * @author JWJ
+	 */
+	@GetMapping("recruitmentList")
+	public String MyPageEmpRecruitmentList() {
+		return "myPageEmployer/recruitmentList";
+	}
+	
+	/** 내가 쓴 글 페이지 이동(get)
+	 * @return myPageEmployer/myWrite.html
+	 * @author JWJ
+	 */
+	@GetMapping("myWrite")
+	public String MyPageEmpMyWrite() {
+		return "myPageEmployer/myWrite";
+	}
+	
+	/** 사업장 추가 페이지 이동(get)
+	 * @return myPageEmployer/addBusiness.html
+	 * @author JWJ
+	 */
+	@GetMapping("addBusiness")
+	public String MyPageEmpAddBusiness() {
+		return "myPageEmployer/addBusiness";
+	}
+	
+	/** 사업장 홍보 페이지 이동(get)
+	 * @return myPageEmployer/promoteBusiness.html
+	 * @author JWJ
+	 */
+	@GetMapping("promoteBusiness")
+	public String MyPageEmpPromoteBusiness() {
+		return "myPageEmployer/promoteBusiness";
+	}
+	
+	/** 제출된 이력서 보기 페이지 이동(get)
+	 * @return myPageEmployer/viewRecruitments.html
+	 * @author JWJ
+	 */
+	@GetMapping("viewRecruitments")
+	public String MyPageEmpViewRecruitments() {
+		return "myPageEmployer/viewRecruitments";
+	}
+	
+	/** 회원 탈퇴 페이지 이동(get)
+	 * @return myPageEmployer/secession.html
+	 * @author JWJ
+	 */
+	@GetMapping("secession")
+	public String MyPageEmpSecession() {
+		return "myPageEmployer/secession";
 	}
 
 }

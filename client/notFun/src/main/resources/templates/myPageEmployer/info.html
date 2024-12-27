@@ -13,25 +13,65 @@
 
 <body>
   <!-- 로고 및 검색바 로그인 -->
-	<th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
 
-  <section class="mypageEmpInfo-gray">
+  <div class="mypageEmpInfo-gray">
     <main class="myPageEmpInfo-white">
-      <div>
-        <h3>회원정보</h3>
-      </div>
+      <section class="basic-info-container" th:object="${session.loginEmployer}">
 
-      <div>
-        
-      </div>
+        <h3>회원정보</h3>
+        <div>
+          <span> 사업자 등록번호 : </span>
+          <span th:text="*{businessRegistrationNumber}"></span>
+        </div>
+        <div>
+          <span>멤버십 등급 :</span>
+          <span th:text="*{membershipName}"></span>
+        </div>
+        <div>
+          <span>대표자명 :</span>
+          <span th:text="*{memberName}"></span>
+        </div>
+        <div>
+          <span>연락처 : </span>
+          <span th:text="*{memberTel}"></span>
+        </div>
+      </section>
+
+      <section class="business-info-container">
+        <h3>사업장 정보</h3>
+        <th:block th:each="business, iterStat: ${businessList}" th:object="${business}">
+          <div th:class="|business-box${iterStat.count}|">
+            <div>
+              <img th:unless="*{businessImgList}" src="#" alt="이미지필요">
+              <span th:if="*{businessImgList}">등록된 사업장 이미지가 없습니다.</span>
+            </div>
+            <div>
+              <span>사업장위치 : </span>
+              <span th:text="*{businessNickname}"></span>
+            </div>
+            <div>
+              <span>사업장 연락처 : </span>
+              <span th:if="*{businessTel}" th:text="*{businessTel}"></span>
+              <span th:unless="*{businessTel}">미입력 상태입니다.</span>
+            </div>
+            <div>
+              <span>사업장 주소 : </span>
+              <span th:if="*{businessAddress}" th:text="*{businessAddress}"></span>
+              <span th:unless="*{businessAddress}">미입력 상태입니다.</span>
+            </div>
+          </div>
+        </th:block>
+
+      </section>
 
     </main>
-  </section>
+  </div>
 
 
 
-	<!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
-	<th:block th:replace="~{common/main-footer}"></th:block>
+  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
 
   <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
   <script src="/js/myPageEmployer/myPageEmpInfo.js"></script>
