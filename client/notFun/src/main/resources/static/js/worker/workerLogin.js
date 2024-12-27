@@ -44,7 +44,7 @@ if(saveId != undefined){
 
 function loginWithKakao() {
   Kakao.Auth.authorize({
-    redirectUri: 'https://developers.kakao.com/tool/demo/oauth',
+    redirectUri: 'https://kauth.kakao.com/oauth/authorize',
   });
 }
 

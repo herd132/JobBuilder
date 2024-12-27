@@ -18,7 +18,7 @@ public class Worker {
 	private String memberEmail;		// 회원이메일
 	private String memberPw;		// 회원 비밀번호
 	private String memberName;		// 회원 이름
-	private int memberTel;			// 회원 전화번호 (비밀번호 찾기용)
+	private String memberTel;		// 회원 전화번호 (비밀번호 찾기용)
 	private String enrollDate;		// 회원 탈퇴여부
 	private int authorityNo;		// 권한
 	

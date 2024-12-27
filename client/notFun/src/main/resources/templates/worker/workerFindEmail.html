@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- 근로자 이메일 찾기  -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="/css/worker/workerFindEmail.css">
+  <th:block th:replace="~{common/common}"></th:block>
+  <title>Document</title>
+</head>
+
+<body>
+  <th:block th:replace="~{common/main-header}"></th:block>
+  <form action="/worker/workerFindEmail" method="post" id="loginForm">
+    <main>
+
+      <th:block th:if="${workerFindEmail== null}">
+        <div class="header">
+          <span class="logo">
+            <a href="/"><img src="/images/logo.png" alt="로고" class="logo-img" href="/"></a>
+          </span>
+          <div class="title">취업빌드는 잡빌드!</div>
+        </div>
+
+        <div class="login-container">
+          <div class="tab-container">
+            이메일로 아이디 찾기
+          </div>
+
+          <div class="form-group">
+
+            <div>
+              이메일: <input type="email" id="memberEmail" name="memberEmail" required>
+
+            </div>
+
+            <div> 이름: <input type="text" id="memberName" name="memberName" required></div>
+            <button type="submit" class="login-button"> 아이디 찾기 </button>
+
+            <a href="/worker/workerLogin">
+              <button type="button" class="loginMain">
+                로그인 창으로 이동
+              </button>
+            </a>
+          </div>
+      </th:block>
+
+      <th:block th:if="${workerFindEmail != null}">
+        <div th:object="${workerFindEmail}">
+
+          <div class="find-title-result">
+            <a th:text="|*{memberName} 님의 회원정보는 다음과 같습니다.|">이메일 조회결과</a>
+          </div>
+
+          <div class="findinfo-subtitle">
+            <h1 th:text="| 이메일 : *{workerId}|" class="findinfo-subtitle-font" id="email">이메일</h1>
+          </div>
+
+          <div class="findinfo-subtitle">
+            <h1 th:text="| 가입일 : *{enrollDate}|" class="findinfo-subtitle-font">가입일</h1>
+          </div>
+
+          <div class="findinfo-btn-bottom">
+            <button type="button" class="findinfo-btn-return"
+              onclick="location.href='/worker/workerLogin' ">로그인화면으로</button>
+          </div>
+        </div>
+      </th:block>
+    </main>
+  </form>
+
+  <th:block th:replace="~{common/main-footer}"></th:block>
+  <script src="/js/worker/workerFindEmail.js"></script>
+
+  </script>
+</body>
+
+</html>

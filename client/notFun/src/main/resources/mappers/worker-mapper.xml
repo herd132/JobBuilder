@@ -74,7 +74,22 @@
 			#{memberNo})
 	 </insert>
 	 
+	 <!--  이메일로 아이디 찾기  -->
+	 <select id="workerFindEmail" resultType="Worker">
+	 	SELECT * FROM "WORKER"
+	 	JOIN "MEMBER" USING(MEMBER_NO)
+	 	WHERE MEMBER_EMAIL = #{memberEmail}
+	 	AND WORKER_NICKNAME = #{memberName}
+	 	AND MEMBER_DEL_FL = 'N' 	
+	 </select>
 			 
+	 <!--  비밀번호 찾기 -->
+	 <select id="workerFindPw">	
+	 </select>
+	 <!--  비밀번호 찾기 후 비밀번호 변경 -->
+	 <update id="findChangePw"></update>
+	 <!--  비밀번호 전화번호 중복검사 -->
+	 <select id="checkMemberTel2"></select>
 			 
 	
 </mapper>

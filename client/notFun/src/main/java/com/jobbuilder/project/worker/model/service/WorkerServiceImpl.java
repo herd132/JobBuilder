@@ -104,4 +104,35 @@ public class WorkerServiceImpl implements WorkerService{
 		
 		return result;
 	}
+	
+	// 이메일로 아이디 찾기
+	@Override
+	public Worker workerFindEmail(Worker inputWorker) {
+		
+		return mapper.workerFindEmail(inputWorker);
+	}
+	
+	// 비밀번호 찾기
+	@Override
+	public Worker workerFindPw(Worker inputWorker) {
+		// TODO Auto-generated method stub
+		return mapper.workerFindPw(inputWorker);
+	}
+	
+	// 비밀번호 찾기후 비밀번호 변경
+	@Override
+	public int findChangePw(int memberNo, String newPw) {
+		String encPw = bcrypt.encode(newPw);			// 새 비밀번호는 필드값이 없기 때문에 map을 활용
+		Map<String, Object> map = new HashMap<>(); 
+		map.put("memberNo", memberNo);
+		map.put("encPw", encPw);
+		return mapper.findChangePw(map);
+	}
+	
+	// 비밀번호 찾기시 전화번호 중복검사
+	@Override
+	public int checkMemberTel2(Worker inputWorker) {
+		return mapper.checkMemberTel2(inputWorker);
+	}
+	
 }
