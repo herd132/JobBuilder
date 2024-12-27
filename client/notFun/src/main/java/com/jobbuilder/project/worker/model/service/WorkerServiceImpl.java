@@ -32,7 +32,7 @@ public class WorkerServiceImpl implements WorkerService{
 		Worker loginWorker = mapper.login(inputWorker.getWorkerId());
 		if(loginWorker == null) return null;
 		
-		log.debug("loginWroker ~!:" + loginWorker);
+		
 		// 입력 받은 비밀번호 평문과 암호화된 비밀번호가 일치하는지 확인
 		if(!bcrypt.matches(inputWorker.getMemberPw(), loginWorker.getMemberPw())) {
 			
@@ -84,7 +84,7 @@ public class WorkerServiceImpl implements WorkerService{
 		// 주소가 입력되지 않은 경우
 			inputWorker.setWorkerAddress(null); // null 저장	
 		}
-		log.debug("인풋멤버비번" + inputWorker.getMemberPw());
+		
 		// inputMember 안의 memberPw -> 평문	
 		// 비밀번호를 암호화하여 inputMember에 세팅
 		String encPw = bcrypt.encode(inputWorker.getMemberPw()); // 암호화하는과정

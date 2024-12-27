@@ -93,7 +93,7 @@ public class WorkerController {
 			
 			try {
 				Worker loginWorker = service.login(inputWorker);
-				log.debug("로그인멤버 " + loginWorker);
+				
 				String message = null;
 				
 				// 로그인 실패 시
@@ -161,8 +161,7 @@ public class WorkerController {
 		public String signup(@ModelAttribute/*생략가능*/ Worker inputWorker,							
 							@RequestParam("memberAddress") String[] memberAddress,
 							RedirectAttributes ra) {
-			log.debug("inputmember: " + inputWorker);
-			log.debug("memberAddd" + memberAddress);
+			
 			// 회원가입 서비스 호출
 			int result = service.signup(inputWorker, memberAddress);
 			
@@ -206,7 +205,7 @@ public class WorkerController {
 		@GetMapping("checkEmail") // Get요청 /member/checkEmail
 		public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 			
-			log.debug("inputEmail" + memberEmail);
+			
 			return service.checkEmail(memberEmail); // 0 or 1
 		}
 		
@@ -217,7 +216,7 @@ public class WorkerController {
 		@ResponseBody
 		@GetMapping("checkNickname")
 		public int checkNickname(@RequestParam("workerNickname") String workerNickname) {
-			log.debug("워커닉네임 " + workerNickname);
+			
 			return service.checkNickname(workerNickname); 
 		}
 	
