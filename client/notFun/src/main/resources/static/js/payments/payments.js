@@ -383,7 +383,7 @@ const handleDynamicButtons = () => {
           const productDateElement = document.querySelector(`#productDate-${count}`);
           const customInputId = `custom-date-${count}`;
       
-          if (selectedValue === "4" || selectedValue === "5") {
+          if (selectedValue >= 4) {
             // 급구 이용권 또는 Hot 이용권 선택 시 일수 옵션으로 변경
             productDateElement.innerHTML = `
               <option value="none">=== 선택 ===</option>
@@ -424,17 +424,14 @@ const handleDynamicButtons = () => {
                 const newCustomInput = document.createElement("input");
                 newCustomInput.type = "number";
                 newCustomInput.placeholder =
-                  selectedValue === "4" || selectedValue === "5" ? "직접 입력 (일)" : "직접 입력 (개월)";
+                  selectedValue >= 4 ? "직접 입력 (일)" : "직접 입력 (개월)";
                 newCustomInput.id = customInputId;
                 newCustomInput.addEventListener("input", () => {
                   productDateElement.setAttribute("data-custom-value", newCustomInput.value);
                 });
                 e.target.parentNode.appendChild(newCustomInput);
               }
-            } else if (customInput) {
-              // 직접입력이 아닌 경우 기존 인풋박스 제거
-              customInput.remove();
-            }
+            };
           });
         });
       
@@ -459,7 +456,7 @@ const handleDynamicButtons = () => {
                 customInput.remove();
               }
       
-              // 항목 제거 후 상태 업데이트
+              // 항목 제거1 후 상태 업데이트
               updateBeforeMembershipContainer();
             }
           }
@@ -519,12 +516,20 @@ const handleDynamicButtons = () => {
             return;
           }
         }
+
+
+
+
+
+
+
+
+        // 해당 위치 2개 꼭 고정
+        updateBeforeMembershipContainer();
     });
   
     // 추가: 페이지 초기화 시 `updateBeforeMembershipContainer` 호출
     updateBeforeMembershipContainer();
   };
-  
-   
   
 });
