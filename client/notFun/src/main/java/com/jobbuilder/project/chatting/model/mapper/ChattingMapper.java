@@ -20,4 +20,7 @@ public interface ChattingMapper {
 	// 읽음 처리
 	int updateReadFlag(Map<String, Integer> paramMap);
 
+	// 채팅 메세지 보내기
+	int insertMessage(Message msg);
+
 }

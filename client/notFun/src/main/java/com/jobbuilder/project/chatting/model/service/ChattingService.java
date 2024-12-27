@@ -10,7 +10,7 @@ public interface ChattingService {
 
 	
 	/** 상담가에게 온 문의 리스트 조회
-	 * @param memberNo
+	 * @param memberNo 
 	 * @return
 	 */
 	List<ChattingRoom> selectRoomList(int memberNo);
@@ -20,5 +20,17 @@ public interface ChattingService {
 	 * @return
 	 */
 	List<Message> selectMessageList(Map<String, Integer> paramMap);
+
+	/** 채팅방 목록 가져오기
+	 * @param msg
+	 * @return
+	 */
+	int insertMessage(Message msg);
+
+	/** 채팅방 읽음 처리
+	 * @param paramMap
+	 * @return
+	 */
+	int updateReadFlag(Map<String, Integer> paramMap);
 
 }

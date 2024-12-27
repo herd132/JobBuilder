@@ -69,6 +69,10 @@ body {
   color: #131010;
 }
 
+.active div {
+  color : white;
+}
+
 .status-btn.waiting {
   background-color: #FFF0DC;
 }

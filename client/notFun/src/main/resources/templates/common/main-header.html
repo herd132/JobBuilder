@@ -22,7 +22,7 @@
         </th:block>
 
         <th:block th:if="${session.loginWorker != null}">
-          <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+          <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임</span>&nbsp;<i class="fa-solid fa-chevron-down"></i>
           <div class="nav-mypage hidden">
               <a href="/myPageWorkee/myPageWorkerInfo">회원 정보</a>
               <a href="/myPageWorkee/resume">이력서 관리</a>
@@ -31,7 +31,7 @@
         </th:block>
 
         <th:block th:if="${session.loginEmployer != null}">
-          <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임&nbsp;&nbsp;<i class="fa-solid fa-chevron-down"></i></span>
+          <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임</span>&nbsp;<i class="fa-solid fa-chevron-down"></i>
           <div class="nav-mypage hidden">
               <a href="/myPageEmp/info">회원정보</a>
               <a href="/myPageEmp/recruitmentList">공고 관리</a>
