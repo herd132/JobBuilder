@@ -1,20 +1,35 @@
 package com.jobbuilder.project.websocket.handler;
 
+import java.lang.reflect.Member;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobbuilder.project.chatting.model.dto.Message;
+import com.jobbuilder.project.chatting.model.service.ChattingService;
+import com.jobbuilder.project.counsel.model.dto.Counselor;
+import com.jobbuilder.project.worker.model.dto.Worker;
+
+import jakarta.servlet.http.HttpSession;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class ChatWebSocketHandler extends TextWebSocketHandler{
+	
+	private final ChattingService service = null;
 
 	private Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
 	
@@ -33,10 +48,46 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 	@Override
 	protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
 		// TODO Auto-generated method stub
-		log.info("전달받은 메시티 : {}", message.getPayload());
+
+		ObjectMapper objectMapper = new ObjectMapper();
 		
-		for(WebSocketSession s : sessions  ) {
+		Message msg = objectMapper.readValue(message.getPayload(), Message.class);
+		
+		log.info("msg : {}", msg);
+		for(WebSocketSession s : sessions) {
 			s.sendMessage(message);
 		}
+		// DB 삽입 서비스 호출
+//		int result = service.insertMessage(msg);
+//		
+//		if(result > 0) {
+//			
+//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm");
+//			msg.setSendTime(sdf.format(new Date()));
+//			
+//			// 필드에 있는 sessions에는 접속중인 모든 회원의 세션 정보가 담겨있음
+//			for(WebSocketSession s : sessions) {
+//				
+//				// 가로챈 session 꺼내기 
+//				HttpSession temp = (HttpSession) s.getAttributes().get("session");
+//				
+//				// 로그인된 근로자 상담가 정보 중 회원 번호를 꺼내오기
+//				int loginWorkerNo = ((Worker)temp.getAttribute("loginWorker")).getMemberNo();
+//				int loginCounselorNo = ((Counselor)temp.getAttribute("loginCounselor")).getMemberNo();
+//				
+//				// 로그인 상태인 회원 중 targetNo 또는 senderNo 일치하는 회원에게 메시지 전달
+//				if(loginWorkerNo == msg.getTargetNo() || loginWorkerNo == msg.getSenderNo() ||
+//						loginCounselorNo == msg.getTargetNo() || loginCounselorNo == msg.getSenderNo()) {
+//					
+//					// 다시 DTO(-> msg) 를 JSON으로 변환 (JS에 보내야하니까)
+//					String jsonData = objectMapper.writeValueAsString(msg);
+//					s.sendMessage(new TextMessage(jsonData));
+//				}
+//				
+//			}
+//			
+//			
+//		}
+		
 	}
 }
