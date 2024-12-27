@@ -21,6 +21,6 @@ public class Counselor {
 	private String memberName;
 	private String memberTel;
 	private String enrollDate;
-	private int authority;
+	private int authorityNo;
 
 }

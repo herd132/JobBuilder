@@ -1,11 +1,13 @@
 package com.jobbuilder.project.chatting.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -41,10 +43,10 @@ public class ChattingController {
 		return "chatting/counselMain";
 	}
 	
-//	@GetMapping("selectMessage")
-//	@ResponseBody
-//	public List<Message> selectMessageList() {
-//		return service.selectMessageList;
-//	}
+	@GetMapping("selectMessage")
+	@ResponseBody
+	public List<Message> selectMessageList(@RequestParam Map<String, Integer> paramMap) {
+		return service.selectMessageList(paramMap);
+	}
 
 }

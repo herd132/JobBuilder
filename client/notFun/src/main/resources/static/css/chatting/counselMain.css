@@ -102,11 +102,16 @@ body {
 }
 
 .chat-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   padding: 1rem;
   background-color: #F0BB78;
   color: #543A14;
   border-radius: 0 15px 0 0;
 }
+
+.chat-header
 
 .messages {
   height: 40;
