@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <th:block th:replace="~{common/main-header}"></th:block>
+    <h1 class="findinfo-title-top">비밀번호 찾기</h1>
+
+      <!-- 테두리안 본문 내용 -->
+      <form action="/worker/workerChangePw" class="findinfo-background-line" method="POST" id="changePw">
+
+        <h3 class="findinfo-title-Middle">새 비밀번호로 변경</h3>
+
+        <div class="findinfo-subtitle">
+          <h5 class="findinfo-subtitle-font">새 비밀번호</h5>
+          <input type="password" class="findinfo-subtitle-input" name="newPw" id="newPw" maxlength="30">
+        </div>
+
+        <div class="findinfo-subtitle">
+          <h5 class="findinfo-subtitle-font">새 비밀번호 재확인</h5>
+          <input type="password" class="findinfo-subtitle-input" name="newPwConfirm" id="newPwConfirm" maxlength="30">
+        </div>
+
+        <span class="findinfo-subtitle-v3" id="newPwConfirmMessage">영어,숫자,특수문자(!,@,#,-,_) 6~20글자 사이로 입력해주세요.</span>
+
+        <div class="findinfo-btn-middle3">
+          <button type="submit" class="findinfo-btn-nextbtn">변경하기</button>
+          <button type="button" class="findinfo-btn-nextbtn" id="cancelUpdateBtn">돌아가기</button>
+        </div>
+      </form>
+      <th:block th:replace="~{common/main-footer}"></th:block>
+</body>
+</html>
