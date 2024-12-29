@@ -2,6 +2,7 @@ package com.jobbuilder.project.chatting.model.service;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,10 +49,43 @@ public class ChattingServiceImpl implements ChattingService{
 		return mapper.insertMessage(msg);
 	}
 	
+	// 읽음 처리
 	@Override
 	public int updateReadFlag(Map<String, Integer> paramMap) {
 		
 		return mapper.updateReadFlag(paramMap);
+	}
+	
+	// 채팅 방 유무 확인
+	@Override
+	public Map<String, Integer> checkChattingRoomNo(Map<String, Integer> map) {
+		
+		int[] counselorNoArr = mapper.getRandomCounselorNo();
+		
+		Random random = new Random();
+		
+		int counselorNo = counselorNoArr[random.nextInt(counselorNoArr.length)];
+		map.put("targetNo", counselorNo);
+		
+		int chattingRoomNo = mapper.checkChattingRoomNo(map);
+		
+		if( chattingRoomNo != 0) map.put("chattingRoomNo", chattingRoomNo);
+		
+		return map;
+	}
+	
+	// 채팅 방 생성
+	@Override
+	public int createChattingRoom(Map<String, Integer> map) {
+		
+		int result = mapper.createChattingRoom(map);
+		
+    	
+    	if(result > 0) {
+    		return result;
+    	}
+    	
+        return 0;
 	}
  
 }
