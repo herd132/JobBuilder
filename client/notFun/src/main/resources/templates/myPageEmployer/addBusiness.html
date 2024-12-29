@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사업장 추가</title>
+
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpAddBusiness.css">
+</head>
+
+<body>
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+
+  <div class="mypageEmpInfo-gray">
+    <main class="myPageEmpInfo-white">
+
+      <section class="basic-info-container" th:object="${session.loginEmployer}">
+        <h3 th:text="|*{memberName}의 사업장추가 페이지입니다.|"></h3>
+        <div class="business-registration-number-area">
+          <span>사업자 등록번호 : </span>
+          <span th:text="*{businessRegistrationNumber}"></span>
+        </div>
+        <div class="business-name-area">
+          <span>회사명 : </span>
+          <span th:text="*{businessName}"></span>
+        </div>
+        <div class="membership-level-area">
+          <span>멤버십 등급 :</span>
+          <span th:text="*{membershipName}"></span>
+        </div>
+        <div class="member-name-area">
+          <span>대표자명 :</span>
+          <span th:text="*{memberName}"></span>
+        </div>
+        <div class="member-tel-area">
+          <span>연락처 : </span>
+          <span th:text="*{memberTel}"></span>
+        </div>
+
+      </section>
+
+      <div class="add-business-container">
+        <form action="addBuisness" method="post" id="addBusinessForm">
+          <h4>사업장 별칭</h4>
+          <div class="business-nickname">
+            <input type="text" name="businessNickname" id="businessNickname" placeholder="ex) 본점, 서울 구로점">
+          </div>
+
+          <h4>사업장 주소</h4>
+          <div class="business-address-area">
+            <div>
+              <input type="text" name="businessAddress" id="postcode" placeholder="우편번호" readonly>
+              <button type="button" id="searchAddressBtn" class="searah-address-btn">검색</button>
+            </div>
+            <div>
+              <input type="text" name="businessAddress" id="address" placeholder="도로명/지번 주소" readonly>
+            </div>
+            <div>
+              <input type="text" name="businessAddress" id="detailAddress" placeholder="상세 주소">
+              <button type="button" id="addressResetBtn">초기화</button>
+            </div>
+          </div>
+
+          <h4>사업장 전화번호</h4>
+          <div>
+            <input type="text" name="businessTel" id="businessTel" maxlength="11" placeholder="-없이 숫자만 입력해주세요">
+          </div>
+
+          <h4>업직종(최대 5개 선택 가능)</h4>
+          <div>
+            <h5>선택한 업직종</h5>
+            <ul id="selectCategoryUl" style="border: 1px solid black;">
+
+            </ul>
+          </div>
+          <div>
+            <div>
+              <ul style="background-color: yellow;">
+                <th:block th:each="category : ${majorCategoryList}">
+                  <li th:text="${category.majorCategoryName}" class="workType"
+                    th:workTypeNo="${category.workTypeNo}"
+                    th:onclick="subCategory(this.getAttribute('workTypeNo'))"
+                    style="cursor: pointer;"
+                  />
+                </th:block>
+              </ul>
+            </div>
+            <div>
+              <ul id="subWorkType">
+
+              </ul>
+            </div>
+          </div>
+
+          <h4>사업장 대표 이미지</h4>
+          <div class="img-box">
+            <div class="businessImg thumbnail">
+              <label for="img0">
+                <img src="#" alt="">
+              </label>
+              <input type="file" name="images" class="business-image" id="img0" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+          </div>
+
+          <div class="add-business-container" id="addBusinessContainer">
+            <div class="add-business-text-area">
+              <button id="addBusinessImgBtn">이미지 추가</button>
+              <span>최대 4개 추가 가능</span>
+            </div>
+          </div>
+
+          <div>
+            <button id="addBusinessBtn">등록하기</button>
+            <button type="button" onclick="goBackInfo()">돌아가기</button>
+          </div>
+        </form>
+      </div>
+
+
+    </main>
+  </div>
+
+
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="/js/myPageEmployer/addBusiness.js"></script>
+</body>
+
+</html>

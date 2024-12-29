@@ -1,13 +1,19 @@
 package com.jobbuilder.project.myPageEmployer.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.service.MyPageEmployerService;
@@ -45,6 +51,15 @@ public class MyPageEmployerController {
 		
 		// 고용주 1명의 사업장 리스트 얻어오기
 		List<Employer> businessList = service.selectBusinessList(loginEmployer.getMemberNo());
+		for(Employer business : businessList) {
+			
+			String[] arr = business.getBusinessAddress().split("\\^\\^\\^");
+			
+			if(arr.length > 2) {				
+				String businessAddress =  arr[0] + " " + arr[1] + ", " + arr[2];
+				business.setBusinessAddress(businessAddress);
+			}
+		}
 		model.addAttribute("businessList", businessList);
 		
 		return "myPageEmployer/info";
@@ -94,8 +109,26 @@ public class MyPageEmployerController {
 	 * @author JWJ
 	 */
 	@GetMapping("addBusiness")
-	public String MyPageEmpAddBusiness() {
+	public String MyPageEmpAddBusiness(Model model) {
+		List<Map<String,String>> majorCategoryList = service.selectMajorCategory();
+		model.addAttribute("majorCategoryList", majorCategoryList);
 		return "myPageEmployer/addBusiness";
+	}
+	
+	/** workType 가 일치한 소분류 업직종 불러오기
+	 * @param workTypeNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("selectSubWorkType/{workTypeNo}")
+	public List<Map<String,String>> subCategoryList(@PathVariable("workTypeNo") String workTypeNo) {
+		return service.selectsubCategoryList(workTypeNo);
+	}
+	
+	@PostMapping("addBusiness")
+	public String MyPageEmpAddBusiness(@SessionAttribute("loginEmployer") Employer loginEmployer,
+						@RequestParam("images") List<MultipartFile> images) throws Exception {
+		return "";
 	}
 	
 	/** 사업장 홍보 페이지 이동(get)

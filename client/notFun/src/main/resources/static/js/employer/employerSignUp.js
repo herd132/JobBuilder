@@ -454,6 +454,9 @@ addressResetBtn.addEventListener("click", () => {
 const signUpEmpForm = document.querySelector("#signUpEmpForm");         // form 태그
 signUpEmpForm.addEventListener("submit", e => {
 
+  checkObj.postcode = false;
+  checkObj.detailAddress = false;
+
   if(postcode.value.trim().length > 0) {
     checkObj.postcode = true;
   }

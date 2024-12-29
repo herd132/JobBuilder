@@ -23,5 +23,18 @@
 	FROM "BUSINESS_IMG"
 	WHERE EMPLOYER_NO = ${employerNo}
 	</select>
+	
+	<select id="selectMajorCategory">
+	SELECT SUBSTR(WORKTYPE_NO, 1, 2) AS "workTypeNo", 
+		SUBSTR(WORKTYPE_CATEGORY, 1, INSTR(WORKTYPE_CATEGORY, '전체')-2) AS "majorCategoryName"
+	FROM EMPLOYER_WORKTYPE
+	WHERE WORKTYPE_NO LIKE '__00'
+	</select>
 
+	<select id="selectsubCategoryList">
+	SELECT WORKTYPE_NO AS "workTypeNo", WORKTYPE_CATEGORY AS "worktypeCategory"
+	FROM EMPLOYER_WORKTYPE
+	WHERE WORKTYPE_NO LIKE #{workTypeNo}||'__'
+		AND WORKTYPE_NO NOT LIKE '__00'
+	</select>
 </mapper>
