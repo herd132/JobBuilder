@@ -232,20 +232,7 @@ public class WorkerController {
 		    return "redirect:/worker/workerLogin";
 		}
 	    
-		/** 비밀번호 찾기 내 전화번호 중복검사(비동기)
-		 * @param memberTel
-		 * @return
-		 */
-		@ResponseBody
-		@GetMapping("checkMemberTel2")
-		public int checkMemberTel2(@RequestParam("memberTel") String memberTel, 
-		                           @RequestParam("memberName") String memberName) {
-			Worker inputWorker = new Worker();
-		    inputWorker.setMemberTel(memberTel);
-		    inputWorker.setMemberName(memberName);
-
-		    return service.checkMemberTel2(inputWorker);
-		}
+		
 
 		// 이메일로 아이디 찾기
 		@PostMapping("workerFindEmail")
@@ -285,7 +272,7 @@ public class WorkerController {
 		 */
 		
 		@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
-		@GetMapping("checkEmail") // Get요청 /member/checkEmail
+		@GetMapping("checkEmail") // Get요청 /worker/checkEmail
 		public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 			
 			

@@ -1,15 +1,13 @@
 const checkObj = {
-    memberEmail: false,  
-    memberName: false,
-    memberTel: false,
-    authKey: false,
-    workerId: false
+    memberEmail: false,     
+    authKey: false
   };
   /* 이메일 유효성 검사 */
   
   // 1) 이메일 유효성 검사에 사용될 요소 얻어오기
   const memberEmail = document.querySelector("#memberEmail");
   const workerEmailMessage = document.querySelector("#workerEmailMessage");
+ 
   // 인증번호 받기 버튼
   const sendAuthKeyBtn = document.querySelector("#sendAuthKeyBtn");
   
@@ -39,8 +37,9 @@ const checkObj = {
     document.querySelector("#authKeyMessage").innerText = "";
     clearInterval(authTimer);
   
-    // 작성된 이메일 값 얻어오기
+    // 작성된 값 얻어오기
     const inputEmail = e.target.value;
+    
   
     //console.log(inputEmail);
   
@@ -86,20 +85,22 @@ const checkObj = {
         // count : 1이면 중복, 0이면 중복 아님
         // == : 값만 비교
         // === : 값 + 자료형 비교
-        if (count == 1) {
-          // 증복이면
-          workerEmailMessage.innerText = "이름, 아이디가 일치하는 이메일이 존재합니다.";
-          workerEmailMessage.classList.add("error");
-          workerEmailMessage.classList.remove("confirm");
-          checkObj.memberEmail = true; // 중복은 유효하지 않은 상태이다.
-          console.log(count);
+        if (count == 0) {
+          // 중복 X인 경우
+          workerEmailMessage.innerText = "입력하신 이메일로 가입된 회원이 없습니다.";
+          workerEmailMessage.classList.add("confirm");
+          workerEmailMessage.classList.remove("error");
+          checkObj.memberEmail = false; // 유효한 이메일
           return;
         }
-        // 중복 X인 경우
-        workerEmailMessage.innerText = "이름, 아이디가 일치하는 이메일이 없습니다.";
-        workerEmailMessage.classList.add("confirm");
-        workerEmailMessage.classList.remove("error");
-        checkObj.memberEmail = false; // 유효한 이메일
+
+        // 중복시
+        workerEmailMessage.innerText = "입력하신 이메일로 가입된 회원이 존재합니다.";
+        workerEmailMessage.classList.add("error");
+        workerEmailMessage.classList.remove("confirm");
+        checkObj.memberEmail = true; // 중복은 유효하지 않은 상태이다.
+        console.log(count);
+        return;
       })
       .catch((error) => {
         // fetch 수행 중 예외 발생 시 처리
@@ -247,3 +248,37 @@ const checkObj = {
         checkObj.authKey = true; // 인증번호 검사여부 true 변경
       });
   });
+
+  const signUpForm = document.querySelector(".workerFindPw-container");
+
+// 회원 가입 폼 제출 시
+signUpForm.addEventListener("submit", (e) => {
+  // checkObj의 저장된 값(value) 중
+  // 하나라도 false가 있으면 제출 X
+
+  // for ~ in (객체 전용 향상된 for 문)
+  for (let key in checkObj) {
+    // checkObj 요소의 key 값을 순서대로 꺼내옴
+
+    if (!checkObj[key]) {
+      // 현재 접근중인 checkObj[key]의 value 값이 false 인 경우 (유효하지 않음)
+
+      let str; // 출력할 메시지를 저장할 변수
+
+      switch (key) {
+        case "memberEmail":
+          str = "이메일이 유효하지 않습니다";
+          break;
+
+        case "authKey":
+          str = "이메일이 인증되지 않았습니다";
+          break;       
+      }
+
+      alert(str);
+      document.getElementById(key).focus(); // 초점 이동
+      e.preventDefault(); // form 태그 기본 이벤트(제출) 막기
+      return;
+    }
+  }
+});
