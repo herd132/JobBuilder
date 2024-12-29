@@ -4,7 +4,9 @@ import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +53,23 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		Message msg = objectMapper.readValue(message.getPayload(), Message.class);
+		Map<String, String> map = objectMapper.readValue(message.getPayload(), HashMap.class);
 		
-		log.info("msg : {}", msg);
+		if( map.get("counselEnd") != null ) {
+			
+			log.info("map {}", map);
+			
+			return;
+		}
+		
+		Message msg = objectMapper.readValue(message.getPayload(), Message.class);
+		log.info("msg {}", msg);
+		
 		for(WebSocketSession s : sessions) {
 			s.sendMessage(message);
 		}
+		
+		
 		// DB 삽입 서비스 호출
 //		int result = service.insertMessage(msg);
 //		

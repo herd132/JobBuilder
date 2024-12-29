@@ -22,7 +22,7 @@ public class WebSocketConfig implements WebSocketConfigurer{
 	@Override
 	public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
 		registry.addHandler(chatWebSocketHandler, "/chatSock").addInterceptors(handshakeInterceptor)
-		.setAllowedOriginPatterns("http://localhost/", "http://127.0.0.1", "http://192.168.0.62")
+		.setAllowedOriginPatterns("http://localhost/", "http://127.0.0.1", "http://183.97.6.48")
 		// setAllowedOriginPatterns 는 도메인 구매 시 변경
 		.withSockJS();
 	}
