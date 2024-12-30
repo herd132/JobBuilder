@@ -36,13 +36,13 @@
                       <button>자주 묻는 질문</button>
                       <button>채용 문의</button>
                       <button>이력서 관련</button>
-                      <button class="counselor">상담원 연결</button>
+                      <button>기타 문의</button>
                   </div>
               </div>
           </div>
       </div>
       <div class="chat-input">
-          <input type="text" placeholder="메시지를 입력하세요..." readonly>
+          <input type="text" placeholder="메시지를 입력하세요...">
           <button class="send-btn">
               <i class="fas fa-paper-plane"></i>
           </button>
@@ -52,9 +52,6 @@
 
 <script th:inline="javascript">
   const message =  /*[[${message}]]*/ "전달 받은 message";
-
-  const loginWorkerNo = /*[[${session.loginWorker?.memberNo}]]*/ "로그인 회원 번호";
-  const loginEmployerNo = /*[[${session.loginEmployer?:memberNo}]]*/ "로그인 회원 번호";
 
   if(message != null) alert(message);
 </script>
