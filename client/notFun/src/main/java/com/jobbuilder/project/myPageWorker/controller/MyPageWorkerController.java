@@ -129,21 +129,25 @@ public class MyPageWorkerController {
 	
 	@ResponseBody
 	@PostMapping("updateInfo")
-	public int updateInfo(  @RequestParam("workerAddress") String workerAddress,
+	public int updateInfo(  @RequestParam("workerNickname") String workerNickname,
+							@RequestParam("postcode") String postcode,
+							@RequestParam("address") String address,
+							@RequestParam("detailAddress") String detailAddress,
 							@RequestParam("memberTel") String memberTel,
 							@RequestParam("workerMbti") String workerMbti,
 							@RequestParam("memberEmail") String memberEmail,
 							@RequestParam(value = "profileImg", required = false) MultipartFile profileImg,
 							@SessionAttribute("loginWorker") Worker loginWorker) {
 		
-		log.debug("workerAddress : " + workerAddress);
+		String[] workerAddress = {postcode, address, detailAddress};
 		
-//		loginWorker.setMemberTel(memberTel);
-//		loginWorker.setMemberEmail(memberEmail);
-//		loginWorker.setWorkerMbti(workerMbti);
 		
-		int result = 0;
-//		int result = service.updateInfo(loginWorker);
+		loginWorker.setWorkerNickname(workerNickname);
+		loginWorker.setMemberTel(memberTel);
+		loginWorker.setWorkerMbti(workerMbti);
+		loginWorker.setMemberEmail(memberEmail);
+		log.debug("loginWorker : " + loginWorker);
+		int result = service.updateInfo(loginWorker,workerAddress);
 		return result; 
 	}
 }

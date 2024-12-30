@@ -67,4 +67,20 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService{
 		return mapper.workerChangePw(paramMap);
 	}
 
+	@Override
+	public int updateInfo(Worker loginWorker, String[] workerAddress) {
+		if(loginWorker.getWorkerAddress().equals(",,")) {
+			
+			// 주소에 null 대입
+			loginWorker.setWorkerAddress(null);
+			
+		} else { // 주소 입력 O
+			
+			String address = String.join("^^^", workerAddress);
+			loginWorker.setWorkerAddress(address);
+			
+		}
+		return mapper.updateInfo(loginWorker);
+	}
+
 }

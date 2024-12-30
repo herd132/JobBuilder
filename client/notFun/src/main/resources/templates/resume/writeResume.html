@@ -9,6 +9,220 @@
 
 <body>
   <h2>이력서작성페이지입니다.</h2>
+
+  <h2> 이력서 관리 </h2>
+
+  <table>
+    <tr>
+      <th scope="col"> <span th:text="${session.loginWorker.memberName}"></span></td>
+      <td scope="col"><span th:text="${year} + 년생"></span>/<span
+          th:text="${#dates.format(#dates.createNow(), 'yyyy')} - ${year} + 살"></span></td>
+      <td scope="col"></td>
+    </tr>
+    <tr>
+      <td>주소 <span th:text="${#strings.replace(session.loginWorker.workerAddress, '^^^', ' ')}"></span></td>
+      <td>이메일 <span th:text="${session.loginWorker.memberEmail}"></span></td>
+
+    </tr>
+    <tr>
+      <td>연락처 <span th:text="${session.loginWorker.memberTel}"></span></td>
+    </tr>
+  </table>
+
+
+  <h2>학력</h2>
+
+  <select name="example" id="example">
+    <option value="" disabled selected>학교</option>
+    <option value="1">무관</option>
+    <option value="2">중졸</option>
+    <option value="3">고졸</option>
+    <option value="4">대졸(2,3년제)</option>
+    <option value="5">대졸(4년제)</option>
+    <option value="6">대학원이상</option>
+  </select>
+
+  기간 / 일시 무관 1번
+
+
+  1 시급
+  2 월급
+  3 추후협의
+
+
+  <h2>경력사항</h2>
+  <div class="career-container">
+    <form class="exp-form">
+      <div>
+        경력구분
+        <button class="newbie" onclick="showInputs(false)">신입</button>
+        <button class="exp" onclick="showInputs(true)" type="button">경력</button>
+      </div>
+      <div class="input-container" style="display: none;">
+        <label>
+          회사명:
+          <input type="text" class="company-name" placeholder="회사명을 입력하세요">
+        </label>
+        <label>
+          근무기간:
+          <input type="date" class="start-date">
+          <input type="date" class="end-date">
+        </label>
+        <label>
+          담당업무:
+          <textarea placeholder="담당업무를 입력하세요"></textarea>
+        </label>
+      </div>
+    </form>
+    <button class="exp-append" onclick="expappend()" style="display: none">경력사항 추가</button>
+  </div>
+
+
+  <h2>희망근무 조건</h2>
+
+  <h4>업직종(최대 5개 선택 가능)</h4>
+          <div>
+            <h5>선택한 업직종</h5>
+            <ul id="selectCategoryUl" style="border: 1px solid black;">
+
+            </ul>
+          </div>
+          <div>
+            <div>
+              <ul style="background-color: yellow;">
+                <th:block th:each="category : ${majorCategoryList}">
+                  <li th:text="${category.majorCategoryName}" class="workType"
+                    th:workTypeNo="${category.workTypeNo}"
+                    th:onclick="subCategory(this.getAttribute('workTypeNo'))"
+                    style="cursor: pointer;"
+                  ></li>
+                </th:block>
+              </ul>
+            </div>
+            <div>
+              <ul id="subWorkType">
+
+              </ul>
+            </div>
+          </div>
+
+
+  <script>
+    // 경력사항 추가 버튼 클릭 시 입력 필드 추가
+    function expappend() {
+      const form = document.querySelector(".exp-form");
+
+      // 새로운 input-container를 생성
+      const newContainer = document.createElement("div");
+      newContainer.className = "input-container";
+
+      // 회사명 입력 필드
+      newContainer.innerHTML = `
+        <label>
+          회사명:
+          <input type="text" class="company-name" placeholder="회사명을 입력하세요">
+        </label>
+        <label>
+          근무기간:
+          <input type="date" class="start-date">
+          <input type="date" class="end-date">
+        </label>
+        <label>
+          담당업무:
+          <textarea placeholder="담당업무를 입력하세요"></textarea>
+        </label>
+      `;
+
+      // 새로운 필드를 form 태그 안에 추가
+      form.appendChild(newContainer);
+    }
+
+    function showInputs(isExperienced) {
+      const inputContainer = document.querySelector(".input-container");
+      const expAppend = document.querySelector(".exp-append");
+      if (isExperienced) {
+        inputContainer.style.display = 'block';
+        expAppend.style.display = 'block';
+      } else {
+        inputContainer.style.display = 'none';
+        expAppend.style.display = 'none';
+      }
+    }
+  </script>
+
+  <script>
+    /* ********** 업직종 부분 ********** */
+// checkObj.worktypeList 는 등록하기 클릭 시에 입력되었는지만 확인
+// 업직종 대분류 클릭 했을 때 소분류 불러오기
+const newEl = (tag, attr, cls) => {
+
+const el = document.createElement(tag);                 // 요소 생성
+for (let key in attr) el.setAttribute(key, attr[key]);  // 요소에 속성 추가
+for (let className of cls) el.classList.add(className); // 요소에 클래스명 추가
+
+return el;                                              // 생성된 요소 반환
+};
+
+const subCategory = async (workTypeNo) => {
+
+const subWorkType = document.querySelector("#subWorkType");       // ul태그
+subWorkType.innerHTML = "";
+
+const resp = await fetch(`/myPageEmp/selectSubWorkType/${workTypeNo}`);
+const result = await resp.json();
+
+for (let element of result) {
+
+  const liSubWorkTypeName = document.createElement("li");
+
+  liSubWorkTypeName.innerText = element.worktypeCategory;
+  liSubWorkTypeName.id = element.workTypeNo;
+  liSubWorkTypeName.style.cursor = "pointer";
+
+  subWorkType.appendChild(liSubWorkTypeName);
+
+  liSubWorkTypeName.addEventListener("click", (e) => {
+    addSubCategory(e.target);
+  })
+}
+}
+
+// 클릭했을 때 선택한 업직종 추가하기(삭제 이벤트도 같이)
+const addSubCategory = (liSubWorkTypeName) => {
+
+const selectCategory = document.querySelectorAll(".select-category");
+if(selectCategory.length >= 5){
+  alert("업직종은 최대 5개만 가능합니다");
+  return;
+}
+
+const selectCategoryUl = document.querySelector("#selectCategoryUl");
+
+const subCategory = newEl(
+  "input",
+  {type: "text", name: "subCategory", readOnly:true, value: liSubWorkTypeName.innerText},
+  ["select-category"]
+);
+
+const deleteBtn = newEl("span", {}, ["subcategory-delete"]);
+deleteBtn.innerHTML = " &times";
+deleteBtn.style.cursor = "pointer";
+
+const li = document.createElement("li");     
+
+li.appendChild(subCategory);
+li.appendChild(deleteBtn);
+selectCategoryUl.appendChild(li);
+
+document.querySelectorAll(".subcategory-delete").forEach(deleteSubcategory => {
+  deleteSubcategory.addEventListener("click", () => {
+    deleteSubcategory.parentElement.remove();
+  })
+})
+}
+
+  </script>
+
 </body>
 
 </html>

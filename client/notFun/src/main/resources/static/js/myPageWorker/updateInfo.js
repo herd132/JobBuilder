@@ -39,9 +39,14 @@ const checkObj = {
 const updateform = document.querySelector(".update-form");
 
 // 주소
-const workerAddress = document.querySelectorAll("[name='memberAddress']")
-// 주소 검색 버튼 클릭 시
-document.querySelector(".search-button").addEventListener("click", execDaumPostcode);
+const addressPostcode = document.querySelector("#postcode");
+const address = document.querySelector("#address");
+const detaileAddress = document.querySelector("#detailAddress");
+
+// 주소 검색 버튼
+const searchBtn = document.querySelector(".search-button");
+
+searchBtn.addEventListener("click", execDaumPostcode);
 function validateAddress() {
   if (
     (addressPostcode.value.trim() === "" && address.value.trim() === "" && detailAddress.value.trim() === "") || // 모두 비어있을 때
@@ -481,10 +486,13 @@ updateform.addEventListener("submit", async (e) => {
   const formData = new FormData();
 
   // 3. 일반 입력 데이터 추가
-  formData.append('postcode', document.querySelectorAll("[name='workerAddress']")); //주소
+  formData.append('postcode', document.getElementById("postcode").value); //주소
+  formData.append('address', document.getElementById("address").value);
+  formData.append('detailAddress', document.getElementById("detailAddress").value);
+  formData.append('workerNickname', document.getElementById("workerNickname").value);
   formData.append('memberTel', document.getElementById("memberTel").value); // 전화번호
-  formData.append('workerMbti', document.getElementById("workerMbti").value); // MBTI
   formData.append('memberEmail', document.getElementById("memberEmail").value); // 이메일
+  formData.append('workerMbti', document.getElementById("workerMbti").value); // MBTI
 
   // 4. 이미지 파일 추가
   const imageInput = document.getElementById("imageInput");
@@ -501,7 +509,7 @@ updateform.addEventListener("submit", async (e) => {
 
     const result = await response.json(); // 서버 응답 처리
 
-    if (result.success) {
+    if (result > 0) {
       alert("업데이트되었습니다.");
     } else {
       alert("업데이트에 실패했습니다.");
