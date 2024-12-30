@@ -118,10 +118,6 @@ public class MyPageEmployerController {
 		return "myPageEmployer/recruitmentList";
 	}
 	
-	@GetMapping("addRecruitment")
-	public String MyPageEmpAddRecruitment() {
-		return "myPageEmployer/addRecruitment";
-	}
 	
 	/** 내가 쓴 글 페이지 이동(get) 아직 작성 안함
 	 * @return myPageEmployer/myWrite.html

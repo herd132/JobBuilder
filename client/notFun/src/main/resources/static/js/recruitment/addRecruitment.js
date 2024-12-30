@@ -1,0 +1,1 @@
+console.log("addRecruitment.js 와 연결됨");
