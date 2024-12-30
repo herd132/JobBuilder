@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const counselor = document.querySelector(".counselor");
   
-  counselor.addEventListener("click", counselorConnection);
+  //counselor.addEventListener("click", counselorConnection);
 
   /** 메세지 입력 시 이벤트
    * 

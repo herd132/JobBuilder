@@ -7,6 +7,8 @@ const getMembershipDetailsByType = (type) => {
   );
 };
 
+let selectedMembershipNumbers = []; // 선택한 멤버십 번호를 저장하는 배열
+
 let testResult = [];
 
 // defaultType을 반환하는 함수
@@ -85,18 +87,22 @@ const renderPaymentPage = (defaultType) => {
 
   // 로그인된 사용자 정보 HTML
   const membershipDetailsHtml = userMemberships.length
-    ? userMemberships
-        .map(
-          (membership) => `
+  ? userMemberships
+      .map((membership) => {
+        // membershipOptions에서 현재 membershipType과 일치하는 옵션 가져오기
+        const matchedOption = membershipOptions.find(
+          (option) => option.value === String(membership.membershipType)
+        );
+
+        return `
         <div class="membership-item">
           <h3>${membership.membershipName}</h3>
-          <p>${membership.membershipContent}</p>
+          <p>${matchedOption ? matchedOption.content : "내용 없음"}</p>
           <p>남은 기간: ${membership.remainingDays}일</p>
-        </div>
-      `
-        )
-        .join("")
-    : `<p>로그인된 회원의 맴버십 정보를 찾을 수 없습니다.</p>`;
+        </div>`;
+      })
+      .join("")
+  : `<p>로그인된 회원의 맴버십 정보를 찾을 수 없습니다.</p>`;
 
   // 최초 렌더링
   backgroundElement.innerHTML = `
@@ -418,6 +424,9 @@ const updateMembershipContainer = () => {
   beforeMembershipContainer.textContent = "";
   productExpenseContainer.textContent = ""; // 새로운 영역 초기화
 
+  // 선택된 멤버십 번호 초기화
+  selectedMembershipNumbers = [];
+
   // 상품 정보 배열 생성
   const membershipList = Array.from(productItems).map((item) => {
     const selectedValue = item.querySelector(".showItem").value;
@@ -430,6 +439,14 @@ const updateMembershipContainer = () => {
     const membership = membershipOptions.find(
       (option) => option.value === selectedValue
     );
+
+    // 선택된 멤버십 번호 저장
+    if (selectedValue !== "none") {
+      const membershipDetail = getMembershipDetailsByType(Number(selectedValue));
+      if (membershipDetail) {
+        selectedMembershipNumbers.push(membershipDetail.membershipNo); // 멤버십 번호 저장
+      }
+    }
 
     return { membership, selectedValue, selectedDuration };
   });
@@ -525,7 +542,6 @@ const updateMembershipContainer = () => {
           <div><p class="fst-price">${calculatedPrice.toLocaleString()}원</p></div>
         </div>
       </div>
-      
     `;
 
     beforeMembershipContainer.appendChild(container);
@@ -537,6 +553,7 @@ const updateMembershipContainer = () => {
   sumContainer.classList.add("payments-expense-bgr");
   sumContainer.innerHTML = ` <h1 class="payments-expense-result">합계 : ${sumResult.toLocaleString()}원</h1>`;
   productExpenseContainer.appendChild(sumContainer);
+ 
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -549,6 +566,12 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("결제할 금액이 없습니다.");
           return;
         }
+
+        if (!selectedMembershipNumbers || selectedMembershipNumbers.length === 0) {
+          return;
+        }
+        const employerNo = globalMembershipList[0]?.employerNo;
+
         IMP.request_pay(
           {
             storeId: "store-5b5cb483-ddb0-4a3b-a99f-eb4f7b4f4568",
@@ -567,13 +590,16 @@ document.addEventListener("DOMContentLoaded", () => {
               let data = {
                 // request
                 imp_uid: rsp.imp_uid,
-                amount: rsp.paid_amount,
-                reservationId: 32,
+                merchantUid: rsp.merchant_uid, // merchant_uid를 포함
+                amount: Math.round(rsp.paid_amount),
+                membershipNumbers: selectedMembershipNumbers,
+                employerNo: employerNo,
+                paymentProduct: "abc",
               };
               //결제 검증
               $.ajax({
                 type: "POST",
-                url: "/payments/vertifyIamport",
+                url: "/payments/complete",
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
@@ -599,3 +625,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
 });
+
+
+  // 선택한 멤버십 번호 출력
+  console.log("선택한 멤버십 번호:", selectedMembershipNumbers);
