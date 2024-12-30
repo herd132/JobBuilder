@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class PaymentController {
 
+	@Autowired
     private final PaymentService service;
+	
+
+
 
     // 기본 페이지
     @GetMapping("")
@@ -37,6 +42,11 @@ public class PaymentController {
         return "payments/testpay";
     }
     
+    @GetMapping("test3")
+    public String showTestPage3() {
+        return "payments/test3";
+    }
+    
 
     @PostMapping("/details")
     @ResponseBody
@@ -47,14 +57,8 @@ public class PaymentController {
         return response;
     }
     
-    @PostMapping("/default")
-    @ResponseBody
-    public Map<String, Object> getMembershipDefault(@SessionAttribute("loginEmployer") Employer loginEmployer) {
-        Map<String, Object> response = new HashMap<>();
-        List<Membership> membershipDetails = service.getMembershipDetails(loginEmployer.getEmployerNo());
-        response.put("membershipDetails", membershipDetails);
-        return response;
-    }
+    
+    
 
 
 

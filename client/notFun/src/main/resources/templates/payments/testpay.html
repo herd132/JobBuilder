@@ -9,6 +9,8 @@
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/payments/testpay.css">
   <link rel="stylesheet" href="/css/payments/payments.css">
+
+
 </head>
 
 
@@ -30,68 +32,15 @@
         <hr>
       </h1>
 
-      <h3 class="payments-subtitle">상품 정보
-        <hr>
-      </h3>
-      <div id="findrecipe-addpart" class="findrecipe-addpart">
-
-      </div>
-      <div class="btn-area">
-      <button id="add-ingredient-btn" class="add-product-btn"> + </button>
-     </div>
-
-
-
-
-
-
-
-      <h3 class="payments-subtitle">변경 되는 정보
-        <hr>
-      </h3>
-
-      현재 회원 정보
-
-      <div id="details-container"></div>
-
-      <h3 class="payments-subtitle">최종 결제 금액
-        <hr>
-      </h3>
-      <div class="payments-expense-bgr">
-        <div class="payments-expense-center">
-          <div class="payments-expense-title">
-            <h3>상품명</h3>
-            <p>플레티넘 맴버십 이용권</p>
-          </div>
-
-          <div class="payments-expense-date">
-            <h3>기간</h3>
-            <p>1개월</p>
-          </div>
-
-          <div class="payments-expense-price">
-            <h3>금액</h3>
-            <p class="fst-price">30,000원</p>
-          </div>
-        </div>
-
-        <div class="payments-expense-result">
-          <h1>합계 : 120,000원</h1>
-        </div>
+      <div style="height: 300px;" id="finalResult">
+      <button id="button">Pay now</button>
       </div>
 
+      
 
 
 
-      <div class="payments-inside">
-        <div class="payments-inside-middle-item">
-          <button id="goldBtn" class="payments-btn-after">결제하기</button>
-        </div>
 
-        <div class="payments-inside-middle-item">
-          <button id="platinumBtn" class="payments-btn-after" onclick="location.href='/payments';"
-            style="cursor:pointer;">취소하기</button>
-        </div>
       </div>
 
 
@@ -103,8 +52,10 @@
   <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
   <th:block th:replace="~{common/main-footer}"></th:block>
 
-  <script src="/js/payments/testpay.js"></script>
 
+
+  <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+  <script src="/js/payments/test3.js"></script>
 </body>
 
 </html>
