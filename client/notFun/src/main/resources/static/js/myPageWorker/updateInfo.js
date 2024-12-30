@@ -423,8 +423,7 @@ let previousFile = null; // 이전에 선택된 파일 객체 저장
 
 // 이미지 선택 시 미리보기 및 파일 크기 검사
 imageInput.addEventListener("change", () => {
-  console.log(imageInput.files);
-  
+    
   const file = imageInput.files[0];
   
   if (file) {
@@ -482,7 +481,7 @@ updateform.addEventListener("submit", async (e) => {
   const formData = new FormData();
 
   // 3. 일반 입력 데이터 추가
-  formData.append('workerAddress', document.querySelectorAll("[name='workerAddress']")); //주소
+  formData.append('postcode', document.querySelectorAll("[name='workerAddress']")); //주소
   formData.append('memberTel', document.getElementById("memberTel").value); // 전화번호
   formData.append('workerMbti', document.getElementById("workerMbti").value); // MBTI
   formData.append('memberEmail', document.getElementById("memberEmail").value); // 이메일
