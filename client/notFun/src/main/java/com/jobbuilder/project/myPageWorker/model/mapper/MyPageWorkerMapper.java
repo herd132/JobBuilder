@@ -1,5 +1,7 @@
 package com.jobbuilder.project.myPageWorker.model.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.jobbuilder.project.worker.model.dto.Worker;
@@ -19,7 +21,17 @@ public interface MyPageWorkerMapper {
 	 */
 	int checkMemberTel(String memberTel);
 
+	/** 현재 비밀번호 확인
+	 * @param memberNo
+	 * @return
+	 */
 	String checkPwSet(int memberNo);
+
+	/** 비밀번호 변경
+	 * @param paramMap
+	 * @return
+	 */
+	int workerChangePw(Map<String, Object> paramMap);
 
 
 	
