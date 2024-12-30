@@ -52,6 +52,15 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		Employer business = mapper.getBusiness(employerNo);
 		List<BusinessWorktype> businessWorktypeList = mapper.getBusinessWorktype(employerNo);
 		
+		String businessWorktype = "";
+		
+		for(int i=0; i<businessWorktypeList.size(); i++) {
+			if(i != 0) businessWorktype += ", ";
+			businessWorktype += businessWorktypeList.get(i).getWorktypeCategory();
+		}
+		
+		business.setBusinessWorktype(businessWorktype);
+		
 		return business;
 	}
 	
