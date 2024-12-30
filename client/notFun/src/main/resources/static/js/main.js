@@ -57,6 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   // 모달 닫기
   closeBtn.addEventListener('click', () => {
+      chattingSock.close;
       chatbotModal.classList.remove('active');
   });
 
@@ -182,7 +183,7 @@ document.addEventListener('DOMContentLoaded', () => {
     .then(resp => resp.json())
     .then(chattingRoom => {
 
-      if( chattingRoom != null ) {
+      if( chattingRoom == null ) {
         alert("에러발생")
         return;
       }
@@ -194,6 +195,18 @@ document.addEventListener('DOMContentLoaded', () => {
       selectTargetNo = chattingRoom.targetNo;
       selectChattingNo = chattingRoom.chattingRoomNo;
       inputField.readOnly = null;
+
+      chattingSock.onclose = () => {
+        addMessage('user', '실패');
+      }
+
+      chattingSock.onmessage = (e) => {
+
+        const msg = JSON.parse(e.data);
+
+        console.log(msg);
+        addMessage('bot', msg.messageContent);
+      }
     });
   }
 
@@ -244,22 +257,22 @@ const sendMessage = () => {
 }
 
 // 소켓에서 일어나는 메세지 송수신 이벤트
-chattingSock.onmessage = function (e) {
-	// 메소드를 통해 전달받은 객체값을 JSON객체로 변환해서 obj 변수에 저장.
-	const msg = JSON.parse(e.data);
-	console.log(msg);
+// chattingSock.onmessage = function (e) {
+// 	// 메소드를 통해 전달받은 객체값을 JSON객체로 변환해서 obj 변수에 저장.
+// 	const msg = JSON.parse(e.data);
+// 	console.log(msg);
 
-	// 현재 채팅방을 보고있는 경우
-	if (selectChattingNo == msg.chattingRoomNo) {
-		const container = document.getElementById('messageContainer');
+// 	// 현재 채팅방을 보고있는 경우
+// 	if (selectChattingNo == msg.chattingRoomNo) {
+// 		const container = document.getElementById('messageContainer');
 
-			container.innerHTML += `
-					<div class="message ${msg.senderNo === loginMemberNo ? 'sent' : 'received'}">
-							<div>${msg.messageContent}</div>
-							<div class="timestamp">${msg.sendTime}</div>
-					</div>`
+// 			container.innerHTML += `
+// 					<div class="message ${msg.senderNo === loginMemberNo ? 'sent' : 'received'}">
+// 							<div>${msg.messageContent}</div>
+// 							<div class="timestamp">${msg.sendTime}</div>
+// 					</div>`
 
-			container.scrollTop = container.scrollHeight;
+// 			container.scrollTop = container.scrollHeight;
 
-	}
-}
+// 	}
+// }

@@ -39,12 +39,14 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		// TODO Auto-generated method stub
 		sessions.add(session);
+		log.info("{} 연결됨", session.getId());
 	} 
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		// TODO Auto-generated method stub
 		sessions.remove(session);
+		log.info("{} 연결끊김", session.getId());
 	}
 	
 	@Override
@@ -56,9 +58,25 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 		Map<String, String> map = objectMapper.readValue(message.getPayload(), HashMap.class);
 		
 		if( map.get("counselEnd") != null ) {
-			
-			log.info("map {}", map);
-			
+
+			for(WebSocketSession s : sessions) {
+				// 가로챈 session 꺼내기 
+				HttpSession temp = (HttpSession) s.getAttributes().get("session");
+				log.info("temp {}", temp);
+				log.info("sessions {}", sessions);
+				
+				// 로그인된 근로자 상담가 정보 중 회원 번호를 꺼내오기
+				int loginWorkerNo = ((Worker)temp.getAttribute("loginWorker")) == null ? 0 : ((Worker)temp.getAttribute("loginWorker")).getMemberNo();
+				log.info("loginWorkerNo {}", loginWorkerNo);
+				
+				// 로그인 상태인 회원 중 targetNo 또는 senderNo 일치하는 회원에게 메시지 전달
+				if(loginWorkerNo == Integer.parseInt(map.get("targetNo")) || loginWorkerNo == Integer.parseInt(map.get("targetNo"))) {
+					
+					log.info("성공유무{}",  sessions.remove(s));
+					log.info("{} 연결끊김", s.getId());
+					return;
+				}
+			}
 			return;
 		}
 		
