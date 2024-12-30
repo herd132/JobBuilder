@@ -127,26 +127,6 @@ const renderPaymentPage = (defaultType) => {
 
             <div id="product-addpart2" class="product-addpart2">
                   <div class="payments-expense-bgr">
-                    <div class="payments-expense-center">
-                      <div class="payments-expense-title">
-                        <h3>상품명</h3>
-                        <div>상세상품</div>
-                      </div>
-
-                      <div class="payments-expense-date">
-                        <h3>기간</h3>
-                        <div>상세기간</div>
-                      </div>
-
-                      <div class="payments-expense-price">
-                        <h3>금액</h3>
-                        <div><p class="fst-price">30,000원</p></div>
-                      </div>
-                    </div>
-
-                    <div class="payments-expense-result">
-                      <h1>합계 : ${sumResult}원</h1>
-                    </div>
                   </div>
             </div>
 
@@ -412,14 +392,15 @@ const setupProductSelectionHandlers = (count, productContainer) => {
   });
 };
 
+// 업데이트 컨테이너 정렬 및 항목 생성
 const updateMembershipContainer = () => {
   const beforeMembershipContainer = document.querySelector("#beforemembership");
-  const productExpenseContainer = document.querySelector("#product-addpart2"); // 새로운 출력 공간
+  const productExpenseContainer = document.querySelector("#product-addpart2"); // 새로운 영역
   const productItems = document.querySelectorAll(".product-addpart .item");
 
   // 기존 DOM 초기화
   beforeMembershipContainer.textContent = "";
-  productExpenseContainer.textContent = ""; // 새로운 출력 공간 초기화
+  productExpenseContainer.textContent = ""; // 새로운 영역 초기화
 
   // 상품 정보 배열 생성
   const membershipList = Array.from(productItems).map((item) => {
@@ -440,34 +421,89 @@ const updateMembershipContainer = () => {
   membershipList.forEach(({ membership, selectedValue, selectedDuration }) => {
     if (selectedValue === "none" || selectedDuration <= 0) return;
 
+
     const calculatedPrice = membership.price * selectedDuration;
     sumResult += calculatedPrice; // 합산
+
+    const userMembership = getMembershipDetailsByType(Number(selectedValue));
+    const upgradeMembership = getMembershipDetailsByType(2); // Upgrade 조건에 사용
+    const remainingDays = userMembership?.remainingDays || 0;
+
+    // 기간 계산
+    let calculatedDuration;
+    if (upgradeMembership && upgradeMembership.membershipType === 2 && selectedValue === "3") {
+      // Upgrade: 남은 기간 + 선택한 기간
+      calculatedDuration = `${upgradeMembership.remainingDays + selectedDuration * 30}일`;
+    } else if (selectedValue === "2" || selectedValue === "3") {
+      // 일반 기간 연장
+      calculatedDuration = `${remainingDays + selectedDuration * 30}일`;
+    } else {
+      // 기타
+      calculatedDuration = `${remainingDays + selectedDuration}일`;
+    }
+
+    // 컨테이너 생성
+    const container = document.createElement("div");
+    container.classList.add("membership-item");
+
+    // 라벨 및 내용 추가 함수
+    const addContent = (labelText, showContent = false) => {
+      const label = document.createElement("p");
+      label.textContent = labelText;
+      label.style.fontWeight = "bold";
+
+      const title = document.createElement("h4");
+      title.textContent = membership?.label || "알 수 없는 상품";
+
+      container.appendChild(label);
+      container.appendChild(title);
+
+      if (showContent) {
+        const content = document.createElement("p");
+        content.innerHTML = membership?.content || "";
+        container.appendChild(content);
+      }
+
+      const duration = document.createElement("p");
+      duration.textContent = `기간: ${calculatedDuration}`;
+      container.appendChild(duration);
+    };
+
+    // 조건에 따라 라벨 추가
+    if (upgradeMembership && upgradeMembership.membershipType === 2 && selectedValue === "3") {
+      addContent("Upgrade", true);
+    } else if (userMembership) {
+      addContent("기간연장");
+    } else {
+      addContent("New", true);
+    }
 
     // 새로운 product-addpart2에 출력
     const productContainer = document.createElement("div");
     productContainer.classList.add("payments-expense-center");
     productContainer.innerHTML = `
       <div class="payments-expense-title">
-        <h3>상품명</h3> 
         <div>${membership?.label || "알 수 없는 상품"}</div> 
       </div>
       <div class="payments-expense-date">
-        <h3>기간</h3> 
-        <div>${selectedDuration}</div> 
+        <div>${selectedDuration} 개</div> 
       </div>
       <div class="payments-expense-price">
-        <h3>금액</h3>
         <div><p class="fst-price">${calculatedPrice.toLocaleString()}원</p></div>
       </div>
     `;
-    productExpenseContainer.appendChild(productContainer);
-  });
 
-  // 최종 합계 출력
+
+
+    beforeMembershipContainer.appendChild(container);
+    productExpenseContainer.appendChild(productContainer);
+    
+  });
+  
+  // 최종 합산 금액 출력
   const sumContainer = document.createElement("div");
   sumContainer.classList.add("payments-expense-result");
   sumContainer.innerHTML = `<h1>합계 : ${sumResult.toLocaleString()}원</h1>`;
   productExpenseContainer.appendChild(sumContainer);
 };
-
 
