@@ -20,6 +20,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobbuilder.project.chatting.model.dto.Message;
 import com.jobbuilder.project.chatting.model.service.ChattingService;
 import com.jobbuilder.project.counsel.model.dto.Counselor;
+import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 import jakarta.servlet.http.HttpSession;
@@ -31,7 +32,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 public class ChatWebSocketHandler extends TextWebSocketHandler{
 	
-	private final ChattingService service = null;
+	private final ChattingService service;
 
 	private Set<WebSocketSession> sessions = Collections.synchronizedSet(new HashSet<>());
 	
@@ -47,7 +48,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 		// TODO Auto-generated method stub
 		sessions.remove(session);
 		log.info("{} 연결끊김", session.getId());
-		log.info("{} 연결끊김", session.getId());
+		// 
+		session.close(status);
+		
 	}
 	
 	@Override
@@ -61,19 +64,16 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 		if( map.get("counselEnd") != null ) {
 
 			for(WebSocketSession s : sessions) {
-				// 가로챈 session 꺼내기 
 				HttpSession temp = (HttpSession) s.getAttributes().get("session");
-				log.info("temp {}", temp);
-				log.info("sessions {}", sessions);
 				
-				// 로그인된 근로자 상담가 정보 중 회원 번호를 꺼내오기
+				// 로그인된 근로자 사업가 정보 중 회원 번호를 꺼내오기
 				int loginWorkerNo = ((Worker)temp.getAttribute("loginWorker")) == null ? 0 : ((Worker)temp.getAttribute("loginWorker")).getMemberNo();
-				log.info("loginWorkerNo {}", loginWorkerNo);
+				int loginEmployer = ((Employer)temp.getAttribute("loginEmployer")) == null ? 0 : ((Employer)temp.getAttribute("loginEmployer")).getMemberNo();
 				
-				// 로그인 상태인 회원 중 targetNo 또는 senderNo 일치하는 회원에게 메시지 전달
-				if(loginWorkerNo == Integer.parseInt(map.get("targetNo")) || loginWorkerNo == Integer.parseInt(map.get("targetNo"))) {
+				// 로그인 상태인 회원 중 targetNo 찾기
+				if(loginWorkerNo == Integer.parseInt(map.get("targetNo")) || loginEmployer == Integer.parseInt(map.get("targetNo"))) {
 					
-					afterConnectionClosed(s, new CloseStatus(1000));
+					afterConnectionClosed(s, CloseStatus.NORMAL);
 					return;
 				}
 			}
@@ -81,43 +81,41 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 		}
 		
 		Message msg = objectMapper.readValue(message.getPayload(), Message.class);
-		log.info("msg {}", msg);
 		
-		for(WebSocketSession s : sessions) {
-			s.sendMessage(message);
-		}
 		
 		
 		// DB 삽입 서비스 호출
 //		int result = service.insertMessage(msg);
-//		
+		
 //		if(result > 0) {
-//			
-//			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm");
-//			msg.setSendTime(sdf.format(new Date()));
-//			
-//			// 필드에 있는 sessions에는 접속중인 모든 회원의 세션 정보가 담겨있음
-//			for(WebSocketSession s : sessions) {
-//				
-//				// 가로챈 session 꺼내기 
-//				HttpSession temp = (HttpSession) s.getAttributes().get("session");
-//				
-//				// 로그인된 근로자 상담가 정보 중 회원 번호를 꺼내오기
-//				int loginWorkerNo = ((Worker)temp.getAttribute("loginWorker")).getMemberNo();
-//				int loginCounselorNo = ((Counselor)temp.getAttribute("loginCounselor")).getMemberNo();
-//				
-//				// 로그인 상태인 회원 중 targetNo 또는 senderNo 일치하는 회원에게 메시지 전달
-//				if(loginWorkerNo == msg.getTargetNo() || loginWorkerNo == msg.getSenderNo() ||
-//						loginCounselorNo == msg.getTargetNo() || loginCounselorNo == msg.getSenderNo()) {
-//					
-//					// 다시 DTO(-> msg) 를 JSON으로 변환 (JS에 보내야하니까)
-//					String jsonData = objectMapper.writeValueAsString(msg);
-//					s.sendMessage(new TextMessage(jsonData));
-//				}
-//				
-//			}
-//			
-//			
+			
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm");
+			msg.setSendTime(sdf.format(new Date()));
+			
+			// 필드에 있는 sessions에는 접속중인 모든 회원의 세션 정보가 담겨있음
+			for(WebSocketSession s : sessions) {
+				
+				// 가로챈 session 꺼내기 
+				HttpSession temp = (HttpSession) s.getAttributes().get("session");
+				
+				// 로그인된 근로자 상담가 정보 중 회원 번호를 꺼내오기
+				int loginWorkerNo = ((Worker)temp.getAttribute("loginWorker")) == null ? 0 : ((Worker)temp.getAttribute("loginWorker")).getMemberNo();
+				int loginEmployer = ((Employer)temp.getAttribute("loginEmployer")) == null ? 0 : ((Employer)temp.getAttribute("loginEmployer")).getMemberNo();
+				int loginCounselorNo = ((Counselor)temp.getAttribute("loginCounselor")) == null ? 0 : ((Counselor)temp.getAttribute("loginCounselor")).getMemberNo();
+				
+				// 로그인 상태인 회원 중 targetNo 또는 senderNo 일치하는 회원에게 메시지 전달
+				if(loginWorkerNo == msg.getTargetNo() || loginWorkerNo == msg.getSenderNo() ||
+					loginEmployer == msg.getTargetNo() || loginEmployer == msg.getSenderNo()||
+					loginCounselorNo == msg.getTargetNo() || loginCounselorNo == msg.getSenderNo()) {
+					
+					// 다시 DTO(-> msg) 를 JSON으로 변환 (JS에 보내야하니까)
+					String jsonData = objectMapper.writeValueAsString(msg);
+					s.sendMessage(new TextMessage(jsonData));
+				}
+				
+			}
+			
+			
 //		}
 		
 	}

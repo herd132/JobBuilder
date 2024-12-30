@@ -22,8 +22,8 @@ body {
 }
 
 .logo {
-  width: 50px;
-  height: 50px;
+  width: 120px;
+  height: 60px;
 }
 
 .main-container {
@@ -66,7 +66,7 @@ body {
 
 .status-btn.active {
   background-color: #F0BB78;
-  color: #131010;
+  color : white
 }
 
 .active div {
@@ -116,10 +116,18 @@ body {
 }
 
 .end-btn {
+  width: 5rem;
+  height: 2.4rem;
   border: none;
   background-color: #543A14;
   color: white;
   border-radius: 10px;
+}
+
+.end-btn:hover {
+  cursor: pointer;
+  background-color: #543a1452;
+  transition: 0.1s;
 }
 
 .messages {
@@ -151,6 +159,7 @@ body {
   background-color: white;
   margin-right: auto;
   border: 1px solid #F0BB78;
+  word-break: break-all;
 }
 
 .message.sent {
