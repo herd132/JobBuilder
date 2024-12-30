@@ -15,24 +15,32 @@
   <!-- 로고 및 검색바 로그인 -->
   <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
 
+  <!-- 모달 영역 -->
+  <div class="modal-container hidden">
+    <div class="modal-area">
+      <button class="delete-business-btn">삭제하기</button>
+      <span class="back-info" style="cursor: pointer;">&times;</span>
+    </div>
+  </div>
+
   <div class="mypageEmpInfo-gray">
     <main class="myPageEmpInfo-white">
-      <section class="basic-info-container" th:object="${session.loginEmployer}">
 
+      <section class="basic-info-container" th:object="${session.loginEmployer}">
         <h3>회원정보</h3>
-        <div>
+        <div class="business-registration-number-area">
           <span> 사업자 등록번호 : </span>
           <span th:text="*{businessRegistrationNumber}"></span>
         </div>
-        <div>
+        <div class="membership-level-area">
           <span>멤버십 등급 :</span>
           <span th:text="*{membershipName}"></span>
         </div>
-        <div>
+        <div class="member-name-area">
           <span>대표자명 :</span>
           <span th:text="*{memberName}"></span>
         </div>
-        <div>
+        <div class="member-tel-area">
           <span>연락처 : </span>
           <span th:text="*{memberTel}"></span>
         </div>
@@ -40,11 +48,17 @@
 
       <section class="business-info-container">
         <h3>사업장 정보</h3>
+        <div><a href="/myPageEmp/addBusiness">
+          <button class="add-business-btn">사업장 추가하기</button>
+        </a></div>
         <th:block th:each="business, iterStat: ${businessList}" th:object="${business}">
-          <div th:class="|business-box${iterStat.count}|">
+          <div th:class="|business-box${iterStat.count}|" th:employerNo="*{employerNo}"
+            style="border: 1px solid black; cursor: pointer;"
+            th:onclick="businessDetailModal(this.getAttribute('employerNo'))">
+
             <div>
-              <img th:unless="*{businessImgList}" src="#" alt="이미지필요">
-              <span th:if="*{businessImgList}">등록된 사업장 이미지가 없습니다.</span>
+              <span th:if="${#lists.size(business.businessImgList) != 0}"> 이미지 있음!</span>
+              <span th:if="${#lists.size(business.businessImgList) == 0}"> 등록된 이미지가 없습니다.</span>
             </div>
             <div>
               <span>사업장위치 : </span>

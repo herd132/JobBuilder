@@ -38,24 +38,15 @@ const checkObj = {
 
 const updateform = document.querySelector(".update-form");
 
-// 주소 입력 처리 (postcode, address, detailAddress)
-const addressPostcode = document.querySelector("#postcode");
-const address = document.querySelector("#address");
-const detailAddress = document.querySelector("#detailAddress");
-
+// 주소
+const workerAddress = document.querySelectorAll("[name='memberAddress']")
 // 주소 검색 버튼 클릭 시
-document
-  .querySelector(".search-button")
-  .addEventListener("click", execDaumPostcode);
+document.querySelector(".search-button").addEventListener("click", execDaumPostcode);
 function validateAddress() {
   if (
-    (addressPostcode.value.trim() === "" &&
-      address.value.trim() === "" &&
-      detailAddress.value.trim() === "") || // 모두 비어있을 때
-    (addressPostcode.value.trim() !== "" &&
-      address.value.trim() !== "" &&
-      detailAddress.value.trim() !== "") // 모두 입력되었을 때
-  ) {
+    (addressPostcode.value.trim() === "" && address.value.trim() === "" && detailAddress.value.trim() === "") || // 모두 비어있을 때
+    (addressPostcode.value.trim() !== "" && address.value.trim() !== "" && detailAddress.value.trim() !== "") // 모두 입력되었을 때
+     ) {
     checkObj.workerAddress = true;
   } else {
     checkObj.workerAddress = false;
@@ -420,19 +411,6 @@ checkAuthKeyBtn.addEventListener("click", () => {
     });
 });
 
-// 제출 전 체크
-updateform.addEventListener("submit", (e) => {
-  validateAddress(); // 주소 유효성 검사 추가
-  // checkObj 값 중 하나라도 false이면 제출을 막는다.
-  for (let key in checkObj) {
-    if (!checkObj[key]) {
-      alert("필수 입력 칸을 모두 입력해주세요!");
-      e.preventDefault(); // 제출 중지
-      document.getElementById(key).focus(); // 첫 번째 잘못된 필드에 포커스를 둔다
-      return;
-    }
-  }
-});
 
 const imageInput = document.getElementById("imageInput"); // 파일 선택 input
 const deleteImage = document.getElementById("deleteImage"); // 이미지 삭제 버튼
@@ -446,9 +424,9 @@ let previousFile = null; // 이전에 선택된 파일 객체 저장
 // 이미지 선택 시 미리보기 및 파일 크기 검사
 imageInput.addEventListener("change", () => {
   console.log(imageInput.files);
-
+  
   const file = imageInput.files[0];
-
+  
   if (file) {
     // 파일 선택된 경우
     const newImageUrl = URL.createObjectURL(file); // 임시 URL 생성
@@ -461,7 +439,7 @@ imageInput.addEventListener("change", () => {
   } else {
     // 파일 선택이 취소된 경우
     profileImg.src = previousImage; // 이전 미리보기 이미지로 복원
-
+    
     // 파일 입력 복구 : 이전 파일이 존재하면 다시 할당
     if (previousFile) {
       const dataTransfer = new DataTransfer();
@@ -484,5 +462,53 @@ deleteImage.addEventListener("click", () => {
     // 기본 이미지 상태에서 삭제 버튼 클릭 시 상태를 변경하지 않음
     statusCheck = -1; // 변경 사항 없음 상태 유지
     checkObj.profileImg = false; // 변경 사항 없음
+  }
+});
+
+updateform.addEventListener("submit", async (e) => {
+  e.preventDefault(); // 폼 제출을 막음
+
+  // 1. 모든 유효성 검사 확인
+  validateAddress(); // 주소 유효성 검사 추가
+  for (let key in checkObj) {
+    if (!checkObj[key]) {
+      alert("필수 입력 칸을 모두 입력해주세요!");
+      document.getElementById(key).focus(); // 첫 번째 잘못된 필드에 포커스
+      return; // 유효성 검사가 실패하면 전송 중지
+    }
+  }
+
+  // 2. FormData 객체 생성
+  const formData = new FormData();
+
+  // 3. 일반 입력 데이터 추가
+  formData.append('workerAddress', document.querySelectorAll("[name='workerAddress']")); //주소
+  formData.append('memberTel', document.getElementById("memberTel").value); // 전화번호
+  formData.append('workerMbti', document.getElementById("workerMbti").value); // MBTI
+  formData.append('memberEmail', document.getElementById("memberEmail").value); // 이메일
+
+  // 4. 이미지 파일 추가
+  const imageInput = document.getElementById("imageInput");
+  if (imageInput.files[0]) {
+    formData.append('profileImg', imageInput.files[0]); // 이미지 파일
+  }
+
+  // 5. 데이터 전송
+  try {
+    const response = await fetch("/myPageWorkee/updateInfo", {
+      method: 'POST',
+      body: formData,
+    });
+
+    const result = await response.json(); // 서버 응답 처리
+
+    if (result.success) {
+      alert("업데이트되었습니다.");
+    } else {
+      alert("업데이트에 실패했습니다.");
+    }
+  } catch (error) {
+    console.error("업데이트 중 오류 발생:", error);
+    alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
   }
 });

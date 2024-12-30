@@ -26,5 +26,12 @@
     WHERE MEMBER_NO = #{memberNo}
 	</select>
 	
+	<!-- 비밀번호 변경 -->
+	<update id="workerChangePw">
+		UPDATE "MEMBER" SET
+		MEMBER_PW = #{encPw}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
+	
 	
 </mapper>

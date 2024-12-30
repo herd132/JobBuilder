@@ -1,185 +1,132 @@
-let globalMembershipList = []; // 글로벌 상태로 데이터 저장
 
-var testg = 0;
+let userMemberships = [];
 
+// 특정 Membership 데이터 가져오기 (membership.js와 연동)
+const getMembershipDetailsByType = (type) => {
+  return globalMembershipList.find((membership) => membership.membershipType === type);
+};
+
+
+
+// defaultType을 반환하는 함수
+const getDefaultTypeValue = (defaultType, selectedValue) => {
+  return defaultType ?? selectedValue ?? "none";
+};
+
+const membershipOptions = [
+  {
+    value: "2",
+    label: "골드 이용권",
+    content: "✔ 공고 일일 100건 등록<br>✔ 이력서 열람 300건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람",
+    price: 30000,
+  },
+  {
+    value: "3",
+    label: "플래티넘 이용권",
+    content: "✔ 공고 일일 300건 등록<br>✔ 이력서 열람 무제한<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람<br>✔ 공고 즉시 등록<br>✔ 이력서 추천 기능",
+    price: 50000,
+  },
+  {
+    value: "4",
+    label: "급구 이용권",
+    content: "급구 알바 페이지 상단 노출<br>공고 즉시 게시",
+    price: 3000,
+  },
+  {
+    value: "5",
+    label: "Hot 이용권",
+    content: "공고에 HOT 표시를 붙여 노출<br>공고 즉시 게시",
+    price: 3000,
+  },
+];
+
+var sumResult = 0;
+
+// 옵션 태그 생성 함수
+const generateOptionTags = (defaultType) => {
+  return membershipOptions
+    .map(
+      (option) => `
+      <option value="${option.value}" ${
+        getDefaultTypeValue(defaultType, null) === Number(option.value)
+          ? "selected"
+          : ""
+      }>
+        ${option.label}
+      </option>`
+    )
+    .join("");
+};
+
+
+
+// 페이지 렌더링 초기화
 document.addEventListener("DOMContentLoaded", () => {
-  
-  // 모든 버튼 초기화 함수
-  const resetStatus = () => {
-    const resetButtons = document.querySelectorAll('[name="gradeStatus"]');
-    resetButtons.forEach((button) => {
-      button.classList.remove("payments-btn-now", "payments-btn-after");
-      button.classList.add("payments-btn-after");
-      button.innerHTML = "시작하기";
-    });
-  };
-
-  // employerNo 가져오기
-  const employerNoMeta = document.querySelector('meta[name="employerNo"]');
-  const employerNo = employerNoMeta?.content || null;
-
-  // 맴버십 정보 초기화
-  const initializeMembershipStatus = () => {
-    if (!employerNo) {
-      resetStatus();
-      return;
-    }
-
-    fetch(`/payments/details`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ employerNo: employerNo }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const membershipList = data.membershipDetails;
-        if (!membershipList || !Array.isArray(membershipList)) return;
-
-        globalMembershipList = membershipList; // 글로벌 상태에 저장
-        updateMembershipUI(membershipList);
-      })
-      .catch((error) =>
-        console.error("Error fetching membership details:", error)
-      );
-  };
-
-  // 맴버십 UI 업데이트
-  const updateMembershipUI = (membershipList) => {
-    resetStatus();
-    membershipList.forEach((membership) => {
-      const { membershipType, remainingDays } = membership;
-
-      if (membershipType == 2) {
-        const goldElement = document.querySelector("#gold");
-        goldElement.classList.add("payments-btn-after");
-        goldElement.innerHTML = `${remainingDays}일 남음`;
-      } else if (membershipType == 3) {
-        const goldElement = document.querySelector("#gold");
-        goldElement.classList.add("payments-btn-now");
-        goldElement.innerHTML = "이미 적용중인 혜택";
-
-        const goldContainer = document.querySelector(
-          "#goldMembershipContainer"
-        );
-        if (goldContainer) {
-          goldContainer.style.pointerEvents = "none";
-        }
-
-        const platinumElement = document.querySelector("#platinum");
-        platinumElement.classList.add("payments-btn-after");
-        platinumElement.innerHTML = `${remainingDays}일 남음`;
-      } else if (membershipType == 4) {
-        const plus1Element = document.querySelector("#plus1");
-        plus1Element.classList.add("payments-btn-after");
-        plus1Element.innerHTML = `${remainingDays}일 남음`;
-      } else if (membershipType == 5) {
-        const plus2Element = document.querySelector("#plus2");
-        plus2Element.classList.add("payments-btn-after");
-        plus2Element.innerHTML = `${remainingDays}일 남음`;
-      }
-    });
-  };
-
-  // 초기 맴버십 상태 초기화
-  initializeMembershipStatus();
-
-  // 클릭 이벤트 처리
   document.querySelectorAll('[name="paymentsClick"]').forEach((element) => {
     element.addEventListener("click", () => {
-      const membershipType = element.getAttribute("data-membership-type");
-      if (membershipType) {
-        payment(Number(membershipType));
-      } else {
-        console.error("Membership type not found for clicked element.");
-      }
+      const defaultType = Number(element.getAttribute("data-default-type")); // 기본 타입 가져오기
+      payment(defaultType); // 초기값 렌더링
     });
   });
+});
 
-  // payment 함수
-  const payment = (membershipType) => {
-    // `employerNo`가 없으면 데이터 초기화 없이 페이지를 렌더링
-    if (!employerNo) {
-      renderPaymentPage(membershipType, null);
-      return;
-    }
-      renderPaymentPage(membershipType, globalMembershipList);
-  };
+// Payment 처리 함수
+const payment = (defaultType) => {
+  renderPaymentPage(defaultType); // 기본 타입을 기준으로 렌더링
+};
 
-  // 페이지 렌더 함수
-  const renderPaymentPage = (membershipType) => {
-    const backgroundElement = document.querySelector("#background");
+// 페이지 렌더 함수
+const renderPaymentPage = (defaultType) => {
+  const backgroundElement = document.querySelector("#background");
 
-    const count = globalMembershipList.find((num) => num === 1);
-    const membershipDetailsHtml = generateMembershipDetailsHtml(
-      globalMembershipList,
-      count
-    );
+  // 로그인된 사용자 Membership 정보 가져오기
+  const userMemberships = globalMembershipList; 
 
-    console.log(globalMembershipList);
+  // 로그인된 사용자 정보 HTML
+  const membershipDetailsHtml = userMemberships.length
+    ? userMemberships
+        .map(
+          (membership) => `
+        <div class="membership-item">
+          <h3>${membership.membershipName}</h3>
+          <p>${membership.membershipContent}</p>
+          <p>남은 기간: ${membership.remainingDays}일</p>
+        </div>
+      `
+        )
+        .join("")
+    : `<p>로그인된 회원의 맴버십 정보를 찾을 수 없습니다.</p>`;
 
-    backgroundElement.innerHTML = `
-            <h1 class="payments-t-title">결제 서비스
-                <hr>
-            </h1>
-    
-            <h3 class="payments-t-subtitle">상품 정보
-                <hr>
-            </h3>
-            <div id="product-addpart" class="product-addpart"></div>
-            <div class="btn-area">
-            <button id="add-product-btn" class="add-product-btn"> + </button>
-            </div>
-
-            <h3 class="payments-t-subtitle">변경 되는 정보
-                <hr>
-            </h3>
-            <div class="details-container">
-                <div>
-                    <p>기존</p><br>
-                    <div class="afteremembership">
-                            ${
-                                globalMembershipList.length > 0 && 
-                                globalMembershipList.some(membership => membership.membershipType !== 1)
-                                    ? membershipDetailsHtml
-                                    : "✔ 공고 일일 30건 등록<br>✔ 이력서 열람 100건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람"
-                                }
-                    </div>
-                </div>
-    →
-                <div>
-                    <p>변경</p><br>
-                    <div class="beforemembership" id="beforemembership">
-                    
-                    </div>
-                </div>
-            </div>
-    
-            <h3 class="payments-t-subtitle">최종 결제 금액
+  // 최초 렌더링
+  backgroundElement.innerHTML = `
+      <h1 class="payments-t-title">결제 서비스<hr></h1>
+      <h3 class="payments-t-subtitle">상품 선택<hr></h3>
+      <div id="product-addpart" class="product-addpart"></div>
+      <div class="btn-area">
+          <button id="add-product-btn" class="add-product-btn"> + </button>
+      </div>
+      <h3 class="payments-t-subtitle">상세 정보<hr></h3>
+      <div class="details-container">
+          <div>
+              <p>기존</p><br>
+              <div class="afteremembership" id="after-membership">
+                  ${membershipDetailsHtml} <!-- 로그인된 사용자 정보 -->
+              </div>
+          </div>
+          →
+          <div>
+              <p>변경</p><br>
+              <div class="beforemembership" id="beforemembership">
+                  <!-- 동적으로 추가될 영역 -->
+              </div>
+          </div>
+      </div>
+      <h3 class="payments-t-subtitle">최종 결제 금액
                 <hr>
             </h3>
 
             <div id="product-addpart2" class="product-addpart2">
                   <div class="payments-expense-bgr">
-                    <div class="payments-expense-center">
-                      <div class="payments-expense-title">
-                        <h3>상품명</h3>
-                        <p>${testg}</p>
-                      </div>
-
-                      <div class="payments-expense-date">
-                        <h3>기간</h3>
-                        <p>1개월</p>
-                      </div>
-
-                      <div class="payments-expense-price">
-                        <h3>금액</h3>
-                        <p class="fst-price">30,000원</p>
-                      </div>
-                    </div>
-
-                    <div class="payments-expense-result">
-                      <h1>합계 : test</h1>
-                    </div>
                   </div>
             </div>
 
@@ -193,502 +140,370 @@ document.addEventListener("DOMContentLoaded", () => {
                         style="cursor:pointer;">취소하기</button>
                 </div>
             </div>
-        `;
+  `;
 
-    // 초기 상품 추가
-    const productContainer = document.querySelector("#product-addpart");
-    const productGroup = document.createElement("div");
-    productGroup.classList.add("product-addpart");
-    productGroup.id = `div-${membershipType}`;
-    productGroup.innerHTML = `
-            <div class="item">
-                <form>
-                    <select id="productTitle-${count}" class="test4">
-                        <option value="none">=== 선택 ===</option>
-                        <option value="2" ${
-                          membershipType == 2 ? "selected" : ""
-                        }>골드 이용권</option>
-                        <option value="3" ${
-                          membershipType == 3 ? "selected" : ""
-                        }>플레티넘 이용권</option>
-                        <option value="4" ${
-                          membershipType == 4 ? "selected" : ""
-                        }>급구 이용권</option>
-                        <option value="5" ${
-                          membershipType == 5 ? "selected" : ""
-                        }>Hot 이용권</option>
-                    </select>
-                </form>
-                <form>
-                    <select name="productDate-${count}" class="test5">
-                        <option value="none">=== 선택 ===</option>
-                        ${Array.from(
-                          { length: 12 },
-                          (_, i) =>
-                            `<option value="${i + 1}" ${
-                              i + 1 === 1 ? "selected" : ""
-                            }>${i + 1}개월</option>`
-                        ).join("")}
-                        <option value="24">24개월</option>
-                        <option value="36">36개월</option>
-                    </select>
-                </form>
-                <div style="magin-left: 10rem;">1</div>
-            </div>`;
-    productContainer.appendChild(productGroup);
+  initializeDefaultProduct(defaultType);
+  console.log("초기 렌더링 완료:", { defaultType });
+  updateMembershipContainer();
+};
 
+// 초기 상품 추가 및 동적 옵션 연결
+const initializeDefaultProduct = (defaultType) => {
+  const productContainer = document.querySelector("#product-addpart");
 
-    handleDynamicButtons();
-  };
-  
-// 동적 버튼 연결 처리 함수
-const handleDynamicButtons = () => {
-   const productContainer = document.querySelector("#product-addpart");
+  const productGroup = createProductGroup(defaultType, 0, true); // 기본 타입과 첫 번째 상품 ID
+  productContainer.appendChild(productGroup);
 
-    // beforeMembershipContainer 업데이트 함수
-    const updateBeforeMembershipContainer = () => {
-      const beforeMembershipContainer = document.querySelector(".beforemembership");
-      beforeMembershipContainer.innerHTML = ""; // 초기화
+  setupProductSelectionHandlers(0, productContainer); // 초기 상품에 핸들러 추가
+  setupDynamicProductButtons();
+  updateMembershipContainer();
+};
+// 상품 그룹 생성 함수
+const createProductGroup = (defaultType, id, isDefault = false) => {
+  const productGroup = document.createElement("div");
+  productGroup.classList.add("product-addpart");
+  productGroup.id = `div-${id}`;
 
-      // 현재 product-addpart에 있는 항목을 기반으로 beforeMembershipContainer 구성
-      const productItems = document.querySelectorAll(".product-addpart .item");
-      productItems.forEach((item) => {
-        const selectedValue = item.querySelector("select.test4").value;
-        const selectedValue2 = item.querySelector("select.test5").value;
-        
-        
-        if (selectedValue === "none") return; // 선택되지 않은 항목은 무시
-
-        let newDiv = document.createElement("div");
-        newDiv.setAttribute("data-value", selectedValue);
-
-        let newDiv2 = document.querySelector("#product-addpart2");
-        const testm = globalMembershipList.find(
-          (membership) => membership.membershipType === Number(selectedValue)
-        );
-
-        testg=2;
-        let result = selectedValue > 3 
-              ? Number(selectedValue2) + testm.remainingDays + "일"
-              : Number(selectedValue2) * 30 + testm.remainingDays + "일";
-        
-        if (isNaN(selectedValue2)) {result = '대기';}
-            
-              switch (selectedValue) {
-                  case "2":
-                    testg=2;
-                    newDiv.innerHTML = `
-                        <div class="test3">
-                            <div class="test4">
-                                <p>골드 맴버십 이용권</p>
-                                <p>✔ 공고 일일 100건 등록<br>
-                                    ✔ 이력서 열람 300건<br>
-                                    ✔ 키워드 이력서 검색<br>
-                                    ✔ 이력서 상세 정보 열람</p>
-                            </div>
-                            <p>남은 기간: ${result}</p>
-                        </div>`;
-                    
-                        newDiv2.innerHTML = `
-                        <div id="product-addpart2" class="product-addpart2">
-       <div class="payments-expense-bgr">
-         <div class="payments-expense-center">
-           <div class="payments-expense-title">
-             <h3>상품명</h3>
-             <p>${testg}</p>
-           </div>
-
-           <div class="payments-expense-date">
-             <h3>기간</h3>
-             <p>1개월</p>
-           </div>
-
-           <div class="payments-expense-price">
-             <h3>금액</h3>
-             <p class="fst-price">30,000원</p>
-           </div>
-         </div>
-
-         <div class="payments-expense-result">
-           <h1>합계 : test</h1>
-         </div>
-       </div>
- </div>`;
-
-
-                    break;
-                  case "3":
-                    testg=3;
-                    newDiv.innerHTML = `
-                        <div class="test3">
-                            <div class="test4">
-                                <p>플레티넘 맴버십 이용권</p>
-                                <p>✔ 공고 일일 300건 등록<br>
-                                    ✔ 이력서 열람 무제한<br>
-                                    ✔ 키워드 이력서 검색<br>
-                                    ✔ 이력서 상세 정보 열람<br>
-                                    ✔ 공고 즉시 등록<br>
-                                    ✔ 이력서 추천 기능</p>
-                            </div>
-                            
-                            <p>남은 기간: ${result}</p>
-                            </div>`;
-
-                            newDiv2.innerHTML = `
-                                   <div id="product-addpart2" class="product-addpart2">
-                  <div class="payments-expense-bgr">
-                    <div class="payments-expense-center">
-                      <div class="payments-expense-title">
-                        <h3>상품명</h3>
-                        <p>${testg}</p>
-                      </div>
-
-                      <div class="payments-expense-date">
-                        <h3>기간</h3>
-                        <p>1개월</p>
-                      </div>
-
-                      <div class="payments-expense-price">
-                        <h3>금액</h3>
-                        <p class="fst-price">30,000원</p>
-                      </div>
-                    </div>
-
-                    <div class="payments-expense-result">
-                      <h1>합계 : test</h1>
-                    </div>
-                  </div>
-            </div>`;
-
-
-                    break;
-                    
-                  case "4":
-                    testg=4;
-                    newDiv.innerHTML = `
-                                    <div class="test3">
-                            <div class="test4"><p>급구 플러스 이용권</p>
-                        급구 알바 페이지 상단 노출<br>
-                        공고 즉시 게시<br>
-                        7일 이상 구매 시 20% 할인</p>
-                            </div>
-                            <p>남은 기간: ${result}</p>
-                            </div>`;
-
-                            newDiv2.innerHTML = `
-                            <div id="product-addpart2" class="product-addpart2">
-           <div class="payments-expense-bgr">
-             <div class="payments-expense-center">
-               <div class="payments-expense-title">
-                 <h3>상품명</h3>
-                 <p>${testg}</p>
-               </div>
-
-               <div class="payments-expense-date">
-                 <h3>기간</h3>
-                 <p>1개월</p>
-               </div>
-
-               <div class="payments-expense-price">
-                 <h3>금액</h3>
-                 <p class="fst-price">30,000원</p>
-               </div>
-             </div>
-
-             <div class="payments-expense-result">
-               <h1>합계 : test</h1>
-             </div>
-           </div>
-     </div>`;
-
-
-
-                    break;
-                  case "5":
-                    newDiv.innerHTML = `
-                                    <div class="test3">
-                            <div class="test4"><p>Hot 플러스 이용권</p>
-                        급구 HOT 표시를 붙여 노출<br>
-                        공고 즉시 게시<br>
-                        7일 이상 구매 시 20% 할인</p>
-                            </div>
-                            <p>남은 기간: ${result}</p>
-                            </div>`;
-                    break;
-                  default:
-                    newDiv.innerHTML = `<p>선택된 멤버십이 없습니다.</p>`;
-                    break;
-      
-              }
-
-              
-        beforeMembershipContainer.appendChild(newDiv);
-      });
-    };
-  
-    document.querySelector("#add-product-btn").addEventListener("click", () => {
-        const count = document.querySelectorAll(".product-addpart .item").length;
-      
-        if (count >= 3) {
-          alert("더 이상 추가할 수 없습니다. 최대 3개의 상품만 선택 가능합니다.");
-          return;
-        }
-      
-        const productGroup = document.createElement("div");
-        productGroup.classList.add("product-addpart");
-        productGroup.id = `div-${count}`;
-        productGroup.innerHTML = `
-          <div class="item">
-              <form>
-                  <select id="productTitle-${count}" class="test4">
-                      <option value="none" selected>=== 선택 ===</option>
-                      <option value="2">골드 이용권</option>
-                      <option value="3">플래티넘 이용권</option>
-                      <option value="4">급구 이용권</option>
-                      <option value="5">Hot 이용권</option>
-                  </select>
-              </form>
-              <form>
-                  <select id="productDate-${count}" class="test5">
-                      <option value="none">=== 선택 ===</option>
-                      ${Array.from(
-                        { length: 12 },
-                        (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
-                      ).join("")}
-                      <option value="24">24개월</option>
-                      <option value="36">36개월</option>
-                      <option value="custom">직접입력</option>
-                  </select>
-              </form>
-              <button data-id="${count}" class="delete-btn">-</button>
-          </div>`;
-        productContainer.appendChild(productGroup);
-      
-
-        // 상품 선택 확인
-        const productDateElement = document.querySelector(`#productDate-${count}`);
-        productDateElement.addEventListener("change", (event) => {
-            const productTitleElement = document.querySelector(`#productTitle-${count}`);
-            if (!productTitleElement || productTitleElement.value === "none") {
-                alert("상품을 먼저 선택하세요.");
-                event.target.value = "none"; // 선택 초기화
-                return;
-            }
-        });
-
-        // 조건문 추가: productTitle 값이 변경될 때 처리
-        document.querySelector(`#productTitle-${count}`).addEventListener("change", (event) => {
-          const selectedValue = event.target.value;
-          const productDateElement = document.querySelector(`#productDate-${count}`);
-          const customInputId = `custom-date-${count}`;
-      
-
-          if (selectedValue >= 4) {
-            // 급구 이용권 또는 Hot 이용권 선택 시 일수 옵션으로 변경
-            productDateElement.innerHTML = `
+  productGroup.innerHTML = `
+    <div class="item" data-default="${isDefault}">
+      <form>
+          <select id="productTitle-${id}" class="showItem">
+              <option value="none" ${
+                getDefaultTypeValue(defaultType, null) === "none"
+                  ? "selected"
+                  : ""
+              }>=== 선택 ===</option>
+              ${generateOptionTags(defaultType)}
+          </select>
+      </form>
+      <form>
+          <select id="productDate-${id}" class="showDate">
               <option value="none">=== 선택 ===</option>
-              ${Array.from(
-                { length: 10 },
-                (_, i) => `<option value="${i + 1}">${i + 1}일</option>`
-              ).join("")}
-              <option value="20">20일</option>
-              <option value="30">30일</option>
-              <option value="custom">직접입력</option>
-            `;
-          } else {
-            // 기본 개월수 옵션으로 복구
-            productDateElement.innerHTML = `
-              <option value="none">=== 선택 ===</option>
-              ${Array.from(
-                { length: 12 },
-                (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
-              ).join("")}
+              ${Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`).join("")}
               <option value="24">24개월</option>
               <option value="36">36개월</option>
               <option value="custom">직접입력</option>
-            `;
-          }
-      
-          // 기존에 남아있는 인풋박스 제거
-          const existingCustomInput = document.querySelector(`#${customInputId}`);
-          if (existingCustomInput) {
-            existingCustomInput.remove();
-          }
-      
-          // 직접입력 선택 시 동작
-          productDateElement.addEventListener("change", (e) => {
-            // 먼저 상품 선택 여부 확인
-            const productTitleElement = document.querySelector(`#productTitle-${count}`);
-            if (productTitleElement.value === "none") {
-                alert("상품을 먼저 선택하세요.");
-                productDateElement.value = "none"; // 선택 초기화
-                return;
-            }
-    
-            const customInput = document.querySelector(`#${customInputId}`);
-            if (e.target.value === "custom") {
-                if (!customInput) {
-                    // 인풋박스 생성
-                    const newCustomInput = document.createElement("input");
-                    newCustomInput.type = "number";
-                    newCustomInput.placeholder =
-                        selectedValue >= 4 ? "직접 입력 (일)" : "직접 입력 (개월)";
-                    newCustomInput.id = customInputId;
-                    newCustomInput.setAttribute("data-id", count); // data-id 추가
-                    newCustomInput.addEventListener("input", () => {
-                        productDateElement.setAttribute("data-custom-value", newCustomInput.value);
-                    });
-    
-                    e.target.parentNode.appendChild(newCustomInput);
-                }
-            } else {
-                // 다른 옵션 선택 시 기존 `custom-date` 제거
-                if (customInput) {
-                    customInput.remove();
-                }
-            }
-        });
+          </select>
+      </form>
+      <button 
+          data-id="${id}" 
+          class="delete-btn" 
+          style="opacity: ${isDefault ? "0" : "1"}; pointer-events: ${isDefault ? "none" : "auto"};">
+          -
+      </button>
+    </div>
+  `;
 
+  const productTitleElement = productGroup.querySelector(`#productTitle-${id}`);
+  const productDateElement = productGroup.querySelector(`#productDate-${id}`);
 
+  const addCustomInput = (productDateElement, productTitleElement, id) => {
+    const customInputId = `custom-date-${id}`;
+    const existingCustomInput = document.querySelector(`#${customInputId}`);
 
-           
-        });
-      
-        // 삭제 버튼 동작
-        productContainer.addEventListener("click", (event) => {
-          if (event.target.classList.contains("delete-btn")) {
-              const id = event.target.getAttribute("data-id");
-              const targetDiv = document.getElementById(`div-${id}`);
+    if (productDateElement.value === "custom" && !existingCustomInput) {
+      const customInput = document.createElement("input");
+      customInput.type = "number";
+      customInput.placeholder = productTitleElement.value >= 4 ? "직접 입력 (일)" : "직접 입력 (개월)";
+      customInput.id = customInputId;
+      customInput.setAttribute("data-id", id);
 
-              if (targetDiv) {
-                  // 해당 `data-id`로 연결된 모든 요소 삭제
-                  const relatedInputs = document.querySelectorAll(`[data-id="${id}"]`);
-                  relatedInputs.forEach((input) => input.remove());
+      customInput.addEventListener("input", () => {
+        productDateElement.setAttribute("data-custom-value", customInput.value);
+      });
 
-                  targetDiv.remove();
+      // 입력값 변화 시 업데이트 및 즉시 반영
+      customInput.addEventListener("input", (e) => {
+      const value = e.target.value ? Number(e.target.value) : 0; // 숫자로 변환
+      productDateElement.setAttribute("data-custom-value", value);
+      updateMembershipContainer(); // 실시간 상태 업데이트
+      });
 
-                  // 상태 업데이트
-                  updateBeforeMembershipContainer();
-              }
-          }
-        });
-    });
-      
-    // 중복 선택 방지 및 변경 이벤트
-    productContainer.addEventListener("change", (event) => {
-        if (event.target.classList.contains("test4")) {
-          const selectedValue = event.target.value;
-  
-          // 중복 선택 방지
-          const otherSelects = document.querySelectorAll("select.test4");
-          let isDuplicate = false;
-  
-          otherSelects.forEach((select) => {
-            if (
-              select !== event.target &&
-              select.value === selectedValue &&
-              selectedValue !== "none"
-            ) {
-              isDuplicate = true;
-            }
-          });
-  
-          if (isDuplicate) {
-            alert("중복 선택은 허용되지 않습니다.");
-            event.target.value = "none";
-            return;
-          }
-  
-          // 현재 등급보다 낮은 등급 선택 방지
-          const userMembership = globalMembershipList.find(
-            (membership) => membership.membershipType === 3
-          ); // 3은 예시
-          if (
-            userMembership &&
-            parseInt(selectedValue, 10) < userMembership.membershipType
-          ) {
-            alert(
-              `현재 등급 보다 낮은 등급은 선택할 수 없습니다.`
-            );
-            event.target.value = "none";
-            return;
-          }
-  
-          // 골드(2)와 플래티넘(3) 동시 선택 방지
-          const selectedMemberships = Array.from(otherSelects).map(
-            (select) => select.value
-          );
-          if (
-            (selectedMemberships.includes("2") && selectedValue === "3") ||
-            (selectedMemberships.includes("3") && selectedValue === "2")
-          ) {
-            alert("맴버십 상품은 1개만 선택해야 합니다.");
-            event.target.value = "none";
-            return;
-          }
+      // Enter 키 입력 시 즉시 업데이트
+      customInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          e.preventDefault(); // 기본 동작 방지
+          updateMembershipContainer(); // 상태 즉시 반영
         }
+      });
 
-
-
-
-
-
-
-
-        // 해당 위치 2개 꼭 고정
-        updateBeforeMembershipContainer();
-    });
-  
-    // 추가: 페이지 초기화 시 `updateBeforeMembershipContainer` 호출
-    updateBeforeMembershipContainer();
+      productDateElement.parentNode.appendChild(customInput);
+    } else if (productDateElement.value !== "custom" && existingCustomInput) {
+      existingCustomInput.remove();
+    }
   };
-});
 
+  productDateElement.addEventListener("change", () => {
+    addCustomInput(productDateElement, productTitleElement, id); // 직접입력 추가 처리
+    updateMembershipContainer(); // 상태 업데이트
+  });
 
+  productTitleElement.addEventListener("change", () => {
+    updateMembershipContainer(); // 상품 변경 시 상태 업데이트
+  });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// 결제 페이지 렌더링 함수
-const generateMembershipDetailsHtml = (membershipList, count) => {
-  if (membershipList.length !== 0 || count !== null) {
-    return membershipList
-      .map(
-        (membership) => `
-                  <div class="test3">
-                      <div class="test4">
-                          <p>${membership.membershipName}</p>
-                          <p>${
-                            membership.membershipContent || "정보 없음"
-                          }</p>
-                      </div>
-                      <p>남은 기간: ${
-                        membership.remainingDays + "일" || "정보 없음"
-                      }</p>
-                  </div>
-                  
-                 `
-      )
-      .join("");
-  } else {
-    return `
-              <div class="afteremembership">
-                  ✔ 공고 일일 30건 등록<br>
-                  ✔ 이력서 열람 100건<br>
-                  ✔ 키워드 이력서 검색<br>
-                  ✔ 이력서 상세 정보 열람
-              </div>
-          `;
-  }
+  return productGroup;
 };
+
+// 동적 버튼 및 조건 처리 함수
+const setupDynamicProductButtons = () => {
+  const productContainer = document.querySelector("#product-addpart");
+
+  document.querySelector("#add-product-btn").addEventListener("click", () => {
+    const count = productContainer.querySelectorAll(".item").length;
+
+    if (count >= 3) {
+      alert("더 이상 추가할 수 없습니다. 최대 3개의 상품만 선택 가능합니다.");
+      return;
+    }
+
+    const productGroup = createProductGroup(null, count); // 추가 상품은 기본 타입 없음
+    productContainer.appendChild(productGroup);
+
+    // 수정된 핸들러 함수 호출 시 `productContainer` 전달
+    setupProductSelectionHandlers(count, productContainer); 
+    updateMembershipContainer(); // 상태 업데이트
+  });
+
+  productContainer.addEventListener("click", (event) => {
+    if (event.target.classList.contains("delete-btn")) {
+      const id = event.target.getAttribute("data-id");
+      const targetDiv = document.getElementById(`div-${id}`);
+
+      if (targetDiv) {
+        targetDiv.remove();
+        updateMembershipContainer(); // 상태 업데이트
+      }
+    }
+  });
+};
+
+// 상품 선택 핸들러 설정
+const setupProductSelectionHandlers = (count, productContainer) => {
+  const productDateElement = document.querySelector(`#productDate-${count}`);
+  const productTitleElement = document.querySelector(`#productTitle-${count}`);
+  const customInputId = `custom-date-${count}`;
+
+  // 기존 입력값 제거 함수
+  const removeCustomInput = () => {
+    const existingCustomInput = document.querySelector(`#${customInputId}`);
+    if (existingCustomInput) {
+      existingCustomInput.remove();
+    }
+    productDateElement.removeAttribute("data-custom-value"); // 기존 값 초기화
+  };
+
+  // 날짜 선택 변경 시 조건 처리
+  productDateElement.addEventListener("change", (event) => {
+    if (!productTitleElement || productTitleElement.value === "none") {
+      alert("상품을 먼저 선택하세요.");
+      event.target.value = "none"; // 선택 초기화
+      removeCustomInput();
+      return;
+    }
+
+    if (event.target.value !== "custom") {
+      // 직접 입력이 아닌 경우 값 초기화
+      removeCustomInput();
+    }
+
+    updateMembershipContainer();
+  });
+
+  // 상품 선택 변경 시 조건 처리
+  productTitleElement.addEventListener("change", (event) => {
+    const selectedValue = event.target.value;
+
+    if (selectedValue >= 4) {
+      // 급구 이용권 또는 Hot 이용권 선택 시 일수 옵션으로 변경
+      productDateElement.innerHTML = `
+        <option value="none">=== 선택 ===</option>
+        ${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">${i + 1}일</option>`).join("")}
+        <option value="20">20일</option>
+        <option value="30">30일</option>
+        <option value="custom">직접입력</option>
+      `;
+    } else {
+      // 기본 개월수 옵션으로 복구
+      productDateElement.innerHTML = `
+        <option value="none">=== 선택 ===</option>
+        ${Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`).join("")}
+        <option value="24">24개월</option>
+        <option value="36">36개월</option>
+        <option value="custom">직접입력</option>
+      `;
+    }
+
+    // 옵션 변경 시 입력값 초기화
+    removeCustomInput();
+    updateMembershipContainer();
+  });
+
+
+  // 중복 선택 방지 및 변경 이벤트
+  productContainer.addEventListener("change", (event) => {
+    if (event.target.classList.contains("showItem")) {
+      const selectedValue = event.target.value;
+
+      // 중복 선택 방지
+      const otherSelects = document.querySelectorAll("select.showItem");
+      let isDuplicate = false;
+
+      otherSelects.forEach((select) => {
+        if (
+          select !== event.target &&
+          select.value === selectedValue &&
+          selectedValue !== "none"
+        ) {
+          isDuplicate = true;
+        }
+      });
+
+      if (isDuplicate) {
+        alert("중복 선택은 허용되지 않습니다.");
+        event.target.value = "none";
+        return;
+      }
+
+      // 현재 등급보다 낮은 등급 선택 방지
+      const userMembership = globalMembershipList.find((membership) => membership.membershipType === 3); // 3은 예시
+      if (
+        userMembership &&
+        parseInt(selectedValue, 10) < userMembership.membershipType
+      ) {
+        alert("현재 등급보다 낮은 등급은 선택할 수 없습니다.");
+        event.target.value = "none";
+        return;
+      }
+
+      // 골드(2)와 플래티넘(3) 동시 선택 방지
+      const selectedMemberships = Array.from(otherSelects).map((select) => select.value);
+      if (
+        (selectedMemberships.includes("2") && selectedValue === "3") ||
+        (selectedMemberships.includes("3") && selectedValue === "2")
+      ) {
+        alert("맴버십 상품은 1개만 선택해야 합니다.");
+        event.target.value = "none";
+        return;
+      }
+
+      updateMembershipContainer();
+    }
+  });
+};
+
+// 업데이트 컨테이너 정렬 및 항목 생성
+const updateMembershipContainer = () => {
+  const beforeMembershipContainer = document.querySelector("#beforemembership");
+  const productExpenseContainer = document.querySelector("#product-addpart2"); // 새로운 영역
+  const productItems = document.querySelectorAll(".product-addpart .item");
+
+  // 기존 DOM 초기화
+  beforeMembershipContainer.textContent = "";
+  productExpenseContainer.textContent = ""; // 새로운 영역 초기화
+
+  // 상품 정보 배열 생성
+  const membershipList = Array.from(productItems).map((item) => {
+    const selectedValue = item.querySelector(".showItem").value;
+    const productDateElement = item.querySelector(".showDate");
+    const customDuration = Number(productDateElement.getAttribute("data-custom-value"));
+    const selectedDuration = customDuration || Number(productDateElement.value) || 0; // 숫자로 변환 및 기본값 처리
+    const membership = membershipOptions.find((option) => option.value === selectedValue);
+
+    return { membership, selectedValue, selectedDuration };
+  });
+
+  // 정렬: defaultType 기준 오름차순
+  membershipList.sort((a, b) => Number(a.selectedValue) - Number(b.selectedValue));
+
+  let sumResult = 0; // 금액 합산 변수
+
+  membershipList.forEach(({ membership, selectedValue, selectedDuration }) => {
+    if (selectedValue === "none" || selectedDuration <= 0) return;
+
+
+    const calculatedPrice = membership.price * selectedDuration;
+    sumResult += calculatedPrice; // 합산
+
+    const userMembership = getMembershipDetailsByType(Number(selectedValue));
+    const upgradeMembership = getMembershipDetailsByType(2); // Upgrade 조건에 사용
+    const remainingDays = userMembership?.remainingDays || 0;
+
+    // 기간 계산
+    let calculatedDuration;
+    if (upgradeMembership && upgradeMembership.membershipType === 2 && selectedValue === "3") {
+      // Upgrade: 남은 기간 + 선택한 기간
+      calculatedDuration = `${upgradeMembership.remainingDays + selectedDuration * 30}일`;
+    } else if (selectedValue === "2" || selectedValue === "3") {
+      // 일반 기간 연장
+      calculatedDuration = `${remainingDays + selectedDuration * 30}일`;
+    } else {
+      // 기타
+      calculatedDuration = `${remainingDays + selectedDuration}일`;
+    }
+
+    // 컨테이너 생성
+    const container = document.createElement("div");
+    container.classList.add("membership-item");
+
+    // 라벨 및 내용 추가 함수
+    const addContent = (labelText, showContent = false) => {
+      const label = document.createElement("p");
+      label.textContent = labelText;
+      label.style.fontWeight = "bold";
+
+      const title = document.createElement("h4");
+      title.textContent = membership?.label || "알 수 없는 상품";
+
+      container.appendChild(label);
+      container.appendChild(title);
+
+      if (showContent) {
+        const content = document.createElement("p");
+        content.innerHTML = membership?.content || "";
+        container.appendChild(content);
+      }
+
+      const duration = document.createElement("p");
+      duration.textContent = `기간: ${calculatedDuration}`;
+      container.appendChild(duration);
+    };
+
+    // 조건에 따라 라벨 추가
+    if (upgradeMembership && upgradeMembership.membershipType === 2 && selectedValue === "3") {
+      addContent("Upgrade", true);
+    } else if (userMembership) {
+      addContent("기간연장");
+    } else {
+      addContent("New", true);
+    }
+
+    // 새로운 product-addpart2에 출력
+    const productContainer = document.createElement("div");
+    productContainer.classList.add("payments-expense-center");
+    productContainer.innerHTML = `
+      <div class="payments-expense-title">
+        <div>${membership?.label || "알 수 없는 상품"}</div> 
+      </div>
+      <div class="payments-expense-date">
+        <div>${selectedDuration} 개</div> 
+      </div>
+      <div class="payments-expense-price">
+        <div><p class="fst-price">${calculatedPrice.toLocaleString()}원</p></div>
+      </div>
+    `;
+
+
+
+    beforeMembershipContainer.appendChild(container);
+    productExpenseContainer.appendChild(productContainer);
+    
+  });
+  
+  // 최종 합산 금액 출력
+  const sumContainer = document.createElement("div");
+  sumContainer.classList.add("payments-expense-result");
+  sumContainer.innerHTML = `<h1>합계 : ${sumResult.toLocaleString()}원</h1>`;
+  productExpenseContainer.appendChild(sumContainer);
+};
+

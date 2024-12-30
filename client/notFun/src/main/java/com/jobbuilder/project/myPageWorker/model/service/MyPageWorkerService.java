@@ -1,5 +1,7 @@
 package com.jobbuilder.project.myPageWorker.model.service;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 public interface MyPageWorkerService {
@@ -21,5 +23,13 @@ public interface MyPageWorkerService {
 	 * @return
 	 */
 	int checkPw(String currentPassword, Worker loginWorker);
+
+	/** 비밀번호 변경
+	 * @param memberNo
+	 * @param workerPw
+	 * @return
+	 */
+	int workerChangePw(int memberNo, String workerPw);
+
 
 }

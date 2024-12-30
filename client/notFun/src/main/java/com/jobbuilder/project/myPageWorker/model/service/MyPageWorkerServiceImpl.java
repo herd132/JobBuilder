@@ -1,8 +1,12 @@
 package com.jobbuilder.project.myPageWorker.model.service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.jobbuilder.project.myPageWorker.model.mapper.MyPageWorkerMapper;
 import com.jobbuilder.project.worker.model.dto.Worker;
@@ -47,4 +51,20 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService{
 		
 		return 1;
 	}
+
+	/**
+	 * 비밀번호 변경
+	 */
+	@Override
+	public int workerChangePw(int memberNo, String workerPw) {
+		String encPw = bcrypt.encode(workerPw);
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		
+		paramMap.put("encPw", encPw);
+		paramMap.put("memberNo", memberNo);
+		
+		return mapper.workerChangePw(paramMap);
+	}
+
 }
