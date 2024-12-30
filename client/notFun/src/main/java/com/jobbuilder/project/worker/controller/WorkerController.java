@@ -57,26 +57,7 @@ public class WorkerController {
 	public String findEmailPage() {
 		return "worker/workerFindEmail";
 	}
-	
-	
-	// 이메일로 아이디 찾기
-	@PostMapping("workerFindEmail")
-	public String workerFindEmailResult(Worker inputWorker, RedirectAttributes ra) {
 		
-		Worker workerFindEmail = service.workerFindEmail(inputWorker);
-		String message = null;
-		
-		if(workerFindEmail == null) {
-            message = "회원정보가 존재하지 않습니다";
-            ra.addFlashAttribute("message", message); 
-        } else {
-            ra.addFlashAttribute("workerFindEmail", workerFindEmail); 
-        }
-		
-		return "redirect:/worker/workerFindEmail";
-	}	
-	
-	
 	// 비밀번호 찾기
 	@GetMapping("workerFindPw")
 	public String workerFindPw() {
@@ -86,7 +67,7 @@ public class WorkerController {
 	// 비밀번호 변경
 	@GetMapping("workerChangePw")
 	public String workerChangePw() {
-		return "myPage/changePw";
+		return "worker/workerChangePw";
 	}
 	
 	// 비밀번호 찾기 후 변경화면 이동
@@ -213,12 +194,14 @@ public class WorkerController {
 			Worker findPw = service.workerFindPw(inputWorker);
 		    
 		    if (findPw == null) {
-		        ra.addFlashAttribute("message", "회원정보가 존재하지 않습니다");    
+		        ra.addFlashAttribute("message", "회원정보가 존재하지 않습니다"); 
+		        return "redirect:/worker/workerFindPw";   
 		    } else {
 		        session.setAttribute("findPw", findPw); // HttpSession에 저장
+		        return "redirect:/worker/workerChangePw"; 
 		    }											// 조회된 회원정보를 바뀐 페이지로 출력하기 때문에
 		    											// 세션에 실린값을 리다이렉트
-		    return "redirect:/worker/workerFindPw";                
+		                   
 		}
 	    
 	    
@@ -229,7 +212,7 @@ public class WorkerController {
 		 * @return
 		 * @author 
 		 */
-		@PostMapping("WorkerFindChangePw")
+		@PostMapping("workerChangePw")
 		public String findChangePw(HttpSession session,
 		                           @RequestParam("newPw") String newPw,
 		                           RedirectAttributes ra) {
@@ -237,7 +220,7 @@ public class WorkerController {
 		    
 		    if (findPw == null) {
 		        ra.addFlashAttribute("message", "세션이 만료되었습니다. 다시 시도해주세요.");
-		        return "redirect:/member/findPw";
+		        return "redirect:/worker/findPw";
 		    }
 		    
 		    int result = service.findChangePw(findPw.getMemberNo(), newPw);
@@ -246,25 +229,27 @@ public class WorkerController {
 		    ra.addFlashAttribute("message", message);
 		    session.removeAttribute("findPw");             // 사용 완료된 조회값을 세션에서 제거
 		    											   // 로그인화면으로 리다이렉트
-		    return "redirect:/worker/login";
+		    return "redirect:/worker/workerLogin";
 		}
 	    
-		/** 비밀번호 찾기 내 전화번호 중복검사(비동기)
-		 * @param memberTel
-		 * @return
-		 */
-		@ResponseBody
-		@GetMapping("checkMemberTel2")
-		public int checkMemberTel2(@RequestParam("memberTel") String memberTel, 
-		                           @RequestParam("memberName") String memberName) {
-			Worker inputWorker = new Worker();
-		    inputWorker.setMemberTel(memberTel);
-		    inputWorker.setMemberName(memberName);
-
-		    return service.checkMemberTel2(inputWorker);
-		}
-
 		
+
+		// 이메일로 아이디 찾기
+		@PostMapping("workerFindEmail")
+		public String workerFindEmailResult(Worker inputWorker, RedirectAttributes ra) {
+			
+			Worker workerFindEmail = service.workerFindEmail(inputWorker);
+			String message = null;
+			
+			if(workerFindEmail == null) {
+	            message = "회원정보가 존재하지 않습니다";
+	            ra.addFlashAttribute("message", message); 
+	        } else {
+	            ra.addFlashAttribute("workerFindEmail", workerFindEmail); 
+	        }
+			
+			return "redirect:/worker/workerFindEmail";
+		}	
 		
 		
 		
@@ -287,7 +272,7 @@ public class WorkerController {
 		 */
 		
 		@ResponseBody // 응답 본문으로 ( fetch ) 돌려보냄
-		@GetMapping("checkEmail") // Get요청 /member/checkEmail
+		@GetMapping("checkEmail") // Get요청 /worker/checkEmail
 		public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 			
 			
