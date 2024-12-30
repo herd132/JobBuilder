@@ -22,5 +22,13 @@ public interface ChattingMapper {
 
 	// 채팅 메세지 보내기
 	int insertMessage(Message msg);
+	
+	// 상담원 번호 얻기
+	int[] getRandomCounselorNo();
+
+	int checkChattingRoomNo(Map<String, Integer> map);
+
+	int createChattingRoom(Map<String, Integer> map);
+
 
 }

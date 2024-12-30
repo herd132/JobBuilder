@@ -4,7 +4,9 @@ import java.lang.reflect.Member;
 import java.text.SimpleDateFormat;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,12 +39,14 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		// TODO Auto-generated method stub
 		sessions.add(session);
+		log.info("{} 연결됨", session.getId());
 	} 
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		// TODO Auto-generated method stub
 		sessions.remove(session);
+		log.info("{} 연결끊김", session.getId());
 	}
 	
 	@Override
@@ -51,12 +55,39 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 
 		ObjectMapper objectMapper = new ObjectMapper();
 		
-		Message msg = objectMapper.readValue(message.getPayload(), Message.class);
+		Map<String, String> map = objectMapper.readValue(message.getPayload(), HashMap.class);
 		
-		log.info("msg : {}", msg);
+		if( map.get("counselEnd") != null ) {
+
+			for(WebSocketSession s : sessions) {
+				// 가로챈 session 꺼내기 
+				HttpSession temp = (HttpSession) s.getAttributes().get("session");
+				log.info("temp {}", temp);
+				log.info("sessions {}", sessions);
+				
+				// 로그인된 근로자 상담가 정보 중 회원 번호를 꺼내오기
+				int loginWorkerNo = ((Worker)temp.getAttribute("loginWorker")) == null ? 0 : ((Worker)temp.getAttribute("loginWorker")).getMemberNo();
+				log.info("loginWorkerNo {}", loginWorkerNo);
+				
+				// 로그인 상태인 회원 중 targetNo 또는 senderNo 일치하는 회원에게 메시지 전달
+				if(loginWorkerNo == Integer.parseInt(map.get("targetNo")) || loginWorkerNo == Integer.parseInt(map.get("targetNo"))) {
+					
+					log.info("성공유무{}",  sessions.remove(s));
+					log.info("{} 연결끊김", s.getId());
+					return;
+				}
+			}
+			return;
+		}
+		
+		Message msg = objectMapper.readValue(message.getPayload(), Message.class);
+		log.info("msg {}", msg);
+		
 		for(WebSocketSession s : sessions) {
 			s.sendMessage(message);
 		}
+		
+		
 		// DB 삽입 서비스 호출
 //		int result = service.insertMessage(msg);
 //		

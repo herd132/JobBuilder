@@ -33,4 +33,16 @@ public interface ChattingService {
 	 */
 	int updateReadFlag(Map<String, Integer> paramMap);
 
+	/**채팅 방 룸 유무 체크
+	 * @param map
+	 * @return
+	 */
+	Map<String, Integer> checkChattingRoomNo(Map<String, Integer> map);
+
+	/** 유무 체크 후 없을 시 생성
+	 * @param map
+	 * @return
+	 */
+	int createChattingRoom(Map<String, Integer> map);
+
 }
