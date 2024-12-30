@@ -28,4 +28,12 @@ public interface MyPageEmployerService {
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
 
+	/** 사업장 정보 얻어오기
+	 * @param employerNo
+	 * @return
+	 * @author JWJ
+	 */
+	Employer getBusiness(int employerNo);
+
+
 }

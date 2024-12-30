@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.service.MyPageEmployerService;
 
@@ -63,6 +64,21 @@ public class MyPageEmployerController {
 		model.addAttribute("businessList", businessList);
 		
 		return "myPageEmployer/info";
+	}
+	
+	/** 사업장 정보 얻어오기
+	 * @param employerNo
+	 * @return
+	 * @author JWJ
+	 */
+	@ResponseBody
+	@GetMapping("business")
+	public Employer getBuisness(@RequestParam("employerNo") String employerNo) {
+		
+		int empNo = Integer.parseInt(employerNo);
+		Employer employer = service.getBusiness(empNo);
+		
+		return employer;
 	}
 	
 	/** 기본정보 수정 페이지 이동(get)

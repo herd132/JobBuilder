@@ -10,9 +10,18 @@ const newEl = (tag, attr, cls) => {
 
 const modalContainer = document.querySelector(".modal-container");
 
-const businessDetailModal = (employerNo) => {
+const businessDetailModal = async (employerNo) => {
   
-  console.log(employerNo);    // fetch 때 써야함
+  console.log(employerNo);    // fetch 때 써야함, String 형임
+
+  const resp = await fetch("/myPageEmp/business?employerNo=" + employerNo);
+  console.log(resp);
+
+  if(resp.status == 200){
+    const result = await resp.json();
+    console.log(result);
+  }
+  
 
   modalContainer.classList.remove("hidden");
 
@@ -27,8 +36,6 @@ document.addEventListener("keydown", e => {
 })
 
 // 모달 탈출 2
-modalContainer.addEventListener("click", () => {
-  if(!modalContainer.classList.contains("hidden")){
-    modalContainer.classList.add("hidden");
-  }
+document.querySelector(".back-info").addEventListener("click", () => {
+  modalContainer.classList.add("hidden");
 })

@@ -43,6 +43,7 @@ public class Employer {
 	
 	/* ***** BUSINESS_WORKTYPE TABLE (사업장 업직종 해소용) ***** */
 	private List<BusinessWorktype> businessWorktypeList;
+	private String businessWorktype;
 	
 	/* ***** 사업장 이미지 있는 경우 ***** */
 	private List<BusinessImg> businessImgList;	// 사업장 이미지 리스트(최대 5개)

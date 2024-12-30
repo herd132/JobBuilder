@@ -46,4 +46,18 @@ public interface MyPageEmployerMapper {
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
 
+	/** 사업장 정보 얻어오기
+	 * @param employerNo
+	 * @return
+	 * @author JWJ
+	 */
+	Employer getBusiness(int employerNo);
+
+	/**사업장의 업직종 얻어오기
+	 * @param empNo
+	 * @return
+	 * @author JWJ
+	 */
+	List<BusinessWorktype> getBusinessWorktype(int employerNo);
+
 }

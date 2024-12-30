@@ -19,6 +19,7 @@
   <div class="modal-container hidden">
     <div class="modal-area">
       <button class="delete-business-btn">삭제하기</button>
+      <span class="back-info" style="cursor: pointer;">&times;</span>
     </div>
   </div>
 
@@ -57,7 +58,7 @@
 
             <div>
               <span th:if="${#lists.size(business.businessImgList) != 0}"> 이미지 있음!</span>
-              <span th:if="${#lists.size(business.businessImgList) == 0}"> 이미지 없음!</span>
+              <span th:if="${#lists.size(business.businessImgList) == 0}"> 등록된 이미지가 없습니다.</span>
             </div>
             <div>
               <span>사업장위치 : </span>

@@ -46,6 +46,16 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		return selectBusinessList;
 	}
 	
+	@Override	// 사업장 정보 얻어오기
+	public Employer getBusiness(int employerNo) {
+		
+		Employer business = mapper.getBusiness(employerNo);
+		List<BusinessWorktype> businessWorktypeList = mapper.getBusinessWorktype(employerNo);
+		
+		return business;
+	}
+	
+	
 	@Override	// 대분류 리스트 얻어오기
 	public List<Map<String,String>> selectMajorCategory() {
 		return mapper.selectMajorCategory();
