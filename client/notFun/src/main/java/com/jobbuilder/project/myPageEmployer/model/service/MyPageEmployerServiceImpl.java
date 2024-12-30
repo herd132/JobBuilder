@@ -1,6 +1,7 @@
 package com.jobbuilder.project.myPageEmployer.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -43,5 +44,25 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		log.debug("selectBusinessList :" + selectBusinessList);
 		
 		return selectBusinessList;
+	}
+	
+	@Override	// 사업장 정보 얻어오기
+	public Employer getBusiness(int employerNo) {
+		
+		Employer business = mapper.getBusiness(employerNo);
+		List<BusinessWorktype> businessWorktypeList = mapper.getBusinessWorktype(employerNo);
+		
+		return business;
+	}
+	
+	
+	@Override	// 대분류 리스트 얻어오기
+	public List<Map<String,String>> selectMajorCategory() {
+		return mapper.selectMajorCategory();
+	}
+	
+	@Override	// workType 가 일치한 소분류 업직종 불러오기
+	public List<Map<String, String>> selectsubCategoryList(String workTypeNo) {
+		return mapper.selectsubCategoryList(workTypeNo);
 	}
 }
