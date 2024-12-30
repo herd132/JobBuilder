@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   // 모달 닫기
   closeBtn.addEventListener('click', () => {
-      chattingSock.close;
+      chattingSock.close();
       chatbotModal.classList.remove('active');
   });
 
@@ -197,6 +197,7 @@ document.addEventListener('DOMContentLoaded', () => {
       inputField.readOnly = null;
 
       chattingSock.onclose = () => {
+        console.log("이런!");
         addMessage('user', '실패');
       }
 

@@ -214,7 +214,13 @@ document.querySelector(".end-btn").addEventListener("click",  () => {
 	};
 
 	chattingSock.send(JSON.stringify(end));
+	// chattingSock.close();
 })
+
+chattingSock.onclose = () => {
+	console.log("됐나요");
+	
+}
 
 document.addEventListener("DOMContentLoaded", () => {
 

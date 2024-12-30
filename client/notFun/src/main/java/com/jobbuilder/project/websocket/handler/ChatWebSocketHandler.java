@@ -47,6 +47,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 		// TODO Auto-generated method stub
 		sessions.remove(session);
 		log.info("{} 연결끊김", session.getId());
+		log.info("{} 연결끊김", session.getId());
 	}
 	
 	@Override
@@ -72,8 +73,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 				// 로그인 상태인 회원 중 targetNo 또는 senderNo 일치하는 회원에게 메시지 전달
 				if(loginWorkerNo == Integer.parseInt(map.get("targetNo")) || loginWorkerNo == Integer.parseInt(map.get("targetNo"))) {
 					
-					log.info("성공유무{}",  sessions.remove(s));
-					log.info("{} 연결끊김", s.getId());
+					afterConnectionClosed(s, new CloseStatus(1000));
 					return;
 				}
 			}
