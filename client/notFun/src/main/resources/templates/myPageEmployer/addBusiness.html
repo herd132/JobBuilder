@@ -12,6 +12,7 @@
 </head>
 
 <body>
+  <!-- 로고 및 검색바 로그인 -->
   <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
 
   <div class="mypageEmpInfo-gray">
@@ -43,7 +44,7 @@
       </section>
 
       <div class="add-business-container">
-        <form action="addBuisness" method="post" id="addBusinessForm">
+        <form action="addBusiness" method="post" id="addBusinessForm">
           <h4>사업장 별칭</h4>
           <div class="business-nickname">
             <input type="text" name="businessNickname" id="businessNickname" placeholder="ex) 본점, 서울 구로점">
@@ -124,6 +125,7 @@
     </main>
   </div>
 
+  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
 
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="/js/myPageEmployer/addBusiness.js"></script>
