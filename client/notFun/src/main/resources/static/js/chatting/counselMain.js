@@ -1,6 +1,11 @@
 let selectChattingNo; // 선택한 채팅방 번호
 let selectTargetNo; // 현재 채팅 대상
 let selectTargetName; // 대상의 이름
+let endfl = 'N';
+
+const messageInput = document.getElementById("messageInput");
+const counseling = document.querySelector(".counseling");
+const complete = document.querySelector(".complete");
 
 // 채팅방 전체에 이벤트 추가
 function roomListAddEvent() {
@@ -8,7 +13,6 @@ function roomListAddEvent() {
 
 	for (let item of chattingItemList) {
 		item.addEventListener("click", e => {
-
 
 			// 액티브 클래스 없애기
 			document.querySelectorAll('.chat-item').forEach(item => {
@@ -28,6 +32,9 @@ function roomListAddEvent() {
 				item.children[0].children[1].remove();
 			}
 
+			if (item.getAttribute("end-fl") == 'N' ) messageInput.disabled = null;
+			else messageInput.disabled = true;
+
 			// 비동기로 메세지 목록을 조회하는 함수 호출
 			selectChattingFn();
 		});
@@ -40,7 +47,6 @@ function selectRoomList(){
 	fetch("/chat/roomList")
 	.then(resp => resp.json())
 	.then(roomList => {
-		console.log(roomList);
 
 		// 채팅방 목록 출력 영역 선택
 		const chatUsers = document.querySelector("#chatUsers");
@@ -50,11 +56,14 @@ function selectRoomList(){
 
 		// 조회한 채팅방 목록을 화면에 추가
 		for(let room of roomList){
+
+			if(room.chattingRoomEndFl != endfl) continue;
 			
 			const chatItem = document.createElement("div");
 			chatItem.classList.add("chat-item");
 			chatItem.setAttribute("chat-no", room.chattingRoomNo);
 			chatItem.setAttribute("target-no", room.targetNo);
+			chatItem.setAttribute("end-fl", room.chattingRoomEndFl);
 
 			if(room.chattingRoomNo == selectChattingNo){
 				chatItem.classList.add("active");
@@ -161,7 +170,6 @@ if (loginMemberNo != "") {
 
 // 전송 시 이벤트
 const sendMessage = () => {
-	const messageInput = document.getElementById("messageInput");
 
 	if (messageInput.value.trim().length == 0) {
 		alert("채팅을 입력해주세요.");
@@ -180,8 +188,6 @@ const sendMessage = () => {
 		messageInput.value = "";
 	}
 }
-
-
 
 // 소켓에서 일어나는 메세지 송수신 이벤트
 chattingSock.onmessage = function (e) {
@@ -206,6 +212,7 @@ chattingSock.onmessage = function (e) {
 	selectRoomList();
 }
 
+// 상담종료 버튼 클릭 시 상대방 소켓 연결 종료 요청
 document.querySelector(".end-btn").addEventListener("click",  () => {
 
 	var end = {
@@ -214,13 +221,25 @@ document.querySelector(".end-btn").addEventListener("click",  () => {
 	};
 
 	chattingSock.send(JSON.stringify(end));
-	// chattingSock.close();
 })
 
-chattingSock.onclose = () => {
-	console.log("됐나요");
-	
-}
+counseling.addEventListener("click", () => {
+	endfl = 'N';
+	counseling.classList.add("active");
+	counseling.classList.remove("waiting");
+	complete.classList.add("waiting");
+	complete.classList.remove("active");
+	selectRoomList();
+});
+
+complete.addEventListener("click", () => {
+	endfl = 'Y';
+	counseling.classList.add("waiting");
+	counseling.classList.remove("active");
+	complete.classList.add("active");
+	complete.classList.remove("waiting");
+	selectRoomList();
+});
 
 document.addEventListener("DOMContentLoaded", () => {
 
@@ -229,4 +248,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	// 보내기 버튼에 이벤트 추가
 	send.addEventListener("click", sendMessage);
+  messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      sendMessage();
+    }
+  });
 });

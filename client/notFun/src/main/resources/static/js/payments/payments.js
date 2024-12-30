@@ -1,12 +1,13 @@
-
 let userMemberships = [];
 
 // 특정 Membership 데이터 가져오기 (membership.js와 연동)
 const getMembershipDetailsByType = (type) => {
-  return globalMembershipList.find((membership) => membership.membershipType === type);
+  return globalMembershipList.find(
+    (membership) => membership.membershipType === type
+  );
 };
 
-
+let testResult = [];
 
 // defaultType을 반환하는 함수
 const getDefaultTypeValue = (defaultType, selectedValue) => {
@@ -17,13 +18,15 @@ const membershipOptions = [
   {
     value: "2",
     label: "골드 이용권",
-    content: "✔ 공고 일일 100건 등록<br>✔ 이력서 열람 300건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람",
+    content:
+      "✔ 공고 일일 100건 등록<br>✔ 이력서 열람 300건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람",
     price: 30000,
   },
   {
     value: "3",
     label: "플래티넘 이용권",
-    content: "✔ 공고 일일 300건 등록<br>✔ 이력서 열람 무제한<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람<br>✔ 공고 즉시 등록<br>✔ 이력서 추천 기능",
+    content:
+      "✔ 공고 일일 300건 등록<br>✔ 이력서 열람 무제한<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람<br>✔ 공고 즉시 등록<br>✔ 이력서 추천 기능",
     price: 50000,
   },
   {
@@ -58,8 +61,6 @@ const generateOptionTags = (defaultType) => {
     .join("");
 };
 
-
-
 // 페이지 렌더링 초기화
 document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll('[name="paymentsClick"]').forEach((element) => {
@@ -80,7 +81,7 @@ const renderPaymentPage = (defaultType) => {
   const backgroundElement = document.querySelector("#background");
 
   // 로그인된 사용자 Membership 정보 가져오기
-  const userMemberships = globalMembershipList; 
+  const userMemberships = globalMembershipList;
 
   // 로그인된 사용자 정보 HTML
   const membershipDetailsHtml = userMemberships.length
@@ -133,10 +134,10 @@ const renderPaymentPage = (defaultType) => {
 
             <div class="payments-t-inside">
                 <div class="payments-t-inside-middle-item">
-                    <button id="goldBtn" class="payments-t-btn-after">결제하기</button>
+                    <button id="payBtn" class="payments-t-btn-after" style="cursor:pointer;" >결제하기</button>
                 </div>
                 <div class="payments-t-inside-middle-item">
-                    <button id="platinumBtn" class="payments-t-btn-after" onclick="location.href='/payments';"
+                    <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments';"
                         style="cursor:pointer;">취소하기</button>
                 </div>
             </div>
@@ -179,7 +180,10 @@ const createProductGroup = (defaultType, id, isDefault = false) => {
       <form>
           <select id="productDate-${id}" class="showDate">
               <option value="none">=== 선택 ===</option>
-              ${Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`).join("")}
+              ${Array.from(
+                { length: 12 },
+                (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
+              ).join("")}
               <option value="24">24개월</option>
               <option value="36">36개월</option>
               <option value="custom">직접입력</option>
@@ -188,7 +192,9 @@ const createProductGroup = (defaultType, id, isDefault = false) => {
       <button 
           data-id="${id}" 
           class="delete-btn" 
-          style="opacity: ${isDefault ? "0" : "1"}; pointer-events: ${isDefault ? "none" : "auto"};">
+          style="opacity: ${isDefault ? "0" : "1"}; pointer-events: ${
+    isDefault ? "none" : "auto"
+  };">
           -
       </button>
     </div>
@@ -204,7 +210,8 @@ const createProductGroup = (defaultType, id, isDefault = false) => {
     if (productDateElement.value === "custom" && !existingCustomInput) {
       const customInput = document.createElement("input");
       customInput.type = "number";
-      customInput.placeholder = productTitleElement.value >= 4 ? "직접 입력 (일)" : "직접 입력 (개월)";
+      customInput.placeholder =
+        productTitleElement.value >= 4 ? "직접 입력 (일)" : "직접 입력 (개월)";
       customInput.id = customInputId;
       customInput.setAttribute("data-id", id);
 
@@ -214,9 +221,9 @@ const createProductGroup = (defaultType, id, isDefault = false) => {
 
       // 입력값 변화 시 업데이트 및 즉시 반영
       customInput.addEventListener("input", (e) => {
-      const value = e.target.value ? Number(e.target.value) : 0; // 숫자로 변환
-      productDateElement.setAttribute("data-custom-value", value);
-      updateMembershipContainer(); // 실시간 상태 업데이트
+        const value = e.target.value ? Number(e.target.value) : 0; // 숫자로 변환
+        productDateElement.setAttribute("data-custom-value", value);
+        updateMembershipContainer(); // 실시간 상태 업데이트
       });
 
       // Enter 키 입력 시 즉시 업데이트
@@ -261,7 +268,7 @@ const setupDynamicProductButtons = () => {
     productContainer.appendChild(productGroup);
 
     // 수정된 핸들러 함수 호출 시 `productContainer` 전달
-    setupProductSelectionHandlers(count, productContainer); 
+    setupProductSelectionHandlers(count, productContainer);
     updateMembershipContainer(); // 상태 업데이트
   });
 
@@ -318,7 +325,10 @@ const setupProductSelectionHandlers = (count, productContainer) => {
       // 급구 이용권 또는 Hot 이용권 선택 시 일수 옵션으로 변경
       productDateElement.innerHTML = `
         <option value="none">=== 선택 ===</option>
-        ${Array.from({ length: 10 }, (_, i) => `<option value="${i + 1}">${i + 1}일</option>`).join("")}
+        ${Array.from(
+          { length: 10 },
+          (_, i) => `<option value="${i + 1}">${i + 1}일</option>`
+        ).join("")}
         <option value="20">20일</option>
         <option value="30">30일</option>
         <option value="custom">직접입력</option>
@@ -327,7 +337,10 @@ const setupProductSelectionHandlers = (count, productContainer) => {
       // 기본 개월수 옵션으로 복구
       productDateElement.innerHTML = `
         <option value="none">=== 선택 ===</option>
-        ${Array.from({ length: 12 }, (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`).join("")}
+        ${Array.from(
+          { length: 12 },
+          (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
+        ).join("")}
         <option value="24">24개월</option>
         <option value="36">36개월</option>
         <option value="custom">직접입력</option>
@@ -338,7 +351,6 @@ const setupProductSelectionHandlers = (count, productContainer) => {
     removeCustomInput();
     updateMembershipContainer();
   });
-
 
   // 중복 선택 방지 및 변경 이벤트
   productContainer.addEventListener("change", (event) => {
@@ -366,7 +378,9 @@ const setupProductSelectionHandlers = (count, productContainer) => {
       }
 
       // 현재 등급보다 낮은 등급 선택 방지
-      const userMembership = globalMembershipList.find((membership) => membership.membershipType === 3); // 3은 예시
+      const userMembership = globalMembershipList.find(
+        (membership) => membership.membershipType === 3
+      ); // 3은 예시
       if (
         userMembership &&
         parseInt(selectedValue, 10) < userMembership.membershipType
@@ -377,7 +391,9 @@ const setupProductSelectionHandlers = (count, productContainer) => {
       }
 
       // 골드(2)와 플래티넘(3) 동시 선택 방지
-      const selectedMemberships = Array.from(otherSelects).map((select) => select.value);
+      const selectedMemberships = Array.from(otherSelects).map(
+        (select) => select.value
+      );
       if (
         (selectedMemberships.includes("2") && selectedValue === "3") ||
         (selectedMemberships.includes("3") && selectedValue === "2")
@@ -406,21 +422,27 @@ const updateMembershipContainer = () => {
   const membershipList = Array.from(productItems).map((item) => {
     const selectedValue = item.querySelector(".showItem").value;
     const productDateElement = item.querySelector(".showDate");
-    const customDuration = Number(productDateElement.getAttribute("data-custom-value"));
-    const selectedDuration = customDuration || Number(productDateElement.value) || 0; // 숫자로 변환 및 기본값 처리
-    const membership = membershipOptions.find((option) => option.value === selectedValue);
+    const customDuration = Number(
+      productDateElement.getAttribute("data-custom-value")
+    );
+    const selectedDuration =
+      customDuration || Number(productDateElement.value) || 0; // 숫자로 변환 및 기본값 처리
+    const membership = membershipOptions.find(
+      (option) => option.value === selectedValue
+    );
 
     return { membership, selectedValue, selectedDuration };
   });
 
   // 정렬: defaultType 기준 오름차순
-  membershipList.sort((a, b) => Number(a.selectedValue) - Number(b.selectedValue));
+  membershipList.sort(
+    (a, b) => Number(a.selectedValue) - Number(b.selectedValue)
+  );
 
-  let sumResult = 0; // 금액 합산 변수
+  sumResult = 0; // 금액 합산 변수
 
   membershipList.forEach(({ membership, selectedValue, selectedDuration }) => {
     if (selectedValue === "none" || selectedDuration <= 0) return;
-
 
     const calculatedPrice = membership.price * selectedDuration;
     sumResult += calculatedPrice; // 합산
@@ -431,9 +453,15 @@ const updateMembershipContainer = () => {
 
     // 기간 계산
     let calculatedDuration;
-    if (upgradeMembership && upgradeMembership.membershipType === 2 && selectedValue === "3") {
+    if (
+      upgradeMembership &&
+      upgradeMembership.membershipType === 2 &&
+      selectedValue === "3"
+    ) {
       // Upgrade: 남은 기간 + 선택한 기간
-      calculatedDuration = `${upgradeMembership.remainingDays + selectedDuration * 30}일`;
+      calculatedDuration = `${
+        upgradeMembership.remainingDays + selectedDuration * 30
+      }일`;
     } else if (selectedValue === "2" || selectedValue === "3") {
       // 일반 기간 연장
       calculatedDuration = `${remainingDays + selectedDuration * 30}일`;
@@ -470,7 +498,11 @@ const updateMembershipContainer = () => {
     };
 
     // 조건에 따라 라벨 추가
-    if (upgradeMembership && upgradeMembership.membershipType === 2 && selectedValue === "3") {
+    if (
+      upgradeMembership &&
+      upgradeMembership.membershipType === 2 &&
+      selectedValue === "3"
+    ) {
       addContent("Upgrade", true);
     } else if (userMembership) {
       addContent("기간연장");
@@ -493,14 +525,13 @@ const updateMembershipContainer = () => {
           <div><p class="fst-price">${calculatedPrice.toLocaleString()}원</p></div>
         </div>
       </div>
-      <hr>
+      
     `;
 
     beforeMembershipContainer.appendChild(container);
     productExpenseContainer.appendChild(productContainer);
-    
   });
-  
+
   // 최종 합산 금액 출력
   const sumContainer = document.createElement("div");
   sumContainer.classList.add("payments-expense-bgr");
@@ -508,3 +539,63 @@ const updateMembershipContainer = () => {
   productExpenseContainer.appendChild(sumContainer);
 };
 
+document.addEventListener("DOMContentLoaded", () => {
+  IMP.init("imp41253800"); // 아임포트 초기화
+
+  document.addEventListener("click", (event) => {
+    if (event.target && event.target.id === "payBtn") {
+      const onClickPay = async () => {
+        if (sumResult <= 0) {
+          alert("결제할 금액이 없습니다.");
+          return;
+        }
+        IMP.request_pay(
+          {
+            storeId: "store-5b5cb483-ddb0-4a3b-a99f-eb4f7b4f4568",
+            channelKey: "channel-key-e5b8dde3-85d8-47b8-bb2a-b12187bc9dac",
+            paymentId: `payment-${crypto.randomUUID()}`,
+            currency: "CURRENCY_KRW",
+            pay_method: "card",
+            amount: sumResult / 300, // 최종 결제 금액
+            name: "선택한 멤버십 상품",
+            merchant_uid: `merchant_${new Date().getTime()}`, // 고유 주문 ID
+          },
+          function (rsp) {
+            // callback
+            if (rsp.success) {
+              // 결제성공시 로직
+              let data = {
+                // request
+                imp_uid: rsp.imp_uid,
+                amount: rsp.paid_amount,
+                reservationId: 32,
+              };
+              //결제 검증
+              $.ajax({
+                type: "POST",
+                url: "/payments/vertifyIamport",
+                data: JSON.stringify(data),
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                  alert("결제 및 결제 검증이 완료되었습니다.");
+                  //self.close();
+                },
+                error: function (result) {
+                  alert(result.responseText);
+                },
+              });
+            } else {
+              // 결제 실패 시 로직
+              alert("결재 실패");
+              //alert(rsp.error_msg);
+              //console.log(rsp);
+            }
+          }
+        );
+      }; //requestPay
+
+      onClickPay();
+    }
+  });
+});

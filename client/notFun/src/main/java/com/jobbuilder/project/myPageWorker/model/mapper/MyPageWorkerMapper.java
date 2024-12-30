@@ -33,6 +33,12 @@ public interface MyPageWorkerMapper {
 	 */
 	int workerChangePw(Map<String, Object> paramMap);
 
+	/** 정보 변경
+	 * @param loginWorker
+	 * @return
+	 */
+	int updateInfo(Worker loginWorker);
+
 
 	
 

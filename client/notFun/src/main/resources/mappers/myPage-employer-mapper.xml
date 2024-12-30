@@ -54,4 +54,30 @@
 	JOIN EMPLOYER_WORKTYPE ew ON(bw.WORKTYPE_NO = ew.WORKTYPE_NO)
 	WHERE EMPLOYER_NO = ${employerNo}
 	</select>
+	
+	<!-- 사업장 추가(업직종 제외) -->
+	<insert id="addBusiness">
+	INSERT INTO "EMPLOYER"
+	VALUES(SEQ_EMPLOYER_NO.NEXTVAL, #{businessRegistrationNumber}, #{businessName}, #{businessAddress},
+		#{membershipLevel}, ${memberNo}, #{optionalAgreeFl}, #{businessNickname}, #{businessTel})
+	</insert>
+	
+	<select id="getEmpNo" resultType="_int">
+	SELECT EMPLOYER_NO
+	FROM EMPLOYER
+	WHERE BUSINESS_NICKNAME = #{businessNickname}
+	</select>
+	
+	<!-- 카테고리에 맞는 worktypeNo 얻어오기 -->
+	<select id="getWorktypeNo">
+	SELECT WORKTYPE_NO
+	FROM EMPLOYER_WORKTYPE
+	WHERE WORKTYPE_CATEGORY = #{category}
+	</select>
+	
+	<!-- M:N 해소테이블(BUSINESS_WORKTYPE)에 데이터 삽입 -->
+	<insert id="addBusinessWorktype">
+	INSERT INTO "BUSINESS_WORKTYPE"
+	VALUES(SEQ_BUSINESS_WORKTYPE_NO.NEXTVAL, ${employerNo}, #{worktypeNo})
+	</insert>
 </mapper>

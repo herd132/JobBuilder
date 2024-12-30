@@ -53,11 +53,37 @@ public interface MyPageEmployerMapper {
 	 */
 	Employer getBusiness(int employerNo);
 
-	/**사업장의 업직종 얻어오기
+	/** 사업장의 업직종 얻어오기
 	 * @param empNo
 	 * @return
 	 * @author JWJ
 	 */
 	List<BusinessWorktype> getBusinessWorktype(int employerNo);
+
+	/** 사업장 추가(업직종 제외)
+	 * @param addBusiness (businessRegistrationNumber, businessName, businessAddress, membershipLevel,
+	 * 						memberNo, optionalAgreeFl, businessNickname, businessTel)
+	 * @return
+	 */
+	int addBusiness(Employer addBusiness);
+
+	/** 사업장 추가 시 employerNo 얻어오기
+	 * @param businessNickname
+	 * @return
+	 * @author JWJ
+	 */
+	int getEmpNo(String businessNickname);
+
+	/** 카테고리에 맞는 worktypeNo 얻어오기
+	 * @param category
+	 * @return
+	 */
+	String getWorktypeNo(String category);
+
+	/** M:N 해소테이블(BUSINESS_WORKTYPE)에 데이터 삽입
+	 * @param map(employerNo, worktypeNo)
+	 * @return
+	 */
+	int addBusinessWorktype(Map<String, Object> map);
 
 }

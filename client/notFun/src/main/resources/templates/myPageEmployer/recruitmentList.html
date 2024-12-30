@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내가 등록한 공고</title>
+</head>
+
+<body>
+  <!-- 로고 및 검색바 로그인 -->
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+
+  <div class="recruitmentList-gray">
+    <main class="myPageEmpInfo-white">
+      <section class="btn-area">
+        <button onclick="addRecruitment()">공고 추가하기</button>
+      </section>
+    </main>
+  </div>
+
+
+
+
+
+
+  <script src="/js/myPageEmployer/myPageEmpRecruitmentList.js"></script>
+</body>
+
+</html>

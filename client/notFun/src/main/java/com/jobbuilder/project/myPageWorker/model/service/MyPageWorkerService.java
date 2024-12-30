@@ -31,5 +31,12 @@ public interface MyPageWorkerService {
 	 */
 	int workerChangePw(int memberNo, String workerPw);
 
+	/** 정보변경
+	 * @param loginWorker
+	 * @param workerAddress
+	 * @return
+	 */
+	int updateInfo(Worker loginWorker, String[] workerAddress);
+
 
 }

@@ -18,8 +18,20 @@
   <!-- 모달 영역 -->
   <div class="modal-container hidden">
     <div class="modal-area">
-      <button class="delete-business-btn">삭제하기</button>
-      <span class="back-info" style="cursor: pointer;">&times;</span>
+      <div class="btn-area">
+        <button class="update-business-btn">수정하기</button>
+        <button class="delete-business-btn">삭제하기</button>
+        <span class="back-info" style="cursor: pointer;">&times;</span>
+      </div>
+      <div class="modal-business-content">
+        <div class="nickname-area">사업장 위치 : </div>
+        <div class="tel-area">사업장 연락처 : </div>
+        <div class="address-area">사업장 주소 : </div>
+        <div class="worktype-area">업직종 : </div>
+      </div>
+      <div class="modal-recruitment-content">
+        <div> 등록된 공고가 없습니다.</div>
+      </div>
     </div>
   </div>
 
@@ -74,6 +86,13 @@
               <span th:if="*{businessAddress}" th:text="*{businessAddress}"></span>
               <span th:unless="*{businessAddress}">미입력 상태입니다.</span>
             </div>
+
+            <div>
+              <span>업직종 : </span>
+              <span th:if="*{#strings.length(businessWorktype)== 0 }">업직종 미입력</span>
+              <span th:if="*{#strings.length(businessWorktype)!= 0 }" 
+                th:text="*{businessWorktype}"/>
+            </div>
           </div>
         </th:block>
 
@@ -84,7 +103,6 @@
 
 
 
-  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
   <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
 
   <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>

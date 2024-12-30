@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
@@ -34,7 +35,7 @@ public class MyPageEmployerController {
 	
 	/* ********** 메서드 ********** */
 	
-	/** 마이페이지 이동(get)
+	/** 내 정보 보기 페이지 이동(get)
 	 * @return myPageEmployer/info.html
 	 * @author JWJ
 	 */
@@ -57,7 +58,7 @@ public class MyPageEmployerController {
 			String[] arr = business.getBusinessAddress().split("\\^\\^\\^");
 			
 			if(arr.length > 2) {				
-				String businessAddress =  arr[0] + " " + arr[1] + ", " + arr[2];
+				String businessAddress = arr[1] + ", " + arr[2];
 				business.setBusinessAddress(businessAddress);
 			}
 		}
@@ -66,7 +67,7 @@ public class MyPageEmployerController {
 		return "myPageEmployer/info";
 	}
 	
-	/** 사업장 정보 얻어오기
+	/** 사업장 정보 얻어오기(내 정보 보기 페이지 내 모달 창)
 	 * @param employerNo
 	 * @return
 	 * @author JWJ
@@ -78,10 +79,16 @@ public class MyPageEmployerController {
 		int empNo = Integer.parseInt(employerNo);
 		Employer employer = service.getBusiness(empNo);
 		
+		String[] arr = employer.getBusinessAddress().split("\\^\\^\\^");
+		if(arr.length > 2) {
+			String businessAddress = arr[1] + ", " + arr[2];
+			employer.setBusinessAddress(businessAddress);
+		}
+		
 		return employer;
 	}
 	
-	/** 기본정보 수정 페이지 이동(get)
+	/** 기본정보 수정 페이지 이동(get) 아직 작성 안함
 	 * @param loginEmployer
 	 * @param model (주소 전달용)
 	 * @return myPageEmployer/updateInfo.html
@@ -93,7 +100,7 @@ public class MyPageEmployerController {
 		return "myPageEmployer/updateInfo";
 	}
 	
-	/** 비밀번호 변경 페이지 이동(get)
+	/** 비밀번호 변경 페이지 이동(get) 아직 작성 안함
 	 * @return myPageEmployer/changePw.html
 	 * @author JWJ
 	 */
@@ -102,7 +109,7 @@ public class MyPageEmployerController {
 		return "myPageEmployer/changePw";
 	}
 	
-	/** 내가 쓴 공고 페이지 이동(get)
+	/** 내가 쓴 공고 페이지 이동(get) 작성 중
 	 * @return myPageEmployer/recruitmentList.html
 	 * @author JWJ
 	 */
@@ -111,7 +118,12 @@ public class MyPageEmployerController {
 		return "myPageEmployer/recruitmentList";
 	}
 	
-	/** 내가 쓴 글 페이지 이동(get)
+	@GetMapping("addRecruitment")
+	public String MyPageEmpAddRecruitment() {
+		return "myPageEmployer/addRecruitment";
+	}
+	
+	/** 내가 쓴 글 페이지 이동(get) 아직 작성 안함
 	 * @return myPageEmployer/myWrite.html
 	 * @author JWJ
 	 */
@@ -131,7 +143,7 @@ public class MyPageEmployerController {
 		return "myPageEmployer/addBusiness";
 	}
 	
-	/** workType 가 일치한 소분류 업직종 불러오기
+	/** workType 가 일치한 소분류 업직종 불러오기 (사업장 추가 페이지 내)
 	 * @param workTypeNo
 	 * @return
 	 */
@@ -141,13 +153,47 @@ public class MyPageEmployerController {
 		return service.selectsubCategoryList(workTypeNo);
 	}
 	
+	/** 사업장 추가(post)
+	 * @param loginEmployer(memberNo, businessRegistrationNumber, businessName, membershipLevel, optionalAgreeFl)
+	 * @param addEmployer(businessNickname, businessTel)
+	 * @param subCategory(업직종 리스트)
+	 * @param businessAddress(사업장주소 변환용)
+	 * @param images
+	 * @return
+	 * @author JWJ
+	 */
 	@PostMapping("addBusiness")
 	public String MyPageEmpAddBusiness(@SessionAttribute("loginEmployer") Employer loginEmployer,
-						@RequestParam("images") List<MultipartFile> images) throws Exception {
-		return "";
+						Employer addBusiness,
+						@RequestParam("subCategory") List<String> subCategory,
+						@RequestParam("businessAddress") String[] businessAddress,
+						RedirectAttributes ra) {
+		
+		log.debug("loginEmployer : " + loginEmployer);
+		log.debug("addBusiness : " + addBusiness);
+		log.debug("subCategory : " + subCategory);
+		log.debug("businessAddress : " + businessAddress);
+		
+		String message = null;
+		String path = null;
+		
+		int result = service.addBusiness(loginEmployer, addBusiness, subCategory, businessAddress);
+		
+		if(result == 0) {
+			message = "사업장추가 실패";
+			path = "addBusiness";
+			
+		} else {
+			message = "사업장이 추가되었습니다";
+			path = "info";
+		}
+		
+		ra.addFlashAttribute("message", message);
+
+		return "redirect:" + path;
 	}
 	
-	/** 사업장 홍보 페이지 이동(get)
+	/** 사업장 홍보 페이지 이동(get) 아직 작성 안함
 	 * @return myPageEmployer/promoteBusiness.html
 	 * @author JWJ
 	 */
@@ -156,7 +202,7 @@ public class MyPageEmployerController {
 		return "myPageEmployer/promoteBusiness";
 	}
 	
-	/** 제출된 이력서 보기 페이지 이동(get)
+	/** 제출된 이력서 보기 페이지 이동(get) 아직 작성 안함
 	 * @return myPageEmployer/viewRecruitments.html
 	 * @author JWJ
 	 */
@@ -165,7 +211,7 @@ public class MyPageEmployerController {
 		return "myPageEmployer/viewRecruitments";
 	}
 	
-	/** 회원 탈퇴 페이지 이동(get)
+	/** 회원 탈퇴 페이지 이동(get) 아직 작성 안함
 	 * @return myPageEmployer/secession.html
 	 * @author JWJ
 	 */
