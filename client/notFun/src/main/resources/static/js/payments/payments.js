@@ -480,20 +480,21 @@ const updateMembershipContainer = () => {
 
     // 새로운 product-addpart2에 출력
     const productContainer = document.createElement("div");
-    productContainer.classList.add("payments-expense-center");
+    productContainer.classList.add("payments-expense-bgr");
     productContainer.innerHTML = `
-      <div class="payments-expense-title">
-        <div>${membership?.label || "알 수 없는 상품"}</div> 
+      <div class="payments-expense-center">
+        <div class="payments-expense-title">
+          <div>${membership?.label || "알 수 없는 상품"}</div> 
+        </div>
+        <div class="payments-expense-date">
+          <div>${selectedDuration} 개</div> 
+        </div>
+        <div class="payments-expense-price">
+          <div><p class="fst-price">${calculatedPrice.toLocaleString()}원</p></div>
+        </div>
       </div>
-      <div class="payments-expense-date">
-        <div>${selectedDuration} 개</div> 
-      </div>
-      <div class="payments-expense-price">
-        <div><p class="fst-price">${calculatedPrice.toLocaleString()}원</p></div>
-      </div>
+      <hr>
     `;
-
-
 
     beforeMembershipContainer.appendChild(container);
     productExpenseContainer.appendChild(productContainer);
@@ -502,8 +503,8 @@ const updateMembershipContainer = () => {
   
   // 최종 합산 금액 출력
   const sumContainer = document.createElement("div");
-  sumContainer.classList.add("payments-expense-result");
-  sumContainer.innerHTML = `<h1>합계 : ${sumResult.toLocaleString()}원</h1>`;
+  sumContainer.classList.add("payments-expense-bgr");
+  sumContainer.innerHTML = ` <h1 class="payments-expense-result">합계 : ${sumResult.toLocaleString()}원</h1>`;
   productExpenseContainer.appendChild(sumContainer);
 };
 

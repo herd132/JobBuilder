@@ -195,6 +195,16 @@
   justify-content: space-between;
 }
 
+.payments-expense-bgr hr{
+  display: block;
+}
+
+
+.payments-expense-center hr{
+  display: block;
+}
+
+
 .payments-expense-center{
   display: flex;
   justify-content: space-between;
@@ -203,6 +213,5 @@
 }
 
 .payments-expense-result{
-  align-items: center;
-  margin-right: 2rem;
+  margin-left: 30rem;
 }
