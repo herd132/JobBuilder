@@ -7,7 +7,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -47,6 +49,33 @@ public class ResumeController {
 	@GetMapping("selectSubWorkType/{workTypeNo}")
 	public List<Map<String,String>> subCategoryList(@PathVariable("workTypeNo") String workTypeNo) {
 		return service.selectsubCategoryList(workTypeNo);
+	}
+	
+	@ResponseBody
+	@PostMapping("writeResume")
+	public int writeResume(@SessionAttribute ("loginWorker") Worker loginWorker,
+							 @RequestParam ("gradeNo") int gradeNo,
+							 @RequestParam ("subCategory") List<String> subCategoryList,
+//							 @RequestParam ("workTypeValue") int workTypeValue,
+							 @RequestParam ("workDate") int workDate,
+							 @RequestParam ("workDay") int workDay,
+							 @RequestParam ("workPart") int workPart,
+							 @RequestParam("payType") int payType
+							 
+							 ) {
+		
+		
+		log.debug("gradeNo : " + gradeNo);
+		log.debug("subCategory : " + subCategoryList);
+//		log.debug("workTypeValue : " + workTypeValue);
+		log.debug("workDate : " + workDate);
+		log.debug("workDay : " + workDay);
+		log.debug("workPart : " + workPart);
+		log.debug("payType : " + payType);
+		
+		
+		return 0;
+		
 	}
 	
 	

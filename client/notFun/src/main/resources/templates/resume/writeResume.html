@@ -29,200 +29,136 @@
     </tr>
   </table>
 
+  <form action="/resume/writeResume" method="post" class="formSection">
+    <h2>학력</h2>
 
-  <h2>학력</h2>
+    <select name="gradeNo" id="gradeNo">
+      <option value="1">비공개</option>
+      <option value="2">중졸</option>
+      <option value="3">고졸</option>
+      <option value="4">대졸(2,3년제)</option>
+      <option value="5">대졸(4년제)</option>
+      <option value="6">대학원이상</option>
+    </select>
 
-  <select name="example" id="example">
-    <option value="" disabled selected>학교</option>
-    <option value="1">무관</option>
-    <option value="2">중졸</option>
-    <option value="3">고졸</option>
-    <option value="4">대졸(2,3년제)</option>
-    <option value="5">대졸(4년제)</option>
-    <option value="6">대학원이상</option>
-  </select>
+    <h2>경력사항</h2>
+    <div class="career-container">
+        <div>
+          경력구분
+          <button class="newbie" onclick="showInputs(false)" type="button">신입</button>
+          <button class="exp" onclick="showInputs(true)" type="button">경력</button>
+        </div>
+        <div class="input-container" style="display: none;">
+          <label>
+            회사명:
+            <input type="text" class="company-name" placeholder="회사명을 입력하세요">
+          </label>
+          <label>
+            근무기간:
+            <input type="date" class="start-date">
+            <input type="date" class="end-date">
+          </label>
+          <label>
+            담당업무:
+            <textarea placeholder="담당업무를 입력하세요"></textarea>
+          </label>
+        </div>
+      <button class="exp-append" onclick="expappend()" style="display: none">경력사항 추가</button>
+    </div>
 
-  기간 / 일시 무관 1번
 
+    <h2>희망근무 조건</h2>
 
-  1 시급
-  2 월급
-  3 추후협의
+    <h4>업직종(최대 5개 선택 가능)</h4>
+    <div>
+      <h5>선택한 업직종</h5>
+      <ul id="selectCategoryUl" style="border: 1px solid black;">
 
-
-  <h2>경력사항</h2>
-  <div class="career-container">
-    <form class="exp-form">
+      </ul>
+    </div>
+    <div>
       <div>
-        경력구분
-        <button class="newbie" onclick="showInputs(false)">신입</button>
-        <button class="exp" onclick="showInputs(true)" type="button">경력</button>
+        <ul style="background-color: yellow;">
+          <th:block th:each="category : ${majorCategoryList}">
+            <li th:text="${category.majorCategoryName}" class="workType" th:workTypeNo="${category.workTypeNo}"
+              th:onclick="subCategory(this.getAttribute('workTypeNo'))" style="cursor: pointer;"></li>
+          </th:block>
+        </ul>
       </div>
-      <div class="input-container" style="display: none;">
-        <label>
-          회사명:
-          <input type="text" class="company-name" placeholder="회사명을 입력하세요">
-        </label>
-        <label>
-          근무기간:
-          <input type="date" class="start-date">
-          <input type="date" class="end-date">
-        </label>
-        <label>
-          담당업무:
-          <textarea placeholder="담당업무를 입력하세요"></textarea>
-        </label>
+      <div>
+        <ul id="subWorkType">
+
+        </ul>
       </div>
-    </form>
-    <button class="exp-append" onclick="expappend()" style="display: none">경력사항 추가</button>
-  </div>
+    </div>
+
+    <h2>근무형태</h2>
+
+    <input type="checkbox" id="partTime" name="workType" value="1">알바
+    <input type="checkbox" id="fullTime" name="workType" value="2">정규직
+
+    <h2>근무기간</h2>
+    <select name="workDate">
+      <option value="1">무관</option>
+      <option value="2">하루</option>
+      <option value="3">1주일이하</option>
+      <option value="4">1주일 ~ 1개월</option>
+      <option value="5">1개월 ~ 3개월</option>
+      <option value="6">3개월 ~ 6개월</option>
+      <option value="7">6개월 ~ 1년</option>
+      <option value="8">1년 이상</option>
+    </select>
+
+    <h2>근무일시</h2>
+    <div id="select-container">
+
+      <select name="workDay">
+        <option value="1">무관</option>
+        <option value="2">월~일</option>
+        <option value="3">월~토</option>
+        <option value="4">월~금</option>
+        <option value="5">주말(토,일)</option>
+        <option value="6">주6일</option>
+        <option value="7">주5일</option>
+        <option value="8">주4일</option>
+        <option value="9">주3일</option>
+        <option value="10">주2일</option>
+        <option value="11">주1일</option>
+      </select>
+
+      <select name="workPart">
+        <option value="1">무관</option>
+        <option value="2">오전 파트타임(06:00~12:00)</option>
+        <option value="3">오후 파트타임(12:00~18:00)</option>
+        <option value="4">저녁 파트타임(18:00~24:00)</option>
+        <option value="5">새벽 파트타임(00:00~06:00)</option>
+        <option value="6">오전~오후 파트타임</option>
+        <option value="7">오후~저녁 파트타임</option>
+        <option value="8">저녁~새벽 파트타임</option>
+        <option value="9">새벽~오전 파트타임</option>
+        <option value="10">풀타임(8시간이상)</option>
+      </select>
+    </div>
+
+    <button onclick="addSelect()">추가</button>
+
+    <h2>급여</h2>
+    <div name="workPay">
+      <select name="payType">
+        <option value="1">시급</option>
+        <option value="2">월급</option>
+        <option value="3">추후협의</option>
+      </select>
+    </div>
+
+    
+
+    
+    <button class="submit-btn" type="submit"> 제출하기 </button>
+  </form>
 
 
-  <h2>희망근무 조건</h2>
-
-  <h4>업직종(최대 5개 선택 가능)</h4>
-          <div>
-            <h5>선택한 업직종</h5>
-            <ul id="selectCategoryUl" style="border: 1px solid black;">
-
-            </ul>
-          </div>
-          <div>
-            <div>
-              <ul style="background-color: yellow;">
-                <th:block th:each="category : ${majorCategoryList}">
-                  <li th:text="${category.majorCategoryName}" class="workType"
-                    th:workTypeNo="${category.workTypeNo}"
-                    th:onclick="subCategory(this.getAttribute('workTypeNo'))"
-                    style="cursor: pointer;"
-                  ></li>
-                </th:block>
-              </ul>
-            </div>
-            <div>
-              <ul id="subWorkType">
-
-              </ul>
-            </div>
-          </div>
-
-
-  <script>
-    // 경력사항 추가 버튼 클릭 시 입력 필드 추가
-    function expappend() {
-      const form = document.querySelector(".exp-form");
-
-      // 새로운 input-container를 생성
-      const newContainer = document.createElement("div");
-      newContainer.className = "input-container";
-
-      // 회사명 입력 필드
-      newContainer.innerHTML = `
-        <label>
-          회사명:
-          <input type="text" class="company-name" placeholder="회사명을 입력하세요">
-        </label>
-        <label>
-          근무기간:
-          <input type="date" class="start-date">
-          <input type="date" class="end-date">
-        </label>
-        <label>
-          담당업무:
-          <textarea placeholder="담당업무를 입력하세요"></textarea>
-        </label>
-      `;
-
-      // 새로운 필드를 form 태그 안에 추가
-      form.appendChild(newContainer);
-    }
-
-    function showInputs(isExperienced) {
-      const inputContainer = document.querySelector(".input-container");
-      const expAppend = document.querySelector(".exp-append");
-      if (isExperienced) {
-        inputContainer.style.display = 'block';
-        expAppend.style.display = 'block';
-      } else {
-        inputContainer.style.display = 'none';
-        expAppend.style.display = 'none';
-      }
-    }
-  </script>
-
-  <script>
-    /* ********** 업직종 부분 ********** */
-// checkObj.worktypeList 는 등록하기 클릭 시에 입력되었는지만 확인
-// 업직종 대분류 클릭 했을 때 소분류 불러오기
-const newEl = (tag, attr, cls) => {
-
-const el = document.createElement(tag);                 // 요소 생성
-for (let key in attr) el.setAttribute(key, attr[key]);  // 요소에 속성 추가
-for (let className of cls) el.classList.add(className); // 요소에 클래스명 추가
-
-return el;                                              // 생성된 요소 반환
-};
-
-const subCategory = async (workTypeNo) => {
-
-const subWorkType = document.querySelector("#subWorkType");       // ul태그
-subWorkType.innerHTML = "";
-
-const resp = await fetch(`/myPageEmp/selectSubWorkType/${workTypeNo}`);
-const result = await resp.json();
-
-for (let element of result) {
-
-  const liSubWorkTypeName = document.createElement("li");
-
-  liSubWorkTypeName.innerText = element.worktypeCategory;
-  liSubWorkTypeName.id = element.workTypeNo;
-  liSubWorkTypeName.style.cursor = "pointer";
-
-  subWorkType.appendChild(liSubWorkTypeName);
-
-  liSubWorkTypeName.addEventListener("click", (e) => {
-    addSubCategory(e.target);
-  })
-}
-}
-
-// 클릭했을 때 선택한 업직종 추가하기(삭제 이벤트도 같이)
-const addSubCategory = (liSubWorkTypeName) => {
-
-const selectCategory = document.querySelectorAll(".select-category");
-if(selectCategory.length >= 5){
-  alert("업직종은 최대 5개만 가능합니다");
-  return;
-}
-
-const selectCategoryUl = document.querySelector("#selectCategoryUl");
-
-const subCategory = newEl(
-  "input",
-  {type: "text", name: "subCategory", readOnly:true, value: liSubWorkTypeName.innerText},
-  ["select-category"]
-);
-
-const deleteBtn = newEl("span", {}, ["subcategory-delete"]);
-deleteBtn.innerHTML = " &times";
-deleteBtn.style.cursor = "pointer";
-
-const li = document.createElement("li");     
-
-li.appendChild(subCategory);
-li.appendChild(deleteBtn);
-selectCategoryUl.appendChild(li);
-
-document.querySelectorAll(".subcategory-delete").forEach(deleteSubcategory => {
-  deleteSubcategory.addEventListener("click", () => {
-    deleteSubcategory.parentElement.remove();
-  })
-})
-}
-
-  </script>
-
+  <script src="/js/resume/resumeSample.js"></script>
 </body>
 
 </html>
