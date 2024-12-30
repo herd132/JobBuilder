@@ -15,19 +15,19 @@
     <div class="main-container">
         <div class="chat-list">
             <div class="status-filters">
-                <button class="status-btn active">진행중</button>
-                <button class="status-btn waiting">완료됨</button>
+                <button class="status-btn active counseling">진행중</button>
+                <button class="status-btn waiting complete">완료됨</button>
             </div>
             
             <div id="chatUsers">
                 <th:block th:each="room : ${roomList}">
-                    <div class="chat-item" th:chat-no="${room.chattingRoomNo}" th:target-no="${room.targetNo}">
+                    <div th:if="${room.chattingRoomEndFl} eq 'N'" class="chat-item" th:chat-no="${room.chattingRoomNo}" th:target-no="${room.targetNo}" th:end-fl="${room.chattingRoomEndFl}">
                         <div class="chat-preview">
                             <div>
                                 <img src="/images/avatar.png" alt="User" class="user-avatar">
                                 <div>
                                     <div th:text="${room.targetName}">상대방 이름</div>
-                                    <div style="color: #543A14; font-size: 0.9em;" th:utext="${room.lastMessage}">메세지 내용</div>
+                                    <div style="font-size: 0.9em;" th:utext="${room.lastMessage}">메세지 내용</div>
                                     <div class="timestamp" th:text="${room.sendTime}">보낸 시간</div>
                                 </div>
                             </div>
@@ -50,7 +50,7 @@
                 </div>
             </div>
             <div class="chat-input">
-                <input type="text" id="messageInput" style="flex: 1; padding: 0.5rem;">
+                <input type="text" id="messageInput" style="flex: 1; padding: 0.5rem;" disabled>
                 <button class="send">전송</button>
             </div>
         </div>
