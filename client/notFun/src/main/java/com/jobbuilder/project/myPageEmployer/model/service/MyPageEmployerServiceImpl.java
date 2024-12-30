@@ -1,5 +1,6 @@
 package com.jobbuilder.project.myPageEmployer.model.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -35,10 +36,17 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 			List<BusinessWorktype> worktypeList = mapper.selectWorktype(employer.getEmployerNo());
 			List<BusinessImg> imageList = mapper.selectImage(employer.getEmployerNo());
 			
-			employer.setBusinessWorktypeList(worktypeList);
-			employer.setBusinessImgList(imageList);
+			String businessWorktype = "";
 			
-			log.debug("employer : " + employer);
+			for(int i=0; i<worktypeList.size(); i++) {
+				if(i != 0) businessWorktype += ", ";
+				businessWorktype += worktypeList.get(i).getWorktypeCategory();
+			}
+			
+			employer.setBusinessWorktypeList(worktypeList);
+			employer.setBusinessWorktype(businessWorktype);
+			employer.setBusinessImgList(imageList);
+
 		}
 		
 		log.debug("selectBusinessList :" + selectBusinessList);
@@ -73,5 +81,41 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	@Override	// workType 가 일치한 소분류 업직종 불러오기
 	public List<Map<String, String>> selectsubCategoryList(String workTypeNo) {
 		return mapper.selectsubCategoryList(workTypeNo);
+	}
+	
+	@Override	// 사업장 추가
+	public int addBusiness(Employer loginEmployer, Employer addBusiness, List<String> subCategory,
+			String[] businessAddress) {
+		
+		// 사업장 주소 처리(필수입력 사항)
+		String address = String.join("^^^", businessAddress);
+		addBusiness.setBusinessAddress(address);
+		
+		// loginEmployer에 들어있는 값 세팅 
+		// memberNo, businessRegistrationNumber, businessName, membershipLevel, optionalAgreeFl
+		addBusiness.setMemberNo(loginEmployer.getMemberNo());
+		addBusiness.setBusinessRegistrationNumber(loginEmployer.getBusinessRegistrationNumber());
+		addBusiness.setBusinessName(loginEmployer.getBusinessName());
+		addBusiness.setMembershipLevel(loginEmployer.getMembershipLevel());
+		addBusiness.setOptionalAgreeFl(loginEmployer.getOptionalAgreeFl());
+		
+		log.debug("addBusiness : " + addBusiness);
+		
+		int result = mapper.addBusiness(addBusiness);
+		if(result == 0) return 0;
+		
+		int employerNo = mapper.getEmpNo(addBusiness.getBusinessNickname());
+		
+		for(String category : subCategory) {
+			String worktypeNo = mapper.getWorktypeNo(category);
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("employerNo", employerNo);
+			map.put("worktypeNo", worktypeNo);
+			
+			result = mapper.addBusinessWorktype(map);
+		}
+		
+		return employerNo;
 	}
 }

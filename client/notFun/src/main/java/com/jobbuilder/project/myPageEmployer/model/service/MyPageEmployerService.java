@@ -35,5 +35,14 @@ public interface MyPageEmployerService {
 	 */
 	Employer getBusiness(int employerNo);
 
+	/** 사업장 추가
+	 * @param loginEmployer(memberNo, businessRegistrationNumber, businessName, membershipLevel, optionalAgreeFl)
+	 * @param addBusiness(businessNickname, businessTel)
+	 * @param subCategory(업직종 리스트)
+	 * @param businessAddress(사업장주소 리스트 변환용)
+	 * @return
+	 */
+	int addBusiness(Employer loginEmployer, Employer addBusiness, List<String> subCategory, String[] businessAddress);
+
 
 }

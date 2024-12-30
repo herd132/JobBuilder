@@ -9,20 +9,34 @@ const newEl = (tag, attr, cls) => {
 };
 
 const modalContainer = document.querySelector(".modal-container");
+const modalBusinessContent = document.querySelector(".modal-business-content");
+const nicknameArea = document.querySelector(".nickname-area");
+const telArea = document.querySelector(".tel-area");
+const addressArea = document.querySelector(".address-area");
+const worktypeArea = document.querySelector(".worktype-area");
 
 const businessDetailModal = async (employerNo) => {
-  
-  console.log(employerNo);    // fetch 때 써야함, String 형임
+
+  nicknameArea.innerHTML = "사업장 위치 : ";
+  telArea.innerHTML = "사업장 연락처 : ";
+  addressArea.innerHTML = "사업장 주소 : ";
+  worktypeArea.innerHTML = "업직종 : ";
 
   const resp = await fetch("/myPageEmp/business?employerNo=" + employerNo);
-  console.log(resp);
 
   if(resp.status == 200){
+
     const result = await resp.json();
     console.log(result);
-  }
-  
 
+    if(result.businessTel == null) result.businessTel = "미입력 상태입니다.";
+    if(result.businessWorktype.length == 0) result.businessWorktype = "미입력 상태입니다.";
+
+    nicknameArea.innerHTML += result.businessNickname;
+    telArea.innerHTML += result.businessTel;
+    addressArea.innerHTML += result.businessAddress;
+    worktypeArea.innerHTML += result.businessWorktype;
+  }
   modalContainer.classList.remove("hidden");
 
 }
