@@ -22,7 +22,6 @@
 /* 상단 제목 */
 .payments-t-title {
   text-align: left;
-  margin-bottom: 2rem;
 }
 
 .payments-t-title hr {
@@ -35,7 +34,8 @@
 /* 상단 부제목 */
 .payments-t-subtitle {
   text-align: left;
-  margin-bottom: 2rem;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
   margin-left: 1rem;
 }
 
@@ -79,35 +79,27 @@
 
 /*-------------------------------------------------------------------*/
 
-.item{
-  display: flex;
-  justify-content: space-between;
-  gap: 3rem;
-  margin-bottom: 1rem;
-  padding-left: 4rem;
-  padding-right: 4rem;
-  
-}
 
-.details-container{
+
+.details-container {
   padding-left: 1rem;
   padding-right: 1rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem
-}
-
-.test3{
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   gap: 1rem;
-  margin-bottom: 1rem;
 }
 
-.test4{
+
+/* 중복 정의 제거 */
+.showItem {
   display: block;
+  margin-bottom: 0; /* 불필요한 여백 제거 */
+}
+
+.showDate {
+  display: block;
+  margin-bottom: 0; /* 불필요한 여백 제거 */
 }
 
 .add-product-btn{
@@ -132,23 +124,54 @@
   cursor: pointer;
 }
 
-.delete-btn{
+.delete-btn {
   display: flex;
   justify-content: center;
+  align-items: center;
   background-color: #F0BB78;
   border: 0;
   width: 2rem;
   height: 1rem;
-  font-size: 1.5rem;
+  font-size: 1rem;
   color: white;
-  align-items: center;
+  line-height: 1rem;
   text-shadow: 
-  -0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
-  0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
-  -0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
-  0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
-  1px 1px 2px rgba(0, 0, 0, 0.3);
+    -0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
+    0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
+    -0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
+    0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
+    1px 1px 2px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  visibility: visible; /* 기본값을 visible로 설정 */
 }
+
+/* 기본 렌더링 상품에서 삭제 버튼 숨김 */
+.item[data-default="true"] .delete-btn {
+  visibility: hidden;
+  pointer-events: none; /* 클릭 방지 */
+  opacity: 0; /* 완전 숨김 처리 */
+}
+
+/* 추가된 상품에서 삭제 버튼 표시 */
+.item[data-default="false"] .delete-btn {
+  visibility: visible;
+  pointer-events: auto; /* 클릭 가능 */
+  opacity: 1; /* 보이도록 설정 */
+}
+
+/* 상품 그룹 스타일 */
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 3rem; /* 요소 간 간격 */
+  margin-bottom: 1rem;
+  padding-left: 4rem;
+  padding-right: 4rem;
+}
+
+
+
 
 .delete-btn:hover{
   box-shadow: 0 4px 7px rgba(0, 0, 0, 0.2);
@@ -176,8 +199,10 @@
   display: flex;
   justify-content: space-between;
   gap: 4rem;
+  margin-left: 2rem;
 }
 
 .payments-expense-result{
   align-items: center;
+  margin-right: 2rem;
 }
