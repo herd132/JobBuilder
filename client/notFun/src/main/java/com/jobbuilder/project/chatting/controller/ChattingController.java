@@ -1,7 +1,6 @@
 package com.jobbuilder.project.chatting.controller;
 
 import java.util.Enumeration;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -20,8 +19,6 @@ import com.jobbuilder.project.chatting.model.dto.ChattingRoom;
 import com.jobbuilder.project.chatting.model.dto.Message;
 import com.jobbuilder.project.chatting.model.service.ChattingService;
 import com.jobbuilder.project.counsel.model.dto.Counselor;
-import com.jobbuilder.project.employer.model.dto.Employer;
-import com.jobbuilder.project.worker.model.dto.Worker;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
@@ -88,33 +85,6 @@ public class ChattingController {
     	}
     	
     	return 0;
-    }
-    
-    // 채팅방 입장(없으면 생성) - 비동기
-    @GetMapping("enter")
-    @ResponseBody
-    public Map<String, Integer> chattingEnter( HttpServletRequest request) {
-     
-        Map<String, Integer> map = new HashMap<>();
-        Map<String, Integer> resultMap = new HashMap<>();
-    	HttpSession session = request.getSession();
-    	int memberNo = 0; 
-        
-    	if (session.getAttribute("loginWorker") != null) memberNo = ((Worker)session.getAttribute("loginWorker")).getMemberNo();
-    	if (session.getAttribute("loginEmployer") != null) memberNo = ((Employer)session.getAttribute("loginEmployer")).getMemberNo();
-    	
-        map.put("loginMemberNo", memberNo);
-        
-        // 채팅방번호 체크 서비스 호출 및 반환(기존 생성된 방이 있는지)
-        resultMap = service.checkChattingRoomNo(map);
-        
-        // 반환받은 채팅방번호가 0(없다)이라면 생성하기
-        if(resultMap == null) {
-        	int chattingRoomNo = service.createChattingRoom(map);
-        	resultMap.put("chattingRoomNo", chattingRoomNo);
-        }
-        
-        return resultMap;
     }
  
 
