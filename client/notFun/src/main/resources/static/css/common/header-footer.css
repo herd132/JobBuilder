@@ -536,3 +536,36 @@ footer span {
 .send-btn:hover {
   background: var(--secondary-orange);
 }
+
+/* 12.31 페이지네이션 css 추가 */
+/* Pagination styles */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 5px;
+}
+
+.page-btn {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  min-width: 30px;
+  height: 30px;
+  padding: 0 5px;
+  border: 1px solid #ddd;
+  color: #333;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.page-btn.active {
+  background-color: #614B38;
+  color: white;
+  border-color: #614B38;
+}
+
+.page-btn:hover:not(.active) {
+  background-color: #f5f5f5;
+}

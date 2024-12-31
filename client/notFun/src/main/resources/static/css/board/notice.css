@@ -1,0 +1,142 @@
+
+/* Board container styles */
+.board-container {
+  max-width: 1200px;
+  margin: 5rem auto;
+  padding: 20px;
+}
+
+/* Board header styles */
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.board-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 2rem;
+}
+
+.write-btn {
+  background-color: #614B38;
+  color: white;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+/* Board list styles */
+.board-list {
+  border-top: 2px solid #614B38;
+}
+
+.post-item {
+  padding: 15px 10px;
+  padding-left: 3rem;
+  border-bottom: 1px solid #e0e0e0;
+  transition: background-color 0.2s;
+}
+
+.post-item:hover {
+  background-color: #f9f9f9;
+}
+
+.post-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.post-title {
+  flex-grow: 1;
+}
+
+.post-title a {
+  color: #333;
+  text-decoration: none;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.post-title a:hover {
+  color: var(--primary-orange);
+  transition: 0.1s;
+}
+
+.post-info {
+  display: flex;
+  gap: 20px;
+  color: #666;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.views {
+  width: 7rem;
+}
+
+
+/* Search section styles */
+.search-section {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0;
+}
+
+.search-container {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  max-width: 600px;
+}
+
+.search-type {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  background-color: white;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.search-input-wrapper {
+  display: flex;
+  flex-grow: 1;
+  position: relative;
+  align-items: center;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 40px 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.search-input:focus {
+  outline: none;
+  border-color: #614B38;
+}
+
+.search-button {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--button);
+  font-weight: bold;
+  cursor: pointer;
+  padding: 4px;
+}
+
+.search-button:hover {
+  color: var(--button);
+}

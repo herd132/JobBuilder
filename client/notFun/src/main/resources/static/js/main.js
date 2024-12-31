@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 상담원이 종료시 일어나는 이벤트
         chattingSock.onclose = (e) => {
-          inputField.readOnly = true;
+          inputField.disabled = true;
           console.log(e.code, e.wasClean);
           addMessage('bot', '상담을 종료합니다.');
         }
@@ -208,7 +208,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.addEventListener('click', sendBotMessage);
   });
 
-  
+
 });
 
 // 채팅 전송 이벤트
@@ -253,3 +253,9 @@ function addMessage(type, content) {
   p = chatMessages.scrollHeight;
 }
 
+const searchBtn = document.querySelector(".search-btn");
+
+searchBtn.addEventListener("click", () => {
+  const originalPushState = history.pushState;
+  originalPushState();
+});
