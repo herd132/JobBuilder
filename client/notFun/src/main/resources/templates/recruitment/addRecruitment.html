@@ -23,7 +23,7 @@
           id="addRecruitmentForm" enctype="multipart/form-data">
 
           <div class="business-nickname-area">
-            <h4>사업장</h4>
+            <h4>사업장을 선택해주세요</h4>
             <select name="employerNo" id="employerNo">
               <th:block th:each="business: ${businessList}" th:object="${business}">
                 <option th:value="*{employerNo}" th:text="*{businessNickname}"></option>
@@ -49,7 +49,7 @@
 
           <div class="recuritment-title-area">
             <h4>공고제목</h4>
-            <input type="text">
+            <input type="text" name="recruitmentTitle">
           </div>
 
           <div class="recruitment-content-area">
@@ -100,7 +100,7 @@
               <option value="2">월급</option>
               <option value="3">추후협의</option>
             </select>
-            <input type="number" name="salaryMount" id="salaryMount" placeholder="금액을 입력하세요"> 원
+            <input type="number" name="salaryMount" id="salaryMount" min="0" placeholder="금액을 입력하세요"> 원
           </div>
 
           <div class="workcond-period-area">
@@ -151,8 +151,49 @@
           </div>
 
           <div class="option-container">
-            <div class>
+            <div class="recruitment-preferred-area">
+              <h4>선호조건(최대 5개)</h4>
+              <div class="selected-preferred-area" style="border: 1px solid red;">
+                <h5>선택된 선호조건</h5>
+              </div>
+              <div style="border: 1px solid black;">
+                <h5>선호조건 종류</h5>
+                <ul>
+                  <th:block th:each="preferred :${preferredList}" th:object="${preferred}">
+                    <li th:text="*{preferredCategory}" class="preferred"
+                      th:preferredCategory="*{preferredCategory}"
+                      th:onclick="addPreferred(this.getAttribute('preferredCategory'))"
+                      style="cursor: pointer;"
+                    />
+                  </th:block>
+                </ul>
+              </div>
+            </div>
+
+            <div class="recruitment-support-area">
               <h4>복리후생</h4>
+              <div class="selected-support-area" style="border: 1px solid red;">
+                <h5>선택된 복리후생</h5>
+              </div>
+              <div style="border: 1px solid black;">
+                <h5>복리후생 종류</h5>
+                <ul>
+                  <th:block th:each="supportTitle : ${supportTitleList}">
+                    <li th:text="${supportTitle.supportCategory}" class="support"
+                      th:supportNo="${supportTitle.supportNo}"
+                      th:onclick="subSupport(this.getAttribute('supportNo'))"
+                      style="cursor: pointer;"
+                    />
+                  </th:block>
+                </ul>
+              </div>
+
+              <div>
+                <ul id="subSupportUl">
+  
+                </ul>
+              </div>
+
             </div>
           </div>
 

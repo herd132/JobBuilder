@@ -1,6 +1,7 @@
 package com.jobbuilder.project.recruitment.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -15,5 +16,24 @@ public interface RecruitmentMapper {
 	 * @author JWJ
 	 */
 	List<Employer> selectBusinessList(int memberNo);
+
+	/** 선호조건 리스트 불러오기
+	 * @return
+	 * @author JWJ
+	 */
+	List<Map<String, String>> selectPreferredList();
+
+	/** 복리후생 대분류 불러오기
+	 * @return
+	 * @author JWJ
+	 */
+	List<Map<String, String>> selectSupportTitleList();
+
+	/** 복리후생 소분류 불러오기
+	 * @param supportNo
+	 * @return
+	 * @author JWJ
+	 */
+	List<Map<String, String>> selectSubSupportList(String supportNo);
 
 }
