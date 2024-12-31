@@ -54,24 +54,40 @@ public class ResumeController {
 	@ResponseBody
 	@PostMapping("writeResume")
 	public int writeResume(@SessionAttribute ("loginWorker") Worker loginWorker,
-							 @RequestParam ("gradeNo") int gradeNo,
-							 @RequestParam ("subCategory") List<String> subCategoryList,
-//							 @RequestParam ("workTypeValue") int workTypeValue,
-							 @RequestParam ("workDate") int workDate,
-							 @RequestParam ("workDay") int workDay,
-							 @RequestParam ("workPart") int workPart,
-							 @RequestParam("payType") int payType
+			
+							 // dto resume  worker_No, 공개여부Y/N , 등록일 sysdate, resume_No 행번호,   
+							 @RequestParam ("gradeNo") int gradeNo, // 학력
+							 @RequestParam (value = "subCategory", required=false) List<String> subCategoryList, // 선호직종
+							 @RequestParam (value = "workType", required=false) List<Integer> workTypeList, // 알바/정규직
+							 @RequestParam ("workDate") int workDate,		// 근무기간
+							 @RequestParam ("workDay") List<Integer> workDayList, // 근무일시(날짜)
+							 @RequestParam ("workPart") List<Integer> workPartList, // 근무일시(파트타임)
+							 @RequestParam("payType") int payType, // 급여형태
+							 @RequestParam(name = "inputPay", defaultValue = "0") int inputPay,  // int형은 null을 가질 수 없어 value값을 정해주거나 Integer 로 받아야 한다 // 원하는 급여
+							 
+							 // dto Career 리스트지롱~ 
+							 @RequestParam(value = "companyName", required=false) List<String> companyName, // 회사명
+							 @RequestParam(value = "startDate", required=false) List<String> startDate, // 입사일
+							 @RequestParam(value = "endDate", required=false) List<String> endDate, // 퇴사일
+							 @RequestParam(value = "jobPart", required=false) List<String> jobPart // 담당업무
 							 
 							 ) {
 		
 		
 		log.debug("gradeNo : " + gradeNo);
 		log.debug("subCategory : " + subCategoryList);
-//		log.debug("workTypeValue : " + workTypeValue);
+		log.debug("workType : " + workTypeList);
 		log.debug("workDate : " + workDate);
-		log.debug("workDay : " + workDay);
-		log.debug("workPart : " + workPart);
+		log.debug("workDay : " + workDayList);
+		log.debug("workPart : " + workPartList);
 		log.debug("payType : " + payType);
+		log.debug("inputPay : " + inputPay);
+		log.debug("companyName : " + companyName);
+		log.debug("startDate : " + startDate);
+		log.debug("endDate : " + endDate);
+		log.debug("jobPart : " + jobPart);
+		
+		
 		
 		
 		return 0;

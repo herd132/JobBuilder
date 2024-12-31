@@ -11,7 +11,7 @@ import lombok.ToString;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-public class resumeBusinessWorktype {
+public class ResumeBusinessWorktype {
 
 	/* ***** BUSINESS_WORKTYPE ***** */
 	private int businessWorktypeNo;

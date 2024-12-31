@@ -1,12 +1,29 @@
+const inputContainer = document.querySelector(".input-container");
+const expAppend = document.querySelector(".exp-append");
+const formElements = inputContainer.querySelectorAll('input, textarea');
 function showInputs(isExperienced) {
-  const inputContainer = document.querySelector(".input-container");
-  const expAppend = document.querySelector(".exp-append");
+  
+  // inputContainer 안의 모든 폼 요소들에 대해 disabled 속성 설정
+  
   if (isExperienced) {
     inputContainer.style.display = "block";
     expAppend.style.display = "block";
+    
+    // 모든 폼 요소들의 disabled 속성 해제
+    formElements.forEach(element => {
+      element.disabled = false;
+    });
+    expAppend.disabled = false;
   } else {
     inputContainer.style.display = "none";
+    
+    // 모든 폼 요소들에 disabled 속성 추가
+    formElements.forEach(element => {
+      element.disabled = true;
+    });
+
     expAppend.style.display = "none";
+    expAppend.disabled = true;
   }
 }
 
@@ -116,7 +133,7 @@ const addSubCategory = (liSubWorkTypeName) => {
 
 // 경력사항 추가 버튼 클릭 시 입력 필드 추가
 function expappend() {
-  const form = document.querySelector(".exp-form");
+  const inputContainer = document.querySelector(".input-container");
 
   // 새로운 input-container를 생성
   const newContainer = document.createElement("div");
@@ -126,12 +143,12 @@ function expappend() {
   newContainer.innerHTML = `
   <label>
     회사명:
-    <input type="text" class="company-name" placeholder="회사명을 입력하세요">
+    <input type="text" name="companyName" class="company-name" placeholder="회사명을 입력하세요">
   </label>
   <label>
     근무기간:
-    <input type="date" class="start-date">
-    <input type="date" class="end-date">
+    <input type="date" name="startDate" class="start-date">
+    <input type="date" name="endDate" class="end-date">
   </label>
   <label>
     담당업무:
@@ -149,7 +166,7 @@ function expappend() {
   newContainer.appendChild(deleteBtn);
 
   // 새로운 필드를 form 태그 안에 추가
-  form.appendChild(newContainer);
+  inputContainer.appendChild(newContainer);
 }
 
 function addSelect() {
@@ -221,75 +238,21 @@ function addSelect() {
   container.appendChild(deleteBtn);
 }
 
-function submitWorkType() {
-  const partTimeChecked = document.getElementById("partTime").checked;
-  const fullTimeChecked = document.getElementById("fullTime").checked;
+const formSection = document.querySelector(".form-section");
 
-  let workTypeValue;
 
-  if (partTimeChecked && fullTimeChecked) {
-    workTypeValue = 3; // 알바와 정규직 모두 체크된 경우
-  } else if (partTimeChecked) {
-    workTypeValue = 1; // 알바만 체크된 경우
-  } else if (fullTimeChecked) {
-    workTypeValue = 2; // 정규직만 체크된 경우
-  } else {
-    workTypeValue = 0; // 아무것도 체크되지 않은 경우 (optional)
-  }
+formSection.addEventListener("submit", (e) => {
 
-  // 서버로 전송하는 부분 (예시로 콘솔에 출력)
-  console.log("보낼 값:", workTypeValue);
+if(formElements.disabled == true && expAppend.disabled == true) {
+  const companyName = document.querySelector(".company-name");
+  const startDate = document.querySelector(".start-date");
+  const endDate = document.querySelector(".end-date");
+  const jobPart = document.querySelector(".job-part");
+
+  companyName.value = "";
+  startDate.value = "";
+  endDate.value = "";
+  jobPart.value = "";
 }
 
-const form = document.querySelector(".formSection");
-form.addEventListener("submit", async (e) => {
-  const formData = new FormData();
-
-  const gradeNo = document.getElementById("gradeNo");
-  formData.append("gradeNo", gradeNo.value);
-
-  const subWorkType = document.getElementById("subCategory");
-  formData.append("subWorkType", subWorkType.value);
-
-  // const workTypeValue = document.getElementsByName("workType");
-  // formData.append("workTypeValue", workTypeValue.value);
-
-  const workDate = document.getElementsByName("workDate");
-  formData.append("workDate", workDate.value);
-
-  const workDay = document.getElementsByName("workDay");
-  formData.append("workDay", workDay.value);
-
-  const workPart = document.getElementsByName("workPart");
-  formData.append("workPart", workPart.value);
-
-const payType = document.getElementsByName("payType");
-formData.append("payType", payType.value);
-
-  const payInput = document.getElementsByName("payInput");
-  formData.append("payInput", payInput.value);
-
-  try {
-    const resp = await fetch("/resume/writeResume", {
-      method: "POST",
-      body: formData,
-    });
-
-    const result = await resp.json();
-
-    if (result > 0) {
-      alert("업데이트되었습니다.");
-    } else {
-      alert("업데이트에 실패했습니다.");
-    }
-  } catch (error) {
-    console.error("업데이트 중 오류 발생:", error);
-    alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
-  }
 });
-
-
-const year = document.getElementById("year");
-if (!year || year === "null") {
-  year = 0; // year가 null이면 기본값 0으로 설정
-}
