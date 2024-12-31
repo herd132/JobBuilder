@@ -10,7 +10,7 @@
     <th:block th:replace="~{common/common}"></th:block>
 
     <!-- <main> 안쪽 CSS -->
-    <link rel="stylesheet" href="/css//board/faq.css">
+    <link rel="stylesheet" href="/css//serviceCenter/faq.css">
 </head>
 
 <body>
@@ -19,52 +19,47 @@
     <!-- 주의사항 디자인을 위해 th문 안 넣었습니다 th문은 알아서!!!! -->
     <main>
         <!-- Main board container -->
-<div class="board-container">
-    <!-- Board title -->
-    <div class="board-header">
-        <h2 class="board-title">자주 묻는 질문</h2>
-        <button class="write-btn">글쓰기</button>
-    </div>
-
-    <!-- FAQ list -->
-    <div class="faq-list">
-        <!-- FAQ item -->
-        <div class="faq-item">
-            <div class="faq-question">
-                <span class="question-text">Q. 회원 가입은 어떻게 하나요?</span>
-                <span class="toggle-icon">+</span>
-                <div class="post-info">
-                    <span class="date">2024.03.15</span>
-                    <span class="views">조회수 234</span>
+        <div class="board-container">
+            <!-- Board title -->
+            <div class="board-header">
+                <h2 class="board-title">자주 묻는 질문</h2>
+                <div class="status-change">
+                    <a href="">근로자</a>
+                    <a href="">고용주</a>
                 </div>
             </div>
-            <div class="faq-answer">
-                <p>회원 가입 절차는 다음과 같습니다:</p>
-                <p>1. 메인 페이지 우측 상단의 '회원가입' 버튼을 클릭합니다.</p>
-                <p>2. 필수 정보를 입력합니다. (이메일, 비밀번호, 이름)</p>
-                <p>3. 이메일 인증을 완료합니다.</p>
-                <p>4. 약관에 동의하고 가입을 완료합니다.</p>
-            </div>
-        </div>
 
-        <!-- Second FAQ item -->
-        <div class="faq-item">
-            <div class="faq-question">
-                <span class="question-text">Q. 비밀번호를 잊어버렸어요.</span>
-                <span class="toggle-icon">+</span>
-                <div class="post-info">
-                    <span class="date">2024.03.10</span>
-                    <span class="views">조회수 156</span>
+            <!-- FAQ list -->
+            <div class="faq-list">
+                <!-- FAQ item -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span class="question-text">Q. 회원 가입은 어떻게 하나요?</span>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>회원 가입 절차는 다음과 같습니다:</p>
+                        <p>1. 메인 페이지 우측 상단의 '회원가입' 버튼을 클릭합니다.</p>
+                        <p>2. 필수 정보를 입력합니다. (이메일, 비밀번호, 이름)</p>
+                        <p>3. 이메일 인증을 완료합니다.</p>
+                        <p>4. 약관에 동의하고 가입을 완료합니다.</p>
+                    </div>
+                </div>
+
+                <!-- Second FAQ item -->
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span class="question-text">Q. 비밀번호를 잊어버렸어요.</span>
+                        <span class="toggle-icon">+</span>
+                    </div>
+                    <div class="faq-answer">
+                        <p>비밀번호 재설정은 다음과 같은 방법으로 가능합니다:</p>
+                        <p>1. 로그인 페이지에서 '비밀번호 찾기'를 클릭합니다.</p>
+                        <p>2. 가입시 등록한 이메일 주소를 입력합니다.</p>
+                        <p>3. 이메일로 받은 링크를 통해 새로운 비밀번호를 설정합니다.</p>
+                    </div>
                 </div>
             </div>
-            <div class="faq-answer">
-                <p>비밀번호 재설정은 다음과 같은 방법으로 가능합니다:</p>
-                <p>1. 로그인 페이지에서 '비밀번호 찾기'를 클릭합니다.</p>
-                <p>2. 가입시 등록한 이메일 주소를 입력합니다.</p>
-                <p>3. 이메일로 받은 링크를 통해 새로운 비밀번호를 설정합니다.</p>
-            </div>
-        </div>
-    </div>
 
             <!-- Search section -->
             <div class="search-section">
@@ -114,6 +109,7 @@
 
     <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
     <th:block th:replace="~{common/main-footer}"></th:block>
+    <script src="/js/serviceCenter/faq.js"></script>
 </body>
 
 </html>
