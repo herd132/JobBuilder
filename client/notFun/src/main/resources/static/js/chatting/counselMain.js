@@ -221,6 +221,17 @@ document.querySelector(".end-btn").addEventListener("click",  () => {
 	};
 
 	chattingSock.send(JSON.stringify(end));
+
+	fetch("/chat/counselingEnd", {
+    method: "PUT",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj)
+	}).then(resp => resp.text())
+	.then(result => {
+		console.log(result)
+	});
+
+	roomListAddEvent();
 })
 
 counseling.addEventListener("click", () => {

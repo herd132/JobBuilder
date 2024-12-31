@@ -85,9 +85,9 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 		
 		
 		// DB 삽입 서비스 호출
-//		int result = service.insertMessage(msg);
+		int result = service.insertMessage(msg);
 		
-//		if(result > 0) {
+		if(result > 0) {
 			
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm");
 			msg.setSendTime(sdf.format(new Date()));
@@ -116,7 +116,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 			}
 			
 			
-//		}
+		}
 		
 	}
 }

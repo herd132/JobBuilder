@@ -116,6 +116,16 @@ public class ChattingController {
         
         return resultMap;
     }
+    
+    // 상담 종료
+    @PutMapping("counselingEnd")
+    @ResponseBody
+    public int counselingEnd(@RequestBody Map<String, Object> map) {
+    	
+    	log.debug("map" + map);
+    	
+    	return 2;
+    }
  
 
 }
