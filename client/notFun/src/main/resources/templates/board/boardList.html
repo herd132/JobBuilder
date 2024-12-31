@@ -102,7 +102,7 @@
 				<th:block th:if="${boardCode != 1}">
 					<div class="btn-area">
 						<!-- 로그인 상태일 때만 글쓰기 버튼 노출 -->
-						<button id="insertBtn" th:if="${session.loginWorker}">글쓰기</button>
+						<button id="insertBtn" th:if="${session.loginWorker} or ${session.loginEmployer}">글쓰기</button>
 					</div>
 				</th:block>
 			</th:block>
