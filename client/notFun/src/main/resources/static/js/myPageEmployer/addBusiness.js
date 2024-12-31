@@ -102,9 +102,17 @@ const subCategory = async (workTypeNo) => {
 const addSubCategory = (liSubWorkTypeName) => {
 
   const selectCategory = document.querySelectorAll(".select-category");
+
   if(selectCategory.length >= 5){
     alert("업직종은 최대 5개만 가능합니다");
     return;
+  }
+
+  for(let i=0; i<selectCategory.length; i++){
+    if(selectCategory[i].value == liSubWorkTypeName.innerText){
+      alert("동일한 업직종이 있습니다");
+      return;
+    }
   }
 
   const selectCategoryUl = document.querySelector("#selectCategoryUl");

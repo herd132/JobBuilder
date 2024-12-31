@@ -1,13 +1,16 @@
 package com.jobbuilder.project.recruitment.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
@@ -43,10 +46,20 @@ public class RecruitmentController {
 							Model model) {
 		
 		List<Employer> businessList = service.selectBusinessList(loginEmployer.getMemberNo());
+		List<Map<String, String>> preferredList = service.selectPreferredList();
+		List<Map<String, String>> supportTitleList = service.selectSupportTitleList();
 		
 		model.addAttribute("businessList", businessList);
+		model.addAttribute("preferredList", preferredList);
+		model.addAttribute("supportTitleList", supportTitleList);
 
 		return "recruitment/addRecruitment";
+	}
+	
+	@ResponseBody
+	@GetMapping("selectSubSupport/{supportNo}")
+	private List<Map<String, String>> subSupportList(@PathVariable("supportNo") String supportNo){
+		return service.selectSubSupportList(supportNo);
 	}
 	
 	@PostMapping("addRecruitment")

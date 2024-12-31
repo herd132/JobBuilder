@@ -1,6 +1,7 @@
 package com.jobbuilder.project.recruitment.model.serivce;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,5 +26,21 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	@Override	// 사업장 정보 얻어오기
 	public List<Employer> selectBusinessList(int memberNo) {
 		return mapper.selectBusinessList(memberNo);
+	}
+	
+	@Override	// 선호조건 리스트 불러오기
+	public List<Map<String, String>> selectPreferredList() {
+		return mapper.selectPreferredList();
+	}
+	
+	@Override	// 복리후생 대분류 불러오기
+	public List<Map<String, String>> selectSupportTitleList() {
+		return mapper.selectSupportTitleList();
+	}
+	
+	@Override	// 복리후생 소분류 불러오기
+	public List<Map<String, String>> selectSubSupportList(String supportNo) {
+		// TODO Auto-generated method stub
+		return mapper.selectSubSupportList(supportNo);
 	}
 }

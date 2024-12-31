@@ -5,7 +5,28 @@
 	<!-- 사업장 정보 얻어오기 -->
 	<select id="selectBusinessList">
 	SELECT EMPLOYER_NO, BUSINESS_NICKNAME
-	FROM EMPLOYER
+	FROM "EMPLOYER"
 	WHERE MEMBER_NO = ${memberNo}
+	</select>
+	
+	<!-- 선호조건 리스트 불러오기 -->
+	<select id="selectPreferredList">
+	SELECT PREFERRED_NO AS "preferredNo", PREFERRED_CATEGORY AS "preferredCategory"
+	FROM "PREFERRED"
+	</select>
+	
+	<!-- 복리후생 대분류 불러오기 -->
+	<select id="selectSupportTitleList">
+	SELECT SUBSTR(SUPPORT_NO, 1, 2) AS "supportNo", SUPPORT_CATEGORY AS "supportCategory"
+	FROM SUPPORT
+	WHERE SUPPORT_NO LIKE '__00'
+	</select>
+	
+	<!-- 복리후생 소분류 불러오기 -->
+	<select id="selectSubSupportList">
+	SELECT SUPPORT_NO AS "supportNo", SUPPORT_CATEGORY AS "supportCategory"
+	FROM SUPPORT
+	WHERE SUPPORT_NO LIKE #{supportNo}||'__'
+		AND SUPPORT_NO NOT LIKE '__00'
 	</select>
 </mapper>
