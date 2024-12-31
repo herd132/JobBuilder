@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobbuilder.project.resume.model.dto.Resume;
 import com.jobbuilder.project.resume.model.mapper.ResumeMapper;
+import com.jobbuilder.project.worker.model.dto.Worker;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,4 +30,18 @@ public class ResumeServiceImpl implements ResumeService{
 	public List<Map<String, String>> selectsubCategoryList(String workTypeNo) {
 		return mapper.selectsubCategoryList(workTypeNo);
 	}
+
+	@Override // 이력서 작성 테스트
+	public int writeResume(Worker loginWorker, int gradeNo, int workDateNo, int payType, int inputPay) {
+		
+		Resume addResume = new Resume();
+		addResume.setGradeNo(gradeNo);
+		addResume.setInputPay(inputPay);
+		addResume.setPayType(payType);
+		addResume.setWorkDateNo(workDateNo);
+		addResume.setWorkerNo(loginWorker.getWorkerNo());
+		
+		return mapper.writeResume(addResume);
+	}
+
 }
