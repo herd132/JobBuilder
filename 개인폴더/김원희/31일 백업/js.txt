@@ -614,7 +614,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 dataType: "json",
                 success: function (result) {
                   alert("결제 및 결제 검증이 완료되었습니다.");
-                  window.location.href = "/payments/testpay";
+                  
                 },
                 error: function (result) {
                   alert(result.responseText);
