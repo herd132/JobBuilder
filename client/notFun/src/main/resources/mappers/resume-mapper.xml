@@ -17,5 +17,10 @@
 	WHERE WORKTYPE_NO LIKE #{workTypeNo}||'__'
 		AND WORKTYPE_NO NOT LIKE '__00'
 	</select>
+	
+	<insert id="writeResume">
+	INSERT INTO RESUME (RESUME_NO, WORKER_NO, GRADE_NO, WORK_DATE_NO, PAY_TYPE, INPUT_PAY)
+	VALUES (SEQ_RESUME_NO.NEXTVAL, #{workerNo}, #{gradeNo}, #{workDateNo}, #{payType}, #{inputPay})
+	</insert>
 
 </mapper>

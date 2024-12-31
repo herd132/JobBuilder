@@ -5,6 +5,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.jobbuilder.project.resume.model.dto.Resume;
+
 @Mapper
 public interface ResumeMapper {
 
@@ -20,5 +22,11 @@ public interface ResumeMapper {
 	 * @author JWJ
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
+
+	/** 이력서 작성 테스트
+	 * @param addResume :WorkerNo, gradeNo, workDate, payType, inputPay
+	 * @return
+	 */
+	int writeResume(Resume addResume);
 
 }
