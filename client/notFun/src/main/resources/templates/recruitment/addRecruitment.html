@@ -19,7 +19,9 @@
   <div class="addRecruitment-gray">
     <main class="addRecruitment-white">
       <div class="recruitment-form-container">
-        <form action="/recruitment/addRecruitment" method="post">
+        <form action="/recruitment/addRecruitment" method="post" class="addRecruitmentForm"
+          id="addRecruitmentForm" enctype="multipart/form-data">
+
           <div class="business-nickname-area">
             <h4>사업장</h4>
             <select name="employerNo" id="employerNo">
@@ -27,6 +29,22 @@
                 <option th:value="*{employerNo}" th:text="*{businessNickname}"></option>
               </th:block>
             </select>
+          </div>
+
+          <div class="business-img-area">
+            <div class="business-thumbnail-area">
+              <h4>사업장 대표 이미지</h4>
+              <div class="businessImg thumbnail">
+                <label for="img0"><img src="" class="preview"></label>
+                <input type="file" name="images" class="inputImg" id="img0" accept="image/*">
+              </div>
+            </div>
+
+            <div class="business-etcImg-area">
+              <button type="button" onclick="addBusinessImg()">사업장 이미지 추가</button>
+
+            </div>
+
           </div>
 
           <div class="recuritment-title-area">
@@ -57,8 +75,10 @@
 
           <div class="workcond-jobtype-area">
             <h4>근무형태</h4>
-            <input type="radio" name="workcondJobtype" value="1"> 알바
-            <input type="radio" name="workcondJobtype" value="2"> 정규직
+            <input type="radio" name="workcondJobtype" value="1" id="partTime" checked> 
+            <label for="partTime">알바</label>
+            <input type="radio" name="workcondJobtype" value="2" id="fullTime">
+            <label for="fullTime">정규직</label>
           </div>
 
           <div class="grade-area">
@@ -128,6 +148,18 @@
               <option value="9">새벽~오전 파트타임</option>
               <option value="10">풀타임(8시간이상)</option>
             </select>
+          </div>
+
+          <div class="option-container">
+            <div class>
+              <h4>복리후생</h4>
+            </div>
+          </div>
+
+          <div class="btn-area">
+            <button>작성하기</button>
+            <button type="button" onclick="backToRecruitmentList()">돌아가기</button>
+
           </div>
         </form>
       </div>

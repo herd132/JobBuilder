@@ -1,5 +1,7 @@
 package com.jobbuilder.project.recruitment.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,5 +38,10 @@ public class Recruitment {
 	private String periodName;				// WORKCOND_PERIOD
 	private String daysName;				// WORKCOND_DAYS
 	private String timeName;				// WORKCOND_TIME
+	
+	private List<RecruitmentPreferred> preferredList;	// 우대사항 테이블 DTO List
+	private List<RecruitmentSupport> supportList;		// 복리후생 테이블 DTO List
+	private List<RecruitmentImg> imageList;				// 사업장 이미지 테이블 관련 DTO List
+	
 	
 }
