@@ -69,7 +69,6 @@ public class BoardController {
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 
-		log.debug("맵에는 무슨 정보가 달려잇나요" + map);
 		
 		// forward : boardList.html
 		return "board/boardList";
@@ -93,8 +92,6 @@ public class BoardController {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
-
-		// 로그인 상태인 경우에만 memberNo 추가
 		if (loginMember != null) {
 			map.put("memberNo", loginMember.getMemberNo());
 		}
@@ -194,25 +191,7 @@ public class BoardController {
 			// board - 게시글 일반 내용 + imageList + commentList
 			model.addAttribute("board", board);
 
-			// 조회된 이미지 목록(imageList)가 있을 경우
-			if (!board.getImageList().isEmpty()) {
-
-				BoardImg thumbnail = null;
-
-				// imageList의 0번 인덱스 == 가장 빠른 순서 (imgOrder)
-
-				// 만약 이미지 목록의 첫번째 행의 순서가 0 == 썸네일 인 경우
-				
-//				if (board.getImageList().get(0).getImgOrder() == 0) {
-//
-//					thumbnail = board.getImageList().get(0);
-//				}
-
-				model.addAttribute("thumbnail", thumbnail);
-				model.addAttribute("start", thumbnail != null ? 1 : 0);
-
-			}
-
+			
 		}
 
 		return path;

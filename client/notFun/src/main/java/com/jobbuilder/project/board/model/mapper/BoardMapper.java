@@ -28,5 +28,6 @@ public interface BoardMapper {
 
 	// 조회수 조회
 	int selectReadCount(int boardNo);
+	
 
 }

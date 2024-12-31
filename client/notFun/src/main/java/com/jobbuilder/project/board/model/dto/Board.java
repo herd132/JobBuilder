@@ -26,7 +26,7 @@ public class Board {
 	private int boardCode;
 	
 	// MEMBER 테이블 조인
-	private String memberNickname;
+	private String memberName;
 	
 	// 목록 조회 시 상관쿼리 결과
 	private int commentCount;

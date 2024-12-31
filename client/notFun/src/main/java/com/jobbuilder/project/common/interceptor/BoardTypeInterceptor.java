@@ -46,8 +46,7 @@ public class BoardTypeInterceptor implements HandlerInterceptor {
 		// - 모든 클라이언트가 공용으로 사용.
 		
 		// application scope 객체 얻어오기 (request 에서 얻어올수있음)
-		ServletContext application = request.getServletContext();
-		log.debug("boardTYpelist" + "됐나");
+		ServletContext application = request.getServletContext();		
 		
 		// application scope에 "boardTypeList"가 없을 경우.		
 		if(application.getAttribute("boardTypeList") == null) {
