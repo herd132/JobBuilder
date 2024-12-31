@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobbuilder.project.payment.model.dto.Membership;
+import com.jobbuilder.project.payment.model.dto.Payment;
 import com.jobbuilder.project.payment.model.mapper.PaymentMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -25,4 +26,23 @@ public class PaymentServiceImpl implements PaymentService {
         return mapper.selectMembershipDetails(employerNo);
     }
     
+    @Override
+    public void savePayment(Payment payment, List<Integer> membershipNumbers) {
+        if (membershipNumbers == null || membershipNumbers.isEmpty()) {
+            log.info("Saving new payment: {}", payment);
+            mapper.insertPayment(payment);
+        } else {
+            for (Integer membershipNo : membershipNumbers) {
+                payment.setMembershipNo(membershipNo); // 멤버십 번호 설정
+                log.info("Saving payment for membershipNo {}: {}", membershipNo, payment);
+                mapper.insertPayment(payment);
+            }
+        }
+    }
+
+    
 }
+
+
+
+

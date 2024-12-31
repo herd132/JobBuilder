@@ -1,3 +1,3 @@
 const addRecruitment = () => {
-  location.href = "/myPageEmp/addRecruitment";
+  location.href = "/recruitment/addRecruitment";
 }

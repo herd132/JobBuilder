@@ -1,47 +1,48 @@
+<header>
+    <link rel="favicon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
+    <!-- 로고 및 검색바 로그인 -->
+    <nav class="main-nav">
 
-<header> 
-  <link rel="favicon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
-  <!-- 로고 및 검색바 로그인 -->
-  <nav class="main-nav">
-
-      <div class="logo">
-          <a href="/"><img src="/images/logo.png" alt="로고" class="logo-img" href="/"></a>
-      </div>
+        <div class="logo">
+            <a href="/"><img src="/images/logo.png" alt="로고" class="logo-img" href="/"></a>
+        </div>
 
       <div class="search-bar">
           <input type="text" placeholder="검색어를 입력해주세요">
           <button type="button" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
       </div>
+      
+        <div class="user-menu">
 
-      <div class="user-menu">
-        
-        <!-- 로그인 시 -->
-        <th:block th:if="${session.loginEmployer == null and session.loginWorker == null}">
-          <a href="/worker/workerLogin" class="nav-login">로그인</a>
-          <a href="/multiSignUp" class="nav-singup">회원가입</a>
-        </th:block>
+            <!-- 로그인 시 -->
+            <th:block th:if="${session.loginEmployer == null and session.loginWorker == null}">
+                <a href="/worker/workerLogin" class="nav-login">로그인</a>
+                <a href="/multiSignUp" class="nav-singup">회원가입</a>
+            </th:block>
 
-        <th:block th:if="${session.loginWorker != null}">
-          <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임</span>&nbsp;<i class="fa-solid fa-chevron-down"></i>
-          <div class="nav-mypage hidden">
-              <a href="/myPageWorkee/myPageWorkerInfo">회원 정보</a>
-              <a href="/myPageWorkee/resume">이력서 관리</a>
-              <a href="/worker/workerLogout">로그아웃</a>
-          </div>
-        </th:block>
+            <th:block th:if="${session.loginWorker != null}">
+                <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임</span>&nbsp;<i
+                    class="fa-solid fa-chevron-down"></i>
+                <div class="nav-mypage hidden">
+                    <a href="/myPageWorkee/myPageWorkerInfo">회원 정보</a>
+                    <a href="/myPageWorkee/resume">이력서 관리</a>
+                    <a href="/worker/workerLogout">로그아웃</a>
+                </div>
+            </th:block>
 
-        <th:block th:if="${session.loginEmployer != null}">
-          <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임</span>&nbsp;<i class="fa-solid fa-chevron-down"></i>
-          <div class="nav-mypage hidden">
-              <a href="/myPageEmp/info">회원정보</a>
-              <a href="/myPageEmp/recruitmentList">공고 관리</a>
-              <a href="/employer/employerLogout">로그아웃</a>
-          </div>
-        </th:block>
+            <th:block th:if="${session.loginEmployer != null}">
+                <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임</span>&nbsp;<i
+                    class="fa-solid fa-chevron-down"></i>
+                <div class="nav-mypage hidden">
+                    <a href="/myPageEmp/info">회원정보</a>
+                    <a href="/myPageEmp/recruitmentList">공고 관리</a>
+                    <a href="/employer/employerLogout">로그아웃</a>
+                </div>
+            </th:block>
 
-      </div>
+        </div>
 
-  </nav>
+    </nav>
 
   <!-- 게시판 네비바 -->
   <nav class="sub-nav">

@@ -140,8 +140,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const counselor = document.querySelector(".counselor");
+<<<<<<< HEAD
 
   counselor.addEventListener("click", counselorConnection);
+=======
+  
+  //counselor.addEventListener("click", counselorConnection);
+>>>>>>> e87e1d4616cb8994eac582b3e676399ef6fc4a12
 
 
 

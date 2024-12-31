@@ -2,4 +2,10 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.recruitment.model.mapper.RecruitmentMapper">
 
+	<!-- 사업장 정보 얻어오기 -->
+	<select id="selectBusinessList">
+	SELECT EMPLOYER_NO, BUSINESS_NICKNAME
+	FROM EMPLOYER
+	WHERE MEMBER_NO = ${memberNo}
+	</select>
 </mapper>

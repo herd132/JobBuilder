@@ -10,8 +10,13 @@
     integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka"
     crossorigin="anonymous"></script>
   <script>
-    Kakao.init('c089c8172def97eb00c07217cae17495'); // 사용하려는 앱의 JavaScript 키 입력
+    // 초기화: 본인의 JavaScript 키 사용
+    Kakao.init('420e37e2eb7b21d415137a0ef5b387a2');
+    console.log(Kakao.isInitialized()); // true가 나오면 초기화 성공
+
+
   </script>
+
 
 </head>
 
@@ -53,12 +58,12 @@
           <a href="/worker/workerFindPw">비밀번호 찾기</a>
         </div>
         <div class="text-center">
-          <a href="https://kauth.kakao.com/oauth/authorize"
-             th:href="@{https://kauth.kakao.com/oauth/authorize(client_id=${kakaoApiKey}, redirect_uri=${redirectUri}, response_type='code')}">
-              <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="222" alt="카카오 로그인 버튼">
+          <a id="kakao-login-btn" href="javascript:loginWithKakao()">
+            <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="222"
+              alt="카카오 로그인 버튼">
           </a>
-      </div>
-
+        </div>
+        <button onclick="kakaoLogin()">카카오 로그인</button>
         <p id="token-result"></p>
       </div>
     </main>
@@ -66,7 +71,6 @@
 
   <th:block th:replace="~{common/main-footer}"></th:block>
   <script src="/js/worker/workerLogin.js"></script>
-  <script src="https://developers.kakao.com/sdk/js/kakao.min.js"></script>
 
 
 
