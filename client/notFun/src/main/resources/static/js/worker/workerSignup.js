@@ -69,6 +69,7 @@ const checkObj = {
   authKey: false,
   workerId: false,
   workerBirthDate: false,
+  workerMbti: false
 };
 /* 이메일 유효성 검사 */
 
@@ -611,6 +612,34 @@ memberTel.addEventListener("input", (e) => {
   telMessage.classList.add("confirm");
   telMessage.classList.remove("error");
   checkObj.memberTel = true;
+
+  // 유효한 방식이면 전화번호 중복검사 실시
+  fetch("/worker/checkTel?memberTel=" + inputTel)
+    .then((resp) => resp.text())
+    .then((count) => {
+      // count : 1이면 중복, 0이면 중복 아님
+      // == : 값만 비교
+      // === : 값 + 자료형 비교
+      if (count == 1) {
+        // 증복이면
+        telMessage.innerText = "이미 사용중인 전화번호 입니다.";
+        telMessage.classList.add("error");
+        telMessage.classList.remove("confirm");
+        checkObj.memberEmail = false; // 중복은 유효하지 않은 상태이다.
+        console.log(count);
+        return;
+      }
+      // 중복 X인 경우
+      telMessage.innerText = "사용 가능한 전화번호 입니다";
+      telMessage.classList.add("confirm");
+      telMessage.classList.remove("error");
+      checkObj.memberEmail = true; // 유효한 이메일
+    })
+    .catch((error) => {
+      // fetch 수행 중 예외 발생 시 처리
+      console.log(error); // 발생한 예외 출력
+      // finally도 쓸수있음 (무조건수행)
+    });
 });
 
 // -----------------------------------

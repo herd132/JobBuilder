@@ -161,7 +161,7 @@ public class WorkerController {
 		 */
 		@PostMapping("workerSignUp")
 		public String signup(@ModelAttribute/*생략가능*/ Worker inputWorker,							
-							@RequestParam("memberAddress") String[] memberAddress,
+							@RequestParam("workerAddress") String[] memberAddress,
 							@RequestParam("signUpPath") int signUpPath,
 							RedirectAttributes ra) {
 			
@@ -289,5 +289,18 @@ public class WorkerController {
 			
 			return service.checkNickname(workerNickname); 
 		}
+		
+		/**
+		 * @param 전화번호중복검사
+		 * @return
+		 */
+		@ResponseBody
+		@GetMapping("checkTel")
+		public int checkTel(@RequestParam("memberTel") String workerTel) {
+			
+			return service.checkTel(workerTel); 
+		}
 	
+		
+		
 }
