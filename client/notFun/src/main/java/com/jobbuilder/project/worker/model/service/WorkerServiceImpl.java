@@ -64,6 +64,12 @@ public class WorkerServiceImpl implements WorkerService{
 		
 		return mapper.checkNickname(workerNickname);
 	}
+	
+	// 비밀번호 찾기시 전화번호 중복검사
+		@Override
+		public int checkTel(String workerTel) {
+			return mapper.checkTel(workerTel);
+		}
 
 	// 회원 가입
 	@Override
@@ -129,10 +135,6 @@ public class WorkerServiceImpl implements WorkerService{
 		return mapper.findChangePw(map);
 	}
 	
-	// 비밀번호 찾기시 전화번호 중복검사
-	@Override
-	public int checkMemberTel2(Worker inputWorker) {
-		return mapper.checkMemberTel2(inputWorker);
-	}
+	
 	
 }

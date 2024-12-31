@@ -28,8 +28,8 @@ public interface WorkerMapper {
 	// 비밀번호 찾기
 	Worker workerFindPw(Worker inputWorker);
 	// 비밀번호 찾기후 비밀번호 변경
-	int findChangePw(Map<String, Object> map);
+	int findChangePw(Map<String, Object> map);	
 	// 전화번호 중복검사
-	int checkMemberTel2(Worker inputWorker);
+	int checkTel(String workerTel);
 
 }
