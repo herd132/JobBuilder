@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>공고추가 하기</title>
+
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageHeader.css">
+</head>
+
+<body>
+  <!-- 로고 및 검색바 로그인 -->
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+
+  <h3>공고추가 페이지 입니다.</h3>
+
+  <div class="addRecruitment-gray">
+    <main class="addRecruitment-white">
+      <div class="recruitment-form-container">
+        <form action="/recruitment/addRecruitment" method="post" class="addRecruitmentForm"
+          id="addRecruitmentForm" enctype="multipart/form-data">
+
+          <div class="business-nickname-area">
+            <h4>사업장</h4>
+            <select name="employerNo" id="employerNo">
+              <th:block th:each="business: ${businessList}" th:object="${business}">
+                <option th:value="*{employerNo}" th:text="*{businessNickname}"></option>
+              </th:block>
+            </select>
+          </div>
+
+          <div class="business-img-area">
+            <div class="business-thumbnail-area">
+              <h4>사업장 대표 이미지</h4>
+              <div class="businessImg thumbnail">
+                <label for="img0"><img src="" class="preview"></label>
+                <input type="file" name="images" class="inputImg" id="img0" accept="image/*">
+              </div>
+            </div>
+
+            <div class="business-etcImg-area">
+              <button type="button" onclick="addBusinessImg()">사업장 이미지 추가</button>
+
+            </div>
+
+          </div>
+
+          <div class="recuritment-title-area">
+            <h4>공고제목</h4>
+            <input type="text">
+          </div>
+
+          <div class="recruitment-content-area">
+            <h4>상세요강</h4>
+            <textarea name="recruitmentContent" id="recruitmentContent">
+
+            </textarea>
+          </div>
+
+          <div class="recruitment-deadline-area">
+            <h4>모집마감일</h4>
+            <input type="date" name="recruitmentDeadline" id="recruitmentDeadline">
+          </div>
+
+          <div>
+            <h4>모집인원</h4>
+            <select name="numOfRecruitmentName" id="numOfRecruitmentName">
+              <option value="인원미정">인원미정</option>
+              <option value="0명">0명</option>
+              <option value="00명">00명</option>
+            </select>
+          </div>
+
+          <div class="workcond-jobtype-area">
+            <h4>근무형태</h4>
+            <input type="radio" name="workcondJobtype" value="1" id="partTime" checked> 
+            <label for="partTime">알바</label>
+            <input type="radio" name="workcondJobtype" value="2" id="fullTime">
+            <label for="fullTime">정규직</label>
+          </div>
+
+          <div class="grade-area">
+            <h4>학력조건</h4>
+            <select name="gradeNo" id="gradeNo">
+              <option value="1">무관</option>
+              <option value="2">중졸</option>
+              <option value="3">고졸</option>
+              <option value="4">대졸(2,3년제)</option>
+              <option value="5">대졸(4년제)</option>
+              <option value="6">대학원 이상</option>
+            </select>
+          </div>
+
+          <div class="salary-area">
+            <h4>급여조건</h4>
+            <select name="salaryNo" id="salaryNo">
+              <option value="1">시급</option>
+              <option value="2">월급</option>
+              <option value="3">추후협의</option>
+            </select>
+            <input type="number" name="salaryMount" id="salaryMount" placeholder="금액을 입력하세요"> 원
+          </div>
+
+          <div class="workcond-period-area">
+            <h4>근무기간</h4>
+            <select name="periodNo" id="periodNo">
+              <option value="1">무관</option>
+              <option value="2">하루</option>
+              <option value="3">1주일 이하</option>
+              <option value="4">1주일 ~ 1개월</option>
+              <option value="5">1개월 ~ 3개월</option>
+              <option value="6">3개월 ~ 6개월</option>
+              <option value="7">6개월 ~ 1년</option>
+              <option value="8">1년 이상</option>
+            </select>
+          </div>
+
+          <div class="workcond-days-area">
+            <h4>근무요일</h4>
+            <select name="daysNo" id="daysNo">
+              <option value="1">무관</option>
+              <option value="2">월 ~ 일</option>
+              <option value="3">월 ~ 토</option>
+              <option value="4">월 ~ 금</option>
+              <option value="5">주말(토, 일)</option>
+              <option value="6">주 6일</option>
+              <option value="7">주 5일</option>
+              <option value="8">주 4일</option>
+              <option value="9">주 3일</option>
+              <option value="10">주 2일</option>
+              <option value="11">주 1일</option>
+            </select>
+          </div>
+
+          <div class="workcond-time-area">
+            <h4>근무시간</h4>
+            <select name="timeNo" id="timeNo">
+              <option value="1">무관</option>
+              <option value="2">오전 파트타임(06시~12시)</option>
+              <option value="3">오후 파트타임(12시~18시)</option>
+              <option value="4">저녁 파트타임(18시~24시)</option>
+              <option value="5">새벽 파트타임(00시~06시)</option>
+              <option value="6">오전~오후 파트타임</option>
+              <option value="7">오후~저녁 파트타임</option>
+              <option value="8">저녁~새벽 파트타임</option>
+              <option value="9">새벽~오전 파트타임</option>
+              <option value="10">풀타임(8시간이상)</option>
+            </select>
+          </div>
+
+          <div class="option-container">
+            <div class>
+              <h4>복리후생</h4>
+            </div>
+          </div>
+
+          <div class="btn-area">
+            <button>작성하기</button>
+            <button type="button" onclick="backToRecruitmentList()">돌아가기</button>
+
+          </div>
+        </form>
+      </div>
+    </main>
+  </div>
+
+  <!-- footer 임시용(메인 푸터)-->
+  <th:block th:replace="~{common/main-footer}"></th:block>
+  <script src="/js/recruitment/addRecruitment.js"></script>
+</body>
+
+</html>

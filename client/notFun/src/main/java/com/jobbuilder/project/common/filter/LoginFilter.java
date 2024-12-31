@@ -36,7 +36,6 @@ public class LoginFilter implements Filter{
 		HttpServletRequest req = (HttpServletRequest) request;
 		HttpServletResponse resp = (HttpServletResponse) response;
 		
-		//-------- 게시판에 프로필사진 안 뜨는 문제해결 위해 추가작성 시작 ------
 		// 현재 요청의 URI를 가져옴
 		String path = req.getRequestURI();
 		
@@ -52,9 +51,11 @@ public class LoginFilter implements Filter{
 			return;									// 필터 통과 후 아래코드 수행하지 않도록 함
 		}
 		
-		//-------- 추가작성 여기까지(241115 오후 2시10분) -----------------------
+		HttpSession session = req.getSession();
 		
-
+		if(session.getAttribute("loginEmployer") == null) resp.sendRedirect("/loginError");
+		else chain.doFilter(request, response);
+		
 	}
 	
 }

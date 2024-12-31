@@ -20,8 +20,10 @@ public class FilterConfig {
 		
 		filter.setFilter(new LoginFilter());			// 사용할 필터 객체 추가
 		
-		// 필터가 동작할 URL을 세팅  (/myPage/* : myPage 로 시작하는 모든 요청)
-		String[] filteringURL = {"/myPageEmployer/*", "/myPageWorker/*", "/editBoard/*", "/chatting/*"};
+		// 필터가 동작할 URL을 세팅
+		String[] filteringURL = {
+			"/myPageEmployer/*", "/myPageWorker/*", "/editBoard/*", "/chatting/*", "/recruitment/addRecruitment"
+				};
 		filter.setUrlPatterns(Arrays.asList(filteringURL));	// Collection이 () 안에 있어야함
 		
 		filter.setName("loginFilter");					// 필터 이름 지정
