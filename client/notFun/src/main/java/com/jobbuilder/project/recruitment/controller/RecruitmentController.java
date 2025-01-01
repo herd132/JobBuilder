@@ -35,7 +35,7 @@ public class RecruitmentController {
 	
 	/* ********** 메서드 ********** */
 
-	/** 사업장 추가 페이지 이동(get)
+	/** 공고 추가 페이지 이동(get)
 	 * @param loginEmployer
 	 * @param model
 	 * @return
@@ -56,18 +56,101 @@ public class RecruitmentController {
 		return "recruitment/addRecruitment";
 	}
 	
+	/** 복리후생 소분류 불러오기(사업장 추가 페이지 내)
+	 * @param supportNo
+	 * @return
+	 * @author JWJ
+	 */
 	@ResponseBody
 	@GetMapping("selectSubSupport/{supportNo}")
 	private List<Map<String, String>> subSupportList(@PathVariable("supportNo") String supportNo){
 		return service.selectSubSupportList(supportNo);
 	}
 	
+	/** 공고 추가 (post)
+	 * @param addRecruitment
+	 * @param preferredList
+	 * @param supportList
+	 * @param images (아직 데이터 안넣었음)
+	 * @param ra
+	 * @return
+	 * @author JWJ
+	 */
 	@PostMapping("addRecruitment")
-	private String addRecruitment(@SessionAttribute("loginEmployer") Employer loginEmployer,
-								Recruitment addRecruitment,
-								@RequestParam(value="images", required=false) List<MultipartFile> images,
-								RedirectAttributes ra) {
+	private String addRecruitment(Recruitment addRecruitment,
+					@SessionAttribute("loginEmployer") Employer loginEmployer,
+					@RequestParam(value="recruitmentPrefers", required=false) List<String> preferredList,
+					@RequestParam(value="recruitmentSupports", required=false) List<String> supportList,
+					@RequestParam(value="images", required=false) List<MultipartFile> images,
+					RedirectAttributes ra) {
 		
-		return null;
+		log.debug("addRecruitment : " + addRecruitment);
+		log.debug("recruitmentPrefers : " + preferredList);
+		log.debug("recruitmentSupports : " + supportList);
+		
+		/* 파라미터 중 RECRUITMENT TABLE에 삽입시 필요한 것들 (RECRUITMENT_NO는 SEQ 이용) 
+		 * addRecruitment : recruitmentTitle, recruitmentContent, recruitmentDeadline(2025-02-01 형태),
+		 * 				jobtypeNo, numOfRecruitmentName, salaryNo, gradeNo, periodNo, daysNo, timeNo,
+		 * 				employerNo, salaryMount
+		 * 
+		 * 이하 RECRUITMENT_NO 불러와서 M:N 테이블(RECRUITMENT_PREFERRED, RECRUITMENT_SUPPORT)에 저장
+		 * preferredList : PREFERRED TABLE에서 PREFERRED_CATEGORY를 모아놓은 리스트
+		 * supportList : SUPPORT TABLE 에서 SUPPORT_CATEGORY를 모아놓은 리스트
+		 * */
+		int recruitmentNo = service.insertRecruitment(loginEmployer.getMemberNo() ,addRecruitment, preferredList, supportList);
+		
+		String message = null;
+		String path = null;
+		
+		if(recruitmentNo > 0) {
+			message = "새 공고가 추가되었습니다";
+			path = "/myPageEmp/recruitmentList";
+			
+		} else {
+			message = "새 공고 추가 실패..";
+			path = "addRecruitment";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	/** 공고글 목록 조회
+	 * @param cp
+	 * @param paramMap(검색할 경우)
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("list")
+	public String recruitmentList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+							@RequestParam Map<String, Object> paramMap,
+							Model model) {
+		
+		Map<String, Object> map = null;
+		
+		map = service.selectRecruitmentList(cp);
+		
+		model.addAttribute("paginationRecruitment", map.get("paginationRecruitment"));
+		model.addAttribute("recruitmentList", map.get("recruitmentList"));
+		
+		log.debug("paginationRecruitment : " + map.get("paginationRecruitment"));
+		log.debug("recruitmentList : " + map.get("recruitmentList"));
+		
+		return "recruitment/recruitmentList";
+	}
+	
+	/** 공고 상세 페이지 이동(get)
+	 * @param recruitmentNo
+	 * @return
+	 */
+	@GetMapping("detail/{recruitmentNo:[0-9]+}")
+	public String recruitmentDetail (@PathVariable("recruitmentNo") int recruitmentNo) {
+		
+//		Recruitment recruitment = service.selectOne(recruitmentNo);
+		
+
+		
+		return "recruitment/recruitmentDetail";
 	}
 }

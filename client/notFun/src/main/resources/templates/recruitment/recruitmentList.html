@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  
+  <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+  <th:block th:replace="~{common/common}"></th:block>
+
+  <!-- <main> 안쪽 CSS -->
+  <link rel="stylesheet" href="/css//common/main.css">
+</head>
+
+<body>
+
+  <th:block th:replace="~{common/main-header}"></th:block>
+  <th:block th:if="${session.loginEmployer == null}">
+    <a href="/employer/employerSignUp"><button>고용주 가입하기</button></a>
+    <a href="/employer/employerLogin"><button>고용주 로그인</button></a>
+  </th:block>
+    
+  <h2>공고리스트 페이지</h2>
+
+  /* 공고 목록에서 띄울 사항
+  * recruitmentNo, 
+  * businessAddress(join) 가운데(앞쪽에서 2개만 ex 서울 관악구),
+  * recruitmentTitle, businessName(join), 
+  * salaryMount, salaryName(join),
+  * timeName(join)
+  * writeDate, 
+  * recruitmentDeadline
+  * */
+
+  <div class="recruitmentList-gray">
+    <main class="myPageEmpInfo-white">
+      <div class="list-wrapper">
+        <table class="list-table">
+
+          <thead>
+            <tr>
+              <th>공고 번호</th>
+              <th>위치</th>
+              <th>
+                <ul>
+                  <li>공고 제목</li>
+                  <li>회사명</li>
+                </ul>
+              </th>
+              <th>급여 (원)</th>
+              <th>근무 시간</th>
+              <th>등록일</th>
+              <th>마감일</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <th:block th:if="${#lists.isEmpty(recruitmentList)}">
+              <tr>
+                <th colspan="7">공고가 존재하지 않습니다.</th>
+              </tr>
+            </th:block>
+
+            <th:block th:unless="${#lists.isEmpty(recruitmentList)}">
+              <tr th:each="recruitment : ${recruitmentList}" th:object="${recruitment}">
+                <td th:text="*{recruitmentNo}"></td>
+                <td th:text="*{businessAddress}"></td>
+                <td>
+                  <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
+                    th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'))">
+                    <li th:text="*{recruitmentTitle}"></li>
+                    <li th:text="*{businessName}"></li>
+                  </ul>
+                </td>
+                <td>
+                  <span th:text="|*{salaryMount} 원|"></span>
+                  <span th:text="*{salaryName}"></span>
+                </td>
+                <td th:text="*{timeName}"></td>
+                <td th:text="*{writeDate}"></td>
+                <td th:text="*{recruitmentDeadline}"></td>
+              </tr>
+            </th:block>
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </main>
+  </div>
+  
+  <script src="/js/recruitment/recruitmentList.js"></script>
+  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+  <th:block th:replace="~{common/main-footer}"></th:block>
+</body>
+
+</html>
