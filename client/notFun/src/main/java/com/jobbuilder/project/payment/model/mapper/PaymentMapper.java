@@ -13,9 +13,14 @@ public interface PaymentMapper {
 
 	List<Membership> selectMembershipDetails(int employerNo);
 
-	void insertPayment1(Payment payment);
-	void insertPayment2(Payment payment);
-	void insertPayment3(Payment payment);
-	void insertPayment4(Payment payment);
+	void savePayment(Payment payment);
+
+	void connectionPayment(Payment payment);
+
+	void newMembership(Membership membership);
+
+
+
+
 	
 }

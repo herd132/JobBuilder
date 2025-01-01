@@ -3,77 +3,100 @@
 <mapper namespace="com.jobbuilder.project.payment.model.mapper.PaymentMapper">
 
 
-<resultMap id="membershipResultMap" type="Membership">
-    <result property="employerNo" column="EMPLOYER_NO"/>
-    <result property="membershipNo" column="MEMBERSHIP_NO"/>
-    <result property="membershipType" column="MEMBERSHIP_TYPE"/>
-    <result property="membershipStartDate" column="MEMBERSHIP_START_DATE"/>
-    <result property="membershipEndDate" column="MEMBERSHIP_END_DATE"/>
-    <result property="membershipExpirationDate" column="MEMBERSHIP_EXPIRATION_DATE"/>
-    <result property="remainingDays" column="REMAINING_DAYS"/>
-    <result property="membershipName" column="MEMBERSHIP_NAME"/>
-    <result property="membershipDelFl" column="MEMBERSHIP_DEL_FL"/>
-</resultMap>
+	<resultMap id="membershipResultMap" type="Membership">
+	    <result property="employerNo" column="EMPLOYER_NO"/>
+	    <result property="membershipNo" column="MEMBERSHIP_NO"/>
+	    <result property="membershipType" column="MEMBERSHIP_TYPE"/>
+	    <result property="membershipStartDate" column="MEMBERSHIP_START_DATE"/>
+	    <result property="membershipEndDate" column="MEMBERSHIP_END_DATE"/>
+	    <result property="remainingDays" column="REMAINING_DAYS"/>
+	    <result property="membershipName" column="MEMBERSHIP_NAME"/>
+	    <result property="membershipDelFl" column="MEMBERSHIP_DEL_FL"/>
+	</resultMap>
+	
+	
+	<select id="selectMembershipDetails" resultMap="membershipResultMap">
+	    SELECT 
+	        A.EMPLOYER_NO AS EMPLOYER_NO,
+	        B.MEMBERSHIP_NO AS MEMBERSHIP_NO,
+	        B.MEMBERSHIP_TYPE AS MEMBERSHIP_TYPE,
+	        B.MEMBERSHIP_START_DATE AS MEMBERSHIP_START_DATE,
+	        B.MEMBERSHIP_END_DATE AS MEMBERSHIP_END_DATE,
+	        (TRUNC(B.MEMBERSHIP_END_DATE) - TRUNC(B.MEMBERSHIP_START_DATE)) AS REMAINING_DAYS,
+	        (SELECT C.MEMBERSHIP_NAME
+	            FROM MEMBERSHIP_LEVEL C
+	            WHERE C.MEMBERSHIP_NO = B.MEMBERSHIP_TYPE) AS MEMBERSHIP_NAME
+	    FROM EMPLOYER A
+	    JOIN MEMBERSHIP B ON A.EMPLOYER_NO = B.EMPLOYER_NO
+	    WHERE A.EMPLOYER_NO = #{employerNo}
+	    AND B.MEMBERSHIP_DEL_FL = 'N'
+	</select>
 
 
-<select id="selectMembershipDetails" resultMap="membershipResultMap">
-    SELECT 
-        A.EMPLOYER_NO AS EMPLOYER_NO,
-        B.MEMBERSHIP_NO AS MEMBERSHIP_NO,
-        B.MEMBERSHIP_TYPE AS MEMBERSHIP_TYPE,
-        B.MEMBERSHIP_START_DATE AS MEMBERSHIP_START_DATE,
-        B.MEMBERSHIP_END_DATE AS MEMBERSHIP_END_DATE,
-        B.MEMBERSHIP_EXPIRATION_DATE AS MEMBERSHIP_EXPIRATION_DATE,
-        (TRUNC(B.MEMBERSHIP_END_DATE) - TRUNC(B.MEMBERSHIP_START_DATE)) AS REMAINING_DAYS,
-        (SELECT C.MEMBERSHIP_NAME
-            FROM MEMBERSHIP_LEVEL C
-            WHERE C.MEMBERSHIP_NO = B.MEMBERSHIP_TYPE) AS MEMBERSHIP_NAME
-    FROM EMPLOYER A
-    JOIN MEMBERSHIP B ON A.EMPLOYER_NO = B.EMPLOYER_NO
-    WHERE A.EMPLOYER_NO = #{employerNo}
-    AND B.MEMBERSHIP_DEL_FL = 'N'
-</select>
+	<insert id="savePayment" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
+        INSERT INTO PAYMENT (
+            PAYMENT_NO,
+            PAYMENT_DATE,
+            PAYMENT_PRODUCT,
+            PAYMENT_AMOUNT,
+            PAYMENT_STATUS,
+            MERCHANT_UID,
+            IMP_UID
+        ) VALUES (
+            SEQ_PAYMENT_NO.NEXTVAL,
+            SYSDATE,
+            #{paymentProduct},
+            #{paymentAmount},
+            #{paymentStatus},
+            #{merchantUid},
+            #{impUid}
+        )
+	                    
+	     <!-- 방금 삽입된 PAYMENT_NO를 가져오기 -->
+	    <selectKey resultType="int" keyProperty="paymentNo" order="AFTER">
+	        SELECT SEQ_PAYMENT_NO.CURRVAL FROM DUAL
+	    </selectKey>
+	</insert>
 
 
-		<insert id="insertPayment1" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
-		                    INSERT INTO PAYMENT (
-		                        PAYMENT_NO,
-		                        PAYMENT_DATE,
-		                        PAYMENT_PRODUCT,
-		                        PAYMENT_AMOUNT,
-		                        PAYMENT_STATUS,
-		                        MERCHANT_UID,
-		                        IMP_UID
-		                    ) VALUES (
-		                        SEQ_PAYMENT_NO.NEXTVAL,
-		                        SYSDATE,
-		                        #{paymentProduct},
-		                        #{paymentAmount},
-		                        #{paymentStatus},
-		                        #{merchantUid},
-		                        #{impUid}
-		                    )
-		                    
-		     <!-- 방금 삽입된 PAYMENT_NO를 가져오기 -->
-		    <selectKey resultType="int" keyProperty="paymentNo" order="AFTER">
-		        SELECT SEQ_PAYMENT_NO.CURRVAL FROM DUAL
-		    </selectKey>
-		</insert>
+	<insert id="connectionPayment" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
+        INSERT INTO PAYMENT_MEMBERSHIP (
+            PAYMENT_MEMBERSHIP_NO,
+            MEMBERSHIP_NO,
+            PAYMENT_NO,
+            CREATE_DATE
+        ) VALUES (
+            SEQ_PAYMENT_MEMBERSHIP_NO.NEXTVAL,
+            #{membershipNo}, 
+            #{paymentNo},
+            SYSDATE
+        )
+	</insert>
 
-
-		<insert id="insertPayment2" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
-                    INSERT INTO PAYMENT_MEMBERSHIP (
-                        PAYMENT_MEMBERSHIP_NO,
-                        MEMBERSHIP_NO,
-                        PAYMENT_NO
-                    ) VALUES (
-                        SEQ_PAYMENT_MEMBERSHIP_NO.NEXTVAL,
-                        #{membershipNo}, 
-                        #{paymentNo}
-                    )
-		</insert>
-
-
+	<insert id="newMembership" parameterType="com.jobbuilder.project.payment.model.dto.Membership">
+    INSERT INTO MEMBERSHIP (
+        MEMBERSHIP_NO,
+        MEMBERSHIP_TYPE,
+        MEMBERSHIP_START_DATE,
+        MEMBERSHIP_END_DATE,
+        MEMBERSHIP_DEL_FL,
+        EMPLOYER_NO
+    ) VALUES (
+        SEQ_MEMBERSHIP_NO.NEXTVAL, 
+        #{membershipType},
+        SYSDATE, 
+        CASE
+            WHEN #{durationUnit} = 'MONTH' THEN ADD_MONTHS(SYSDATE, #{membershipDateValue})
+            WHEN #{durationUnit} = 'DAY' THEN SYSDATE + #{membershipDateValue}
+        END,
+        'N', 
+        #{employerNo}
+    )
+    <!-- 방금 삽입된 MEMBERSHIP_NO를 가져오기 -->
+    <selectKey resultType="int" keyProperty="membershipNo" order="AFTER">
+        SELECT SEQ_MEMBERSHIP_NO.CURRVAL FROM DUAL
+    </selectKey>
+	</insert>
 
 
 
