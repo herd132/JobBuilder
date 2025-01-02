@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.recruitment.model.mapper.RecruitmentMapper">
-<!-- resultMap 영역 -->
-
 
 <!-- 공고 추가 페이지 이동 관련 -->
 	<!-- 사업장 정보 얻어오기 -->
@@ -111,10 +109,54 @@
 <!-- 공고 상세 페이지 이동 관련 -->
 	<!-- 공고글 상세 조회 -->
 	<select id="selectOne">
-		SELECT *
-		FROM "RECRUITMENT"
+		SELECT RECRUITMENT_NO, RECRUITMENT_TITLE, RECRUITMENT_CONTENT,
+			NUM_OF_RECRUITMENT_NAME, r.MEMBER_NO,
+			TO_CHAR(RECRUITMENT_DEADLINE, 'YYYY/MM/DD') AS RECRUITMENT_DEADLINE,
+			TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS WRITE_DATE,
+			r.JOBTYPE_NO, j.JOBTYPE_NAME,
+			r.SALARY_NO, s.SALARY_NAME, r.SALARY_MOUNT,
+			r.GRADE_NO, g.GRADE_NAME,
+			r.PERIOD_NO, wp.PERIOD_NAME,
+			r.DAYS_NO, wd.DAYS_NAME,
+			r.TIME_NO, wt.TIME_NAME,
+			r.EMPLOYER_NO, e.BUSINESS_NICKNAME, e.BUSINESS_ADDRESS, e.BUSINESS_NAME
+		FROM "RECRUITMENT" r
+		JOIN JOBTYPE j ON (r.JOBTYPE_NO = j.JOBTYPE_NO)
+		JOIN SALARY s ON(r.SALARY_NO = s.SALARY_NO)
+		JOIN GRADE g ON(r.GRADE_NO = g.GRADE_NO)
+		JOIN WORKCOND_PERIOD wp ON(r.PERIOD_NO = wp.PERIOD_NO)
+		JOIN WORKCOND_DAYS wd ON(r.DAYS_NO = wd.DAYS_NO)
+		JOIN WORKCOND_TIME wt ON(r.TIME_NO = wt.TIME_NO)
+		JOIN EMPLOYER e ON(r.EMPLOYER_NO = e.EMPLOYER_NO)
 		WHERE RECRUITMENT_DEL_FL = 'N'
 			AND RECRUITMENT_NO = ${recruitmentNo}
 	</select>
+	
+	<!-- 업직종 조회 (selectOne 관련) -->
+	<select id="getBWList">
+		SELECT BUSINESS_WORKTYPE_NO, EMPLOYER_NO, bw.WORKTYPE_NO, WORKTYPE_CATEGORY
+		FROM BUSINESS_WORKTYPE bw
+		JOIN EMPLOYER_WORKTYPE ew ON(bw.WORKTYPE_NO = ew.WORKTYPE_NO)
+		WHERE EMPLOYER_NO = ${employerNo}
+	</select>
+	
+	<!-- 우대사항 조회 (selectOne 관련) -->
+	<select id="getPreferredList">
+		SELECT RECRUITMENT_PREFERRED_NO, RECRUITMENT_NO, rp.PREFERRED_NO, p.PREFERRED_CATEGORY 
+		FROM RECRUITMENT_PREFERRED rp
+		JOIN PREFERRED p ON(rp.PREFERRED_NO = p.PREFERRED_NO)
+		WHERE RECRUITMENT_NO = ${recruitmentNo}
+		ORDER BY RECRUITMENT_PREFERRED_NO
+	</select>
+	
 
+	<!-- 복리후생 조회 (selectOne 관련) -->
+	<select id="getSupportList">
+		SELECT RECRUITMENT_SUPPORT_NO, RECRUITMENT_NO, rs.SUPPORT_NO, s.SUPPORT_CATEGORY 
+		FROM RECRUITMENT_SUPPORT rs
+		JOIN SUPPORT s ON(rs.SUPPORT_NO = s.SUPPORT_NO)
+		WHERE RECRUITMENT_NO = ${recruitmentNo}
+		ORDER BY RECRUITMENT_SUPPORT_NO
+	</select>
+	
 </mapper>

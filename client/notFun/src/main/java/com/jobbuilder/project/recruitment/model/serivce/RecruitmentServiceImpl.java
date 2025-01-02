@@ -141,6 +141,13 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	
 	@Override	// 공고글 상세 조회
 	public Recruitment selectOne(int recruitmentNo) {
-		return mapper.selectOne(recruitmentNo);
+		
+		Recruitment recruitment = mapper.selectOne(recruitmentNo);
+		
+		recruitment.setBusinessWorktypeList(mapper.getBWList(recruitment.getEmployerNo()));
+		recruitment.setPreferredList(mapper.getPreferredList(recruitmentNo));
+		recruitment.setSupportList(mapper.getSupportList(recruitmentNo));
+		
+		return recruitment;
 	}
 }
