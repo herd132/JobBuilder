@@ -1,0 +1,151 @@
+/* 기존 CSS 코드는 유지하면서 제목 영역 스타일 추가 */
+
+/* 제목 컨테이너 스타일 */
+.recruitment-title-container {
+  padding: 2rem;
+  margin-bottom: 2rem;
+  border: 1px solid #e9ecef !important;
+  border-radius: 8px;
+  background-color: white;
+}
+
+/* 제목 영역 스타일 */
+.recruitment-title-area {
+  margin-bottom: 1.5rem;
+}
+
+/* 공고 제목 스타일 */
+#recruitmentTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #333;
+  margin-right: 1rem;
+}
+
+/* 마감일 스타일 */
+#recruitmentDeadline {
+  color: #ff6b6b;
+  font-size: 1rem;
+}
+
+/* 회사명과 지점명 영역 스타일 */
+.business-name-nickname-area {
+  color: #666;
+  line-height: 1.6;
+}
+
+.business-name-nickname-area span:first-child {
+  font-weight: 500;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+/* 불필요한 기본 테두리 스타일 제거 */
+.recruitment-title-container[style*="border: 1px solid black"] {
+  border: 1px solid #e9ecef !important;
+}
+
+
+
+
+/* 전체 컨테이너 스타일 */
+.recruitmentDetail-gray {
+  background-color: #f8f9fa;
+  padding: 2rem;
+}
+
+.recruitmentDetail-white {
+  background-color: white;
+  border-radius: 8px;
+  padding: 2rem;
+  max-width: 1000px;
+  margin: 0 auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 제목 스타일 */
+.recruitmentDetail-white h3 {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin: 2rem 0 1rem;
+  color: #333;
+}
+
+/* 테이블 컨테이너 스타일 */
+.work-condition-container {
+  display: flex;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+/* 테이블 영역 스타일 */
+.work-condition-container > div {
+  flex: 1;
+  background-color: white;
+  border: 1px solid #e9ecef !important;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* 테이블 스타일 */
+.work-condition-container table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+/* 테이블 셀 스타일 */
+.work-condition-container th,
+.work-condition-container td {
+  padding: 1rem;
+  border-bottom: 1px solid #e9ecef;
+  text-align: left;
+}
+
+/* 마지막 행의 테이블 셀 테두리 제거 */
+.work-condition-container tr:last-child th,
+.work-condition-container tr:last-child td {
+  border-bottom: none;
+}
+
+/* 테이블 헤더 스타일 */
+.work-condition-container th {
+  width: 120px;
+  background-color: #f8f9fa;
+  color: #666;
+  font-weight: normal;
+}
+
+/* 태그 스타일 */
+.work-condition-container span {
+  display: inline-block;
+  margin-right: 0.5rem;
+  color: #666;
+}
+
+/* 급여 강조 스타일 */
+.salary-period-days-time-area td span:nth-child(2) {
+  color: #ff6b6b;
+  font-weight: bold;
+}
+
+/* 상세 요강 스타일 */
+#recruitmentContent {
+  background-color: white;
+  padding: 2rem;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  min-height: 200px;
+  white-space: pre-wrap;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .work-condition-container {
+    flex-direction: column;
+  }
+  
+  .work-condition-container > div {
+    width: 100%;
+  }
+}

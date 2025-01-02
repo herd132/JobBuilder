@@ -15,6 +15,7 @@ public class BusinessWorktype {
 
 	/* ***** BUSINESS_WORKTYPE ***** */
 	private int businessWorktypeNo;
+	private int employerNo;
 	private String worktypeNo;
 	
 	/* ***** EMPLOYER_WORKTYPE ***** */

@@ -6,8 +6,11 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.recruitment.model.dto.RecruitmentPreferred;
+import com.jobbuilder.project.recruitment.model.dto.RecruitmentSupport;
 
 @Mapper
 public interface RecruitmentMapper {
@@ -94,5 +97,24 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	Recruitment selectOne(int recruitmentNo);
+	
+	/** 업직종 조회 (공고글 상세 조회 관련)
+	 * @param employerNo
+	 * @return
+	 */
+	List<BusinessWorktype> getBWList(int employerNo);
+
+	/** 우대사항 조회 (공고글 상세 조회 관련)
+	 * @param recruitmentNo
+	 * @return
+	 */
+	List<RecruitmentPreferred> getPreferredList(int recruitmentNo);
+
+	/** 복리후생 조회 (공고글 상세 조회 관련)
+	 * @param recruitmentNo
+	 * @return
+	 */
+	List<RecruitmentSupport> getSupportList(int recruitmentNo);
+
 
 }
