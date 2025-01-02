@@ -101,8 +101,6 @@ public class WorkerController {
 						message = " 아이디 또는 비밀번호가 일치하지 않습니다.";
 					} else {
 						
-						
-						
 						model.addAttribute("loginWorker", loginWorker);
 						
 						// ******************* Cookie ***********************
@@ -114,9 +112,6 @@ public class WorkerController {
 						
 						
 						resp.addCookie(cookie);
-						
-						
-						
 						ra.addFlashAttribute("message", message);
 						
 					} 
@@ -124,11 +119,8 @@ public class WorkerController {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
+				}				
 				
-				
-			
-			
 			return "redirect:/"; // 메인페이지에 재요청	
 	}
 	
