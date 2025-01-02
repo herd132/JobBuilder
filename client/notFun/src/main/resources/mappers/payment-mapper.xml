@@ -58,7 +58,7 @@
 	    </selectKey>
 	</insert>
 
-	<!-- 결제 2단계 -->
+	<!-- 결제 2-1단계 -->
 	<insert id="connectionPayment" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
         INSERT INTO PAYMENT_MEMBERSHIP (
             PAYMENT_MEMBERSHIP_NO,
@@ -72,6 +72,40 @@
             SYSDATE
         )
 	</insert>
+	
+	<!-- 결제 2-2단계 -->
+	<insert id="connectionPaymentType" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
+        INSERT INTO PAYMENT_TYPE (
+            PAYMENT_TYPE_NO,
+            PAYMENT_TYPE_AMOUNT,
+            PAYMENT_TYPE_PRODUCT,
+            CREATE_DATE,
+            PAYMENT_NO
+        ) VALUES (
+            SEQ_PAYMENT_TYPE_NO.NEXTVAL,
+            #{membershipAmount}, 
+            #{membershipProduct},
+            SYSDATE,
+            #{paymentNo}
+        )
+	</insert>
+	
+	<!-- 결제 2-3단계 -->
+	<update id="updateMembership" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
+		UPDATE MEMBERSHIP SET 
+		MEMBERSHIP_END_DATE = CASE
+						            WHEN #{durationUnit} = 'MONTH' THEN ADD_MONTHS(MEMBERSHIP_END_DATE, #{membershipDateValue})
+						            WHEN #{durationUnit} = 'DAY' THEN MEMBERSHIP_END_DATE + #{membershipDateValue}
+						      END,
+		MEMBERSHIP_DEL_FL = 'N',
+		EMPLOYER_NO = #{employerNo}
+		WHERE MEMBERSHIP_NO = #{membershipNo}
+		AND MEMBERSHIP_TYPE = #{membershipType}
+	</update>
+
+	
+	
+	
 
 	<!-- 결제 3단계 -->
 	<insert id="newMembership" parameterType="com.jobbuilder.project.payment.model.dto.Membership">

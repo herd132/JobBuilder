@@ -36,6 +36,5 @@ public class Payment {
 
     private Integer emptyMembershipCount;   // 신규맴버십 카운트용 (인설트자료)
 
-    private String paymentTypeProduct;		// 상세 정보용 상품명 (해소 테이블)
     
 }

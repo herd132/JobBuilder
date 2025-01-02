@@ -31,5 +31,11 @@ public class Membership {
     private String membershipName;				// 맴버 등급 이름변환 (해소테이블)
     
     private Integer emptyMembershipCount;
+    
+    private String membershipProduct;		// 상세 정보용 상품명 (해소 테이블)
+    private int membershipAmount;
+    
+    private int paymentTypeNo;          // 상세 결제 번호
+    private int paymentNo;              // 결제 번호 (연동)
 
 }

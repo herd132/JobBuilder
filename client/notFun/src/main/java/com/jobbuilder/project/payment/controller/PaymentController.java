@@ -74,13 +74,16 @@ public class PaymentController {
 
             // DTO 변환
             List<Membership> membershipList = memberships.stream() // DTO로 변환
-                .map(detail -> Membership.builder()
-                    .membershipType((int) detail.get("membershipType"))
-                    .membershipDateValue((int) detail.get("membershipDateValue"))
-                    .durationUnit((String) detail.get("durationUnit"))
-                    .employerNo(employerNo)
-                    .build())
-                .collect(Collectors.toList());
+            	    .map(detail -> Membership.builder()
+            	        .membershipType((int) detail.get("membershipType"))
+            	        .membershipDateValue((int) detail.get("membershipDateValue"))
+            	        .durationUnit((String) detail.get("durationUnit"))
+            	        .membershipAmount((int) detail.get("membershipAmount")) 
+            	        .membershipProduct((String) detail.get("membershipProduct"))
+            	        .employerNo(employerNo)
+            	        .build())
+            	    .collect(Collectors.toList());
+
 
             // Payment 객체 생성
             Payment payment = Payment.builder()

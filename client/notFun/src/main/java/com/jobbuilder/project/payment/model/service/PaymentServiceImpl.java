@@ -39,14 +39,39 @@ public class PaymentServiceImpl implements PaymentService {
         // 2단계: 기존 멤버십 연결
         if (validMembershipNumbers != null && !validMembershipNumbers.isEmpty()) {
             processed = true; // 처리 상태 기록
+            int i = 0; // 반복용 기준 초기화
+            
+            // 2-1단계: 기존맴버십일 경우 맴버십&결제 해소테이블의 정보를 담음
             for (Integer membershipNo : validMembershipNumbers) {
                 log.info("Linking existing membershipNo {} to paymentNo {}: {}", membershipNo, payment.getPaymentNo(), payment);
-
                 // 기존 멤버십 연결
                 payment.setMembershipNo(membershipNo);
-                mapper.connectionPayment(payment); // PAYMENT_MEMBERSHIP 연결
-                
+                mapper.connectionPayment(payment); // PAYMENT_MEMBERSHIP 연결      
             }
+            
+            // 2-2단계: 기존맴버십일 경우 결제 상세정보 테이블에 정보를 담음
+         	for (i = 0; i < validMembershipNumbers.size(); i++) {
+         		log.info("Linking2 paymentNo {}: {}", payment.getPaymentNo(), payment);
+           	 Membership membership = membershipList.get(i); 
+           	 membership.setPaymentNo(payment.getPaymentNo()); // 1단계실시한 결제번호 부여
+           	 mapper.connectionPaymentType(membership); // PAYMENT_Type 연결
+           	}
+         	
+         	i = 0; 
+         	// 2-3단계: 기존맴버십일 경우 업데이트
+            for (Integer membershipNo : validMembershipNumbers) {
+                log.info("Linking3 existing membershipNo {} to paymentNo {}: {}", membershipNo, payment.getPaymentNo(), payment);
+                Membership membership = membershipList.get(i); 
+                log.debug("1번쨰 : " + membership.getMembershipNo());
+                i++;
+                // 기존 멤버십 연결
+                membership.setMembershipNo(membershipNo);
+                log.debug("2번쨰 : " + payment.getMembershipNo());
+                log.debug("3번쨰 : " + membership.getMembershipNo());
+                mapper.updateMembership(membership);       
+            }
+         	
+         	
         }
 
         // 3단계: 신규 멤버십 생성 및 연결
@@ -56,10 +81,10 @@ public class PaymentServiceImpl implements PaymentService {
                 Membership membership = membershipList.get(i); // 신규 멤버십 정보 가져오기
                 log.info("Creating new membership: {}", membership);
 
-                // 신규 MEMBERSHIP 생성
+                // 3-1 단계 신규 MEMBERSHIP 생성
                 mapper.newMembership(membership);
 
-                // 생성된 membershipNo와 결제 연결
+                // 3-2 단계 생성된 membershipNo와 결제 연결 (2-1과 동일)
                 log.info("Linking new membershipNo {} to paymentNo {}: {}", membership.getMembershipNo(), payment.getPaymentNo());
                 payment.setMembershipNo(membership.getMembershipNo());
                 mapper.connectionPayment(payment); // PAYMENT_MEMBERSHIP 연결
