@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @PropertySource("classpath:/config.properties")
 @Slf4j
-public class EditBoardServiceImpl implements EditBoardService{
+public class EditBoardServiceImpl implements EditBoardService {
 
 	private final EditBoardMapper mapper;
 	
@@ -38,8 +38,74 @@ public class EditBoardServiceImpl implements EditBoardService{
 	 */ 
 	@Override
 	@Transactional
-	public int boardInsertWorker(Board inputBoard, List<MultipartFile> images) throws Exception {
+	public int boardInsertWorker(Board inputBoard, List<MultipartFile> images) throws Exception  {
 		int result = mapper.boardInsertWorker(inputBoard);
+		
+		// result == INSERT 결과 ( 삽입 성공한 행의 개수 0 or 1 ) ..
+		
+		// 삽입 실패 시
+		if(result == 0) {return 0;}
+		
+		// 삽입 성공 시	
+		int boardNo = inputBoard.getBoardNo();		
+	
+		// 실제 업로드된 이미지의 정보를 모아둘 List 생성		
+		List<BoardImg> uploadList = new ArrayList<>();
+		
+		// images 리스트에서 하나씩 꺼내어 파일이 있는지 검사..
+		for(int i = 0; i < images.size() ; i++) {			
+			// 실제 선택된 파일이 존재하는 경우
+			if(!images.get(i).isEmpty()) {				
+				// 원본명
+				String originalName = images.get(i).getOriginalFilename();
+				
+				// 변경명
+				String rename = Utility.fileRename(originalName);
+				
+				// 모든 값을 저장할 DTO 생성 (BoardImg - Builder 패턴 사용 ) 
+				BoardImg img = BoardImg.builder()
+							   .boardImgOriginalName(originalName)
+							   .boardImgRename(rename)
+							   .boardImgPath(webPath)
+							   .boardNo(boardNo)
+							   .boardImgOrder(i)
+							   .uploadFile(images.get(i))
+							   .build();		
+				
+				uploadList.add(img);			
+			}
+			
+		}		
+		// 선택한 파일이 전부 없을 경우 ..
+		if(uploadList.isEmpty()) {
+			return boardNo; // 컨트롤러로 게시글 번호만 넘김			
+		}
+		
+		result = mapper.insertUploadList(uploadList);
+		
+		// 다중 INSERT 성공 확인 
+		if(result == uploadList.size()) {
+			
+			// 서버에 파일 저장
+			for(BoardImg img : uploadList ) {
+				img.getUploadFile().transferTo(new File(folderPath + img.getBoardImgRename()));
+			}
+			
+		} else {
+			// 부분적으로 삽입 실패
+			
+			throw new RuntimeException();
+		}
+				
+		return boardNo;
+	}
+	
+	/**
+	 * 게시글 작성 ( 고용주 )
+	 */
+	@Override
+	public int boardInsertEmployer(Board inputBoard, List<MultipartFile> images) throws Exception {
+		int result = mapper.boardInsertEmployer(inputBoard);
 		
 		// result == INSERT 결과 ( 삽입 성공한 행의 개수 0 or 1 ) ..
 		
@@ -66,11 +132,11 @@ public class EditBoardServiceImpl implements EditBoardService{
 				
 				// 모든 값을 저장할 DTO 생성 (BoardImg - Builder 패턴 사용 ) 
 				BoardImg img = BoardImg.builder()
-							   .imgOriginalName(originalName)
-							   .imgRename(rename)
-							   .imgPath(webPath)
+							   .boardImgOriginalName(originalName)
+							   .boardImgRename(rename)
+							   .boardImgPath(webPath)
 							   .boardNo(boardNo)
-							   .imgOrder(i)
+							   .boardImgOrder(i)
 							   .uploadFile(images.get(i))
 							   .build();		
 				
@@ -83,14 +149,14 @@ public class EditBoardServiceImpl implements EditBoardService{
 			return boardNo; // 컨트롤러로 게시글 번호만 넘김			
 		}
 		
-		result = mapper.insertUploadListWorker(uploadList);
+		result = mapper.insertUploadList(uploadList);
 		
 		// 다중 INSERT 성공 확인 
 		if(result == uploadList.size()) {
 			
 			// 서버에 파일 저장
 			for(BoardImg img : uploadList ) {
-				img.getUploadFile().transferTo(new File(folderPath + img.getImgRename()));
+				img.getUploadFile().transferTo(new File(folderPath + img.getBoardImgRename()));
 			}
 			
 		} else {

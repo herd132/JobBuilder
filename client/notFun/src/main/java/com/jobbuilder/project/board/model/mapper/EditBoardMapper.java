@@ -9,12 +9,16 @@ import com.jobbuilder.project.board.model.dto.BoardImg;
 
 @Mapper
 public interface EditBoardMapper {
-
+	
 	// 근로자 게시글 다루는 부분	
 	int boardInsertWorker(Board inputBoard);				// 게시글 삽입
-	int insertUploadListWorker(List<BoardImg> uploadList);	// 이미지 업로드
 
 
 	
 	// 고용주 게시글 다루는 부분
+	int boardInsertEmployer(Board inputBoard);				// 게시글 삽입
+
+
+	// 게시글 이미지 업로드
+	int insertUploadList(List<BoardImg> uploadList);
 }

@@ -78,6 +78,32 @@
                 </th:block>
             </div>
 
+            <!-- 이미지 출력 구문  -->
+            <th:block th:if="${ #lists.size(board.imageList) > 0}">
+
+				<!-- 썸네일 있다면 start = 1 (controller 에서 req)
+					썸네일 없다면 start = 0
+				-->
+                
+                <th:block th:if="${#lists.size(board.imageList) > start}">
+
+                    <h5>업로드 이미지</h5>  
+                    <th:block th:each="i : ${#numbers.sequence(start, #lists.size(board.imageList) - 1)}">                                
+                        <div class="img-box">
+                            <div class="boardImg">
+
+                                <img th:src="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|">  
+
+                                <a th:href="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|"
+                                    th:download="${board.imageList[i].boardImgOriginalName}"
+                                >다운로드</a>                
+                            </div>
+                        </div>
+                    </th:block>    
+                </th:block>
+                
+            </th:block>
+
         </section>
 
 

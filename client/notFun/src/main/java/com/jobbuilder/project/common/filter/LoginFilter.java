@@ -53,11 +53,11 @@ public class LoginFilter implements Filter{
 		
 		HttpSession session = req.getSession();
 		
+
 		if(session.getAttribute("loginEmployer") == null &&  session.getAttribute("loginWorker") == null) resp.sendRedirect("/loginError");
+
 		else chain.doFilter(request, response);
 		
-//		if(session.getAttribute("loginWorker") == null) resp.sendRedirect("/loginError");
-//		else chain.doFilter(request, response);
 		
 	}
 	
