@@ -452,12 +452,35 @@ const updateMembershipContainer = () => {
       } else {
           emptyMembershipCount++; // 빈 슬롯 카운트 증가
       }
-  
+    
+      var answer = "";
+      var value = Number(selectedValue); // 타입 명시적 변환
+      
+      switch (value) {
+        case 1: 
+          answer = "기본";
+          break;
+        case 2:
+          answer = "골드";
+          break;
+        case 3:
+          answer = "플레";
+          break;
+        case 4:
+          answer = "급구"; // 필요시 "Hot"으로 변경
+          break;
+        default:
+          answer = "Unknown"; // 예상치 못한 값 처리
+          break;
+      }
+      
       memberships.push({
-          membershipType: Number(selectedValue),
-          membershipDateValue: selectedDuration,
-          durationUnit: selectedValue >= 4 ? "DAY" : "MONTH",
+        membershipType: value,
+        membershipDateValue: selectedDuration,
+        durationUnit: value >= 4 ? "DAY" : "MONTH",
+        membershipProduct: answer,
       });
+      
   }
 
     return { membership, selectedValue, selectedDuration };
