@@ -72,11 +72,11 @@
         const orderList = [];  // 기존에 존재하던 이미지의 순서(order)를 기록할 배열
 
         for (let img of imageList) {
-            previewList[img.imgOrder].src = img.boardImgPath + img.boardImgRename;
+            previewList[img.boardImgOrder].src = img.boardImgPath + img.boardImgRename;
 
             // 미리보기가 출력된 이미지 순서를
             // orderList에 추가
-            orderList.push(img.imgOrder);
+            orderList.push(img.boardImgOrder);
         }
 
     </script>
