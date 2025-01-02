@@ -1,0 +1,288 @@
+.container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+}
+
+.inquiry-form {
+  background: #fff;
+  padding: 30px;
+  border-radius: 8px;
+}
+
+.form-header {
+  margin-bottom: 30px;
+}
+
+.form-header h1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+}
+
+.required::after {
+  content: '*';
+  color: #e74c3c;
+  margin-left: 4px;
+}
+
+.container input[type="text"],
+.container input[type="email"],
+textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+textarea {
+  min-height: 150px;
+  resize: vertical;
+}
+
+.category-section {
+  display: flex;
+  gap: 20px;
+}
+
+.category-select {
+  flex: 1;
+}
+
+select {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+select:disabled {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.file-input {
+  margin-top: 8px;
+}
+
+.file-notice {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+}
+
+button[type="submit"] {
+  width: 100%;
+  padding: 14px;
+  background-color: var(--primary-orange);
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+button[type="submit"]:hover {
+  background-color: #ffb168;
+}
+
+@media (max-width: 768px) {
+  .container {
+      margin: 20px auto;
+      padding: 10px;
+  }
+
+  .inquiry-form {
+      padding: 20px;
+  }
+
+  .category-section {
+      flex-direction: column;
+      gap: 10px;
+  }
+}
+
+.file-list {
+  margin-top: 10px;
+}
+
+.file-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  margin-bottom: 8px;
+}
+
+.file-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.file-name {
+  font-size: 14px;
+  color: #333;
+  word-break: break-all;
+}
+
+.file-size {
+  font-size: 12px;
+  color: #666;
+}
+
+.delete-file {
+  background: none;
+  border: none;
+  color: #dc3545;
+  cursor: pointer;
+  padding: 4px 8px;
+  font-size: 16px;
+  transition: color 0.2s;
+}
+
+.delete-file:hover {
+  color: #bd2130;
+}
+
+.file-error {
+  color: #dc3545;
+  font-size: 12px;
+  margin-top: 4px;
+  display: none;
+}
+
+.file-error.show {
+  display: block;
+}
+
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 30px;
+  gap: 4px;
+}
+
+.tab {
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #666;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.tab:hover {
+  color: #333;
+}
+
+.tab.active {
+  color: var(--secondary-orange);
+  border-bottom-color: var(--secondary-orange);
+}
+
+/* 문의 내역 스타일 */
+.inquiry-list {
+  display: none;
+}
+
+.inquiry-list.active {
+  display: block;
+}
+
+.inquiry-item {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.inquiry-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  background-color: #f8f9fa;
+  cursor: pointer;
+}
+
+.inquiry-title {
+  font-weight: 500;
+}
+
+.inquiry-status {
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.status-waiting {
+  background-color: #ffeeba;
+  color: #856404;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.inquiry-meta {
+  display: flex;
+  gap: 16px;
+  font-size: 14px;
+  color: #666;
+}
+
+.inquiry-content {
+  padding: 16px;
+  display: none;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+}
+
+.inquiry-content.show {
+  display: block;
+}
+
+.no-inquiries {
+  text-align: center;
+  padding: 40px;
+  color: #666;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .inquiry-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 8px;
+  }
+
+  .inquiry-meta {
+      flex-direction: column;
+      gap: 4px;
+  }
+}
