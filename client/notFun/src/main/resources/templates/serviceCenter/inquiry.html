@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Job Builder</title>
-    
+
     <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
     <th:block th:replace="~{common/common}"></th:block>
-    
+
     <!-- <main> 안쪽 CSS -->
     <link rel="stylesheet" href="/css//serviceCenter/inquiry.css">
 </head>
+
 <body>
     <!-- 로고 및 검색바 로그인 -->
     <th:block th:replace="~{common/main-header}"></th:block>
@@ -19,22 +21,22 @@
     <main>
         <div class="container">
             <div class="tabs">
-                <button class="tab active" onclick="switchTab('write')" >문의 작성</button>
+                <button class="tab active" onclick="switchTab('write')">문의 작성</button>
                 <button class="tab" onclick="switchTab('list')">내 문의 내역</button>
             </div>
-    
+
             <div id="writeTab" class="inquiry-form active">
                 <form class="inquiry-form">
                     <div class="form-header">
                         <h1>1:1 문의하기</h1>
                         <p>궁금하신 점을 작성해 주세요.</p>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="title" class="required">제목</label>
                         <input type="text" id="title" name="title" placeholder="문의 제목을 입력해주세요" required>
                     </div>
-    
+
                     <div class="form-group">
                         <label class="required">문의 유형</label>
                         <div class="category-section">
@@ -56,28 +58,28 @@
                             </div>
                         </div>
                     </div>
-    
+
                     <div class="form-group">
                         <div class="content-container">
-                            <textarea 
-                                id="content" 
-                                name="content" 
-                                placeholder="문의하실 내용을 자세히 작성해주세요 (최대 2000자)" 
-                                required
-                                onkeyup="updateCharCount(this)"
-                                maxlength="2000"
-                            ></textarea>
+                            <textarea id="content" name="content" placeholder="문의하실 내용을 자세히 작성해주세요 (최대 2000자)" required
+                                onkeyup="updateCharCount(this)" maxlength="2000"></textarea>
                             <div class="char-counter">0 / 2000자</div>
                             <div class="char-warning">최대 글자수를 초과했습니다.</div>
                         </div>
                     </div>
-    
+
                     <div class="form-group">
                         <label for="email" class="required">이메일</label>
-                        <input type="email" id="email" name="email"
-                        placeholder="답변 받으실 이메일을 입력해주세요" th:value="${session.loginWorker.memberEmail}" readonly>
+                        <th:block th:if="${session.loginWorker != null}">
+                            <input type="email" id="email" name="email"
+                            placeholder="답변 받으실 이메일을 입력해주세요" th:value="${session.loginWorker.memberEmail}" readonly>
+                        </th:block>
+                        <th:block th:if="${session.loginEmployer != null}">
+                            <input type="email" id="email" name="email"
+                            placeholder="답변 받으실 이메일을 입력해주세요" th:value="${session.loginEmployer.memberEmail}" readonly>
+                        </th:block>
                     </div>
-    
+
                     <div class="form-group">
                         <label for="file">첨부파일</label>
                         <input type="file" id="file" name="images" class="file-input" onchange="handleFileSelect(this)">
@@ -85,12 +87,12 @@
                         <div class="file-error">최대 3개의 파일만 첨부할 수 있습니다.</div>
                         <div class="file-list" id="fileList"></div>
                     </div>
-    
+
                     <button type="submit">문의하기</button>
                 </form>
             </div>
-    
-    
+
+
             <div id="listTab" class="inquiry-list">
                 <!-- 문의 내역 아이템 예시 -->
                 <div class="inquiry-item">
@@ -106,7 +108,7 @@
                         <p>문의 내용이 여기에 표시됩니다...</p>
                     </div>
                 </div>
-        
+
                 <div class="inquiry-item">
                     <div class="inquiry-header" onclick="toggleInquiry(this)">
                         <div class="inquiry-title">결제 관련 문의</div>
@@ -127,4 +129,5 @@
     <th:block th:replace="~{common/main-footer}"></th:block>
     <script src="/js/serviceCenter/inquiry.js"></script>
 </body>
+
 </html>
