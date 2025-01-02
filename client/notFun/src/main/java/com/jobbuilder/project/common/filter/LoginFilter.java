@@ -53,8 +53,9 @@ public class LoginFilter implements Filter{
 		
 		HttpSession session = req.getSession();
 		
-		// 세션에 loginEmployer와 loginWorker가 둘다 없다면
-		if(session.getAttribute("loginEmployer") == null && session.getAttribute("loginWorker") == null ) resp.sendRedirect("/loginError");
+
+		if(session.getAttribute("loginEmployer") == null &&  session.getAttribute("loginWorker") == null) resp.sendRedirect("/loginError");
+
 		else chain.doFilter(request, response);
 		
 		

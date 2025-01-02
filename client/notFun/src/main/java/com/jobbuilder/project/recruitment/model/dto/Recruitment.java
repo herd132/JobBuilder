@@ -2,6 +2,8 @@ package com.jobbuilder.project.recruitment.model.dto;
 
 import java.util.List;
 
+import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -38,6 +40,7 @@ public class Recruitment {
 	private int memberNo;					// 회원번호(FK)
 	
 	/* ***** FK 관련 TABLE ***** */
+	private String jobtypeName;				// JOBTYPE, 근무형태
 	private String salaryName;				// RECRUITMENT_SALARY, 시급/월급 
 	private String gradeName;				// GRADE, 학력
 	private String periodName;				// WORKCOND_PERIOD, 근무 기간
@@ -49,6 +52,7 @@ public class Recruitment {
 	private String businessAddress;			// 지점명주소
 	private String thumbnail;				// 대표이미지(경로 저장용)
 	
+	private List<BusinessWorktype> businessWorktypeList;// 업직종 테이블 DTO List
 	private List<RecruitmentPreferred> preferredList;	// 우대사항 테이블 DTO List
 	private List<RecruitmentSupport> supportList;		// 복리후생 테이블 DTO List
 	private List<RecruitmentImg> imageList;				// 사업장 이미지 테이블 관련 DTO List

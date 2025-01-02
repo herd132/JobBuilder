@@ -151,7 +151,12 @@ public class RecruitmentController {
 		
 		Recruitment recruitment = service.selectOne(recruitmentNo);
 		
+		log.debug("recruitment : " + recruitment);
 
+		model.addAttribute("recruitment", recruitment);
+		model.addAttribute("businessWorktypeList", recruitment.getBusinessWorktypeList());
+		model.addAttribute("preferredList", recruitment.getPreferredList());
+		model.addAttribute("supportList", recruitment.getSupportList());;
 		
 		return "recruitment/recruitmentDetail";
 	}
