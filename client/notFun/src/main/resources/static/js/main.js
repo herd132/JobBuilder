@@ -255,7 +255,15 @@ function addMessage(type, content) {
 
 const searchBtn = document.querySelector(".search-btn");
 
-searchBtn.addEventListener("click", () => {
-  const originalPushState = history.pushState;
-  originalPushState();
-});
+if( searchBtn !== null ) {
+  searchBtn.addEventListener("click", () => {
+    const originalPushState = history.pushState;
+    originalPushState();
+  });
+}
+
+// const links = document.querySelectorAll("a");
+
+// for( let link of links) {
+//   link.addEventListener("click", test)
+// }
