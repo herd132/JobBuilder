@@ -92,6 +92,7 @@ public class BoardController {
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
+		
 		if (loginMember != null) {
 			map.put("memberNo", loginMember.getMemberNo());
 		}
@@ -191,7 +192,10 @@ public class BoardController {
 			// board - 게시글 일반 내용 + imageList + commentList
 			model.addAttribute("board", board);
 
-			
+			// 조회된 이미지 목록(imageList)가 있을 경우
+			if( !board.getImageList().isEmpty() ) {
+			model.addAttribute("start", 0);
+			}
 		}
 
 		return path;

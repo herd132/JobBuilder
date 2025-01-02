@@ -9,14 +9,17 @@
 
     <th:block th:replace="~{common/common}"></th:block>
 
-    <link rel="stylesheet" th:href="@{/css/board/boardWrite-style.css}">
+    <link rel="stylesheet" th:href="@{/css/board/boardWrite.css}">
 </head>
 
 <body>
     <main>
         <th:block th:replace="~{common/main-header}"></th:block>
 
+        <!-- <form th:action="@{/editBoard/{boardCode}/insert(boardCode=${boardCode})}"  -->
+
         <form action="insert" method="POST" class="board-write" id="boardWriteFrm" enctype="multipart/form-data">
+            <!-- 이미지같은 파일을 서버단으로 제출할 때 사용하는 enctype-->
 
             <!-- 제목 -->
             <h1 class="board-title">
@@ -24,18 +27,29 @@
             </h1>
 
 
+
+
             <!-- 내용 -->
             <div class="board-content">
-                <textarea name="Summernote" id="Summernote" maxlength="10000" cols="30" rows="5"
-                    placeholder="내용을 입력해주세요" class="with-border">
-                </textarea>
+                <textarea name="boardContent"></textarea>
             </div>
 
+            <!-- 업로드 이미지 영역 -->
+            <h5>업로드 이미지</h5>
+            <div class="img-box">
 
+                <div class="boardImg">
+                    <label for="img1">
+                        <img class="preview" src="">
+                    </label>
+                    <input type="file" name="images" class="inputImage" id="img1" accept="image/*">
+                    <span class="delete-image">&times;</span>
+                </div>
+            </div>
+            <div> 이미지는 한장만 등록 가능하며, 5MB를 초과하는 이미지 파일은 등록할 수 없습니다.</div>
             <!-- 버튼 영역 -->
             <div class="board-btn-area">
-                <button class="writebtn" id="cancelBtn">취소</button>
-                <button type="submit" class="writebtn">등록</button>
+                <button type="submit" id="writebtn">등록</button>
             </div>
 
 
@@ -44,6 +58,9 @@
     </main>
 
     <th:block th:replace="~{common/main-footer}"></th:block>
+
+    <script src="/js/board/boardWrite.js"></script>
+
 </body>
 
 </html>
