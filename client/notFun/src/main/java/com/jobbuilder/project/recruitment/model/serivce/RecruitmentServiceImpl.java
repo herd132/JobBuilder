@@ -136,6 +136,40 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 		return map;
 	}
 	
+	@Override	// 공고글 목록 검색결과 조회
+	public Map<String, Object> selectSearchRecruitmentList(String query, int cp) {
+		
+		int listCount = mapper.getSearchCount(query);
+		PaginationRecruitment paginationRecruitment = new PaginationRecruitment(cp, listCount);
+
+		int limit = paginationRecruitment.getLimit();
+		int offset = (cp -1) * limit;
+		
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		List<Recruitment> recruitmentList = mapper.selectSearchRecruitmentList(query, rowBounds);
+		
+		for(Recruitment recruitment: recruitmentList) {
+			String[] addressArr = recruitment.getBusinessAddress().split("\\^\\^\\^");
+			String address = null;
+			
+			if(addressArr.length >= 2) address = addressArr[1];
+			else address = addressArr[0];
+			
+			addressArr = address.split(" ");
+			address = addressArr[0] + " " + addressArr[1];
+			
+			recruitment.setBusinessAddress(address);
+			
+		}
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("paginationRecruitment", paginationRecruitment);
+		map.put("recruitmentList", recruitmentList);
+		
+		return map;
+	}
+	
 	
 	/* ***** 공고 상세 페이지 이동 관련 ***** */
 	

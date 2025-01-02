@@ -1,99 +1,108 @@
 <header>
-    <link rel="favicon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
-    <!-- 로고 및 검색바 로그인 -->
-    <nav class="main-nav">
+  <link rel="favicon" href="/favicon.ico" type="image/x-icon" sizes="16x16">
+  <!-- 로고 및 검색바 로그인 -->
+  <nav class="main-nav">
 
-        <div class="logo">
-            <a href="/"><img src="/images/logo.png" alt="로고" class="logo-img" href="/"></a>
+    <div class="logo">
+      <a href="/"><img src="/images/logo.png" alt="로고" class="logo-img" href="/"></a>
+    </div>
+
+    <div class="search-bar">
+      <form action="/recruitment/list">
+        <input type="text" placeholder="어떤 알바를 찾으세요?" name="query">
+        <button type="button" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
+      </form>
+    </div>
+
+    <div class="user-menu">
+
+      <!-- 로그인 시 -->
+      <th:block th:if="${session.loginEmployer == null and session.loginWorker == null}">
+        <a href="/multiLogin" class="nav-login">로그인</a>
+        <a href="/multiSignUp" class="nav-singup">회원가입</a>
+      </th:block>
+
+      <th:block th:if="${session.loginWorker != null}">
+        <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임</span>&nbsp;<i
+          class="fa-solid fa-chevron-down"></i>
+        <div class="nav-mypage hidden">
+          <a href="/myPageWorkee/myPageWorkerInfo">회원 정보</a>
+          <a href="/myPageWorkee/resume">이력서 관리</a>
+          <a href="/worker/workerLogout">로그아웃</a>
         </div>
+      </th:block>
 
-      <div class="search-bar">
-          <input type="text" placeholder="검색어를 입력해주세요">
-          <button type="button" class="search-btn"><i class="fa-solid fa-magnifying-glass"></i></button>
-      </div>
-      
-        <div class="user-menu">
-
-            <!-- 로그인 시 -->
-            <th:block th:if="${session.loginEmployer == null and session.loginWorker == null}">
-                <a href="/worker/workerLogin" class="nav-login">로그인</a>
-                <a href="/multiSignUp" class="nav-singup">회원가입</a>
-            </th:block>
-
-            <th:block th:if="${session.loginWorker != null}">
-                <span class="nav-nickname" th:text="${session.loginWorker.workerNickname}">닉네임</span>&nbsp;<i
-                    class="fa-solid fa-chevron-down"></i>
-                <div class="nav-mypage hidden">
-                    <a href="/myPageWorkee/myPageWorkerInfo">회원 정보</a>
-                    <a href="/myPageWorkee/resume">이력서 관리</a>
-                    <a href="/worker/workerLogout">로그아웃</a>
-                </div>
-            </th:block>
-
-            <th:block th:if="${session.loginEmployer != null}">
-                <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임</span>&nbsp;<i
-                    class="fa-solid fa-chevron-down"></i>
-                <div class="nav-mypage hidden">
-                    <a href="/myPageEmp/info">회원정보</a>
-                    <a href="/myPageEmp/recruitmentList">공고 관리</a>
-                    <a href="/employer/employerLogout">로그아웃</a>
-                </div>
-            </th:block>
-
+      <th:block th:if="${session.loginEmployer != null}">
+        <span class="nav-nickname" th:text="${session.loginEmployer.businessName}">닉네임</span>&nbsp;<i
+          class="fa-solid fa-chevron-down"></i>
+        <div class="nav-mypage hidden">
+          <a href="/myPageEmp/info">회원정보</a>
+          <a href="/myPageEmp/recruitmentList">공고 관리</a>
+          <a href="/employer/employerLogout">로그아웃</a>
         </div>
+      </th:block>
 
-    </nav>
+    </div>
+
+  </nav>
 
   <!-- 게시판 네비바 -->
   <nav class="sub-nav">
-      <ul class="menu-list">
-          <li>채용정보</li>
-          <li>점포매칭</li>
-          <li>인재정보</li>
-          <li>이벤트</li>
-          <li>아르바이트</li>
-          <li>고객센터</li>
-      </ul>
-      <div class="mega-dropdown">
-          <div class="dropdown-section">
-              <!-- <h4>채용정보</h4> -->
-              <a href="/recruitment/list">공고 전체보기</a>
-          </div>
-          <div class="dropdown-section">
-              <!-- <h4>점포매칭</h4> -->
-              <a href="#">늘리면 됨</a>
-          </div>
-          <div class="dropdown-section">
-              <!-- <h4>인재정보</h4> -->
-              <a href="#">늘리면 됨</a>
-          </div>
-          <div class="dropdown-section">
-              <!-- <h4>이벤트</h4> -->
-              <a href="#">늘리면 됨</a>
-          </div>
-          <div class="dropdown-section">
-              <!-- <h4>아르바이트</h4> -->
-              <a href="#">늘리면 됨</a>
-          </div>
-          <div class="dropdown-section">
-              <!-- <h4>고객센터</h4> -->
-              <a href="/payments">결제</a>
-              <a class="chatting-bot">채팅상담</a>
-              <a href="/serviceCenter/notice">고객센터</a>
-              <a href="/serviceCenter/faq">FAQ</a>
-              <a href="#">급여계산기</a>
-              <a href="#">문서 서식</a>
-              <a href="/serviceCenter/inquiry" class="inquiry">1:1</a>
-          </div>
-           <!-- <h4> 종합게시판 -->
-            <div class="dropdown-section">
-                <th:block th:each="boardType : ${application.boardTypeList}">
-                    <a th:text="${boardType.boardName}"
-                        th:href="@{/board/{boardCode}(boardCode=${boardType.boardCode})}">게시판이름</a>
-                </th:block>
-                <a> 한줄톡 </a>
-                <a> 알바후기 </a>
-            </div>
+    <ul class="menu-list">
+      <li>채용정보</li>
+      <li>점포매칭</li>
+      <li>인재정보</li>
+      <li>이벤트</li>
+      <li>아르바이트</li>
+      <li>고객센터</li>
+    </ul>
+    <div class="mega-dropdown">
+      <div class="dropdown-section">
+        <!-- <h4>채용정보</h4> -->
+        <a href="/recruitment/list">공고 전체보기</a>
       </div>
+      <div class="dropdown-section">
+        <!-- <h4>점포매칭</h4> -->
+        <a href="#">늘리면 됨</a>
+      </div>
+      <div class="dropdown-section">
+        <!-- <h4>인재정보</h4> -->
+        <a href="#">늘리면 됨</a>
+      </div>
+      <div class="dropdown-section">
+        <!-- <h4>이벤트</h4> -->
+        <a href="#">늘리면 됨</a>
+      </div>
+      <div class="dropdown-section">
+        <!-- <h4>아르바이트</h4> -->
+        <a href="#">늘리면 됨</a>
+      </div>
+      <div class="dropdown-section">
+        <!-- <h4>고객센터</h4> -->
+        <a href="/payments">결제</a>
+        <a class="chatting-bot">채팅상담</a>
+        <a href="/serviceCenter/notice">고객센터</a>
+        <a href="/serviceCenter/faq">FAQ</a>
+        <a href="#">급여계산기</a>
+        <a href="#">문서 서식</a>
+        <a href="/serviceCenter/inquiry" class="inquiry">1:1</a>
+      </div>
+      <!-- <h4> 종합게시판 -->
+      <div class="dropdown-section">
+        <th:block th:each="boardType : ${application.boardTypeList}">
+          <a th:text="${boardType.boardName}"
+            th:href="@{/board/{boardCode}(boardCode=${boardType.boardCode})}">게시판이름</a>
+        </th:block>
+        <a> 한줄톡 </a>
+        <a> 알바후기 </a>
+      </div>
+    </div>
   </nav>
+
 </header>
+
+<th:block th:if="${session.loginEmployer == null} and ${session.loginWorker == null}">
+  <button onclick="empLogin('user02')">사람인(고용주) 로그인</button>
+  <button onclick="empLogin('testEmployer1@kh.or.kr')">testEmployer1@kh.or.kr(고용주) 로그인</button>
+  <button onclick="empLogin3()">알바생 로그인</button>
+</th:block>

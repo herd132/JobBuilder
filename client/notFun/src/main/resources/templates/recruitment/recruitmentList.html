@@ -56,12 +56,27 @@
                 <td th:text="*{recruitmentNo}"></td>
                 <td th:text="*{businessAddress}"></td>
                 <td>
-                  <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
-                    th:cp="${paginationRecruitment.currentPage}"
-                    th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'), this.getAttribute('cp'))">
-                    <li th:text="*{recruitmentTitle}"></li>
-                    <li th:text="*{businessName}"></li>
-                  </ul>
+
+                  <!-- 검색 안한 경우-->
+                  <th:block th:unless="${param.query}">
+                    <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
+                      th:cp="${paginationRecruitment.currentPage}"
+                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'), this.getAttribute('cp'))">
+                      <li th:text="*{recruitmentTitle}"></li>
+                      <li th:text="*{businessName}"></li>
+                    </ul>
+                  </th:block>
+                  
+                  <!-- 검색 한 경우-->
+                  <th:block th:if="${param.query}">
+                    <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
+                      th:cp="${paginationRecruitment.currentPage}"
+                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'), this.getAttribute('cp'))">
+                      <li th:text="*{recruitmentTitle}"></li>
+                      <li th:text="*{businessName}"></li>
+                    </ul>
+                  </th:block>
+
                 </td>
                 <td>
                   <span th:text="|*{salaryMount} 원|"></span>
@@ -80,7 +95,7 @@
       <div class="paginationRecruitment-area">
 
         <!-- 검색 안한 경우-->
-        <ul class="paginationRecruitment" th:unless="${param.key}" th:object="${paginationRecruitment}">
+        <ul class="paginationRecruitment" th:unless="${param.query}" th:object="${paginationRecruitment}">
 
           <li><a th:href="@{/recruitment/list (cp=1)}">&lt;&lt;</a></li>
           <li><a th:href="@{/recruitment/list (cp=*{prevPage})}">&lt;</a></li>
@@ -103,10 +118,10 @@
         </ul>
 
         <!-- 검색 한 경우-->
-				<ul class="paginationRecruitment" th:if="${param.key}" th:object="${paginationRecruitment}" >
+				<ul class="paginationRecruitment" th:if="${param.query}" th:object="${paginationRecruitment}" >
 
-					<li><a th:href="@{/recruitment/list (cp=1, key=${param.key}, query=${param.query})}">&lt;&lt;</a></li>
-					<li><a th:href="@{/recruitment/list (cp=*{prevPage}, key=${param.key}, query=${param.query})}">&lt;</a></li>
+					<li><a th:href="@{/recruitment/list (cp=1, query=${param.query})}">&lt;&lt;</a></li>
+					<li><a th:href="@{/recruitment/list (cp=*{prevPage}, query=${param.query})}">&lt;</a></li>
 
 					<!-- 특정 페이지로 이동 -->
 					<th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
@@ -118,7 +133,7 @@
 						
 						<!-- 보고있지 않은 페이지 -->
 						<li th:unless="${i} == *{currentPage}">
-							<a th:href="@{/recruitment/list (cp=${i}, key=${param.key}, query=${param.query})}" 
+							<a th:href="@{/recruitment/list (cp=${i}, query=${param.query})}" 
 								th:text="${i}">이동할 페이지</a>
 						</li>
 					</th:block>
@@ -130,23 +145,10 @@
 						</li>
 					</th:block>
 					
-					<li><a th:href="@{/recruitment/list (cp=*{nextPage}, key=${param.key}, query=${param.query})}">&gt;</a></li>
-					<li><a th:href="@{/recruitment/list (cp=*{maxPage}, key=${param.key}, query=${param.query})}">&gt;&gt;</a></li>
+					<li><a th:href="@{/recruitment/list (cp=*{nextPage}, query=${param.query})}">&gt;</a></li>
+					<li><a th:href="@{/recruitment/list (cp=*{maxPage}, query=${param.query})}">&gt;&gt;</a></li>
 				</ul>
       </div>
-
-      <form th:action="@{/recruitment/list}" method="get" id="recruitmentSearch">
-        <select name="key" id="searchKey">
-          <option value="t">제목</option>
-          <option value="c">내용</option>
-          <option value="tc">제목 + 내용</option>
-          <option value="w">작성자</option>
-        </select>
-
-        <input type="text" name="query" id="searchQuery" placeholder="검색어를 입력하세요">
-
-        <button>검색</button>
-      </form>
 
     </main>
   </div>

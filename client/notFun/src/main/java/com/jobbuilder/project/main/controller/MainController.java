@@ -21,6 +21,11 @@ public class MainController {
 		return "multiSignUp";
 	}
 	
+	@RequestMapping("multiLogin")
+	public String multiLogin() {
+		return "multiLogin";
+	}
+	
 	@GetMapping("loginError")
 	public String loginError(RedirectAttributes ra) {
 		ra.addFlashAttribute("message","로그인 후 이용해 주세요~");

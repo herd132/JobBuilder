@@ -12,6 +12,7 @@ main {
 .login-container {
   width: 100%;
   max-width: 400px;
+  height: 400px;
   padding: 20px;
   border: 1px solid #FFE4C4;
   border-radius: 8px;

@@ -287,3 +287,46 @@ if( searchBtn !== null ) {
 //     });
 //   });
 // }
+
+
+const empLogin = (email) => {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/employer/employerLogin';
+
+  const inputMemberEmail = document.createElement('input');
+  inputMemberEmail.type = 'hidden'; // 사용자에게 보이지 않게
+  inputMemberEmail.name = 'memberEmail';
+  inputMemberEmail.value = email;
+  form.appendChild(inputMemberEmail);
+
+  const inputMemberPw = document.createElement('input');
+  inputMemberPw.type = 'hidden';
+  inputMemberPw.name = 'memberPw';
+  inputMemberPw.value = 'pass01!';
+  form.appendChild(inputMemberPw);
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+const empLogin3 = () => {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/worker/workerLogin';
+
+  const inputMemberEmail = document.createElement('input');
+  inputMemberEmail.type = 'hidden'; // 사용자에게 보이지 않게
+  inputMemberEmail.name = 'workerId';
+  inputMemberEmail.value = '123';
+  form.appendChild(inputMemberEmail);
+
+  const inputMemberPw = document.createElement('input');
+  inputMemberPw.type = 'hidden';
+  inputMemberPw.name = 'memberPw';
+  inputMemberPw.value = '123';
+  form.appendChild(inputMemberPw);
+
+  document.body.appendChild(form);
+  form.submit();
+}

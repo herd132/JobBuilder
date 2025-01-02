@@ -62,16 +62,13 @@ public class EmployerController {
 		
 		Employer loginEmployer = service.login(inputEmployer);
 		
-		String path = null;
 		String message = null;
 		
 		if(loginEmployer == null) {
-			path = "employerLogin";
 			message = "아이디 또는 비밀번호가 일치하지 않습니다";
 			
 		} else {
 			log.debug("loginEmployer : " + loginEmployer);
-			path = "/";
 			
 			model.addAttribute("loginEmployer", loginEmployer);
 			Cookie cookie = new Cookie("saveId", loginEmployer.getMemberEmail());
@@ -85,7 +82,7 @@ public class EmployerController {
 		
 		ra.addFlashAttribute("message", message);
 		
-		return "redirect:" + path;
+		return "redirect:/";
 	}
 	
 	/** 고용주 로그아웃(get)
