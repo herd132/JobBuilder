@@ -29,7 +29,7 @@
     </tr>
   </table>
 
-  <form action="/resume/writeResume" method="post" class="form-section">
+  <form action="/resume/writeResume" method="post" class="form-section" id="writeResumeForm">
     <h2>학력</h2>
 
     <select name="gradeNo" id="gradeNo">
@@ -51,16 +51,16 @@
         <div class="input-container" style="display: none;">
           <label>
             회사명:
-            <input type="text" name="companyName" class="company-name" placeholder="회사명을 입력하세요" disabled>
+            <input type="text" /*name="companyName"*/ class="company-name" placeholder="회사명을 입력하세요" disabled>
           </label>
           <label>
             근무기간:
-            <input type="date" name="startDate" class="start-date" disabled>
-            <input type="date" name="endDate" class="end-date" disabled>
+            <input type="date" /*name="startDate"*/ class="start-date" disabled>
+            <input type="date" /*name="endDate"*/ class="end-date" disabled>
           </label>
           <label>
             담당업무:
-            <textarea name="jobPart" class="job-part" placeholder="담당업무를 입력하세요" disabled></textarea>
+            <textarea /*name="careerDescription"*/ class="career-description" placeholder="담당업무를 입력하세요" disabled></textarea>
           </label>
         </div>
 
@@ -95,12 +95,12 @@
 
     <h2>근무형태</h2>
     <div>
-    <input type="checkbox" id="partTime" name="workType" value="1">알바
-    <input type="checkbox" id="fullTime" name="workType" value="2">정규직
+    <input type="checkbox" id="partTime" name="jobTypeNo" value="1">알바
+    <input type="checkbox" id="fullTime" name="jobTypeNo" value="2">정규직
     </div>
 
     <h2>근무기간</h2>
-    <select name="workDateNo">
+    <select name="periodNo">
       <option value="1">무관</option>
       <option value="2">하루</option>
       <option value="3">1주일이하</option>
@@ -114,7 +114,7 @@
     <h2>근무일시</h2>
     <div id="select-container">
 
-      <select name="workDay">
+      <select class="daysNo" /*name="daysNo"*/>
         <option value="1">무관</option>
         <option value="2">월~일</option>
         <option value="3">월~토</option>
@@ -128,7 +128,7 @@
         <option value="11">주1일</option>
       </select>
 
-      <select name="workPart">
+      <select class="timeNo" /*name="timeNo"*/>
         <option value="1">무관</option>
         <option value="2">오전 파트타임(06:00~12:00)</option>
         <option value="3">오후 파트타임(12:00~18:00)</option>
@@ -146,13 +146,14 @@
 
     <h2>급여</h2>
     <div name="workPay">
-      <select name="payType">
+      <select name="salaryNo">
         <option value="1">시급</option>
         <option value="2">월급</option>
-        <option value="3" selected >추후협의</option>
+        <option value="3" selected >추후협의(시급)</option>
+        <option value="4" >추후협의(월급)</option>
       </select>
 
-      <input type="number" name="inputPay" min="0">원
+      <input type="number" name="salaryAmount" min="0">원
     </div>
 
     

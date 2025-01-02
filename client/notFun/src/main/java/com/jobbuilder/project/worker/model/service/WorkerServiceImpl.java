@@ -32,7 +32,6 @@ public class WorkerServiceImpl implements WorkerService{
 		Worker loginWorker = mapper.login(inputWorker.getWorkerId());
 		if(loginWorker == null) return null;
 		
-		
 		// 입력 받은 비밀번호 평문과 암호화된 비밀번호가 일치하는지 확인
 		if(!bcrypt.matches(inputWorker.getMemberPw(), loginWorker.getMemberPw())) {
 			
