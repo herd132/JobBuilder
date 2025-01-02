@@ -15,6 +15,7 @@ public class RecruitmentPreferred {
 
 	/* ***** RECRUITMENT_PREFERRED ***** */
 	private int recruitmentPreferredNo;
+	private int recruitmentNo;
 	private String preferredNo;
 	
 	/* ***** PREFERRED ***** */

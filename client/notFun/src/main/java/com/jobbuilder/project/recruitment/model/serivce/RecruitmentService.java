@@ -57,4 +57,13 @@ public interface RecruitmentService {
 	 */
 	Map<String, Object> selectRecruitmentList(int cp);
 
+	
+	/* ********** 공고 상세 페이지 이동 관련 ********** */
+	
+	/** 공고글 상세 조회
+	 * @param recruitmentNo
+	 * @return
+	 */
+	Recruitment selectOne(int recruitmentNo);
+
 }

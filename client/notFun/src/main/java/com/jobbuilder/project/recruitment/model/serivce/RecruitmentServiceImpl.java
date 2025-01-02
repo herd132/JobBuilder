@@ -135,4 +135,12 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 		
 		return map;
 	}
+	
+	
+	/* ***** 공고 상세 페이지 이동 관련 ***** */
+	
+	@Override	// 공고글 상세 조회
+	public Recruitment selectOne(int recruitmentNo) {
+		return mapper.selectOne(recruitmentNo);
+	}
 }

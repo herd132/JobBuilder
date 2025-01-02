@@ -16,6 +16,7 @@ public class RecruitmentSupport {
 	/* ***** RECRUITMENT_SUPPORT ***** */
 	private int recruitmentSupportNo;
 	private String SupportNo;
+	private int recruitmentNo;
 	
 	/* ***** SUPPORT ***** */
 	private String supportCategory;

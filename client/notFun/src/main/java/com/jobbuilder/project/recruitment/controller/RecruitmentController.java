@@ -140,14 +140,16 @@ public class RecruitmentController {
 		return "recruitment/recruitmentList";
 	}
 	
-	/** 공고 상세 페이지 이동(get)
+	/** 공고 상세 페이지 이동(get)	/recruitment/detail/18?cp=1
 	 * @param recruitmentNo
 	 * @return
 	 */
 	@GetMapping("detail/{recruitmentNo:[0-9]+}")
-	public String recruitmentDetail (@PathVariable("recruitmentNo") int recruitmentNo) {
+	public String recruitmentDetail (@PathVariable("recruitmentNo") int recruitmentNo,
+						@SessionAttribute(value="loginEmployer", required=false) Employer loginEmployer,
+						Model model, RedirectAttributes ra) {
 		
-//		Recruitment recruitment = service.selectOne(recruitmentNo);
+		Recruitment recruitment = service.selectOne(recruitmentNo);
 		
 
 		
