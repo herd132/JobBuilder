@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.jobbuilder.project.resume.model.service.ResumeService;
 import com.jobbuilder.project.worker.model.dto.Worker;
+import com.siot.IamportRestClient.IamportClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -83,14 +84,16 @@ public class ResumeController {
 	public String writeResume(@SessionAttribute("loginWorker") Worker loginWorker, @RequestParam("gradeNo") int gradeNo, // 학력
 			@RequestParam("periodNo") int periodNo, // 근무기간
 			@RequestParam("salaryNo") int salaryNo, // 급여형태
-			@RequestParam(name = "salaryAmount", defaultValue = "0") int salaryAmount, // int형은 null을 가질 수 없어 value값을
+			@RequestParam(value = "salaryAmount", defaultValue = "0") int salaryAmount, // int형은 null을 가질 수 없어 value값을
 																						// 정해주거나 Integer 로 받아야 한다 // 원하는
 																						// 급여
 			@RequestParam("workTypeList") List<Integer> workTypeList, // 업직종고유번호 list,
 
-			@RequestParam("careerInfoList") String careerInfoListJson, // 경력사항
-
-			@RequestParam("jobTypeNo") List<Integer> jobTypeNo // 근무형태 list
+			@RequestParam(value ="careerInfoList", required = false) String careerInfoListJson, // 경력사항 JSON
+ 
+			@RequestParam("jobTypeNo") List<Integer> jobTypeNo, // 근무형태 list
+			
+			@RequestParam("daysTimeList") String daysTimeListJson // 요일날짜 JSON
 			
 			
 
@@ -108,20 +111,21 @@ public class ResumeController {
 		
 		log.debug("careerInfoListJson {}", careerInfoListJson);
 
-		ObjectMapper objectMapper = new ObjectMapper();
-		List<CareerInfo> careerInfoList = objectMapper.readValue(careerInfoListJson,
-				new TypeReference<List<CareerInfo>>() {
-				});
-
-		// 데이터 확인
-		for (CareerInfo info : careerInfoList) {
-			log.debug("info {}", info);
+		if(careerInfoListJson != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			List<CareerInfo> careerInfoList = objectMapper.readValue(careerInfoListJson,
+					new TypeReference<List<CareerInfo>>() {
+			});
+			
+			// 데이터 확인
+			for (CareerInfo info : careerInfoList) {
+				log.debug("info {}", info);
+			}
+			
 		}
-		// log.debug("careerInfoList {} " , careerInfoList);
-//		log.debug("companyName {} " , companyName);
-//		log.debug("startDate {} " , startDate);
-//		log.debug("endDate {} " , endDate);
-//		log.debug("careerDescription {} " , careerDescription);
+	
+		
+		log.debug("daysTimeListJson {}", daysTimeListJson);
 
 		return null;
 	}
