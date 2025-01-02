@@ -40,13 +40,13 @@ public class LoginFilter implements Filter{
 		String path = req.getRequestURI();
 		
 		// 요청 URI가 "/myPageEmployer/profile/" 로 시작하는지 확인
-		if(path.startsWith("/myPageEmployer/profile/")) {
+		if(path.startsWith("/myPageEmp/profile/")) {
 			chain.doFilter(request, response);		// 필터를 통과하도록 함
 			return;									// 필터 통과 후 아래코드 수행하지 않도록 함
 		}
 		
 		// 요청 URI가 "/myPageWorker/profile/" 로 시작하는지 확인
-		if(path.startsWith("/myPageWorker/profile/")) {
+		if(path.startsWith("/myPageWorkee/profile/")) {
 			chain.doFilter(request, response);		// 필터를 통과하도록 함
 			return;									// 필터 통과 후 아래코드 수행하지 않도록 함
 		}

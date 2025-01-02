@@ -25,7 +25,10 @@
 
     <div class="user-menu">
 
-      <th:block th:if="${session.loginEmployer != null}">
+      <th:block th:if="${session.loginEmployer != null}" th:object="${session.loginEmployer}">
+        <div>
+          <span th:text="*{businessName}"></span>
+        </div>
 
         <ul class="nav-mypage">
           <li><a href="/myPageEmp/info">회원 정보</a></li>
