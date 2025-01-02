@@ -1,24 +1,30 @@
 const inputContainer = document.querySelector(".input-container");
 const expAppend = document.querySelector(".exp-append");
-const formElements = inputContainer.querySelectorAll('input, textarea');
+const formElements = inputContainer.querySelectorAll("input, textarea");
+const writeResumeForm = document.querySelector("#writeResumeForm");
+let careerType = "newbie"; // 초기값 신입
+
+let workTypeList = []; // 업직종저장배열(5개까지)
+let careerInfoList = []; // 경력사항배열
+
 function showInputs(isExperienced) {
-  
   // inputContainer 안의 모든 폼 요소들에 대해 disabled 속성 설정
-  
+
   if (isExperienced) {
+    careerType = "exp"; // 경력 세팅
     inputContainer.style.display = "block";
     expAppend.style.display = "block";
-    
+
     // 모든 폼 요소들의 disabled 속성 해제
-    formElements.forEach(element => {
+    formElements.forEach((element) => {
       element.disabled = false;
     });
     expAppend.disabled = false;
   } else {
     inputContainer.style.display = "none";
-    
+
     // 모든 폼 요소들에 disabled 속성 추가
-    formElements.forEach(element => {
+    formElements.forEach((element) => {
       element.disabled = true;
     });
 
@@ -63,7 +69,10 @@ payMonthlyElements.forEach((element) => {
 // 업직종 대분류 클릭 했을 때 소분류 불러오기
 const newEl = (tag, attr, cls) => {
   const el = document.createElement(tag); // 요소 생성
-  for (let key in attr) el.setAttribute(key, attr[key]); // 요소에 속성 추가
+  for (let key in attr) {
+    el.setAttribute(key, attr[key]); // 요소에 속성 추가
+    if (key == "value") el.innerText = attr[key];
+  }
   for (let className of cls) el.classList.add(className); // 요소에 클래스명 추가
 
   return el; // 생성된 요소 반환
@@ -73,7 +82,7 @@ const subCategory = async (workTypeNo) => {
   const subWorkType = document.querySelector("#subWorkType"); // ul태그
   subWorkType.innerHTML = "";
 
-  const resp = await fetch(`/myPageEmp/selectSubWorkType/${workTypeNo}`);
+  const resp = await fetch(`/resume/selectSubWorkType/${workTypeNo}`);
   const result = await resp.json();
 
   for (let element of result) {
@@ -91,22 +100,23 @@ const subCategory = async (workTypeNo) => {
   }
 };
 
+const selectCategoryUl = document.querySelector("#selectCategoryUl");
+
 // 클릭했을 때 선택한 업직종 추가하기(삭제 이벤트도 같이)
 const addSubCategory = (liSubWorkTypeName) => {
   const selectCategory = document.querySelectorAll(".select-category");
+
   if (selectCategory.length >= 5) {
     alert("업직종은 최대 5개만 가능합니다");
     return;
   }
 
-  const selectCategoryUl = document.querySelector("#selectCategoryUl");
-
   const subCategory = newEl(
-    "input",
+    "span",
     {
-      type: "text",
-      name: "subCategory",
+      name: "workTypeCategory",
       readOnly: true,
+      workTypeNo: liSubWorkTypeName.id,
       value: liSubWorkTypeName.innerText,
     },
     ["select-category"]
@@ -143,16 +153,16 @@ function expappend() {
   newContainer.innerHTML = `
   <label>
     회사명:
-    <input type="text" name="companyName" class="company-name" placeholder="회사명을 입력하세요">
+    <input type="text" class="company-name" placeholder="회사명을 입력하세요">
   </label>
   <label>
     근무기간:
-    <input type="date" name="startDate" class="start-date">
-    <input type="date" name="endDate" class="end-date">
+    <input type="date" class="start-date">
+    <input type="date" class="end-date">
   </label>
   <label>
     담당업무:
-    <textarea placeholder="담당업무를 입력하세요"></textarea>
+    <textarea class="career-description" placeholder="담당업무를 입력하세요"></textarea>
   </label>
 `;
 
@@ -172,7 +182,7 @@ function expappend() {
 function addSelect() {
   // 새로운 셀렉트 태그를 생성
   var workDaySelect = document.createElement("select");
-  workDaySelect.name = "workDay";
+  workDaySelect.class = "daysNo";
 
   // workDay 옵션들 추가
   var options1 = [
@@ -198,7 +208,7 @@ function addSelect() {
 
   // 두 번째 셀렉트 태그 생성 (근무 시간)
   var workPartSelect = document.createElement("select");
-  workPartSelect.name = "workPart";
+  workPartSelect.class = "timeNo";
 
   // workPart 옵션들 추가
   var options2 = [
@@ -238,21 +248,88 @@ function addSelect() {
   container.appendChild(deleteBtn);
 }
 
-const formSection = document.querySelector(".form-section");
+writeResumeForm.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+  // -------------- 업직종 관련 --------------
+  workTypeList = []; // 초기화
+
+  for (let element of selectCategoryUl.children) {
+    workTypeList.push(element.firstChild.attributes.worktypeno.value);
+  }
+
+  const hiddenInput = document.createElement("input");
+  hiddenInput.type = "hidden";
+  hiddenInput.name = "workTypeList";
+  hiddenInput.value = workTypeList;
+
+  writeResumeForm.appendChild(hiddenInput);
+
+  if (formElements.disabled == true && expAppend.disabled == true) {
+    const companyName = document.querySelector(".company-name");
+    const startDate = document.querySelector(".start-date");
+    const endDate = document.querySelector(".end-date");
+    const careerDescription = document.querySelector(".career-description");
+
+    companyName.value = "";
+    startDate.value = "";
+    endDate.value = "";
+    careerDescription.value = "";
+  }
+
+  // -------------- 경력사항 관련 --------------
+  // 최종 경력사항 리스트
+  careerInfoList = []; // 초기화
+
+  if (careerType == "exp") {
+    // 경력자라면
+
+    const companyNameList = document.querySelectorAll(".company-name");
+    const startDateList = document.querySelectorAll(".start-date");
+    const endDateList = document.querySelectorAll(".end-date");
+    const careerDescriptionList = document.querySelectorAll(
+      ".career-description"
+    );
+
+    for (let i = 0; i < companyNameList.length; i++) {
+      if (
+        companyNameList[i].value.trim().length == 0 ||
+        startDateList[i].value.trim().length == 0 ||
+        endDateList[i].value.trim().length == 0 ||
+        careerDescriptionList[i].value.trim().length == 0
+      ) {
+        alert("경력사항 관련 필드는 비어있을 수 없습니다.");
+        return;
+      }
+
+      let careerInfoObj = {}; // 빈 js 객체 생성
+
+      careerInfoObj.careerNo = i; // 순서식별용 가데이터
+      careerInfoObj.companyName = companyNameList[i].value;
+      careerInfoObj.startDate = startDateList[i].value;
+      careerInfoObj.endDate = endDateList[i].value;
+      careerInfoObj.careerDescription = careerDescriptionList[i].value;
+
+      careerInfoList.push(careerInfoObj);
+    }
+
+    const hiddenInput2 = document.createElement("input");
+    hiddenInput2.type = "hidden";
+    hiddenInput2.name = "careerInfoList";
+    hiddenInput2.value = JSON.stringify(careerInfoList);
+
+    writeResumeForm.appendChild(hiddenInput2);
+  }
+
+  // -------------- 근무일시 관련 --------------
+  const daysNoList = document.querySelectorAll(".daysNo");
+  const timeNoList = document.querySelectorAll(".timeNo");
+
+  console.log(daysNoList);
+  console.log(timeNoList);
 
 
-formSection.addEventListener("submit", (e) => {
+  // -------------- 급여 관련 --------------
 
-if(formElements.disabled == true && expAppend.disabled == true) {
-  const companyName = document.querySelector(".company-name");
-  const startDate = document.querySelector(".start-date");
-  const endDate = document.querySelector(".end-date");
-  const jobPart = document.querySelector(".job-part");
-
-  companyName.value = "";
-  startDate.value = "";
-  endDate.value = "";
-  jobPart.value = "";
-}
-
+  //writeResumeForm.submit();
 });
