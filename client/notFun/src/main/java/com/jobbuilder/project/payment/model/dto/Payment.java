@@ -35,6 +35,12 @@ public class Payment {
     private String durationUnit;            // 탈퇴일 계산 도우미2 (인설트자료)
 
     private Integer emptyMembershipCount;   // 신규맴버십 카운트용 (인설트자료)
+    
+    private int paymentTypeAmount;			// 상세 가격
+    private String paymentTypeProduct;		// 상세 품명
+    private String paymentTypeCreateDate;	// 상세 날짜
+    
+   
 
     
 }
