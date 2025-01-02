@@ -8,7 +8,7 @@ import com.jobbuilder.project.board.model.dto.Board;
 
 public interface EditBoardService {
 	// 근로자 게시물 작성 / 수정 / 삭제 등
-	int boardInsertWorker(Board inputBoard, List<MultipartFile> images) throws Exception;
+	int boardInsert(Board inputBoard, List<MultipartFile> images) throws Exception;
 
 	
 	
@@ -16,6 +16,11 @@ public interface EditBoardService {
 	
 	
 	// 고용주 게시물 작성 / 수정 / 삭제 등
-	int boardInsertEmployer(Board inputBoard, List<MultipartFile> images) throws Exception;
+
+
+
+
+	// 게시물 수정
+	int boardUpdate(Board inputBoard, List<MultipartFile> images, String deleteOrderList);
 
 }

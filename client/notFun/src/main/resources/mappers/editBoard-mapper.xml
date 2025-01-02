@@ -2,8 +2,8 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.board.model.mapper.EditBoardMapper">
 
-	<!--  근로자 게시글 작성시 -->
-	<insert id="boardInsertWorker" useGeneratedKeys="true" parameterType="Board">
+	<!--  게시글 작성시 -->
+	<insert id="boardInsert" useGeneratedKeys="true" parameterType="Board">
 		
 		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
 			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
@@ -18,20 +18,7 @@
 		)
 	</insert> 
 	
-	<!--  고용주 게시글 작성시 -->	
-	<insert id="boardInsertEmployer" useGeneratedKeys="true" parameterType="Board">		
-		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
-			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
-		</selectKey>	
-		INSERT INTO "BOARD"
-		VALUES(
-		#{boardNo}, #{boardTitle}, 
-		#{boardContent}, 
-		DEFAULT,DEFAULT,DEFAULT,DEFAULT, 
-		#{memberNo},
-		#{boardCode}
-		)
-	</insert> 
+	
 	
 	<!--  게시글 이미지 삽입 -->
 	<insert id="insertUploadList" parameterType="list">

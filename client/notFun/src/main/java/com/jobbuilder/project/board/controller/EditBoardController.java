@@ -65,28 +65,27 @@ public class EditBoardController {
 		String path = null;
 		String message = null;			
 		int boardNo = 0;
-		// 1. 로그인워커 / 로그인고용주 에 정보가 들어있을 경우
-		if(loginWorker != null || loginEmployer != null) {
-			
-			inputBoard.setBoardCode(boardCode);
-			if(loginWorker != null) {
-				inputBoard.setMemberNo(loginWorker.getMemberNo());
-				boardNo = service.boardInsertWorker(inputBoard, images);
-			}
-			else {
-				inputBoard.setMemberNo(loginEmployer.getMemberNo());
-				boardNo = service.boardInsertEmployer(inputBoard, images);
-			}			
-				
-			
-			if(boardNo > 0 ) {
-				path = "/board/" + boardCode + "/" + boardNo; // /board/1/2002 -> 상세 조회
-				message = "게시글이 작성되었습니다!";		
-			} else {
-				path = "insert";
-				message = "게시글 작성 실패...";
-			}				
+		inputBoard.setBoardCode(boardCode);
+		// 근로자 로그인인 경우
+		if(loginWorker != null) {
+			inputBoard.setMemberNo(loginWorker.getMemberNo());
+			boardNo = service.boardInsert(inputBoard, images);
 		}
+		// 고용주 로그인인 경우
+		if(loginEmployer != null) {
+			inputBoard.setMemberNo(loginEmployer.getMemberNo());
+			boardNo = service.boardInsert(inputBoard, images);
+		}
+								
+			
+		if(boardNo > 0 ) {
+			path = "/board/" + boardCode + "/" + boardNo; // /board/1/2002 -> 상세 조회
+			message = "게시글이 작성되었습니다!";		
+		} else {
+			path = "insert";
+			message = "게시글 작성 실패...";
+		}				
+		
 		ra.addFlashAttribute("message", message);			
 		return"redirect:"+path;	
 	}
@@ -165,48 +164,53 @@ public class EditBoardController {
 	 * @param cp      		   : 수정 성공 시 이전 파라미터 유지
 	 * @return
 	 */
-//	@PostMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
-//	public String boardUpdate(
-//					@PathVariable("boardCode") int boardCode, 
-//					@PathVariable("boardNo") int boardNo,
-//					@ModelAttribute Board inputBoard,
-//				    @SessionAttribute(value = "loginWorker", required = false) Worker loginWorker,
-//			        @SessionAttribute(value = "loginEmployer", required = false) Employer loginEmployer,
-//					@RequestParam("images") List<MultipartFile> images,
-//					RedirectAttributes ra,
-//					@RequestParam(value="deleteOrderList", required = false) String deleteOrderList,
-//					@RequestParam(value="cp", required = false, defaultValue = "1") int cp		
-//			) throws Exception {
-//		// 로그인한 객체가 근로자일 경우
-//		if(loginWorker)
-//		
-//		// 1. 커맨드 객체(inputBoard)에 boardCode, boardNo, memberNo 세팅
-//		inputBoard.setBoardCode(boardCode);
-//		inputBoard.setBoardNo(boardNo);
-//		inputBoard.setMemberNo(loginMember.getMemberNo());
-//		// inputBoard -> (제목, 내용, boardCode, boardNo, memberNo)
-//		
-//		// 2. 게시글 수정 서비스 호출 후 결과 반환 받기
-//		int result = service.boardUpdate(inputBoard, images, deleteOrderList);
-//		
-//		// 3. 서비스 결과에 따라 응답 제어
-//		String message = null;
-//		String path = null;
-//		
-//		if(result > 0) {
-//			message = "게시글이 수정 되었습니다";
-//			path = String.format("/board/%d/%d?cp=%d", boardCode, boardNo, cp);
-//			//    /board/1/2000?cp=3
-//			
-//		} else {
-//			message = "수정 실패";
-//			path = "update";   // GET (수정 화면 전환) 리다이렉트하는 상대경로
-//		}
-//		
-//		ra.addFlashAttribute("message", message);
-//		
-//		return "redirect:" + path;
-//	}
+	@PostMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}/update")
+	public String boardUpdate(
+					@PathVariable("boardCode") int boardCode, 
+					@PathVariable("boardNo") int boardNo,
+					@ModelAttribute Board inputBoard,
+				    @SessionAttribute(value = "loginWorker", required = false) Worker loginWorker,
+			        @SessionAttribute(value = "loginEmployer", required = false) Employer loginEmployer,
+					@RequestParam("images") List<MultipartFile> images,
+					RedirectAttributes ra,
+					@RequestParam(value="deleteOrderList", required = false) String deleteOrderList,
+					@RequestParam(value="cp", required = false, defaultValue = "1") int cp		
+			) throws Exception {
+		// 로그인한 객체가 근로자일 경우
+		if(loginWorker != null) {
+			// 1. 커맨드 객체(inputBoard)에 boardCode, boardNo, memberNo 세팅
+			inputBoard.setBoardCode(boardCode);
+			inputBoard.setBoardNo(boardNo);
+			inputBoard.setMemberNo(loginWorker.getMemberNo());
+			// inputBoard -> (제목, 내용, boardCode, boardNo, memberNo)			
+		}
+		if(loginEmployer != null) {
+			inputBoard.setBoardCode(boardCode);
+			inputBoard.setBoardNo(boardNo);
+			inputBoard.setMemberNo(loginEmployer.getMemberNo());
+		}
+		
+		// 2. 게시글 수정 서비스 호출 후 결과 반환 받기
+		int result = service.boardUpdate(inputBoard, images, deleteOrderList);
+		
+		// 3. 서비스 결과에 따라 응답 제어
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "게시글이 수정 되었습니다";
+			path = String.format("/board/%d/%d?cp=%d", boardCode, boardNo, cp);
+			//    /board/1/2000?cp=3
+			
+		} else {
+			message = "수정 실패";
+			path = "update";   // GET (수정 화면 전환) 리다이렉트하는 상대경로
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
 	
 	
 	

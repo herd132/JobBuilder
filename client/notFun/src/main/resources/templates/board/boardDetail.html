@@ -63,10 +63,11 @@
                     <!-- </th:block> -->
                                        
                     <!-- 로그인한 회원과 게시글 작성한 회원의 번호가 같은 경우 -->
-                    <th:block th:if="${board.memberNo == session.loginWorker?.memberNo} ">
+                    <th:block th:if="${board.memberNo == session.loginWorker?.memberNo} or ${board.memberNo == session.loginEmployer?.memberNo}  ">
                         <button id="updateBtn">수정</button>
                         <button id="deleteBtn">삭제</button>
                     </th:block>
+                    
                 </th:block>
                 <th:block th:if="${param.key2}" th:switch="${#strings.toString(param.key2)}">
                     <button th:case="myWrite" id="goToMyWriteListBtn">이전으로</button>
