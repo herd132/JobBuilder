@@ -46,7 +46,7 @@ public class LoginFilter implements Filter{
 		}
 		
 		// 요청 URI가 "/myPageWorker/profile/" 로 시작하는지 확인
-		if(path.startsWith("/myPageWorkee/profile/")) {
+		if(path.startsWith("/myPageWorker/profile/")) {
 			chain.doFilter(request, response);		// 필터를 통과하도록 함
 			return;									// 필터 통과 후 아래코드 수행하지 않도록 함
 		}
@@ -55,6 +55,9 @@ public class LoginFilter implements Filter{
 		
 		if(session.getAttribute("loginEmployer") == null) resp.sendRedirect("/loginError");
 		else chain.doFilter(request, response);
+		
+//		if(session.getAttribute("loginWorker") == null) resp.sendRedirect("/loginError");
+//		else chain.doFilter(request, response);
 		
 	}
 	
