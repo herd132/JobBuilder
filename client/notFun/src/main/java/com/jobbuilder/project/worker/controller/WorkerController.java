@@ -33,8 +33,7 @@ public class WorkerController {
 	private final WorkerService service;
 	
 	
-	/*                        단순 페이지 보여주는 경우                       */
-	
+	/*                        단순 페이지 보여주는 경우                      */	
 	/** 회원가입 페이지로 이동
 	 * @return
 	 */
@@ -74,11 +73,8 @@ public class WorkerController {
 	@GetMapping("workerFindChangePw")
 	public String workerFindChangePw() {
 		return "worker/workerFindChangePw";
-	}
-	
+	}	
 
-	
-	
 	/** 회원 로그인 ( 근로자 )
 	 * @param workerMember
 	 * @param ra
@@ -93,43 +89,45 @@ public class WorkerController {
 						Model model, HttpServletResponse resp,
 						RedirectAttributes ra) {		
 			
-			try {
-				Worker loginWorker = service.login(inputWorker);
-				
-				String message = null;
-				
-				// 로그인 실패 시
-				if (loginWorker == null) {
+			
+				try {
+					Worker loginWorker;
+					loginWorker = service.login(inputWorker);
+					String message = null;
 					
-					message = " 아이디 또는 비밀번호가 일치하지 않습니다.";
-				} else {
-					
-					
-					
-					model.addAttribute("loginWorker", loginWorker);
-					
-					// ******************* Cookie ***********************
-					Cookie cookie = new Cookie("saveId", loginWorker.getWorkerId());		
-					cookie.setPath("/");
-					
-					if(saveId != null) { // 아이디 저장을 체크 시
-						cookie.setMaxAge(31536000); // 초 단위로 지정 ( 30일 )
+					// 로그인 실패 시
+					if (loginWorker == null) {
 						
-					} else { // 미체크 시
-						cookie.setMaxAge(0); // 0초 (클라이언트에서 쿠키삭제 )				
-					}
+						message = " 아이디 또는 비밀번호가 일치하지 않습니다.";
+					} else {
+						
+						
+						
+						model.addAttribute("loginWorker", loginWorker);
+						
+						// ******************* Cookie ***********************
+						Cookie cookie = new Cookie("saveId", loginWorker.getWorkerId());		
+						cookie.setPath("/");
+						
+						if(saveId != null) 	cookie.setMaxAge(31536000); 
+						else	cookie.setMaxAge(0);		
+						
+						
+						resp.addCookie(cookie);
+						
+						
+						
+						ra.addFlashAttribute("message", message);
+						
+					} 
 					
-					// 응답 객체에 쿠키 추가 -> 클라이언트 전달
-					resp.addCookie(cookie);
-					
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				
-				ra.addFlashAttribute("message", message);
 				
-			} catch (Exception e) {
-				
-				e.printStackTrace();
-			}
+			
 			
 			return "redirect:/"; // 메인페이지에 재요청	
 	}
