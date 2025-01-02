@@ -14,7 +14,7 @@
 	    <result property="membershipDelFl" column="MEMBERSHIP_DEL_FL"/>
 	</resultMap>
 	
-	
+	<!-- employerNo로 맴버십 조회 -->
 	<select id="selectMembershipDetails" resultMap="membershipResultMap">
 	    SELECT 
 	        A.EMPLOYER_NO AS EMPLOYER_NO,
@@ -32,7 +32,7 @@
 	    AND B.MEMBERSHIP_DEL_FL = 'N'
 	</select>
 
-
+	<!-- 결제 1단계 -->
 	<insert id="savePayment" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
         INSERT INTO PAYMENT (
             PAYMENT_NO,
@@ -58,7 +58,7 @@
 	    </selectKey>
 	</insert>
 
-
+	<!-- 결제 2단계 -->
 	<insert id="connectionPayment" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
         INSERT INTO PAYMENT_MEMBERSHIP (
             PAYMENT_MEMBERSHIP_NO,
@@ -73,6 +73,7 @@
         )
 	</insert>
 
+	<!-- 결제 3단계 -->
 	<insert id="newMembership" parameterType="com.jobbuilder.project.payment.model.dto.Membership">
     INSERT INTO MEMBERSHIP (
         MEMBERSHIP_NO,
