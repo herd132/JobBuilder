@@ -7,6 +7,8 @@ const getEmployerNo = () => {
   return employerNoMeta?.content || null;
 };
 
+const employerNo = getEmployerNo();
+
 // 데이터 캐싱 함수
 async function fetchAndCacheMembershipData(employerNo) {
   if (globalMembershipList.length > 0) {
@@ -87,7 +89,7 @@ const updateMembershipUI = () => {
 
 // 데이터를 초기화하고 UI를 업데이트하는 함수
 async function initializeMembershipData() {
-  const employerNo = getEmployerNo();
+  
   if (!employerNo) {
     resetStatus(); // 초기화 작업
     return;
@@ -96,11 +98,11 @@ async function initializeMembershipData() {
   // 데이터 요청 및 캐싱
   const data = await fetchAndCacheMembershipData(employerNo);
 
-  if (data.length > 0) {
+  if (data.length >= 0) {
     console.log("가져온 맴버십 데이터:", data);
     updateMembershipUI(); // UI 업데이트
   } else {
-    console.error("맴버십 데이터를 가져오는 데 실패했습니다.");
+    console.log("맴버십 데이터를 가져오는 데 실패했습니다.");
   }
 }
 
