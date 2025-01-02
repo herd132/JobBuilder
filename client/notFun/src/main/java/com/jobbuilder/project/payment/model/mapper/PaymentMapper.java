@@ -19,9 +19,9 @@ public interface PaymentMapper {
 
 	void newMembership(Membership membership);
 	
-	void connectionPaymentType(Payment payment);
+	void connectionPaymentType(Membership membership);
 
-
+	void updateMembership(Membership membership);
 
 
 	

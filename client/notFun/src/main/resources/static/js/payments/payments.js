@@ -12,6 +12,7 @@ var sumResult = 0;
 var memberships = []; // 멤버십 세부 정보를 담을 배열
 var validMembershipNumbers = []; // 기존 멤버십 번호
 var emptyMembershipCount  = 0;
+var calculatedPrice = 0; //상품정보 리스트
 
 // defaultType을 반환하는 함수
 const getDefaultTypeValue = (defaultType, selectedValue) => {
@@ -467,7 +468,10 @@ const updateMembershipContainer = () => {
           answer = "플레";
           break;
         case 4:
-          answer = "급구"; // 필요시 "Hot"으로 변경
+          answer = "급구"; 
+          break;
+        case 5:
+          answer = "Hot"; 
           break;
         default:
           answer = "Unknown"; // 예상치 못한 값 처리
@@ -479,6 +483,8 @@ const updateMembershipContainer = () => {
         membershipDateValue: selectedDuration,
         durationUnit: value >= 4 ? "DAY" : "MONTH",
         membershipProduct: answer,
+        membershipAmount: membership.price * selectedDuration,
+        membershipNo:membershipDetail.membershipNo,
       });
       
   }
@@ -496,7 +502,8 @@ const updateMembershipContainer = () => {
   membershipList.forEach(({ membership, selectedValue, selectedDuration }) => {
     if (selectedValue === "none" || selectedDuration <= 0) return;
 
-    const calculatedPrice = membership.price * selectedDuration;
+    calculatedPrice = 0;
+    calculatedPrice = membership.price * selectedDuration;
     sumResult += calculatedPrice; // 합산
 
     const userMembership = getMembershipDetailsByType(Number(selectedValue));
