@@ -45,6 +45,7 @@ public class PaymentServiceImpl implements PaymentService {
                 // 기존 멤버십 연결
                 payment.setMembershipNo(membershipNo);
                 mapper.connectionPayment(payment); // PAYMENT_MEMBERSHIP 연결
+                
             }
         }
 

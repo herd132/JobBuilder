@@ -18,6 +18,8 @@ public interface PaymentMapper {
 	void connectionPayment(Payment payment);
 
 	void newMembership(Membership membership);
+	
+	void connectionPaymentType(Payment payment);
 
 
 
