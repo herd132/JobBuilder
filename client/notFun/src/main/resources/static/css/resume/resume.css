@@ -1,0 +1,274 @@
+/*--------------- 회색배경영역(제일끝) ---------------*/
+.resume-background-gray {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f0f0f0;
+}
+
+/*--------------- 흰색배경영역(안쪽) ---------------*/
+.resume-background-white {
+  width: 45%;
+  padding: 2rem;
+  background-color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/*--------------- 본문 배경영역(in, outside) ---------------*/
+.resume-background-outside {
+  padding: 1rem;
+  border-radius: 10px;
+  border: #333 double 1px;
+  margin: 0.5rem;
+  margin-bottom: 2rem;
+  background-color: #f0bb78;
+}
+
+
+/*-------------------------------------------------------------------*/
+
+/* 상단 제목 */
+.resume-title {
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.resume-title-font {
+  display: flex;
+  gap: 5rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+
+
+.resume-title-font1 {
+  margin-left: 5rem;
+  margin-right: 5rem;
+}
+
+
+.resume-title hr {
+  margin-top: 0.5rem;
+  background: #f0bb78;
+  height: 0.15rem;
+  border: 0;
+}
+
+/* 상단 부제목 */
+.resume-subtitle {
+  text-align: left;
+  margin-bottom: 1rem;
+  margin-left: 1rem;
+}
+
+.resume-subtitle hr {
+  margin-top: 0.5rem;
+  background: #f0bb78;
+  height: 2px;
+  width: 50%;
+  border: 0;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 본문 상단 내용 */
+.resume-inside {
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+}
+
+.resume-inside-top-item {
+  display: block;
+  justify-content: center;
+  background-color: #fafafa;
+  text-align: center;
+  padding: 2rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  border-radius: 1rem;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.membership-item:hover .resume-inside-top-item {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  transform: scale(1.05);
+}
+
+.resume-inside-box1 {
+  background-color: #d9d9d9;
+  border-radius: 1rem;
+  padding: 0.3rem;
+  margin-bottom: 0.5rem;
+  font-size: 80%;
+}
+
+.resume-price1 {
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+}
+
+.resume-inside-content {
+  font-size: 14px;
+  text-align: left;
+  height: 130px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.resume-inside-box2 {
+  background-color: #eae0e0;
+  border-radius: 0.3rem;
+  padding: 0.5rem 0;
+  margin-top: 1rem;
+}
+
+.resume-inside-box2 p {
+  margin-top: 0.5rem;
+  font-size: 50%;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 하단의 버튼 영역 */
+.grade {
+  margin-top: 1rem;
+  display: flex;
+  justify-content: center;
+  transition: transform 0.3s ease;
+}
+
+.membership-item:hover .grade {
+  transform: translateY(5px);
+}
+
+.resume-btn-after {
+  padding: 0.8rem;
+  background-color: #543a14;
+  color: white;
+  border: none;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.resume-btn-now {
+  padding: 0.8rem;
+  background-color: #eae0e0;
+  color: white;
+  border: none;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 맴버십 강조 텍스트 */
+.resume-title-gold {
+  color: #ffd700;
+  text-shadow: 
+    -0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
+    0.3px -0.3px 0 rgba(200, 200, 200, 0.8),
+    -0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
+    0.3px 0.3px 0 rgba(200, 200, 200, 0.8),
+    1px 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.resume-title-platinum {
+  color: #e5f4f7;
+  text-shadow: 
+    -0.5px -0.5px 0 rgba(80, 80, 80, 0.4),
+    0.5px -0.5px 0 rgba(80, 80, 80, 0.4),
+    -0.5px 0.5px 0 rgba(80, 80, 80, 0.4),
+    0.5px 0.5px 0 rgba(80, 80, 80, 0.4),
+    1px 1px 3px rgba(60, 60, 60, 0.3);
+}
+
+/*-------------------------------------------------------------------*/
+
+/* 본문 하단 내용 */
+
+.resume-plussitem{
+  border: 1px solid black;
+  border-radius: 1rem;
+  background-color: #faefe1;
+}
+
+.resume-inside-bottom-font{
+  margin: 1rem;
+  display: flex;
+  justify-content: center;
+}
+
+.resume-mainbtn-area{
+  display: flex;
+  justify-content: center;
+  gap: 7rem;
+}
+
+
+.resume-bottom-item {
+  padding-left: 0.8rem;
+  padding-right: 0.8rem;
+  border: none;
+  cursor: pointer;
+  margin-bottom: 1rem;
+  border: 1px solid black;
+  font-size: 80%;
+  text-align: center;
+}
+
+.resume-bottom-item:hover {
+  transform: scale(1.1);
+}
+
+.resume-semifont {
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+/*-------------------------------------------------------------------*/
+
+/* 추가 안내사항 스타일 */
+.resume-bottom-extra {
+  font-size: 90%;
+  padding-left: 1rem;
+}
+
+/*-------------------------------------------------------------------*/
+
+/* membership-item - hover 효과 */
+.membership-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: transparent;
+  padding: 1rem;
+  transition: transform 0.3s ease;
+}
+
+.membership-item2 {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: transparent;
+  padding: 1rem;
+}
+
+.membership-item:hover {
+  transform: scale(1.03);
+  cursor: pointer;
+}
+
+.resume-plussitem-bottom{
+  display: flex;
+  justify-content: space-between;
+  margin-left: 9.5rem;
+  margin-right: 9.5rem;
+}
