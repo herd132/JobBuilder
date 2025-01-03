@@ -94,7 +94,7 @@ const selectCommentList = () => {
             // 수정 버튼에 onclick 이벤트 리스너 추가
             updateBtn.setAttribute(
               "onclick",
-              `showUpdateComment(${comment.commentNo}, this)`
+              `showUpdateComment(${comment.commentNoBoard}, this)`
             );
 
             // 삭제 버튼
@@ -104,7 +104,7 @@ const selectCommentList = () => {
             // 삭제 버튼에 onclick 이벤트 리스너 추가
             deleteBtn.setAttribute(
               "onclick",
-              `deleteComment(${comment.commentNo})`
+              `deleteComment(${comment.commentNoBoard})`
             );
 
             // 버튼 영역에 수정, 삭제 버튼 추가
@@ -143,54 +143,35 @@ addContent.addEventListener("click", (e) => {
     commentContentBoard.focus();
     return;
   }
-
+  const data = {
+    commentContentBoard: commentContentBoard.value,
+    boardNo: boardNo,
+    memberNo: loginMemberNo, // 또는 Session 회원 번호 이용도 가능
+  };
   if (loginWorkerNo != null) {
     // ajax를 이용해 댓글 등록 요청
-    const data = {
-      commentContentBoard: commentContentBoard.value,
-      boardNo: boardNo,
-      memberNo: loginWorkerNo, // 또는 Session 회원 번호 이용도 가능
-    };
-
-    fetch("/comment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data), // data 객체를 JSON 문자열로 변환
-    })
-      .then((response) => response.text())
-      .then((result) => {
-        if (result > 0) {
-          alert("댓글이 등록 되었습니다");
-          commentContentBoard.value = ""; // 작성한 댓글 내용 지우기
-          selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
-        } else {
-          alert("댓글 등록 실패");
-        }
-      })
-      .catch((err) => console.log(err));
+    data.memberNo = loginWorkerNo;
+    
   } else {
-    const data = {
-      commentContentBoard: commentContentBoard.value,
-      boardNo: boardNo,
-      memberNo: loginEmployerNo, // 또는 Session 회원 번호 이용도 가능
-    };
-    fetch("/comment", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data), // data 객체를 JSON 문자열로 변환
-    })
-      .then((response) => response.text())
-      .then((result) => {
-        if (result > 0) {
-          alert("댓글이 등록 되었습니다");
-          commentContentBoard.value = ""; // 작성한 댓글 내용 지우기
-          selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
-        } else {
-          alert("댓글 등록 실패");
-        }
-      })
-      .catch((err) => console.log(err));
+    data.memberNo = loginEmployerNo;
   }
+  
+  fetch("/comment", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data), // data 객체를 JSON 문자열로 변환
+  })
+    .then((response) => response.text())
+    .then((result) => {
+      if (result > 0) {
+        alert("댓글이 등록 되었습니다");
+        commentContentBoard.value = ""; // 작성한 댓글 내용 지우기
+        selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
+      } else {
+        alert("댓글 등록 실패");
+      }
+    })
+    .catch((err) => console.log(err));
 });
 
 /** 답글 작성 화면 추가
@@ -273,14 +254,22 @@ const insertChildComment = (parentCommentNo, btn) => {
     textarea.focus();
     return;
   }
-
+  
   // ajax를 이용해 댓글 등록 요청
   const data = {
-    commentContent: textarea.value,
+    commentContentBoard: textarea.value,
     boardNo: boardNo,
     memberNo: loginMemberNo, // 또는 Session 회원 번호 이용도 가능
     parentCommentNo: parentCommentNo, // 부모 댓글 번호
   };
+
+  if(loginEmployerNo != null){
+    data.memberNo = loginEmployerNo;
+  };
+  if(loginWorkerNo != null) {
+    data.memberNo = loginWorkerNo;
+  };
+
 
   fetch("/comment", {
     method: "POST",
@@ -302,16 +291,16 @@ const insertChildComment = (parentCommentNo, btn) => {
 // --------------------------------------------------
 
 /** 댓글 삭제
- * @param {*} commentNo
+ * @param {*} commentNoBoard
  */
-const deleteComment = (commentNo) => {
+const deleteComment = (commentNoBoard) => {
   // 취소 선택 시
   if (!confirm("삭제 하시겠습니까?")) return;
 
   fetch("/comment", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: commentNo,
+    body: commentNoBoard,
   })
     .then((resp) => resp.text())
     .then((result) => {
@@ -334,7 +323,7 @@ let beforeCommentRow;
  * @param {*} commentNo
  * @param {*} btn
  */
-const showUpdateComment = (commentNo, btn) => {
+const showUpdateComment = (commentNoBoard, btn) => {
   /* 댓글 수정 화면이 1개만 열릴 수 있게 하기 */
   const temp = document.querySelector(".update-textarea");
 
@@ -382,7 +371,7 @@ const showUpdateComment = (commentNo, btn) => {
   // 8. 수정 버튼 생성
   const updateBtn = document.createElement("button");
   updateBtn.innerText = "수정";
-  updateBtn.setAttribute("onclick", `updateComment(${commentNo}, this)`);
+  updateBtn.setAttribute("onclick", `updateComment(${commentNoBoard}, this)`);
 
   // 9. 취소 버튼 생성
   const cancelBtn = document.createElement("button");
@@ -414,7 +403,7 @@ const updateCancel = (btn) => {
  * @param {*} commentNo : 수정할 댓글 번호
  * @param {*} btn       : 클릭된 수정 버튼
  */
-const updateComment = (commentNo, btn) => {
+const updateComment = (commentNoBoard, btn) => {
   // 수정된 내용이 작성된 textarea 얻어오기
   const textarea = btn.parentElement.previousElementSibling;
 
@@ -427,8 +416,8 @@ const updateComment = (commentNo, btn) => {
 
   // 댓글 수정 (ajax)
   const data = {
-    commentNo: commentNo,
-    commentContent: textarea.value,
+    commentNoBoard: commentNoBoard,
+    commentContentBoard: textarea.value,
   };
 
   fetch("/comment", {

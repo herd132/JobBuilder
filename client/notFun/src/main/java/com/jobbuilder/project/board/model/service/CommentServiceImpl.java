@@ -32,8 +32,8 @@ public class CommentServiceImpl implements CommentService{
 	}
 
 	@Override
-	public int delete(int commentNo) {
-		return mapper.delete(commentNo);
+	public int delete(int commentNoBoard) {
+		return mapper.delete(commentNoBoard);
 	}
 
 	@Override

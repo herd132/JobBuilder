@@ -15,17 +15,16 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jobbuilder.project.board.model.dto.Board;
-import com.jobbuilder.project.board.model.dto.BoardImg;
 import com.jobbuilder.project.board.model.service.BoardService;
+import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.worker.model.dto.Member;
+import com.jobbuilder.project.worker.model.dto.Worker;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 
 @Controller
@@ -41,14 +40,17 @@ public class BoardController {
 	public String selectBoardList(@PathVariable("boardCode") int boardCode,
 								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 								Model model,
-								@RequestParam Map<String, Object> paramMap) {
+								@RequestParam Map<String, Object> paramMap,
+								@SessionAttribute(value = "loginWorker", required = false) Worker loginWorker,							
+								@SessionAttribute(value = "loginEmployer", required = false) Employer loginEmployer							
+								) {
 
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = null;
 
 		// 검색이 아닌 경우 --> paramMap은 {}
 		if (paramMap.get("key") == null) {
-
+			
 			// 게시글 목록 조회 서비스 호출
 			map = service.selectBoardList(boardCode, cp);
 
@@ -81,27 +83,32 @@ public class BoardController {
 							@PathVariable("boardNo") int boardNo,
 							Model model, 
 							RedirectAttributes ra,
-							@SessionAttribute(value = "loginMember", required = false) Member loginMember,
+							@SessionAttribute(value = "loginWorker", required = false) Worker loginWorker,							
+							@SessionAttribute(value = "loginEmployer", required = false) Employer loginEmployer,		
 							HttpServletRequest req, // 요청에													
 							HttpServletResponse resp // 새로운 쿠키 만들어서 응답하기
 	) {
 
 		// 게시글 상세 조회 서비스 호출
-
 		// 1) Map으로 전달할 파라미터 묶기
 		Map<String, Integer> map = new HashMap<>();
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
 		
-		if (loginMember != null) {
-			map.put("memberNo", loginMember.getMemberNo());
+		Board board = null;
+		
+		if (loginWorker != null) {
+			map.put("memberNo", loginWorker.getMemberNo());
+			
+						
 		}
-
-		// 2) 서비스 호출
-		Board board = service.selectOne(map);
-
-		// log.debug("조회된 board : " + board);
-
+		
+		if (loginEmployer != null) {
+			map.put("memberNo", loginEmployer.getMemberNo());
+		}
+		
+		board = service.selectOne(map);
+		// 2) 서비스 호출		
 		String path = null;
 
 		// 조회 결과가 없는 경우
@@ -113,7 +120,7 @@ public class BoardController {
 			/* --------------- 쿠키를 이용한 조회 수 증가 ------------------------- */
 
 			// 비회원 또는 로그인한 회원의 글이 아닌 경우 ( == 글쓴이를 뺀 다른 사람)
-			if (loginMember == null || loginMember.getMemberNo() != board.getMemberNo()) {
+			if ( (loginWorker == null && loginEmployer == null ) || (loginWorker.getMemberNo() != board.getMemberNo()) || (loginEmployer.getMemberNo() != board.getBoardNo() )) {
 
 				// 요청에 담겨있는 모든 쿠키 얻어오기
 				Cookie[] cookies = req.getCookies();

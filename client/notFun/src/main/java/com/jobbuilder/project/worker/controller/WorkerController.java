@@ -133,9 +133,6 @@ public class WorkerController {
 		
 		status.setComplete(); // 세션을 완료시킴 ( == 세션에서 @SessionAttributes로 등록된 걸 제거
 		
-		// 로그인 -> session 에 loginMember가 들어있음
-		
-		
 		return "redirect:/";
 	}
 	

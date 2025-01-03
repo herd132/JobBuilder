@@ -115,8 +115,17 @@ public class EditBoardController {
 		map.put("boardCode", boardCode);
 		map.put("boardNo", boardNo);
 		
-		// BoardService.selectOne(map) 호출
-		Board board = boardService.selectOne(map);
+		Board board = null;
+		
+		if (loginWorker != null) {
+			map.put("memberNo", loginWorker.getMemberNo());
+				
+		}
+		
+		if (loginEmployer != null) {
+			map.put("memberNo", loginEmployer.getMemberNo());
+		}
+		board = boardService.selectOne(map);
 		
 		String message = null;
 		String path = null;

@@ -49,8 +49,8 @@
 	<!-- 댓글 수정 -->
 	<update id="update">
 		UPDATE "COMMENT_BOARD" SET
-		COMMENT_CONTENT = #{commentContentBoard}
-		WHERE COMMENT_NO = #{commentNo}
+		COMMENT_CONTENT_BOARD = #{commentContentBoard}
+		WHERE COMMENT_NO_BOARD = #{commentNoBoard}
 	</update>
 
 </mapper>

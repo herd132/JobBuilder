@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.board.model.dto.Pagination;
 import com.jobbuilder.project.board.model.mapper.BoardMapper;
+import com.jobbuilder.project.employer.model.dto.Employer;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -60,16 +61,16 @@ public class BoardServiceImpl implements BoardService{
 	// 검색 서비스
 	@Override
 	public Map<String, Object> searchList(Map<String, Object> paramMap, int cp) {
-		// TODO Auto-generated method stub
 		return null;
 	}
-
-	// 게시글 상세 조회 서비스
+	
+	// 상세조회 서비스
 	@Override
 	public Board selectOne(Map<String, Integer> map) {
+		// TODO Auto-generated method stub
 		return mapper.selectOne(map);
 	}
-
+	
 
 	// 게시글 조회 수 1 증가
 	@Override
@@ -78,7 +79,7 @@ public class BoardServiceImpl implements BoardService{
 				int result = mapper.updateReadCount(boardNo);
 						
 				// 2. 현재 조회 수 조회
-				if(result>0) {
+				if(result > 0) {
 					return mapper.selectReadCount(boardNo);
 				}
 						

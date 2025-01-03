@@ -40,8 +40,8 @@ public class CommentController {
 	}
 	// 댓글 삭제
 	@DeleteMapping("")
-	public int delete(@RequestBody int commentNo) {
-		return service.delete(commentNo);
+	public int delete(@RequestBody int commentNoBoard) {
+		return service.delete(commentNoBoard);
 	}
 	// 댓글 수정
 	@PutMapping("")
