@@ -18,6 +18,7 @@ public class Resume {
 	private int resumeNo; // 이력서고유식별번호
 	private int workerNo; // 근로자고유식별번호
 	private int gradeNo;  // 학력
+	private int periodNo; // 근무기간
 	private int salaryNo; 	// 급여 형태
 	private int salaryAmount; 	// 희망 급여
 	private String registrationDate; // 작성일
