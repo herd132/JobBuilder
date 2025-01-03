@@ -57,12 +57,17 @@ public class ServiceCenterController {
 	 */
 	@GetMapping("selectInquiryList")
 	@ResponseBody
-	public List<InquiryOneOnOne> selectInquiryList(@RequestParam("cp") int cp) {
-		
-		List<InquiryOneOnOne> list = null;
-		return list;
+	public Map<String, Object> selectInquiryList(@RequestParam("cp") int cp,
+													HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		int memberNo = 0;
+
+    	if (session.getAttribute("loginWorker") != null) memberNo = ((Worker)session.getAttribute("loginWorker")).getMemberNo();
+    	if (session.getAttribute("loginEmployer") != null) memberNo = ((Employer)session.getAttribute("loginEmployer")).getMemberNo();
+    	
+		Map<String, Object> map = service.selectInquiryList(memberNo, cp);
+		return map;
 	}
-	
 	
 	/** 문의 보내기
 	 * @param images
@@ -71,7 +76,7 @@ public class ServiceCenterController {
 	 */
 	@PutMapping("inquirysInsert")
 	@ResponseBody
-	public int inquiryInsert( @RequestPart("images") List<MultipartFile> images,
+	public int inquiryInsert( @RequestPart(value = "images", required = false) List<MultipartFile> images,
 								@RequestPart("inquiry") InquiryOneOnOne inquiry,
 								HttpServletRequest req) throws Exception{
 		
@@ -79,7 +84,6 @@ public class ServiceCenterController {
 
     	if (session.getAttribute("loginWorker") != null) inquiry.setMemberNo(((Worker)session.getAttribute("loginWorker")).getMemberNo());
     	if (session.getAttribute("loginEmployer") != null) inquiry.setMemberNo(((Employer)session.getAttribute("loginEmployer")).getMemberNo());
-    	
 		return service.inquiryInsert(images, inquiry);
 	}
 	

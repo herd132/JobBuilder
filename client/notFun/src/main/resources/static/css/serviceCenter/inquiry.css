@@ -80,7 +80,20 @@ select:disabled {
 }
 
 .file-input {
-  margin-top: 8px;
+  width: 100px;
+  height: 40px;
+  line-height: 40px;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  background-color: var(--primary-orange);
+  cursor: pointer;
+}
+
+.file-input:hover {
+  background-color: var(--secondary-orange);
+  transition: 0.1s;
 }
 
 .file-notice {
@@ -255,8 +268,8 @@ button[type="submit"]:hover {
 
 .inquiry-meta {
   display: flex;
-  gap: 16px;
-  font-size: 14px;
+  gap: 4px;
+  font-size: 0.8rem;
   color: #666;
 }
 
