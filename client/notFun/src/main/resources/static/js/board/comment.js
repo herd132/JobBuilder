@@ -13,18 +13,17 @@ const selectCommentList = () => {
   fetch("/comment?boardNo=" + boardNo) // GET 방식 요청
   .then(response => response.json())
   .then(commentList => {
-    console.log(commentList);
-
     // 화면에 존재하는 기존 댓글 목록 삭제 후
     // 조회된 commentList를 이용해서 새로운 댓글 목록 출력
-
+    console.log(commentList);
     // ul태그(댓글 목록 감싸는 요소)
     const ul = document.querySelector("#commentList");
     ul.innerHTML = ""; // 기존 댓글 목록 삭제
-
-
+    
+    
     /* ******* 조회된 commentList를 이용해 댓글 출력 ******* */
     for(let comment of commentList){
+      console.log(comment.memberNo);
 
       // 행(li) 생성 + 클래스 추가
       const commentRow = document.createElement("li");
@@ -35,34 +34,22 @@ const selectCommentList = () => {
         commentRow.classList.add("child-comment");
 
       // 만약 삭제된 댓글이지만 자식 댓글이 존재하는 경우
-      if(comment.commentDelFl == 'Y') 
+      if(comment.commentDelFlBoard == 'Y') 
         commentRow.innerText = "삭제된 댓글 입니다";
 
       else{ // 삭제되지 않은 댓글
-
-        // 프로필 이미지, 닉네임, 날짜 감싸는 요소
         const commentWriter = document.createElement("p");
-        commentWriter.classList.add("comment-writer");
-
-        // 프로필 이미지
-        const profileImg = document.createElement("img");
-
-        if(comment.profileImg == null)  
-          profileImg.src = userDefaultIamge; // 기본 이미지
-        else                            
-          profileImg.src = comment.profileImg; // 회원 이미지
-
         // 닉네임
         const nickname = document.createElement("span");
-        nickname.innerText = comment.memberNickname;
+        nickname.innerText = comment.memberName;
         
         // 날짜(작성일)
         const commentDate = document.createElement("span");
         commentDate.classList.add("comment-date");
-        commentDate.innerText = comment.commentWriteDate;
+        commentDate.innerText = comment.commentWriteDateBoard;
 
         // 작성자 영역(commentWriter)에 프로필, 닉네임, 날짜 추가
-        commentWriter.append(profileImg, nickname, commentDate);
+        commentWriter.append(nickname, commentDate);
      
         // 댓글 행에 작성자 영역 추가
         commentRow.append(commentWriter);
@@ -75,7 +62,7 @@ const selectCommentList = () => {
         // 댓글 내용 
         const content = document.createElement("p");
         content.classList.add("comment-content");
-        content.innerText = comment.commentContent;
+        content.innerText = comment.commentContentBoard;
 
         commentRow.append(content); // 행에 내용 추가
      
@@ -93,7 +80,7 @@ const selectCommentList = () => {
 
         // 답글 버튼에 onclick 이벤트 리스너 추가 
         childCommentBtn.setAttribute("onclick", 
-          `showInsertComment(${comment.commentNo}, this)`);     
+          `showInsertComment(${comment.commentNoBoard}, this)`);     
           
         // 버튼 영역에 답글 추가
         commentBtnArea.append(childCommentBtn);
@@ -139,41 +126,49 @@ const selectCommentList = () => {
   });
 
 }
+selectCommentList();
 
-
-
-//selectCommentList();
 
 // -----------------------------------------------------------------------
 
 /* ***** 댓글 등록(ajax) ***** */
 
 const addContent = document.querySelector("#addComment"); // button
-const commentContent = document.querySelector("#commentContent"); // textarea
+const commentContentBoard = document.querySelector("#commentContentBoard"); // textarea
 
 // 댓글 등록 버튼 클릭 시
 addContent.addEventListener("click", e => {
-
+  
   // 로그인이 되어있지 않은 경우
-  if(loginMemberNo == null){
+  if(loginWorkerNo == null && loginEmployerNo == null){
     alert("로그인 후 이용해 주세요");
     return; // early return;
   }
 
   // 댓글 내용이 작성되지 않은 경우
-  if(commentContent.value.trim().length == 0){
+  if(commentContentBoard.value.trim().length == 0){
     alert("내용 작성 후 등록 버튼을 클릭해 주세요");
-    commentContent.focus();
+    commentContentBoard.focus();
     return;
   }
 
 
-  // ajax를 이용해 댓글 등록 요청
-  const data = {
-    "commentContent" : commentContent.value,
-    "boardNo"        : boardNo,
-    "memberNo"       : loginMemberNo  // 또는 Session 회원 번호 이용도 가능
-  };
+  if(loginWorkerNo != null) {
+    // ajax를 이용해 댓글 등록 요청
+    const data = {
+      "commentContent" : commentContentBoard.value,
+      "boardNo"        : boardNo,
+      "memberNo"       : loginWorkerNo  // 또는 Session 회원 번호 이용도 가능
+    };
+  } else {
+    const data = {
+      "commentContent" : commentContentBoard.value,
+      "boardNo"        : boardNo,
+      "memberNo"       : loginEmployerNo  // 또는 Session 회원 번호 이용도 가능
+    };
+  }
+  
+
 
   fetch("/comment", {
     method : "POST",
@@ -186,7 +181,7 @@ addContent.addEventListener("click", e => {
 
     if(result > 0){
       alert("댓글이 등록 되었습니다");
-      commentContent.value = ""; // 작성한 댓글 내용 지우기
+      commentContentBoard.value = ""; // 작성한 댓글 내용 지우기
       selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
    
     } else{

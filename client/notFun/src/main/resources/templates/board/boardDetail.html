@@ -117,12 +117,12 @@
 
     <script th:inline="javascript">
 
-
         // 현재 게시글 번호를 전역 변수로 저장
         const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
-
         const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
-
+        // - loginMember가 null 인 경우 null 반환
+        const loginWorkerNo = /*[[${session.loginWorker?.memberNo}]]*/ "로그인 근로자 번호";
+        const loginEmployerNo = /*[[${session.loginEmployer?.memberNo}]]*/ "로그인 사업주 번호"
     </script>
 
 
