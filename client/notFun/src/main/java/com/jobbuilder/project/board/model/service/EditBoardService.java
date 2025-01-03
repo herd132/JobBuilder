@@ -26,4 +26,7 @@ public interface EditBoardService {
 	// 게시물 삭제
 	int boardDelete(Map<String, Integer> map);
 
+
+
+
 }

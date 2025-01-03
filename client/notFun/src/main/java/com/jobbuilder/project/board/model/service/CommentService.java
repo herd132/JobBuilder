@@ -10,7 +10,7 @@ public interface CommentService {
 
 	int insert(CommentBoard comment); // 댓글등록
 
-	int delete(int commentNo); // 댓글조회
+	int delete(int commentNoBoard); // 댓글삭제
 
 	int update(CommentBoard comment); // 댓글수정
 

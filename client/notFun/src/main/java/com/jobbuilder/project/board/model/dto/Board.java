@@ -25,6 +25,10 @@ public class Board {
 	private int memberNo;
 	private int boardCode;
 	
+	// 닉네임 
+	private String workerNickname;
+	private String businessName;
+	
 	// MEMBER 테이블 조인
 	private String memberName;
 	

@@ -28,7 +28,13 @@
             <!-- 프로필 + 닉네임 + 작성일 + 조회수 -->
             <div class="board-header">
                 <div class="board-writer">
-                    <span th:text="*{memberName}">작성자 닉네임</span>
+
+                    <th:block th:if="${board.workerNickname == null}">
+                        <span th:text="*{businessName}">작성자 닉네임</span>
+                    </th:block>
+                    <th:block th:if="${board.workerNickname != null}">
+                        <span th:text="*{workerNickname}">작성자 닉네임</span>
+                    </th:block>
                 </div>
 
                 <div class="board-info">
@@ -54,21 +60,13 @@
             <!-- 버튼 영역-->
             <div class="board-btn-area">
                 <div id="nonblock"></div>
-                <th:block th:if="${session.loginWorker != null} or ${session.loginEmployer != null} ">
-
-                    <!-- 관리자 전용 삭제 버튼 -->
-                    <!-- <th:block -->
-                    <!-- th:if="${board.memberNo != session.loginMember?.memberNo} and ${session.loginMember.authority == 3}"> -->
-                    <!-- <button id="deleteBtnAdmin">삭제</button> -->
-                    <!-- </th:block> -->
-
+                <th:block th:if="${session.loginWorker != null} or ${session.loginEmployer != null} ">                  
                     <!-- 로그인한 회원과 게시글 작성한 회원의 번호가 같은 경우 -->
                     <th:block
                         th:if="${board.memberNo == session.loginWorker?.memberNo} or ${board.memberNo == session.loginEmployer?.memberNo}  ">
                         <button id="updateBtn">수정</button>
                         <button id="deleteBtn">삭제</button>
                     </th:block>
-
                 </th:block>
                 <th:block th:if="${param.key2}" th:switch="${#strings.toString(param.key2)}">
                     <button th:case="myWrite" id="goToMyWriteListBtn">이전으로</button>

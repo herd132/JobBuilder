@@ -2,9 +2,13 @@
 .comment-write-area {
 	display: flex;
 	min-height: 85px;
-	justify-content: center;
-	
+	justify-content: center;	
 	margin: 30px 0;
+}
+
+/* 댓글 2번째마다 색입히는구문 */
+#commentList li:nth-of-type(2n) {
+	background-color: orange;
 }
 
 .comment-write-area > textarea{
@@ -12,6 +16,7 @@
     margin-right: 10px;
 	resize: none;
 }
+
 
 .comment-write-area > button{
 	flex-basis: 7%;
@@ -24,10 +29,12 @@
     cursor: pointer;
 }
 
+
 #commentList{
 	padding: 0;
 	list-style: none;
 }
+
 
 .comment-writer {
 	display: flex;

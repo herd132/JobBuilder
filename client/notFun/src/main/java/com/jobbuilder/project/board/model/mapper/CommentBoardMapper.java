@@ -13,7 +13,7 @@ public interface CommentBoardMapper {
 
 	int insert(CommentBoard comment);
 
-	int delete(int commentNo);
+	int delete(int commentNoBoard);
 
 	int update(CommentBoard comment);
 
