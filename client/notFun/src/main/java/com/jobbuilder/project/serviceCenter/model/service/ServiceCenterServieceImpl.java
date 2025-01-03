@@ -2,14 +2,18 @@ package com.jobbuilder.project.serviceCenter.model.service;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.board.model.dto.Pagination;
 import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.serviceCenter.model.dto.InquiryImage;
 import com.jobbuilder.project.serviceCenter.model.dto.InquiryOneOnOne;
@@ -30,7 +34,31 @@ public class ServiceCenterServieceImpl implements ServiceCenterService{
 
 	@Value("${my.inquery.folder-path}")
 	private String folderPath; // C:/uploadFiles/board
+	
+	// 문의 내역 리스트 조회
+	@Override
+	public Map<String, Object> selectInquiryList(int memberNo, int cp) {
 
+		int listCount = mapper.getInquiryListCount(memberNo);
+		
+		Pagination pagination = new Pagination(cp, listCount, 15 ,5);
+		
+		int limit = pagination.getLimit();
+		int offset = (cp - 1 ) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		List<InquiryOneOnOne> boardList = mapper.selectInquiryList(memberNo, rowBounds); 
+		
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("pagination", pagination);
+		map.put("inquiryList", boardList);
+		
+		return map;
+	}
+
+	// 문의글 삽입
 	@Override
 	public int inquiryInsert(List<MultipartFile> images, InquiryOneOnOne inquiry) throws Exception{
 		int result = mapper.inquiryInsert(inquiry);
