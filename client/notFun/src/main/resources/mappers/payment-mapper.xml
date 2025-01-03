@@ -2,7 +2,6 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jobbuilder.project.payment.model.mapper.PaymentMapper">
 
-
 	<resultMap id="membershipResultMap" type="Membership">
 	    <result property="employerNo" column="EMPLOYER_NO"/>
 	    <result property="membershipNo" column="MEMBERSHIP_NO"/>
@@ -22,6 +21,7 @@
 	        B.MEMBERSHIP_TYPE AS MEMBERSHIP_TYPE,
 	        B.MEMBERSHIP_START_DATE AS MEMBERSHIP_START_DATE,
 	        B.MEMBERSHIP_END_DATE AS MEMBERSHIP_END_DATE,
+	       B.MEMBERSHIP_DEL_FL AS MEMBERSHIP_DEL_FL,
 	        (TRUNC(B.MEMBERSHIP_END_DATE) - TRUNC(B.MEMBERSHIP_START_DATE)) AS REMAINING_DAYS,
 	        (SELECT C.MEMBERSHIP_NAME
 	            FROM MEMBERSHIP_LEVEL C
@@ -31,6 +31,36 @@
 	    WHERE A.EMPLOYER_NO = #{employerNo}
 	    AND B.MEMBERSHIP_DEL_FL = 'N'
 	</select>
+
+
+	<select id="getPaymentList" parameterType="int" resultType="com.jobbuilder.project.payment.model.dto.Payment">
+		SELECT *
+		FROM (
+		    SELECT DISTINCT
+		        TO_CHAR(C.PAYMENT_DATE, 'YYYY-MM-DD HH24:MI:SS') AS PAYMENT_DATE,
+		        C.PAYMENT_NO AS PAYMENT_NO,
+		        C.PAYMENT_PRODUCT AS PAYMENT_PRODUCT,
+		        C.PAYMENT_AMOUNT AS PAYMENT_AMOUNT,
+		        C.PAYMENT_STATUS AS PAYMENT_STATUS,
+		        D.PAYMENT_TYPE_AMOUNT AS PAYMENT_TYPE_AMOUNT,
+		        D.PAYMENT_TYPE_PRODUCT AS PAYMENT_TYPE_PRODUCT,
+		        TO_CHAR(D.PAYMENT_TYPE_CREATE_DATE, 'YYYY-MM-DD HH24:MI:SS') AS PAYMENT_TYPE_CREATE_DATE
+		    FROM 
+		        EMPLOYER E
+		    JOIN 
+		        MEMBERSHIP A ON E.EMPLOYER_NO = A.EMPLOYER_NO
+		    JOIN 
+		        PAYMENT_MEMBERSHIP B ON A.MEMBERSHIP_NO = B.MEMBERSHIP_NO
+		    JOIN 
+		        PAYMENT C ON B.PAYMENT_NO = C.PAYMENT_NO
+		    JOIN 
+		        PAYMENT_TYPE D ON C.PAYMENT_NO = D.PAYMENT_NO
+		    WHERE 
+		        E.EMPLOYER_NO = #{employerNo}
+		) T
+		ORDER BY T.PAYMENT_DATE DESC
+	</select>
+
 
 	<!-- 결제 1단계 -->
 	<insert id="savePayment" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
@@ -64,7 +94,7 @@
             PAYMENT_MEMBERSHIP_NO,
             MEMBERSHIP_NO,
             PAYMENT_NO,
-            CREATE_DATE
+            PAYMENT_MEMBERSHIP_CREATE_DATE
         ) VALUES (
             SEQ_PAYMENT_MEMBERSHIP_NO.NEXTVAL,
             #{membershipNo}, 
@@ -79,54 +109,85 @@
             PAYMENT_TYPE_NO,
             PAYMENT_TYPE_AMOUNT,
             PAYMENT_TYPE_PRODUCT,
-            CREATE_DATE,
+            PAYMENT_TYPE_COUNT,
+            PAYMENT_TYPE_CREATE_DATE,
             PAYMENT_NO
         ) VALUES (
             SEQ_PAYMENT_TYPE_NO.NEXTVAL,
             #{membershipAmount}, 
             #{membershipProduct},
+            #{membershipDateValue},
             SYSDATE,
             #{paymentNo}
         )
 	</insert>
 	
 	<!-- 결제 2-3단계 -->
-	<update id="updateMembership" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
+	<update id="updateMembership" parameterType="com.jobbuilder.project.payment.model.dto.Membership">
 		UPDATE MEMBERSHIP SET 
-		MEMBERSHIP_END_DATE = CASE
-						            WHEN #{durationUnit} = 'MONTH' THEN ADD_MONTHS(MEMBERSHIP_END_DATE, #{membershipDateValue})
-						            WHEN #{durationUnit} = 'DAY' THEN MEMBERSHIP_END_DATE + #{membershipDateValue}
-						      END,
+		MEMBERSHIP_END_DATE = 
+			NVL(MEMBERSHIP_END_DATE, SYSDATE) + 
+		        CASE 
+		            WHEN #{durationUnit} = 'MONTH' THEN 30 * #{membershipDateValue}
+		            WHEN #{durationUnit} = 'DAY' THEN #{membershipDateValue}
+		        END,
 		MEMBERSHIP_DEL_FL = 'N',
-		EMPLOYER_NO = #{employerNo}
+		EMPLOYER_NO = #{employerNo},
+		MEMBERSHIP_BUY_DATE = SYSDATE
 		WHERE MEMBERSHIP_NO = #{membershipNo}
 		AND MEMBERSHIP_TYPE = #{membershipType}
 	</update>
 
+	<!-- 결제 2-4단계 공존 확인 -->
+	<select id="getMembershipUpgradeCount" resultType="int">
+    SELECT COUNT(*)
+    FROM MEMBERSHIP
+    WHERE MEMBERSHIP_DEL_FL = 'N'
+      AND EMPLOYER_NO = #{employerNo}
+      AND (MEMBERSHIP_TYPE = 2 OR MEMBERSHIP_TYPE = 3)
+	</select>
 	
+	<!-- 비활성화 처리 -->
+	<update id="updateOldMemberships">
+    UPDATE MEMBERSHIP
+    SET MEMBERSHIP_DEL_FL = 'Y'
+    WHERE MEMBERSHIP_DEL_FL = 'N'
+      AND EMPLOYER_NO = #{employerNo}
+      AND MEMBERSHIP_TYPE = 2
+	</update>
 	
 	
 
 	<!-- 결제 3단계 -->
 	<insert id="newMembership" parameterType="com.jobbuilder.project.payment.model.dto.Membership">
-    INSERT INTO MEMBERSHIP (
-        MEMBERSHIP_NO,
-        MEMBERSHIP_TYPE,
-        MEMBERSHIP_START_DATE,
-        MEMBERSHIP_END_DATE,
-        MEMBERSHIP_DEL_FL,
-        EMPLOYER_NO
-    ) VALUES (
-        SEQ_MEMBERSHIP_NO.NEXTVAL, 
-        #{membershipType},
-        SYSDATE, 
-        CASE
-            WHEN #{durationUnit} = 'MONTH' THEN ADD_MONTHS(SYSDATE, #{membershipDateValue})
-            WHEN #{durationUnit} = 'DAY' THEN SYSDATE + #{membershipDateValue}
-        END,
-        'N', 
-        #{employerNo}
-    )
+	    INSERT INTO MEMBERSHIP (
+		    MEMBERSHIP_NO,
+		    MEMBERSHIP_TYPE,
+		    MEMBERSHIP_START_DATE,
+		    MEMBERSHIP_END_DATE,
+		    MEMBERSHIP_BUY_DATE,
+		    MEMBERSHIP_DEL_FL,
+		    EMPLOYER_NO
+		) VALUES (
+		    SEQ_MEMBERSHIP_NO.NEXTVAL, 
+		    #{membershipType}, 
+		    SYSDATE,
+		    SYSDATE,
+		    NVL(( 
+		        SELECT MEMBERSHIP_END_DATE
+		        FROM MEMBERSHIP
+		        WHERE EMPLOYER_NO = #{employerNo}
+		          AND MEMBERSHIP_TYPE = 2
+		          AND MEMBERSHIP_DEL_FL = 'N'
+		    ), SYSDATE) + 
+		    CASE
+		        WHEN #{durationUnit} = 'MONTH' THEN 30 * #{membershipDateValue}
+		        WHEN #{durationUnit} = 'DAY' THEN #{membershipDateValue}
+		    END,
+		    'N', 
+		    #{employerNo}
+		)
+
     <!-- 방금 삽입된 MEMBERSHIP_NO를 가져오기 -->
     <selectKey resultType="int" keyProperty="membershipNo" order="AFTER">
         SELECT SEQ_MEMBERSHIP_NO.CURRVAL FROM DUAL
@@ -136,6 +197,7 @@
 
 
 
+	<!-- 조회 및 환불 관련 나중에 옮길거 -->
 
 
 

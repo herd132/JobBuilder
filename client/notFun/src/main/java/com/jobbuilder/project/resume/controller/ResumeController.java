@@ -20,8 +20,10 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
+
 import com.jobbuilder.project.resume.model.dto.Resume;
 import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
+
 import com.jobbuilder.project.resume.model.service.ResumeService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 

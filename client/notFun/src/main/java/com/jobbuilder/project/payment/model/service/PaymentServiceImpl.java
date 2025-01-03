@@ -26,6 +26,12 @@ public class PaymentServiceImpl implements PaymentService {
         return mapper.selectMembershipDetails(employerNo);
     }
     
+    @Override
+    public List<Payment> getPaymentList(int employerNo) {
+        log.debug("Fetching membership details for employerNo: {}", employerNo);
+        return mapper.getPaymentList(employerNo);
+    }
+    
 
     @Override
     public void savePayment(Payment payment, List<Integer> validMembershipNumbers, int emptyMembershipCount,
@@ -62,18 +68,15 @@ public class PaymentServiceImpl implements PaymentService {
             for (Integer membershipNo : validMembershipNumbers) {
                 log.info("Linking3 existing membershipNo {} to paymentNo {}: {}", membershipNo, payment.getPaymentNo(), payment);
                 Membership membership = membershipList.get(i); 
-                log.debug("1번쨰 : " + membership.getMembershipNo());
                 i++;
                 // 기존 멤버십 연결
                 membership.setMembershipNo(membershipNo);
-                log.debug("2번쨰 : " + payment.getMembershipNo());
-                log.debug("3번쨰 : " + membership.getMembershipNo());
                 mapper.updateMembership(membership);       
             }
-         	
-         	
+
         }
 
+        
         // 3단계: 신규 멤버십 생성 및 연결
         if (emptyMembershipCount > 0) {
             processed = true; // 처리 상태 기록
@@ -90,6 +93,17 @@ public class PaymentServiceImpl implements PaymentService {
                 mapper.connectionPayment(payment); // PAYMENT_MEMBERSHIP 연결
             }
         }
+        
+        // 4단계: 골드맴버십과 플레가 공존 있을 경우 골드 비활성화 (업그레이드처리)
+        
+        // 골드,플레 공존 조회
+        int result = mapper.getMembershipUpgradeCount(payment.getEmployerNo());
+        
+        // 결과가 있다면 골드 비활성화
+        if (result > 1) {
+            mapper.updateOldMemberships(payment.getEmployerNo());
+        }
+        
 
         // 조건이 모두 충족되지 않았을 경우 예외를 던짐
         if (!processed) {

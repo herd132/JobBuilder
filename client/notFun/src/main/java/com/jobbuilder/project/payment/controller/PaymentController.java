@@ -44,12 +44,32 @@ public class PaymentController {
         return "payments/testpay";
     }
     
+    @GetMapping("testpay2")
+    public String showTestPage2() {
+        return "payments/testpay2";
+    }
+    
     @GetMapping("test3")
     public String showTestPage3() {
         return "payments/test3";
     }
     
+    @PostMapping("/paymentlist")
+    @ResponseBody
+    public Map<String, Object> getPaymentList(@SessionAttribute("loginEmployer") Employer loginEmployer) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            List<Payment> paymentList = service.getPaymentList(loginEmployer.getEmployerNo());
+            response.put("paymentList", paymentList);
+        } catch (Exception e) {
+            e.printStackTrace();  // 로그에 오류를 출력
+            response.put("error", "서버 오류가 발생했습니다.");
+        }
+        return response;
+    }
 
+    
+    // 맴버십 정보 받아오기
     @PostMapping("/details")
     @ResponseBody
     public Map<String, Object> getMembershipDetails(@SessionAttribute("loginEmployer") Employer loginEmployer) {
@@ -58,19 +78,21 @@ public class PaymentController {
         response.put("membershipDetails", membershipDetails);
         return response;
     }
+    
+    // 결제 완료후
     @PostMapping("/complete")
     public ResponseEntity<Map<String, Object>> completePayment(@RequestBody Map<String, Object> paymentData) {
         try {
         	 log.debug("Received paymentData: {}", paymentData);
             // 입력값 매핑
-            String impUid = (String) paymentData.get("imp_uid");
-            String merchantUid = (String) paymentData.get("merchantUid");
-            int amount = (int) paymentData.get("amount");
-            List<Integer> validMembershipNumbers = (List<Integer>) paymentData.get("validMembershipNumbers");
-            int emptyMembershipCount = (int) paymentData.get("emptyMembershipCount"); // 빈 슬롯 카운트로 변경
-            List<Map<String, Object>> memberships = (List<Map<String, Object>>) paymentData.get("memberships"); // 명칭 일관성 유지
-            int employerNo = (int) paymentData.get("employerNo");
-            String paymentProduct = (String) paymentData.get("paymentProduct");
+            String impUid = (String) paymentData.get("imp_uid"); // 결제번호
+            String merchantUid = (String) paymentData.get("merchantUid"); // 주문번호
+            int amount = (int) paymentData.get("amount"); // 결제금액 
+            List<Integer> validMembershipNumbers = (List<Integer>) paymentData.get("validMembershipNumbers"); // 선택한 상품의 맴버십번호 (기존 상품 구분용)
+            int emptyMembershipCount = (int) paymentData.get("emptyMembershipCount"); // 빈 슬롯 카운트 (신규를 의미)
+            List<Map<String, Object>> memberships = (List<Map<String, Object>>) paymentData.get("memberships"); // 유저가 선택한 상품 배열
+            int employerNo = (int) paymentData.get("employerNo"); // 사업주 회원번호
+            String paymentProduct = (String) paymentData.get("paymentProduct"); // 결제한 상품명
 
             // DTO 변환
             List<Membership> membershipList = memberships.stream() // DTO로 변환

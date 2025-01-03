@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>결제 서비스</title>
+  <title>결제 내역</title>
   <!-- CSS, font awesome 라이브러리-->
   <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/payments/testpay.css">
+  <link rel="stylesheet" href="/css/payments/testpay2.css">
   <link rel="stylesheet" href="/css/payments/payments.css">
 
   <meta name="employerNo" th:content="${session.loginEmployer != null ? session.loginEmployer.employerNo : ''}">
@@ -28,20 +28,19 @@
     <div class="payments-background-white">
 
       <!-- 상단 제목 스타일 -->
-      <h1 class="payments-title">결제 결과
+      <h1 class="payments-title">결제 내역
         <hr>
       </h1>
 
-      <div style="height: 300px;" id="finalResult">
+      <div id="finalResult">
 
         <div class="resultp" id="resultp">
-
+          
         </div>
         <div class="payments-t-inside-middle-item">
           <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments';"
             style="cursor:pointer;">돌아가기</button>
         </div>
-
       </div>
 
 
@@ -63,7 +62,7 @@
 
 
 
-  <script src="/js/payments/testpay.js"></script>
+  <script src="/js/payments/testpay2.js"></script>
 </body>
 
 </html>

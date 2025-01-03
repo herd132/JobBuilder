@@ -19,6 +19,7 @@ public class Membership {
 	private String membershipStartDate;			// 가입일
 	private String membershipEndDate;			// 탈퇴일(종료일자)
 	private String membershipDelFl;				// 탈퇴 여부 확인
+	private String membershipBuyDate;			// 구매날짜
 	
 	private int employerNo; 					// 고용주 번호 (연동자료)
 	private int memberNo;						// 회원 번호 (연동자료)

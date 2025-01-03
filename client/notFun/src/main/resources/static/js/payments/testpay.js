@@ -1,138 +1,83 @@
-console.log("testpay.js 와 연결됨");
+// 데이터를 캐싱할 전역 변수
+let globalMembershipList = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-  const addIngredientBtn = document.querySelector("#add-ingredient-btn");
-  const ingredientContainer = document.querySelector("#findrecipe-addpart");
+// employerNo 가져오기
+const getEmployerNo = () => {
+  const employerNoMeta = document.querySelector('meta[name="employerNo"]');
+  return employerNoMeta?.content || null;
+};
 
-  let Count = 1; // 재료 입력 필드 개수 추적
+const employerNo = getEmployerNo();
 
-  addIngredientBtn.addEventListener("click", () => {
-    Count++;
+const resultElement = document.querySelector("#resultp");
 
-    const newIngredientGroup = document.createElement("div");
-    newIngredientGroup.classList.add("findrecipe-addpart");
-    newIngredientGroup.id = `div-${Count}`; // 동적으로 ID 설정
-    newIngredientGroup.innerHTML = `
-    <div class="item">
-      <form>
-        <select name="membership" >
-          <option value="none">=== 선택 ===</option>
-          <option value="gold" selected>골드</option>
-          <option value="platinum">플레티넘</option>
-        </select>
-      </form>
-      <form>
-        <select name="date" >
-          <option value="none">=== 선택 ===</option>
-          <option value="1" selected>1개월</option>
-          <option value="2">2개월</option>
-          <option value="3">3개월</option>
-          <option value="4">4개월</option>
-          <option value="5">5개월</option>
-          <option value="6">6개월</option>
-          <option value="7">7개월</option>
-          <option value="8">8개월</option>
-          <option value="9">9개월</option>
-          <option value="10">10개월</option>
-          <option value="11">11개월</option>
-          <option value="12">12개월</option>
+// 데이터 캐싱 함수
+async function fetchAndCacheMembershipData(employerNo) {
+  try {
+    // 서버에서 데이터 가져오기
+    const response = await fetch(`/payments/paymentlist`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ employerNo }),
+    });
 
-        </select>
-      </form>
-      <button data-id="${Count}" class="delete-btn">-</button>
-    </div>
-    `;
-    ingredientContainer.appendChild(newIngredientGroup);
-  });
-
-  // 이벤트 위임을 사용하여 삭제 버튼 동작 처리
-  ingredientContainer.addEventListener("click", (event) => {
-    if (event.target.classList.contains("delete-btn")) {
-      const id = event.target.getAttribute("data-id"); // 버튼의 data-id 추출
-      const targetDiv = document.getElementById(`div-${id}`);
-      if (targetDiv) {
-        targetDiv.remove(); // 해당 div 삭제
-      }
+    if (!response.ok) {
+      throw new Error("데이터를 가져오는 데 실패했습니다.");
     }
-  });
-});
 
+    // JSON 변환 후 글로벌 변수에 저장
+    const data = await response.json();
+    globalMembershipList = data.paymentList || [];
 
-
-
-
-// DOM 요소 선택
-const loginBtn = document.getElementById("tempLoginBtn");
-const loginBtn2 = document.getElementById("tempLoginBtn2");
-const logoutBtn = document.getElementById("tempLogoutBtn");
-const userInfoDiv = document.getElementById("userInfo");
-const errorContainer = document.getElementById("error-container");
-const detailsContainer = document.getElementById("details-container");
-
-// 임시 로그인 버튼 클릭 이벤트
-loginBtn.addEventListener("click", () => {
-  const loginEmployer = { employerNo: 2, employerName: "잡코리아(수동부분)",membershipType: 2 };
-  sessionStorage.setItem("loginEmployer", JSON.stringify(loginEmployer));
-  setSessionOnServer(loginEmployer);
-  updateUI();
-});
-
-loginBtn2.addEventListener("click", () => {
-  const loginEmployer = { employerNo: 3, employerName: "사람인 (수동부분)",membershipType: 3 };
-  sessionStorage.setItem("loginEmployer", JSON.stringify(loginEmployer));
-  setSessionOnServer(loginEmployer);
-  updateUI();
-});
-
-// 로그아웃 버튼 클릭 이벤트
-logoutBtn.addEventListener("click", () => {
-  sessionStorage.removeItem("loginEmployer");
-  detailsContainer.innerText = "";
-  updateUI();
-});
-
-// 서버에 세션 설정 요청 함수
-function setSessionOnServer(loginEmployer) {
-  fetch("/payments/setSession", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(loginEmployer),
-  });
-}
-
-// UI 업데이트 함수
-function updateUI() {
-  const storedUserInfo = JSON.parse(
-    sessionStorage.getItem("loginEmployer")
-  );
-
-  if (storedUserInfo.employerNo) {
-    userInfoDiv.innerText = `회원번호: ${storedUserInfo.employerNo}, 이름: ${storedUserInfo.employerName}`;
-    fetchMembershipDetails();
-  } else {
-    userInfoDiv.innerText = "로그인 안됨";
-    detailsContainer.innerText = "";
+    return [...globalMembershipList];
+  } catch (error) {
+    console.error("에러:", error);
+    return [];
   }
 }
 
-// 맴버십 상세 정보 요청
-function fetchMembershipDetails() {
-  fetch("/payments/details", {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      renderDetails(data.membershipDetails);
-    });
-}
+// UI 업데이트 함수
+const updateMembershipUI = () => {
+  if (globalMembershipList.length > 0) {
 
-// 맴버십 상세 정보 렌더링
-function renderDetails(details) {
-  detailsContainer.innerHTML = `
-    ${details.membershipContent}
+    const firstMembership = globalMembershipList[0];
+
+    // 결제금액 포맷팅 (1000단위 쉼표 추가)
+    const formattedPaymentAmount = firstMembership.paymentAmount
+      ? firstMembership.paymentAmount.toLocaleString()
+      : "N/A";
+
+    // HTML 업데이트
+    resultElement.innerHTML = `
+    <div class="payment-summary-content">
+      <p class="payment-summary-item"><span class="payment-label">결제일:</span> ${firstMembership.paymentDate || "N/A"}</p>
+      <p class="payment-summary-item"><span class="payment-label">상품명:</span> ${firstMembership.paymentProduct || "N/A"}</p>
+      <p class="payment-summary-item"><span class="payment-label">결제금액:</span> ${formattedPaymentAmount}원</p>
+      <p class="payment-summary-item"><span class="payment-label">결제상태:</span> ${firstMembership.paymentStatus || "N/A"}</p>
+    </div>
     `;
+  } else {
+    resultElement.innerHTML = "<p>맴버십 데이터가 없습니다.</p>";
+  }
+};
+
+
+
+// 데이터를 초기화하고 UI를 업데이트하는 함수
+async function initializeMembershipData() {
+  
+  // 데이터 요청 및 캐싱
+  const data = await fetchAndCacheMembershipData(employerNo);
+
+  if (data.length >= 0) {
+    console.log("가져온 맴버십 데이터:", data);
+    updateMembershipUI(); // UI 업데이트
+  } else {
+    console.log("맴버십 데이터를 가져오는 데 실패했습니다.");
+  }
 }
 
-// 페이지 로드 시 UI 초기화
-document.addEventListener("DOMContentLoaded", updateUI);
+// 초기화 실행
+initializeMembershipData();
+
+
