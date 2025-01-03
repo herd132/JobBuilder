@@ -295,10 +295,10 @@ writeResumeForm.addEventListener("submit", (e) => {
 			if (
 				companyNameList[i].value.trim().length == 0 ||
 				startDateList[i].value.trim().length == 0 ||
-				endDateList[i].value.trim().length == 0 ||
 				careerDescriptionList[i].value.trim().length == 0
 			) {
 				alert("경력사항 관련 필드는 비어있을 수 없습니다.");
+				// endDate 제외(아직 근무중인 경우)
 				return;
 			}
 
