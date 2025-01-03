@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.jobbuilder.project.resume.model.service.ResumeService;
+import com.jobbuilder.project.worker.model.dto.Worker;
+import com.siot.IamportRestClient.IamportClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
