@@ -10,8 +10,14 @@ let daysTimeList = []; // 요일시간배열
 
 function showInputs(isExperienced) {
 	// inputContainer 안의 모든 폼 요소들에 대해 disabled 속성 설정
+	const newbieButton = document.querySelector('.newbie');
+	const expButton = document.querySelector('.exp');
 
 	if (isExperienced) {
+		// 경력 버튼 활성화
+		expButton.classList.add('active');
+		newbieButton.classList.remove('active');
+		
 		careerType = "exp"; // 경력 세팅
 		inputContainer.style.display = "block";
 		expAppend.style.display = "block";
@@ -21,7 +27,12 @@ function showInputs(isExperienced) {
 			element.disabled = false;
 		});
 		expAppend.disabled = false;
+		
 	} else {
+		// 신입 버튼 활성화
+		newbieButton.classList.add('active');
+		expButton.classList.remove('active');
+		
 		careerType = "newbie"; // 신입 세팅
 		inputContainer.style.display = "none";
 
@@ -111,6 +122,14 @@ const addSubCategory = (liSubWorkTypeName) => {
 	if (selectCategory.length >= 5) {
 		alert("업직종은 최대 5개만 가능합니다");
 		return;
+	}
+
+	// 이미 선택된 업직종인지 확인 (중복 체크)
+	for (let selected of selectCategory) {
+		if (selected.getAttribute("value") === liSubWorkTypeName.innerText) {
+			alert("이미 선택된 업직종입니다.");
+			return; // 중복된 업직종은 추가하지 않음
+		}
 	}
 
 	const subCategory = newEl(
@@ -245,10 +264,26 @@ function addSelect() {
 
 	// 셀렉트들을 새로운 div에 추가
 	var container = document.getElementById("select-container");
-	container.appendChild(workDaySelect);
-	container.appendChild(workPartSelect);
-	container.appendChild(deleteBtn);
+	const daysTimeSection = document.createElement("section");
+	daysTimeSection.classList.add("daysTimeSection");
+	daysTimeSection.appendChild(workDaySelect);
+	daysTimeSection.appendChild(workPartSelect);
+	daysTimeSection.appendChild(deleteBtn);
+	container.appendChild(daysTimeSection);
 }
+
+// 자기소개 textarea와 글자 수 표시 영역 선택
+const textarea = document.querySelector(".selfInfo");
+const charCounter = document.querySelector(".char-counter");
+
+// 텍스트 입력 시 글자 수 업데이트
+textarea.addEventListener("input", () => {
+    const currentLength = textarea.value.length; // 현재 입력된 글자 수
+    const maxLength = textarea.getAttribute("maxlength"); // 최대 글자 수
+
+    // 글자 수 표시 업데이트
+    charCounter.textContent = `${currentLength} / ${maxLength}자`;
+});
 
 writeResumeForm.addEventListener("submit", (e) => {
 	e.preventDefault();
@@ -289,7 +324,9 @@ writeResumeForm.addEventListener("submit", (e) => {
 		const companyNameList = document.querySelectorAll(".company-name");
 		const startDateList = document.querySelectorAll(".start-date");
 		const endDateList = document.querySelectorAll(".end-date");
-		const careerDescriptionList = document.querySelectorAll(".career-description");
+		const careerDescriptionList = document.querySelectorAll(
+			".career-description"
+		);
 
 		for (let i = 0; i < companyNameList.length; i++) {
 			if (
@@ -325,14 +362,12 @@ writeResumeForm.addEventListener("submit", (e) => {
 	const daysNoList = document.querySelectorAll(".daysNo");
 	const timeNoList = document.querySelectorAll(".timeNo");
 
-
 	daysTimeList = []; // 초기화
 
 	console.log(daysNoList);
 	console.log(timeNoList);
 
 	for (let i = 0; i < daysNoList.length; i++) {
-
 		let daysTimeObj = {}; // 빈 js 객체 생성
 
 		daysTimeObj.daysTimeNo = i; // 순서식별용 가데이터

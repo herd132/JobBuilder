@@ -30,12 +30,16 @@
 		</selectKey>
 		INSERT INTO RESUME (
 		RESUME_NO,
+		RESUME_TITLE,
+		RESUME_CONTENT,
 		WORKER_NO,
 		GRADE_NO,
 		PERIOD_NO,
 		SALARY_NO,
 		SALARY_AMOUNT) VALUES (
 		#{resumeNo},
+		#{resumeTitle},
+		#{resumeContent},
 		#{workerNo},
 		#{gradeNo},
 		#{periodNo},
