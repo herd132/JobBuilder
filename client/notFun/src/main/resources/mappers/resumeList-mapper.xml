@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jobbuilder.project.resume.model.mapper.ResumeListMapper">
+
+<!-- 시간될때 필요한걸로 추가해야함.. -->
+	<resultMap id="resumeResultMap" type="Resume">
+	    <result property="workerNo" column="WORKER_NO"/>
+	</resultMap>
+
+
+	<select id="getResumeList" parameterType="Resume">
+		SELECT * FROM RESUME
+		WHERE WORKER_NO =#{workerNo}
+	</select>
+
+
+
+
+</mapper>
