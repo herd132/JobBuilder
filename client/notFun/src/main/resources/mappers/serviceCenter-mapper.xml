@@ -2,4 +2,40 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.serviceCenter.model.mapper.ServiceCenterMapper">
 
+	<!-- 문의글 삽입-->
+	<insert id="inquiryInsert">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="inquiryNo">
+			SELECT SEQ_INQUIRY_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "INQUIRY_ONE_ON_ONE"	VALUES(
+			   #{inquiryNo},
+			   #{inquiryMajorCategory},
+			   #{inquiryMinorCategory},
+			   #{inquiryTitle}, 
+			   #{inquiryContent}, 
+			   DEFAULT,
+			   DEFAULT,
+			   #{memberNo}
+		)
+	</insert>
+	
+	<!-- 문의글 이미지 삽입-->
+	<insert id="insertUploadList">
+		INSERT INTO "INQUIRY_IMAGE"
+		
+		<foreach collection="list" item="img"
+				 open="(" close=")" separator=" UNION ">
+				 
+			 SELECT NEXT_INQUIRY_IMG_NO(),
+			 #{img.inquiryImagePath},
+			 #{img.inquiryImageOriginalName},
+			 #{img.inquiryImageRename},
+			 #{img.inquiryImageOrder},
+			 #{img.inquiryNo}
+			 FROM DUAL
+		
+		</foreach>
+	</insert>
+	
 </mapper>
