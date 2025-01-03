@@ -27,13 +27,11 @@
 	<insert id="insert">
 		INSERT INTO "COMMENT_BOARD"	
 		VALUES( SEQ_COMMENT_NO.NEXTVAL, #{commentContentBoard},
-			  DEFAULT, DEFAULT,	#{boardNo}, #{memberNo}, 
-			  
+			  DEFAULT, DEFAULT,	#{boardNo}, #{memberNo}, 			  
 			  <!-- 자식 댓글 -->
 			  <if test="parentCommentNo != 0">
 			  	#{parentCommentNo}
-			  </if>
-			  
+			  </if>			  
 			  <!-- 부모 댓글 -->
 			  <if test="parentCommentNo == 0">
 			  	NULL
