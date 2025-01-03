@@ -41,14 +41,14 @@
 	
 	<!-- 댓글 삭제 -->
 	<update id="delete">
-		UPDATE "COMMENT" SET
-		COMMENT_DEL_FL = 'Y'
-		WHERE COMMENT_NO = #{commentNo}
+		UPDATE "COMMENT_BOARD" SET
+		COMMENT_DEL_FL_BOARD = 'Y'
+		WHERE COMMENT_NO_BOARD = #{commentNoBoard}
 	</update>
 		
 	<!-- 댓글 수정 -->
 	<update id="update">
-		UPDATE "COMMENT" SET
+		UPDATE "COMMENT_BOARD" SET
 		COMMENT_CONTENT = #{commentContentBoard}
 		WHERE COMMENT_NO = #{commentNo}
 	</update>
