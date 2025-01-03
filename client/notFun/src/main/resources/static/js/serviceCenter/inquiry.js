@@ -221,6 +221,8 @@ function switchTab(tabName) {
       selectedFiles = '';
       document.getElementById('mainCategory').value = '';
       updateSubCategory();
+
+      selectInquiryList(1);
   }
 }
 
@@ -228,4 +230,21 @@ function switchTab(tabName) {
 function toggleInquiry(header) {
   const content = header.nextElementSibling;
   content.classList.toggle('show');
+}
+
+function selectInquiryList(cp) {
+  const pagination = document.querySelector(".pagination");
+  pagination.innerHTML = `
+    <a class="page-btn" value = '1'>&lt;&lt;</a>
+    <a class="page-btn">&lt;</a>
+    <a class="page-btn">&gt;</a>
+    <a class="page-btn">&gt;&gt;</a>
+  `;
+
+
+  fetch("/serviceCenter/selectInquiryList?cp="+cp)
+  .then(resp => resp.text())
+  .then(list => {
+    console.log("됨");
+  })
 }

@@ -29,4 +29,3 @@ public class InquiryOneOnOne {
 	private String inquiryMinorCategoryName;
 	private String memberEmail;
 }
-
