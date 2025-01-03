@@ -3,6 +3,9 @@ package com.jobbuilder.project.resume.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.jobbuilder.project.resume.model.dto.CareerInfo;
+import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 public interface ResumeService {
@@ -20,14 +23,16 @@ public interface ResumeService {
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
 
-	/** 이력서 작성 테스트
-	 * @param loginWorker
-	 * @param gradeNo
-	 * @param workDate
-	 * @param payType
+	
+	/** 이력서 작성
+	 * @param resume
+	 * @param workTypeList
+	 * @param jobTypeNoList
+	 * @param careerInfoList
+	 * @param daysTimeList
 	 * @return
 	 */
-	int writeResume(Worker loginWorker, int gradeNo, int workDateNo, int payType, int inputPay);
+	int writeResume(Resume resume, List<String> workTypeList, List<Integer> jobTypeNoList, List<CareerInfo> careerInfoList, List<ResumeDaysTime> daysTimeList);
 
 
 }

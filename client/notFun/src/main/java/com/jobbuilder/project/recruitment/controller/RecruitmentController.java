@@ -118,18 +118,19 @@ public class RecruitmentController {
 	
 	/** 공고글 목록 조회
 	 * @param cp
-	 * @param paramMap(검색할 경우)
+	 * @param query(검색할 경우)
 	 * @param model
 	 * @return
 	 */
 	@GetMapping("list")
 	public String recruitmentList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
-							@RequestParam Map<String, Object> paramMap,
+							@RequestParam(value="query", required=false) String query,
 							Model model) {
 		
 		Map<String, Object> map = null;
 		
-		map = service.selectRecruitmentList(cp);
+		if(query == null) map = service.selectRecruitmentList(cp);
+		else map = service.selectSearchRecruitmentList(query, cp);
 		
 		model.addAttribute("paginationRecruitment", map.get("paginationRecruitment"));
 		model.addAttribute("recruitmentList", map.get("recruitmentList"));

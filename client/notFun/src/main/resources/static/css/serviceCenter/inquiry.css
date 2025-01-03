@@ -46,9 +46,13 @@ textarea {
   font-size: 14px;
 }
 
+.container input[type="email"] {
+  background-color: #f1f1f1;
+}
+
 textarea {
   min-height: 150px;
-  resize: vertical;
+  resize: none;
 }
 
 .category-section {

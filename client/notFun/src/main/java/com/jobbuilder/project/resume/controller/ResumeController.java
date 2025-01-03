@@ -13,12 +13,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
+
+import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
+
 import com.jobbuilder.project.resume.model.service.ResumeService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
@@ -57,66 +62,49 @@ public class ResumeController {
 		return service.selectsubCategoryList(workTypeNo);
 	}
 
-	/**
-	 * 이력서 작성 제출
-	 * 
+	/** 이력서 작성 제출
 	 * @param loginWorker
-	 * @param gradeNo
-	 * @param workDateNo
-	 * @param payType
-	 * @param inputPay
-	 * @param subCategoryList
-	 * @param workTypeList
-	 * @param workDayList
-	 * @param workPartList
-	 * @param companyName
-	 * @param startDate
-	 * @param endDate
-	 * @param jobPart
+	 * @param gradeNo 학력구분
+	 * @param periodNo 기간구분
+	 * @param salaryNo 급여형태
+	 * @param salaryAmount 희망급여
+	 * @param workTypeList 희망업종List
+	 * @param careerInfoListJson 경력사항List JSON
+	 * @param jobTypeNo 근로형태 list(알바/정규직)
+	 * @param daysTimeListJson 희망요일시간List JSON
 	 * @return
-	 * @throws JsonProcessingException 
-	 * @throws JsonMappingException 
+	 * @throws JsonMappingException
+	 * @throws JsonProcessingException
 	 */
 	@PostMapping("writeResume")
-	public String writeResume(@SessionAttribute("loginWorker") Worker loginWorker, @RequestParam("gradeNo") int gradeNo, // 학력
-			@RequestParam("periodNo") int periodNo, // 근무기간
-			@RequestParam("salaryNo") int salaryNo, // 급여형태
-			@RequestParam(value = "salaryAmount", defaultValue = "0") int salaryAmount, // int형은 null을 가질 수 없어 value값을
-																						// 정해주거나 Integer 로 받아야 한다 // 원하는
-																						// 급여
-			@RequestParam("workTypeList") List<Integer> workTypeList, // 업직종고유번호 list,
-
+	public String writeResume(@SessionAttribute("loginWorker") Worker loginWorker, 
+			@RequestParam(value = "salAmount", defaultValue = "0") int salAmount, 
+			// int형은 null을 가질 수 없어 value값을 정해주거나 Integer 로 받아야 한다
+			Resume resume,
+			@RequestParam("workTypeList") List<String> workTypeList, // 업직종고유번호 list,
+			@RequestParam("jobTypeNo") List<Integer> jobTypeNoList, // 근무형태 list
 			@RequestParam(value ="careerInfoList", required = false) String careerInfoListJson, // 경력사항 JSON
- 
-			@RequestParam("jobTypeNo") List<Integer> jobTypeNo, // 근무형태 list
-			
-			@RequestParam("daysTimeList") String daysTimeListJson // 요일날짜 JSON
-			
-			
+			@RequestParam("daysTimeList") String daysTimeListJson, // 요일날짜 JSON
+			RedirectAttributes ra
+		) throws JsonMappingException, JsonProcessingException {
 
-	) throws JsonMappingException, JsonProcessingException {
-
-		// int result = service.writeResume(loginWorker, gradeNo, workDateNo,
-		// payType,inputPay);
-
-		log.debug("loginWorker {}", loginWorker);
-		log.debug("workTypeList {}", workTypeList);
-		log.debug("gradeNo {} ", gradeNo); // 학력
-		log.debug("periodNo {} ", periodNo);
-		log.debug("salaryNo {} ", salaryNo);
-		log.debug("salaryAmount {} ", salaryAmount);
+		log.debug("resume {}", resume); // gradeNo, periodNo, salaryNo, salaryAmount
+		log.debug("희망업종 workTypeList {}", workTypeList);
+		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
+		log.debug("희망급여 salAmount {} ", salAmount);
 		
 		log.debug("careerInfoListJson {}", careerInfoListJson);
 
+		List<CareerInfo> careerInfoList = null;
 		if(careerInfoListJson != null) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			List<CareerInfo> careerInfoList = objectMapper.readValue(careerInfoListJson,
+			careerInfoList = objectMapper.readValue(careerInfoListJson,
 					new TypeReference<List<CareerInfo>>() {
 			});
 			
 			// 데이터 확인
 			for (CareerInfo info : careerInfoList) {
-				log.debug("info {}", info);
+				log.debug("경력사항 info {}", info);
 			}
 			
 		}
@@ -124,7 +112,42 @@ public class ResumeController {
 		
 		log.debug("daysTimeListJson {}", daysTimeListJson);
 
-		return null;
+		List<ResumeDaysTime> daysTimeList = null;
+		if(daysTimeListJson != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			daysTimeList = objectMapper.readValue(daysTimeListJson,
+					new TypeReference<List<ResumeDaysTime>>() {
+			});
+			
+			// 데이터 확인
+			for (ResumeDaysTime daysTime : daysTimeList) {
+				log.debug("근무요일시간 daysTime {}", daysTime);
+			}
+		}
+		
+		
+		//-------------------------
+		
+		// resume에 근로자번호 세팅
+		resume.setWorkerNo(loginWorker.getWorkerNo());
+		
+		if(salAmount != 0) { // 희망급여가 있다면
+			resume.setSalaryAmount(salAmount); // resume 객체에 세팅
+			
+		}
+		
+		int result = service.writeResume(resume, workTypeList, jobTypeNoList, careerInfoList, daysTimeList);
+		
+		String message = null;
+		if(result > 0) {
+			message = "이력서 작성 완료";
+		} else {
+			message = "이력서 작성 실패";
+		}
+		
+		ra.addFlashAttribute(message);
+		
+		return "redirect:/myPageWorkee/myPageWorkerInfo";
 	}
 
 }

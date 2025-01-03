@@ -112,9 +112,9 @@ public class WorkerController {
 						
 						
 						resp.addCookie(cookie);
-						ra.addFlashAttribute("message", message);
 						
 					} 
+					ra.addFlashAttribute("message", message);
 					
 				} catch (Exception e) {
 					// TODO Auto-generated catch block

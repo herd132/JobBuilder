@@ -56,6 +56,13 @@ public interface RecruitmentService {
 	 * @return
 	 */
 	Map<String, Object> selectRecruitmentList(int cp);
+	
+	/** 공고글 목록 검색결과 조회
+	 * @param query
+	 * @param cp
+	 * @return
+	 */
+	Map<String, Object> selectSearchRecruitmentList(String query, int cp);
 
 	
 	/* ********** 공고 상세 페이지 이동 관련 ********** */
@@ -65,5 +72,7 @@ public interface RecruitmentService {
 	 * @return
 	 */
 	Recruitment selectOne(int recruitmentNo);
+
+
 
 }

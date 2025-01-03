@@ -115,13 +115,6 @@ public interface MyPageEmployerMapper {
 	 * @return
 	 */
 	int addBusiness(Employer addBusiness);
-
-	/** 사업장 추가 시 employerNo 얻어오기
-	 * @param businessNickname
-	 * @return
-	 * @author JWJ
-	 */
-	int getEmpNo(String businessNickname);
 	
 	/** 카테고리에 맞는 worktypeNo 얻어오기
 	 * @param category
@@ -134,9 +127,6 @@ public interface MyPageEmployerMapper {
 	 * @return
 	 */
 	int addBusinessWorktype(Map<String, Object> map);
-
-
-
 
 	
 	

@@ -5,8 +5,17 @@ console.log("recruitmentDetail.js 와 연결됨");
 
 
 
+// 마이 페이지에서 상세 공고 페이지 들어온 경우
+const goToMyRecruitmentListBtn = document.querySelector("#goToMyRecruitmentListBtn");
 
+if(goToMyRecruitmentListBtn != null){
+  goToMyRecruitmentListBtn.addEventListener("click", () => {
+    location.href = "/myPageEmp/recruitmentList" + location.search;
+  })
 
+}
+
+// 공고 전체페이지에서 상세 공고 페이지 들어온 경우
 const goToRecruitmentListBtn = document.querySelector("#goToRecruitmentListBtn");
 
 if(goToRecruitmentListBtn != null){

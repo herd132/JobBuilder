@@ -65,17 +65,14 @@ function updateCharCount(textarea) {
   const maxLength = 2000;
   const currentLength = textarea.value.length;
   const charCounter = textarea.parentElement.querySelector('.char-counter');
-  const charWarning = textarea.parentElement.querySelector('.char-warning');
   
   // 입력된 글자수가 최대 글자수를 초과하는 경우
   if (currentLength > maxLength) {
       // 초과된 부분을 잘라내기
       textarea.value = textarea.value.substring(0, maxLength);
-      charWarning.classList.add('show');
       textarea.classList.add('exceed');
       charCounter.classList.add('exceed');
   } else {
-      charWarning.classList.remove('show');
       textarea.classList.remove('exceed');
       charCounter.classList.remove('exceed');
   }
@@ -87,8 +84,15 @@ function updateCharCount(textarea) {
 let selectedFiles = [];
 
 function handleFileSelect(input) {
+  const MAX_SIZE = 1024 * 1024 * 5;
   const fileError = document.querySelector('.file-error');
   const files = input.files;
+  
+  if(files[0].size > MAX_SIZE) {
+    alert("파일의 용량이 5MB보다 큽니다.");
+    input.value = '';
+    return; 
+  }
 
   // 파일 선택이 취소된 경우
   if (files.length === 0) return;
@@ -119,7 +123,7 @@ function handleFileSelect(input) {
 function formatFileSize(bytes) {
   if (bytes === 0) return '0 Bytes';
   const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const sizes = ['Bytes', 'KB', 'MB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
@@ -163,20 +167,32 @@ document.querySelector('form').addEventListener('submit', function(e) {
   selectedFiles.forEach((file, index) => {
       formData.append("images", file);
   });
-
-  let inquiryTest  = {
-    name : 'michelle',
-    age : 27
+  
+  let inquiry  = {
+    inquiryTitle : document.querySelector("#title").value,
+    inquiryContent : document.querySelector("#content").value.replaceAll(/(?:\r\n|\r|\n)/g, "<br>"),
+    inquiryMajorCategory : document.querySelector("#mainCategory").value,
+    inquiryMinorCategory : document.querySelector("#subCategory").value
   }
 
-  formData.append('inquiryTest', new Blob([JSON.stringify(inquiryTest)] , {type: "application/json"}));
+  formData.append('inquiry', new Blob([JSON.stringify(inquiry)] , {type: "application/json"}));
 
   // 여기에 실제 서버로 전송하는 코드 추가
-  fetch('/serviceCenter/inquiry', {
+  fetch('/serviceCenter/inquirysInsert', {
       method: 'PUT',
       body: formData
   }).then(resp => resp.text())
-  .then(count => {console.log(count)})
+  .then(count => {
+
+    if (count > 0 ) {
+      alert("문의가 성공적으로 이루어졌습니다.");
+      location.href = "/";
+    } else {
+      
+      alert("문의가 실패했습니다.");
+      location.href = "/serviceCenter/inquiry";
+    }
+  });
 });
 
 // 탭 전환 함수
@@ -195,6 +211,18 @@ function switchTab(tabName) {
       document.querySelector('.tab:last-child').classList.add('active');
       writeTab.style.display = 'none';
       listTab.style.display = 'block';
+
+      document.querySelector("#title").value = '';
+      document.querySelector("#content").value = '';
+      document.querySelector("#mainCategory").value = '';
+      document.querySelector("#subCategory").value = '';
+      document.querySelector(".char-counter").innerHTML = '0 / 2000자';
+
+      selectedFiles = '';
+      document.getElementById('mainCategory').value = '';
+      updateSubCategory();
+
+      selectInquiryList(1);
   }
 }
 
@@ -202,4 +230,21 @@ function switchTab(tabName) {
 function toggleInquiry(header) {
   const content = header.nextElementSibling;
   content.classList.toggle('show');
+}
+
+function selectInquiryList(cp) {
+  const pagination = document.querySelector(".pagination");
+  pagination.innerHTML = `
+    <a class="page-btn" value = '1'>&lt;&lt;</a>
+    <a class="page-btn">&lt;</a>
+    <a class="page-btn">&gt;</a>
+    <a class="page-btn">&gt;&gt;</a>
+  `;
+
+
+  fetch("/serviceCenter/selectInquiryList?cp="+cp)
+  .then(resp => resp.text())
+  .then(list => {
+    console.log("됨");
+  })
 }

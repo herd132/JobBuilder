@@ -9,15 +9,12 @@
     <th:block th:replace="~{common/common}"></th:block>
     
     <!-- <main> 안쪽 CSS -->
-    <link rel="stylesheet" href="/css//common/main.css">
+    <link rel="stylesheet" href="/css/common/main.css">
 </head>
 <body>
     <!-- 로고 및 검색바 로그인 -->
     <th:block th:replace="~{common/main-header}"></th:block>
-    <th:block th:if="${session.loginEmployer == null}">
-        <a href="/employer/employerSignUp"><button>고용주 가입하기</button></a>
-        <a href="/employer/employerLogin"><button>고용주 로그인</button></a>
-    </th:block>
+
     <!-- 주의사항 디자인을 위해 th문 안 넣었습니다 th문은 알아서!!!! -->
     <main>
       
