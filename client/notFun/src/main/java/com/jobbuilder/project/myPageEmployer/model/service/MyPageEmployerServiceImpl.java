@@ -1,13 +1,18 @@
 package com.jobbuilder.project.myPageEmployer.model.service;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
@@ -28,6 +33,12 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 
 	/* ********** 필드 ********** */
 	private final MyPageEmployerMapper mapper;
+	
+	@Value("${my.business.web-path}")
+	private String businessWebPath;
+	
+	@Value("${my.business.folder-path}")
+	private String businessFolderPath;
 	
 	
 	/* ********** 메서드 ********** */
@@ -152,7 +163,7 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	
 	@Override	// 사업장 추가
 	public int addBusiness(Employer loginEmployer, Employer addBusiness, List<String> subCategory,
-			String[] businessAddress) {
+			String[] businessAddress, List<MultipartFile> images) throws Exception {
 		
 		// 사업장 주소 처리(필수입력 사항)
 		String address = String.join("^^^", businessAddress);
@@ -165,14 +176,14 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		addBusiness.setBusinessName(loginEmployer.getBusinessName());
 		addBusiness.setMembershipLevel(loginEmployer.getMembershipLevel());
 		addBusiness.setOptionalAgreeFl(loginEmployer.getOptionalAgreeFl());
-		
-		log.debug("addBusiness : " + addBusiness);
+
 		
 		int result = mapper.addBusiness(addBusiness);
 		if(result == 0) return 0;
 		
 		int employerNo = addBusiness.getEmployerNo();
 		
+		// M:N 해소테이블(BUSINESS_WORKTYPE)에 값 대입
 		for(String category : subCategory) {
 			String worktypeNo = mapper.getWorktypeNo(category);
 			
@@ -181,6 +192,39 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 			map.put("worktypeNo", worktypeNo);
 			
 			result = mapper.addBusinessWorktype(map);
+		}
+		
+		List<BusinessImg> uploadBusinessImgList = new ArrayList<>();
+		
+		for(int i=0; i<images.size(); i++) {
+			
+			if(!images.get(i).isEmpty()) {
+				String originalName = images.get(i).getOriginalFilename();
+				String rename = Utility.fileRename(originalName);
+				
+				BusinessImg img = BusinessImg.builder()
+									.businessImgOriginalName(originalName)
+									.businessImgRename(rename)
+									.businessImgPath(businessWebPath)
+									.businessImgOrder(i)
+									.employerNo(employerNo)
+									.uploadFile(images.get(i))
+									.build();
+				
+				uploadBusinessImgList.add(img);
+			}
+		}
+		
+		if(uploadBusinessImgList.isEmpty()) return employerNo;
+		
+		result = mapper.insertUploadList(uploadBusinessImgList);
+		
+		if(result == uploadBusinessImgList.size()) {
+			for(BusinessImg img : uploadBusinessImgList) {
+				img.getUploadFile().transferTo(new File(businessFolderPath + img.getBusinessImgRename()));
+			}
+		} else {
+			throw new RuntimeException();
 		}
 		
 		return employerNo;

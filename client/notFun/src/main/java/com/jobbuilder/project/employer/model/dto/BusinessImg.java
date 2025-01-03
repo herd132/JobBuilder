@@ -22,7 +22,8 @@ public class BusinessImg {
 	private String businessImgPath;
 	private String businessImgOriginalName;
 	private String businessImgRename;
-	private String businessImgOrder;
+	private int businessImgOrder;
+	private int employerNo;
 	
 	/* ***** 파일업로드 시 필요한 필드 ***** */
 	private MultipartFile uploadFile;

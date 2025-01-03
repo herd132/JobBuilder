@@ -128,6 +128,12 @@ public interface MyPageEmployerMapper {
 	 */
 	int addBusinessWorktype(Map<String, Object> map);
 
+	/** 사업장 이미지 추가
+	 * @param uploadBusinessImgList
+	 * @return
+	 */
+	int insertUploadList(List<BusinessImg> uploadBusinessImgList);
+
 	
 	
 	/* ********** 사업장 홍보 페이지 관련 ********** */

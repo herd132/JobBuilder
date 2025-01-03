@@ -3,6 +3,8 @@ package com.jobbuilder.project.myPageEmployer.model.service;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.jobbuilder.project.employer.model.dto.Employer;
 
 public interface MyPageEmployerService {
@@ -75,7 +77,8 @@ public interface MyPageEmployerService {
 	 * @param businessAddress(사업장주소 리스트 변환용)
 	 * @return
 	 */
-	int addBusiness(Employer loginEmployer, Employer addBusiness, List<String> subCategory, String[] businessAddress);
+	int addBusiness(Employer loginEmployer, Employer addBusiness, List<String> subCategory,
+					String[] businessAddress, List<MultipartFile> images) throws Exception;
 
 
 

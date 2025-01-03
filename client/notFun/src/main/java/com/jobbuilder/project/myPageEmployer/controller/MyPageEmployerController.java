@@ -190,17 +190,12 @@ public class MyPageEmployerController {
 						@RequestParam("subCategory") List<String> subCategory,
 						@RequestParam("businessAddress") String[] businessAddress,
 						@RequestParam("images") List<MultipartFile> images,
-						RedirectAttributes ra) {
+						RedirectAttributes ra) throws Exception {
 		
-		log.debug("loginEmployer : " + loginEmployer);
-		log.debug("addBusiness : " + addBusiness);
-		log.debug("subCategory : " + subCategory);
-		log.debug("businessAddress : " + businessAddress);
-		
+		int result = service.addBusiness(loginEmployer, addBusiness, subCategory, businessAddress, images);
+
 		String message = null;
 		String path = null;
-		
-		int result = service.addBusiness(loginEmployer, addBusiness, subCategory, businessAddress);
 		
 		if(result == 0) {
 			message = "사업장추가 실패";

@@ -197,6 +197,16 @@
 		INSERT INTO "BUSINESS_WORKTYPE"
 		VALUES(SEQ_BUSINESS_WORKTYPE_NO.NEXTVAL, ${employerNo}, #{worktypeNo})
 	</insert>
+	
+	<!-- 사업장 이미지 모두 삽입 -->
+	<insert id="insertUploadList" parameterType="list">
+		INSERT INTO "BUSINESS_IMG" 
+		<foreach collection="list" item="img" open="(" close=")" separator=" UNION ">
+			SELECT NEXT_BUSINESS_IMG_NO(), #{img.businessImgPath}, #{img.businessImgOriginalName},
+				#{img.businessImgRename}, ${img.businessImgOrder}, ${img.employerNo}
+			FROM DUAL
+		</foreach>
+	</insert>
 
 
 <!-- 사업장 홍보 페이지 관련 -->
