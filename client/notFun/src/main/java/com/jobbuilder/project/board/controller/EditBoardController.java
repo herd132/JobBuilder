@@ -61,6 +61,7 @@ public class EditBoardController {
 							  @SessionAttribute(value = "loginEmployer", required = false) Employer loginEmployer,
 							  @RequestParam("images") List<MultipartFile> images,
 							  RedirectAttributes ra) throws Exception {
+				
 		
 		// 필드 초기화 ( 경로 , 메시지 , 게시글번호 )
 		String path = null;
@@ -68,15 +69,19 @@ public class EditBoardController {
 		int boardNo = 0;
 		inputBoard.setBoardCode(boardCode);
 		// 근로자 로그인인 경우
+		
 		if(loginWorker != null) {
-			inputBoard.setMemberNo(loginWorker.getMemberNo());
+			inputBoard.setMemberNo(loginWorker.getMemberNo());			
 			boardNo = service.boardInsert(inputBoard, images);
 		}
 		// 고용주 로그인인 경우
 		if(loginEmployer != null) {
 			inputBoard.setMemberNo(loginEmployer.getMemberNo());
-			boardNo = service.boardInsert(inputBoard, images);
+			boardNo = service.boardInsertEmp(inputBoard, images);
 		}
+		
+		
+		
 								
 			
 		if(boardNo > 0 ) {
@@ -116,7 +121,6 @@ public class EditBoardController {
 		map.put("boardNo", boardNo);
 		
 		Board board = null;
-		
 		if (loginWorker != null) {
 			map.put("memberNo", loginWorker.getMemberNo());
 				

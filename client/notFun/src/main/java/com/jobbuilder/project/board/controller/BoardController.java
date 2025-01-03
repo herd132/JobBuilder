@@ -23,6 +23,7 @@ import com.jobbuilder.project.worker.model.dto.Worker;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -97,13 +98,16 @@ public class BoardController {
 		
 		Board board = null;
 		
-		if (loginWorker != null) {
-			map.put("memberNo", loginWorker.getMemberNo());
-			
-						
+		HttpSession session = req.getSession();		
+
+		
+		if (session.getAttribute("loginWorker") != null) {
+			((Worker)session.getAttribute("loginWorker")).getMemberNo();
+			map.put("memberNo", loginWorker.getMemberNo());	
 		}
 		
-		if (loginEmployer != null) {
+		if (session.getAttribute("loginEmployer") != null) {
+			((Employer)session.getAttribute("loginEmployer")).getMemberNo();
 			map.put("memberNo", loginEmployer.getMemberNo());
 		}
 		
@@ -120,7 +124,7 @@ public class BoardController {
 			/* --------------- 쿠키를 이용한 조회 수 증가 ------------------------- */
 
 			// 비회원 또는 로그인한 회원의 글이 아닌 경우 ( == 글쓴이를 뺀 다른 사람)
-			if ( (loginWorker == null && loginEmployer == null ) || (loginWorker.getMemberNo() != board.getMemberNo()) || (loginEmployer.getMemberNo() != board.getBoardNo() )) {
+			if ( (loginWorker == null && loginEmployer == null ) || (loginWorker.getMemberNo() != board.getMemberNo()) ) {
 
 				// 요청에 담겨있는 모든 쿠키 얻어오기
 				Cookie[] cookies = req.getCookies();
