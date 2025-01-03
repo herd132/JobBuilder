@@ -1,6 +1,7 @@
 package com.jobbuilder.project.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -21,6 +22,8 @@ public interface EditBoardService {
 
 
 	// 게시물 수정
-	int boardUpdate(Board inputBoard, List<MultipartFile> images, String deleteOrderList);
+	int boardUpdate(Board inputBoard, List<MultipartFile> images, String deleteOrderList) throws Exception;
+	// 게시물 삭제
+	int boardDelete(Map<String, Integer> map);
 
 }
