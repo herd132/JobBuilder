@@ -189,6 +189,7 @@ public class MyPageEmployerController {
 						Employer addBusiness,
 						@RequestParam("subCategory") List<String> subCategory,
 						@RequestParam("businessAddress") String[] businessAddress,
+						@RequestParam("images") List<MultipartFile> images,
 						RedirectAttributes ra) {
 		
 		log.debug("loginEmployer : " + loginEmployer);
