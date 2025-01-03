@@ -6,8 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>내가 등록한 공고</title>
 
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/myPageEmployer/myPageHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpRecruitmentList.css">
+  
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -46,12 +52,12 @@
                 <td>
                   <!-- 검색 안한 경우-->
                   <a th:unless="${param.key}" th:text="*{recruitmentTitle}"
-                    th:href="@{/recruitment/detail/{recruitmentNo} (recruitmentNo=*{recruitmentNo}, cp=${paginationRecruitment.currentPage})}"
+                    th:href="@{/recruitment/detail/{recruitmentNo} (recruitmentNo=*{recruitmentNo}, cp=${paginationRecruitment.currentPage}, stat=myPageEmp)}"
                   />
 
                   <!-- 검색 한 경우-->
                   <a th:if="${param.key}" th:text="*{recruitmentTitle}"
-                  th:href="@{/recruitment/detail/{recruitmentNo} (recruitmentNo=*{recruitmentNo}, cp=${paginationRecruitment.currentPage}, key=${param.key}, query=${param.query})}"
+                  th:href="@{/recruitment/detail/{recruitmentNo} (recruitmentNo=*{recruitmentNo}, cp=${paginationRecruitment.currentPage}, key=${param.key}, query=${param.query}, stat=myPageEmp)}"
                   />
                 </td>
                 <td th:text="*{businessNickname}"></td>
@@ -149,6 +155,7 @@
 
 
   <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
   <script src="/js/myPageEmployer/myPageEmpRecruitmentList.js"></script>
 </body>
 

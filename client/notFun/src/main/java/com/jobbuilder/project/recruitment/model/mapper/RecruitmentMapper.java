@@ -88,7 +88,20 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	List<Recruitment> selectRecruitmentList(RowBounds rowBounds);
+	
+	/** 검색문이 포함된 공고글 수 조회
+	 * @param query
+	 * @return
+	 */
+	int getSearchCount(String query);
 
+	/** 검색문이 포함된 공고글 목록 조회
+	 * @param query
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Recruitment> selectSearchRecruitmentList(String query, RowBounds rowBounds);
+	
 	
 	/* ********** 공고 상세 페이지 이동 관련 ********** */
 	
@@ -115,6 +128,5 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	List<RecruitmentSupport> getSupportList(int recruitmentNo);
-
 
 }

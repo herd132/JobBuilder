@@ -8,6 +8,7 @@
 		SELECT EMPLOYER_NO, BUSINESS_NICKNAME, BUSINESS_ADDRESS, BUSINESS_TEL
 		FROM "EMPLOYER"
 		WHERE MEMBER_NO = ${memberNo}
+		ORDER BY EMPLOYER_NO ASC
 	</select>
 	
 	<!-- 사업장 1개마다 업직종 얻어오기 -->
@@ -178,15 +179,11 @@
 	<insert id="addBusiness">
 		INSERT INTO "EMPLOYER"
 		VALUES(SEQ_EMPLOYER_NO.NEXTVAL, #{businessRegistrationNumber}, #{businessName}, #{businessAddress},
-			#{membershipLevel}, ${memberNo}, #{optionalAgreeFl}, #{businessNickname}, #{businessTel})
+			${memberNo}, #{optionalAgreeFl}, #{businessNickname}, #{businessTel})
+		<selectKey resultType="_int" keyProperty="employerNo" order="AFTER">
+			SELECT SEQ_EMPLOYER_NO.CURRVAL FROM DUAL
+		</selectKey>
 	</insert>
-	
-	<!-- 사업장 추가 시 employerNo 얻어오기 -->
-	<select id="getEmpNo" resultType="_int">
-		SELECT EMPLOYER_NO
-		FROM EMPLOYER
-		WHERE BUSINESS_NICKNAME = #{businessNickname}
-	</select>
 	
 	<!-- 카테고리에 맞는 worktypeNo 얻어오기 -->
 	<select id="getWorktypeNo">

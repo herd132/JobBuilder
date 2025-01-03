@@ -171,7 +171,7 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		int result = mapper.addBusiness(addBusiness);
 		if(result == 0) return 0;
 		
-		int employerNo = mapper.getEmpNo(addBusiness.getBusinessNickname());
+		int employerNo = addBusiness.getEmployerNo();
 		
 		for(String category : subCategory) {
 			String worktypeNo = mapper.getWorktypeNo(category);

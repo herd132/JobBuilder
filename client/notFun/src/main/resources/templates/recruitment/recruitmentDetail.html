@@ -152,7 +152,12 @@
           <th:block th:if="${recruitment.memberNo == session.loginEmployer?.memberNo}">
             <button id="updateRecruitmentBtn">수정</button>
             <button id="deleteRecruitmentBtn">삭제</button>
-            <button id="goToMyRecruitmentListBtn">목록으로</button>
+            <th:block th:if="${param.stat}">
+              <button id="goToMyRecruitmentListBtn">목록으로</button>
+            </th:block>
+            <th:block th:unless="${param.stat}">
+              <button id="goToRecruitmentListBtn">목록으로</button>
+            </th:block>
           </th:block>
 
           <th:block th:if="${recruitment.memberNo != session.loginEmployer?.memberNo}">
