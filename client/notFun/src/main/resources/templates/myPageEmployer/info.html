@@ -77,7 +77,7 @@
             style="border: 1px solid black; cursor: pointer;"
             th:onclick="businessDetailModal(this.getAttribute('employerNo'))">
 
-            <div>
+            <div class="business-image-area">
               <span th:if="${#lists.size(business.businessImgList) != 0}"> 이미지 있음!</span>
               <span th:if="${#lists.size(business.businessImgList) == 0}"> 등록된 이미지가 없습니다.</span>
             </div>
