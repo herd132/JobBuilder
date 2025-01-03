@@ -13,18 +13,14 @@
 
 				<th:block th:if="*{commentDelFlBoard} == 'N'">
 					<p class="comment-writer">
-						<!-- 프로필 이미지 없을 경우 -->
-						<img th:unless="*{profileImg}" th:src="#{user.default.image}">
-						<!-- 프로필 이미지 있을 경우 -->
-						<img th:if="*{profileImg}" th:src="*{profileImg}">
-
-						<span th:text="*{memberNickname}">닉네임</span>
+						
+						<span th:text="*{memberName}">닉네임</span>
 						<span class="comment-date" th:text="*{commentWriteDateBoard}">작성일</span>
 					</p>
 
 					<p class="comment-content" th:text="*{commentContentBoard}">댓글 내용</p>
 
-					<!-- 버튼 영역 -->제</button>
+					<!-- 버튼 영역 --></button>
 					<div class="comment-btn-area">
 						<button th:onclick="|showInsertComment(*{commentNoBoard}, this)|">답글</button>
 
