@@ -51,6 +51,18 @@ public class ServiceCenterController {
 		return "serviceCenter/inquiry";
 	}
 	
+	/** 문의사항 내역 리스트 비동기 조회
+	 * @param cp
+	 * @return
+	 */
+	@GetMapping("selectInquiryList")
+	@ResponseBody
+	public List<InquiryOneOnOne> selectInquiryList(@RequestParam("cp") int cp) {
+		
+		List<InquiryOneOnOne> list = null;
+		return list;
+	}
+	
 	
 	/** 문의 보내기
 	 * @param images
