@@ -55,19 +55,20 @@
             <div class="board-btn-area">
                 <div id="nonblock"></div>
                 <th:block th:if="${session.loginWorker != null} or ${session.loginEmployer != null} ">
-                    
+
                     <!-- 관리자 전용 삭제 버튼 -->
                     <!-- <th:block -->
-                        <!-- th:if="${board.memberNo != session.loginMember?.memberNo} and ${session.loginMember.authority == 3}"> -->
-                        <!-- <button id="deleteBtnAdmin">삭제</button> -->
+                    <!-- th:if="${board.memberNo != session.loginMember?.memberNo} and ${session.loginMember.authority == 3}"> -->
+                    <!-- <button id="deleteBtnAdmin">삭제</button> -->
                     <!-- </th:block> -->
-                                       
+
                     <!-- 로그인한 회원과 게시글 작성한 회원의 번호가 같은 경우 -->
-                    <th:block th:if="${board.memberNo == session.loginWorker?.memberNo} or ${board.memberNo == session.loginEmployer?.memberNo}  ">
+                    <th:block
+                        th:if="${board.memberNo == session.loginWorker?.memberNo} or ${board.memberNo == session.loginEmployer?.memberNo}  ">
                         <button id="updateBtn">수정</button>
                         <button id="deleteBtn">삭제</button>
                     </th:block>
-                    
+
                 </th:block>
                 <th:block th:if="${param.key2}" th:switch="${#strings.toString(param.key2)}">
                     <button th:case="myWrite" id="goToMyWriteListBtn">이전으로</button>
@@ -82,31 +83,29 @@
             <!-- 이미지 출력 구문  -->
             <th:block th:if="${ #lists.size(board.imageList) > 0}">
 
-				<!-- 썸네일 있다면 start = 1 (controller 에서 req)
+                <!-- 썸네일 있다면 start = 1 (controller 에서 req)
 					썸네일 없다면 start = 0
 				-->
-                
+
                 <th:block th:if="${#lists.size(board.imageList) > start}">
 
-                    <h5>업로드 이미지</h5>  
-                    <th:block th:each="i : ${#numbers.sequence(start, #lists.size(board.imageList) - 1)}">                                
+                    <h5>업로드 이미지</h5>
+                    <th:block th:each="i : ${#numbers.sequence(start, #lists.size(board.imageList) - 1)}">
                         <div class="img-box">
                             <div class="boardImg">
 
-                                <img th:src="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|">  
+                                <img th:src="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|">
 
                                 <a th:href="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|"
-                                    th:download="${board.imageList[i].boardImgOriginalName}"
-                                >다운로드</a>                
+                                    th:download="${board.imageList[i].boardImgOriginalName}">다운로드</a>
                             </div>
                         </div>
-                    </th:block>    
+                    </th:block>
                 </th:block>
-                
+
             </th:block>
 
         </section>
-
 
         <!-- 댓글 영역-->
         <th:block th:replace="~{board/comment}"></th:block>
@@ -118,12 +117,12 @@
 
     <script th:inline="javascript">
 
-       
         // 현재 게시글 번호를 전역 변수로 저장
         const boardNo = /*[[${board.boardNo}]]*/ "게시글 번호";
-
         const userDefaultIamge = /*[[#{user.default.image}]]*/ "기본이미지";
-
+        // - loginMember가 null 인 경우 null 반환
+        const loginWorkerNo = /*[[${session.loginWorker?.memberNo}]]*/ "로그인 근로자 번호";
+        const loginEmployerNo = /*[[${session.loginEmployer?.memberNo}]]*/ "로그인 사업주 번호"
     </script>
 
 

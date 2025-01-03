@@ -1,10 +1,6 @@
-
-
 const deleteOrderList = new Set();
-
 // input type="file" 태그들
 const inputImageList = document.getElementsByClassName("inputImage");
-
 // X 버튼들
 const deleteImageList = document.getElementsByClassName("delete-image");
 
