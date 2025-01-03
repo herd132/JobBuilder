@@ -16,10 +16,6 @@
 <body>
 
   <th:block th:replace="~{common/main-header}"></th:block>
-  <th:block th:if="${session.loginEmployer == null}">
-    <a href="/employer/employerSignUp"><button>고용주 가입하기</button></a>
-    <a href="/employer/employerLogin"><button>고용주 로그인</button></a>
-  </th:block>
 
   <div class="recruitmentList-gray">
     <main class="recruitmentList-white">
@@ -60,8 +56,7 @@
                   <!-- 검색 안한 경우-->
                   <th:block th:unless="${param.query}">
                     <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
-                      th:cp="${paginationRecruitment.currentPage}"
-                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'), this.getAttribute('cp'))">
+                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'))">
                       <li th:text="*{recruitmentTitle}"></li>
                       <li th:text="*{businessName}"></li>
                     </ul>
@@ -70,8 +65,7 @@
                   <!-- 검색 한 경우-->
                   <th:block th:if="${param.query}">
                     <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
-                      th:cp="${paginationRecruitment.currentPage}"
-                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'), this.getAttribute('cp'))">
+                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'))">
                       <li th:text="*{recruitmentTitle}"></li>
                       <li th:text="*{businessName}"></li>
                     </ul>

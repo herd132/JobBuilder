@@ -6,9 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>고용주 My Page</title>
 
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/myPageEmployer/myPageHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
   <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpInfo.css">
+
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -58,11 +63,15 @@
         </div>
       </section>
 
-      <section class="business-info-container">
+      <div class="businessList-info-area">
         <h3>사업장 정보</h3>
         <div><a href="/myPageEmp/addBusiness">
           <button class="add-business-btn">사업장 추가하기</button>
         </a></div>
+      </div>
+
+      <section class="business-info-container">
+
         <th:block th:each="business, iterStat: ${businessList}" th:object="${business}">
           <div th:class="|business-box${iterStat.count}|" th:employerNo="*{employerNo}"
             style="border: 1px solid black; cursor: pointer;"
