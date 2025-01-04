@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Mapper;
 
 import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.payment.model.dto.Payment;
-import com.jobbuilder.project.payment.model.dto.PaymentType;
 
 @Mapper
 public interface PaymentMapper {

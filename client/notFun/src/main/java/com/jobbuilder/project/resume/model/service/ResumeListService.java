@@ -8,6 +8,8 @@ public interface ResumeListService {
 
 	List<Resume> getResumeList(int workerNo);
 
+	boolean updateResumeStatus(int resumeNo, String field, String value, int workerNo);
+
 
 	
 }

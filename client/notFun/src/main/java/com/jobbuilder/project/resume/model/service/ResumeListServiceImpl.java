@@ -27,6 +27,15 @@ public class ResumeListServiceImpl implements ResumeListService {
         return mapper.getResumeList(workerNo);
 	}
 	
-	
+	 @Override
+	    public boolean updateResumeStatus(int resumeNo, String field, String value, int workerNo) {
+	        try {
+	            int result = mapper.updateResumeStatus(resumeNo, field, value, workerNo);
+	            return result > 0;
+	        } catch (Exception e) {
+	            log.error("상태 업데이트 중 오류 발생:", e);
+	            return false;
+	        }
+	    }
 
 }

@@ -29,8 +29,6 @@ public class Payment {
 
     private int paymentCrossNo;             // 해소 테이블 번호 (연동자료)
 
-    private List<PaymentType> paymentDetails;
-
     private int membershipDateValue;        // 탈퇴일 계산 도우미1 (인설트자료)
     private String durationUnit;            // 탈퇴일 계산 도우미2 (인설트자료)
 
