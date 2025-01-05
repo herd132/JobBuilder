@@ -228,10 +228,10 @@ public class MyPageEmployerController {
 						@RequestParam("subCategory") List<String> subCategory,
 						@RequestParam("businessAddress") String[] businessAddress,
 						@RequestParam("images") List<MultipartFile> images,
-						RedirectAttributes ra) throws Exception{
+						RedirectAttributes ra) throws Exception {
 		
 		int result = service.addBusiness(loginEmployer, addBusiness, subCategory, businessAddress, images);
-		
+
 		String message = null;
 		String path = null;
 		

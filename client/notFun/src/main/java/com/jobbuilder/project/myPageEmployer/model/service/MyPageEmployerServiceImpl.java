@@ -194,14 +194,14 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		addBusiness.setBusinessRegistrationNumber(loginEmployer.getBusinessRegistrationNumber());
 		addBusiness.setBusinessName(loginEmployer.getBusinessName());
 		addBusiness.setOptionalAgreeFl(loginEmployer.getOptionalAgreeFl());
-		
-		log.debug("addBusiness : " + addBusiness);
+
 		
 		int result = mapper.addBusiness(addBusiness);
 		if(result == 0) return 0;
 		
 		int employerNo = addBusiness.getEmployerNo();
 		
+		// M:N 해소테이블(BUSINESS_WORKTYPE)에 값 대입
 		for(String category : subCategory) {
 			String worktypeNo = mapper.getWorktypeNo(category);
 			
