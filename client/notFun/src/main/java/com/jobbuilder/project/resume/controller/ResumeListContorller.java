@@ -4,15 +4,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
+import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.resume.model.dto.Resume;
 import com.jobbuilder.project.resume.model.service.ResumeListService;
 import com.jobbuilder.project.worker.model.dto.Worker;
@@ -56,29 +60,56 @@ public class ResumeListContorller {
 	    return response;
 	}
 
-	@PostMapping("/updateResumeStatus")
-	@ResponseBody
-	public Map<String, Object> updateResumeStatus(
-	        @RequestBody Map<String, Object> requestData,
-	        @SessionAttribute("loginWorker") Worker loginWorker) {
-	    Map<String, Object> response = new HashMap<>();
-	    try {
-	        int resumeNo = (int) requestData.get("resumeNo");
-	        String field = (String) requestData.get("field");
-	        String value = (String) requestData.get("value");
 
-	        // 업데이트 수행
-	        boolean result = service.updateResumeStatus(resumeNo, field, value, loginWorker.getWorkerNo());
-
-	        response.put("success", result);
-	        response.put("message", result ? "상태 업데이트 성공" : "상태 업데이트 실패");
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        response.put("success", false);
-	        response.put("message", "서버 오류 발생");
+	    @PostMapping("/updateResumeStatus")
+	    public ResponseEntity<Map<String, Object>> updateResumeStatus(@RequestBody Resume resume) {
+	        Map<String, Object> response = new HashMap<>();
+	        try {
+	            int result = service.updateResumeStatus(resume);
+	            response.put("success", result > 0);
+	        } catch (Exception e) {
+	            response.put("success", false);
+	            response.put("error", e.getMessage());
+	        }
+	        return ResponseEntity.ok(response);
 	    }
-	    return response;
-	}
+	
+
+	    @PostMapping("/resumeDetail")
+	    public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model) {
+	        // resumeNo로 데이터를 조회
+	        Resume resume = service.getResumeByNo(resumeNo);
+
+	        // 모델에 데이터 추가
+	        model.addAttribute("resume", resume);
+
+	        // 상세 페이지로 이동
+	        return "resume/resumeDetail"; // templates/resume/resumeDetail.html
+	    }
+
+
+	    @PostMapping("/resumeRecommend")
+	    public String getRecommendations(@RequestParam("resumeNo") int resumeNo, Model model) {
+	        // Resume 정보를 조회
+	        Resume resume = service.getResumeByNo(resumeNo);
+
+	        // 추천 공고 리스트 조회
+	        List<Recruitment> recommendations = service.getRecommendations(resumeNo);
+
+	        // 모델에 추가
+	        model.addAttribute("resume", resume);
+	        model.addAttribute("recommendations", recommendations);
+
+	        // 추천 결과 페이지로 이동
+	        return "resume/resumeRecommend"; // templates/resume/recommendations.html
+	    }
+
+
+
+
+
+
+
 
     
     

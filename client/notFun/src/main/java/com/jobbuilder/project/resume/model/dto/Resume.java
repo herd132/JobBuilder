@@ -48,6 +48,8 @@ public class Resume {
     
     
     private int totalCareer; // 총경력 (셀렉용)
+    private int updateType;
+    private String value;
     
     private int recommendation; // 추천알바건수
     

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="resume-detail">
+    <div class="resume-header">이력서 상세 정보</div>
+
+    <div class="resume-field">
+        <span>이력서 제목:</span>
+        <span th:text="${resume.resumeTitle}">[이력서 제목]</span>
+    </div>
+
+    <div class="resume-field">
+        <span>작성일:</span>
+        <span th:text="${resume.registrationDate}">[작성일]</span>
+    </div>
+
+    <div class="resume-field">
+        <span>수정일:</span>
+        <span th:text="${resume.modificationDate}">[수정일]</span>
+    </div>
+
+    <div class="resume-field">
+        <span>공개 여부:</span>
+        <span th:text="${resume.resumeHideFl == 'Y' ? '비공개' : '공개'}">[공개 여부]</span>
+    </div>
+
+    <div class="resume-field">
+        <span>경력:</span>
+        <span th:text="${resume.totalCareer}">[총 경력]</span>
+    </div>
+
+    <div class="resume-field">
+        <span>자기소개:</span>
+        <p th:text="${resume.resumeContent}">[자기소개 내용]</p>
+    </div>
+</body>
+</html>
