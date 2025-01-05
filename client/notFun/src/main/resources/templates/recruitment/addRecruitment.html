@@ -38,52 +38,12 @@
           </div>
 
           <div class="business-img-area">
-            <div class="business-thumbnail-area">
-              <h4>사업장 대표 이미지</h4>
-              <div class="businessImg thumbnail">
-                <label for="img0"><img src="" class="preview"></label>
-                <input type="file" name="images" class="inputImg" id="img0" accept="image/*">
-              </div>
+            <div class="businessImg">
+              <h4>공고 이미지(선택)</h4>
+              <label for="img0"><img src="" class="preview"></label>
+              <input type="file" name="recruitmentImg" class="inputImg" id="img0" accept="image/*">
+              <span class="delete-image">&times;</span>
             </div>
-
-            <div class="business-etcImg-area">
-              <h4>추가 이미지(대표이미지 포함 최대 5개)</h4>
-              <button type="button" onclick="addBusinessImg()">사업장 이미지 추가</button>
-
-              <div class="businessImg">
-                <label for="img1">
-                  <img class="preview" src="">
-                </label>
-                <input type="file" name="images" class="inputImage" id="img1" accept="image/*">
-                <span class="delete-image">&times;</span>
-              </div>
-      
-              <div class="businessImg">
-                <label for="img2">
-                  <img class="preview" src="">
-                </label>
-                <input type="file" name="images" class="inputImage" id="img2" accept="image/*">
-                <span class="delete-image">&times;</span>
-              </div>
-      
-              <div class="businessImg">
-                <label for="img3">
-                  <img class="preview" src="">
-                </label>
-                <input type="file" name="images" class="inputImage" id="img3" accept="image/*">
-                <span class="delete-image">&times;</span>
-              </div>
-      
-              <div class="businessImg">
-                <label for="img4">
-                  <img class="preview" src="">
-                </label>
-                <input type="file" name="images" class="inputImage" id="img4" accept="image/*">
-                <span class="delete-image">&times;</span>
-              </div>
-
-            </div>
-
           </div>
 
           <div class="recuritment-title-area">
@@ -93,9 +53,7 @@
 
           <div class="recruitment-content-area">
             <h4>상세요강</h4>
-            <textarea name="recruitmentContent" id="recruitmentContent">
-
-            </textarea>
+            <textarea name="recruitmentContent" id="recruitmentContent"></textarea>
           </div>
 
           <div class="recruitment-deadline-area">
@@ -140,6 +98,7 @@
               <option value="3">추후협의(시급)</option>
               <option value="4">추후협의(월급)</option>
             </select>
+            <br>
             <input type="number" name="salaryMount" id="salaryMount" min="0" placeholder="금액을 입력하세요"> 원
           </div>
 

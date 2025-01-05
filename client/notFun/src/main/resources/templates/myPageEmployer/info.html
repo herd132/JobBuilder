@@ -61,14 +61,18 @@
           <span>연락처 : </span>
           <span th:text="*{memberTel}"></span>
         </div>
+
+        <div>
+          <button id="updataInfoBtn" onclick="updataInfo()">기본정보 수정</button>
+        </div>
       </section>
 
-      <div class="businessList-info-area">
+      <section class="businessList-info-area">
         <h3>사업장 정보</h3>
         <div><a href="/myPageEmp/addBusiness">
           <button class="add-business-btn">사업장 추가하기</button>
         </a></div>
-      </div>
+      </section>
 
       <section class="business-info-container">
 
@@ -78,8 +82,8 @@
             th:onclick="businessDetailModal(this.getAttribute('employerNo'))">
 
             <div class="business-image-area">
-              <span th:if="${#lists.size(business.businessImgList) != 0}"> 이미지 있음!</span>
-              <span th:if="${#lists.size(business.businessImgList) == 0}"> 등록된 이미지가 없습니다.</span>
+              <img th:if="*{thumbnail}" th:src="*{thumbnail}">
+              <span th:unless="*{thumbnail}"> 등록된 섬네일이 없습니다.</span>
             </div>
             <div>
               <span>사업장위치 : </span>

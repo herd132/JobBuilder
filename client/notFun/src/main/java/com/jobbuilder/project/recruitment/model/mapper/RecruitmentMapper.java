@@ -74,6 +74,12 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	int insertRecruitmentSupport(Map<String, Object> recruitmentSupportNoMap);
+	
+	/** 공고 대표이미지 추가
+	 * @param map(recruitmentNo, recruitmentProfile)
+	 * @return
+	 */
+	int updateRecruitmentImg(Map<String, Object> map);
 
 		
 	/* ********** 공고글 목록 조회 관련 ********** */
@@ -128,5 +134,38 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	List<RecruitmentSupport> getSupportList(int recruitmentNo);
+	
+	
+	/* ********** 공고 수정(post) 관련 ********** */
+
+	/** RECRUITMENT 테이블 수정 (recruitmentNo을 물고 들어감)
+	 * @param updateRecruitment(recruitmentTitle, recruitmentContent, recruitmentDeadline, jobtypeNo,
+	 * 			numOfRecruitmentName, salaryNo, gradeNo, periodNo, daysNo, timeNo, salaryMount)
+	 * @return
+	 */
+	int updateRecruitment(Recruitment updateRecruitment);
+
+	/** 기존 RECRUITMENT_PREFERRED 테이블의 정보 삭제
+	 * @param recruitmentNo
+	 * @return
+	 */
+	int deleteRecruitmentPreferred(int recruitmentNo);
+
+	/** 기존 RECRUITMENT_SUPPORT 테이블의 정보 삭제
+	 * @param recruitmentNo
+	 * @return
+	 */
+	int deleteRecruitmentSupport(int recruitmentNo);
+	
+	
+	/* ********** 공고 삭제 관련 ********** */
+
+	/** 공고 삭제
+	 * @param recruitmentNo
+	 * @return
+	 */
+	int deleteRecruitment(int recruitmentNo);
+
+
 
 }

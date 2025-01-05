@@ -1,0 +1,179 @@
+.addRecruitmentForm{
+  position: relative;
+}
+
+/* 전체 컨테이너 스타일링 */
+.addRecruitment-gray {
+  background-color: #f5f5f5;
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.addRecruitment-white {
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 폼 컨테이너 스타일링 */
+.recruitment-form-container {
+  width: 1177px;
+  position: relative;
+  padding: 10px;
+}
+
+/* 각 섹션 스타일링 */
+.recruitment-form-container > div {
+  margin-bottom: 15px;
+}
+
+/* 제목 스타일링 */
+.recruitment-form-container h4 {
+  color: #333;
+  font-size: 16px;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+/* 입력 필드 스타일링 */
+.recruitment-form-container input[type="text"],
+.recruitment-form-container input[type="number"],
+.recruitment-form-container input[type="date"],
+.recruitment-form-container select {
+  width: 100%;
+  max-width: 500px;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 14px;
+}
+
+.recruitment-form-container textarea{
+  resize: none;
+  width: 500px;
+  height: 333px;
+}
+
+/* 이미지 업로드 영역 스타일링 (기존 위치 유지) */
+.business-img-area {
+  border: 1px solid black;
+  border-radius: 30px;
+  position: absolute;
+  top: 0px;
+  right: 100px;
+  width: 500px;
+  height: 680px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.businessImg{
+  width: 450px;
+  height: 680px;
+  display: inline-block;
+  text-align: center;
+  margin: 0px auto;
+  position: relative;
+}
+
+.businessImg > label{
+  width: 100%;
+  height: 85%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.inputImg {
+  display: none;
+}
+
+.businessImg img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.delete-image{
+  position: absolute;
+  top: 70px;
+  right: 13px;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* 선호조건 및 복리후생 영역 스타일링 */
+.option-container {
+  margin-top: 15px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+
+.option-container ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+  margin: 10px 0;
+}
+
+.option-container li {
+  background-color: white;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 14px;
+  border: 1px solid #e0e0e0;
+  text-align: center;
+  cursor: pointer;
+}
+
+.option-container li:hover {
+  background-color: #f0f0f0;
+}
+
+/* 선택된 영역 스타일링 */
+.selected-preferred-area,
+.selected-support-area {
+  min-height: 50px;
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+/* 버튼 영역 스타일링 */
+.btn-area {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.btn-area button {
+  padding: 8px 20px;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+}
+
+.btn-area button:last-child {
+  background-color: #f0f0f0;
+  color: #333;
+}
+
+/* 입력 폼 영역 너비 제한 */
+.recruitment-form-container > div:not(.business-img-area) {
+  max-width: 500px;
+}
+
+
+
+/* ***** 선호 조건 영역 ***** */
+/* 기존 CSS는 유지하고 선호조건 관련 스타일만 수정 */

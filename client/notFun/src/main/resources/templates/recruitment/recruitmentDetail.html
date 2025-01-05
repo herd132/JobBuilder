@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>공고 상세보기</title>
   
   <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
   <th:block th:replace="~{common/common}"></th:block>
@@ -27,6 +27,10 @@
           <span th:text="|회사명 : *{businessName}|"></span>
           <br>
           <span th:text="|지점 : *{businessNickname}|"></span>
+        </div>
+        <div class="recruite-complete-area">
+          <span th:if="*{recruitCompleteFl == 'N'}"> 모집 중입니다.</span>
+          <span th:unless="*{recruitCompleteFl == 'N'}"> 모집완료</span>
         </div>
       </div>
 

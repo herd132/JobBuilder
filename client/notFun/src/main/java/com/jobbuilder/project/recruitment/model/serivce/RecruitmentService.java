@@ -3,6 +3,8 @@ package com.jobbuilder.project.recruitment.model.serivce;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 
@@ -46,7 +48,8 @@ public interface RecruitmentService {
 	 * @param supportList
 	 * @return recruitmentNo
 	 */
-	int insertRecruitment(int memberNo, Recruitment addRecruitment, List<String> preferredList, List<String> supportList);
+	int insertRecruitment(int memberNo, Recruitment addRecruitment, List<String> preferredList,
+						List<String> supportList, MultipartFile recruitmentImg) throws Exception;
 
 
 	/* ********** 공고글 목록 조회 관련 ********** */
@@ -72,6 +75,28 @@ public interface RecruitmentService {
 	 * @return
 	 */
 	Recruitment selectOne(int recruitmentNo);
+	
+	
+	/* ********** 공고 수정(post) 관련 ********** */
+
+	/** 공고 수정
+	 * @param updateRecruitment
+	 * @param preferredList
+	 * @param supportList
+	 * @param businessImage
+	 * @return
+	 */
+	int updateRecruitment(Recruitment updateRecruitment, List<String> preferredList, List<String> supportList,
+			MultipartFile recruitmentImg) throws Exception;
+
+	
+	/* ********** 공고 삭제 관련 ********** */
+	
+	/** 공고 삭제
+	 * @param recruitmentNo
+	 * @return
+	 */
+	int deleteRecruitment(int recruitmentNo);
 
 
 

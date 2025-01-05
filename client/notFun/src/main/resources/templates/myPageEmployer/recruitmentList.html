@@ -36,6 +36,7 @@
               <th>지점명</th>
               <th>작성일</th>
               <th>마감일</th>
+              <th>구인완료여부</th>
             </tr>
           </thead>
 
@@ -63,6 +64,14 @@
                 <td th:text="*{businessNickname}"></td>
                 <td th:text="*{writeDate}"></td>
                 <td th:text="*{recruitmentDeadline}"></td>
+                <td>
+                  
+                  <span th:text="*{recruitCompleteFl}" th:id="|completeFl*{recruitmentNo}|"></span>
+                  <button class="change-recruit-complete" th:recruitmentNo="*{recruitmentNo}"
+                    th:onclick="changeRecruitComplete(this.getAttribute('recruitmentNo'))">
+                    변경
+                  </button>
+                </td>
               </tr>
             </th:block>
           </tbody>

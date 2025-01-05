@@ -27,6 +27,8 @@ public class Employer {
 	private String optionalAgreeFl;				// 선택약관 동의여부(기본값 Y)
 	private String businessNickname;			// 사업장 별칭(기본값 본점)
 	private String businessTel;					// 사업장 전화번호
+	// 새로 추가
+	private String businessDelFl;				// 사업장 삭제여부(Y/N)
 	
 	private String membershipLevel;				// 멤버십 등급
 	private String membershipName;				// 멤버십 이름
