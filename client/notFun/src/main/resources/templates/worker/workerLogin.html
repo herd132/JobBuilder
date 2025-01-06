@@ -5,25 +5,13 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="/css/worker/workerLogin.css">
-  <th:block th:replace="~{common/common}"></th:block>
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
-    integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka"
-    crossorigin="anonymous"></script>
-  <script>
-    // 초기화: 본인의 JavaScript 키 사용
-    Kakao.init('420e37e2eb7b21d415137a0ef5b387a2');
-    console.log(Kakao.isInitialized()); // true가 나오면 초기화 성공
-
-
-  </script>
-
-
+  <th:block th:replace="~{common/common}"></th:block>  
 </head>
 
 <body>
 
   <th:block th:replace="~{common/main-header}"></th:block>
-  <form action="/worker/workerLogin" method="post" id="loginForm">
+  <form action="/worker/workerLogin" method="post" name="loginForm">
     <main>
       <div class="header">
         <span class="logo">
@@ -40,12 +28,12 @@
 
         <div class="input-container">
           <input type="text" placeholder="ID를 입력해 주세요" name="workerId">
-          <input type="password" placeholder="PW를 입력해 주세요" name="memberPw">
+          <input type="password" placeholder="PW를 입력해 주세요" name="workerPw">
         </div>
 
         <div class="login-options">
           <div class="checkbox-container">
-            <input type="checkbox" id="save-id">
+            <input type="checkbox" name="saveId">
             <label for="save-id">아이디저장</label>
           </div>
         </div>
@@ -71,9 +59,6 @@
 
   <th:block th:replace="~{common/main-footer}"></th:block>
   <script src="/js/worker/workerLogin.js"></script>
-
-
-
 </body>
 
 </html>

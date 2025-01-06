@@ -1,0 +1,91 @@
+/* 네비게이션 스타일 */
+.main-nav {
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  position: relative;
+}
+
+.logo {
+  flex: 0.2;
+}
+
+.logo-img {
+  height: 80px;
+}
+
+.search-bar{
+  flex: 0.75;
+}
+
+/* 햄버거 메뉴 스타일 */
+.hamburger {
+  position: relative;
+  cursor: pointer;
+}
+
+.nav-mypagemenu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 200px;
+  z-index: 1000;
+}
+
+.hamburger:hover .nav-mypagemenu {
+  display: block;
+}
+
+.nav-mypagemenu li a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #333;
+}
+
+.nav-mypagemenu li a:hover {
+  background-color: #f5f5f5;
+}
+
+/* 유저 메뉴 스타일 */
+.user-menu {
+  position: relative;
+  cursor: pointer;
+}
+
+.nav-mypage {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  min-width: 150px;
+  z-index: 1000;
+}
+
+.user-menu:hover .nav-mypage {
+  display: block;
+}
+
+.nav-mypage li a {
+  display: block;
+  padding: 12px 20px;
+  text-decoration: none;
+  color: #333;
+}
+
+.nav-mypage li a:hover {
+  background-color: #f5f5f5;
+}

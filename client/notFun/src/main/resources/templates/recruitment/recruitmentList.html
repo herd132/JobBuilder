@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  
+  <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+  <th:block th:replace="~{common/common}"></th:block>
+
+  <link rel="stylesheet" href="/css/recruitment/recruitmentList.css">
+
+</head>
+
+<body>
+
+  <th:block th:replace="~{common/main-header}"></th:block>
+
+  <div class="recruitmentList-gray">
+    <main class="recruitmentList-white">
+      <h2>등록된 알바목록입니다</h2>
+      <div class="list-wrapper">
+        <table class="list-table">
+
+          <thead>
+            <tr>
+              <th>공고 번호</th>
+              <th>위치</th>
+              <th>
+                <ul>
+                  <li>공고 제목</li>
+                  <li>회사명</li>
+                </ul>
+              </th>
+              <th>급여 (원)</th>
+              <th>근무 시간</th>
+              <th>등록일</th>
+              <th>마감일</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <th:block th:if="${#lists.isEmpty(recruitmentList)}">
+              <tr>
+                <th colspan="7">공고가 존재하지 않습니다.</th>
+              </tr>
+            </th:block>
+
+            <th:block th:unless="${#lists.isEmpty(recruitmentList)}">
+              <tr th:each="recruitment : ${recruitmentList}" th:object="${recruitment}">
+                <td th:text="*{recruitmentNo}"></td>
+                <td th:text="*{businessAddress}"></td>
+                <td>
+
+                  <!-- 검색 안한 경우-->
+                  <th:block th:unless="${param.query}">
+                    <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
+                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'))">
+                      <li th:text="*{recruitmentTitle}"></li>
+                      <li th:text="*{businessName}"></li>
+                    </ul>
+                  </th:block>
+                  
+                  <!-- 검색 한 경우-->
+                  <th:block th:if="${param.query}">
+                    <ul th:recruitmentNo="*{recruitmentNo}" style="cursor: pointer;"
+                      th:onclick="recruitmentDetail(this.getAttribute('recruitmentNo'))">
+                      <li th:text="*{recruitmentTitle}"></li>
+                      <li th:text="*{businessName}"></li>
+                    </ul>
+                  </th:block>
+
+                </td>
+                <td>
+                  <span th:text="|*{salaryMount} 원|"></span>
+                  <span th:text="*{salaryName}"></span>
+                </td>
+                <td th:text="*{timeName}"></td>
+                <td th:text="*{writeDate}"></td>
+                <td th:text="*{recruitmentDeadline}"></td>
+              </tr>
+            </th:block>
+          </tbody>
+
+        </table>
+      </div>
+
+      <div class="paginationRecruitment-area">
+
+        <!-- 검색 안한 경우-->
+        <ul class="paginationRecruitment" th:unless="${param.query}" th:object="${paginationRecruitment}">
+
+          <li><a th:href="@{/recruitment/list (cp=1)}">&lt;&lt;</a></li>
+          <li><a th:href="@{/recruitment/list (cp=*{prevPage})}">&lt;</a></li>
+          
+          <!-- 특정 페이지로 이동 -->
+					<th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
+            <!-- 현재 보고있는 페이지 -->
+            <li th:if="${i} == *{currentPage}">
+              <a class="current" th:text="${i}">현재페이지</a>
+            </li>
+            
+            <!-- 보고있지 않은 페이지 -->
+            <li th:unless="${i} == *{currentPage}">
+              <a th:href="@{/recruitment/list (cp=${i})}" th:text="${i}">이동할 페이지</a>
+            </li>
+          </th:block>
+
+					<li><a th:href="@{/recruitment/list (cp=*{nextPage})}">&gt;</a></li>
+					<li><a th:href="@{/recruitment/list (cp=*{maxPage})}">&gt;&gt;</a></li>
+        </ul>
+
+        <!-- 검색 한 경우-->
+				<ul class="paginationRecruitment" th:if="${param.query}" th:object="${paginationRecruitment}" >
+
+					<li><a th:href="@{/recruitment/list (cp=1, query=${param.query})}">&lt;&lt;</a></li>
+					<li><a th:href="@{/recruitment/list (cp=*{prevPage}, query=${param.query})}">&lt;</a></li>
+
+					<!-- 특정 페이지로 이동 -->
+					<th:block th:if="*{startPage lt endPage}" th:each="i : *{#numbers.sequence(startPage, endPage)}">
+						
+						<!-- 현재 보고있는 페이지 -->
+						<li th:if="${i} == *{currentPage}">
+							<a class="current" th:text="${i}">현재페이지</a>
+						</li>
+						
+						<!-- 보고있지 않은 페이지 -->
+						<li th:unless="${i} == *{currentPage}">
+							<a th:href="@{/recruitment/list (cp=${i}, query=${param.query})}" 
+								th:text="${i}">이동할 페이지</a>
+						</li>
+					</th:block>
+
+          <!-- 일치하는 공고가 없을 경우-->
+          <th:block th:unless="*{startPage lt endPage}">
+						<li>
+							<a class="current">1</a>
+						</li>
+					</th:block>
+					
+					<li><a th:href="@{/recruitment/list (cp=*{nextPage}, query=${param.query})}">&gt;</a></li>
+					<li><a th:href="@{/recruitment/list (cp=*{maxPage}, query=${param.query})}">&gt;&gt;</a></li>
+				</ul>
+      </div>
+
+    </main>
+  </div>
+  
+
+  <script src="/js/recruitment/recruitmentList.js"></script>
+  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+  <th:block th:replace="~{common/main-footer}"></th:block>
+</body>
+
+</html>

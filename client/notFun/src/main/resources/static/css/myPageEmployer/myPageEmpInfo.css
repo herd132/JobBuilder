@@ -1,23 +1,203 @@
-.hidden {
-  display: none;
-}
-
+/* 모달 기본 스타일 */
 .modal-container {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100vh;
-  overflow: hidden;
   background: rgba(0, 0, 0, 0.5);
+  z-index: 9999;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .modal-area {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  position: relative;
+  width: 90%;
+  max-width: 500px;
   padding: 20px;
   background: #ffffff;
   border-radius: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* 버튼 영역 스타일링 */
+.btn-area {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+/* 수정/삭제 버튼 스타일 */
+.update-business-btn,
+.delete-business-btn {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.update-business-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.delete-business-btn {
+  background-color: #f44336;
+  color: white;
+  margin-left: 10px;
+}
+
+/* X 버튼 스타일링 */
+.close-modal {
+  font-size: 24px;
+  color: #666;
+  cursor: pointer;
+  padding: 5px 10px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+}
+
+.close-modal:hover {
+  color: #000;
+}
+
+.hidden {
+  display: none;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 768px) {
+  .modal-area {
+      width: 95%;
+      margin: 20px;
+      max-height: 90vh;
+      overflow-y: auto;
+  }
+}
+
+
+/* 전체 레이아웃 */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Arial', sans-serif;
+}
+
+/* 기본 정보 컨테이너 스타일 */
+
+.businessList-info-area {
+  padding: 0 2rem;
+}
+
+.basic-info-container {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0.2rem 2rem;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.basic-info-container h3 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+.basic-info-container > div {
+  margin-bottom: 1rem;
+}
+
+.basic-info-container span:first-child {
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+/* 사업장 정보 컨테이너 스타일 */
+.business-info-container {
+  max-width: 1200px;
+  margin: 0.2rem auto;
+  padding: 2rem;
+}
+
+.business-info-container h3 {
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+
+/* 사업장 박스 그리드 레이아웃 */
+.business-info-container {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2rem;
+  padding: 2rem;
+}
+
+.business-info-container h3,
+.business-info-container > div:first-of-type {
+  grid-column: 1 / -1;
+}
+
+/* 사업장 박스 스타일 */
+[class^="business-box"] {
+  background: white;
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+[class^="business-box"]:hover {
+  transform: translateY(-5px);
+}
+
+[class^="business-box"] > div {
+  margin-bottom: 1rem;
+}
+
+[class^="business-box"] span:first-child {
+  font-weight: bold;
+  margin-right: 0.5rem;
+}
+
+[class^="business-box"] > div:first-child{
+  width: 150px;
+  border: 1px solid black;
+  height: 150px;
+  background-color: beige;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}
+
+/* 버튼 스타일 */
+.add-business-btn {
+  padding: 0.8rem 1.5rem;
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.add-business-btn:hover {
+  background-color: #45a049;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1024px) {
+  .business-info-container {
+      grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .business-info-container {
+      grid-template-columns: 1fr;
+  }
 }

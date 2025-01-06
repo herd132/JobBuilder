@@ -205,3 +205,51 @@
 .payments-expense-result{
   margin-left: 30rem;
 }
+
+
+/* 결제 내역 컨테이너 */
+.payment-summary-container {
+  background-color: #fff0dc;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 1.5rem;
+  width: 50%;
+  margin: 2rem auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 헤더 스타일 */
+.payment-summary-header {
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.payment-summary-header h2 {
+  font-size: 1.8rem;
+  margin: 0;
+  color: #543A14;
+}
+
+.payment-summary-header hr {
+  margin-top: 0.5rem;
+  border: 0;
+  height: 2px;
+  background-color: #f0bb78;
+}
+
+/* 본문 내용 스타일 */
+.payment-summary-content {
+  margin-bottom: 1.5rem;
+}
+
+.payment-summary-item {
+  font-size: 1.2rem;
+  margin: 0.5rem 0;
+  color: #333;
+}
+
+.payment-label {
+  font-weight: bold;
+  color: #543A14;
+}
+

@@ -7,10 +7,13 @@ const getMembershipDetailsByType = (type) => {
   );
 };
 
-let selectedMembershipNumbers = []; // 선택한 멤버십 번호를 저장하는 배열
-var mno = selectedMembershipNumbers;
-let testResult = [];
+
 var sumResult = 0;
+var memberships = []; // 멤버십 세부 정보를 담을 배열
+var validMembershipNumbers = []; // 기존 멤버십 번호
+var emptyMembershipCount  = 0;
+var calculatedPrice = 0; //상품정보 리스트
+var paymentProduct = "";
 
 // defaultType을 반환하는 함수
 const getDefaultTypeValue = (defaultType, selectedValue) => {
@@ -66,6 +69,7 @@ const generateOptionTags = (defaultType) => {
 
 // 페이지 렌더링 초기화
 document.addEventListener("DOMContentLoaded", () => {
+
   document.querySelectorAll('[name="paymentsClick"]').forEach((element) => {
     element.addEventListener("click", () => {
       const defaultType = Number(element.getAttribute("data-default-type")); // 기본 타입 가져오기
@@ -103,7 +107,7 @@ const renderPaymentPage = (defaultType) => {
         </div>`;
       })
       .join("")
-  : `<p>로그인된 회원의 맴버십 정보를 찾을 수 없습니다.</p>`;
+  : `<p>✔ 공고 일일 30건 등록<br>✔ 이력서 열람 100건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람</p>`;
 
   // 최초 렌더링
   backgroundElement.innerHTML = `
@@ -424,9 +428,10 @@ const updateMembershipContainer = () => {
   // 기존 DOM 초기화
   beforeMembershipContainer.textContent = "";
   productExpenseContainer.textContent = ""; // 새로운 영역 초기화
-
-  // 선택된 멤버십 번호 초기화
-  selectedMembershipNumbers = [];
+  memberships = []; // 초기화
+  validMembershipNumbers = [];
+  emptyMembershipCount  = 0;
+  paymentProduct = "";
 
   // 상품 정보 배열 생성
   const membershipList = Array.from(productItems).map((item) => {
@@ -445,9 +450,52 @@ const updateMembershipContainer = () => {
     if (selectedValue !== "none") {
       const membershipDetail = getMembershipDetailsByType(Number(selectedValue));
       if (membershipDetail) {
-        selectedMembershipNumbers.push(membershipDetail.membershipNo); // 멤버십 번호 저장
+          validMembershipNumbers.push(membershipDetail.membershipNo); // 기존 멤버십
+      } else {
+          emptyMembershipCount++; // 빈 슬롯 카운트 증가
       }
+    
+      var answer = "";
+      var value = Number(selectedValue); // 타입 명시적 변환
+      
+      switch (value) {
+        case 1: 
+          answer = "기본";
+          break;
+        case 2:
+          answer = "골드 이용권";
+          break;
+        case 3:
+          answer = "플래티넘 이용권";
+          break;
+        case 4:
+          answer = "급구 이용권"; 
+          break;
+        case 5:
+          answer = "Hot 이용권"; 
+          break;
+        default:
+          answer = "Unknown"; // 예상치 못한 값 처리
+          break;
+      }
+      
+      memberships.push({
+        membershipType: value,
+        membershipDateValue: selectedDuration,
+        durationUnit: value >= 4 ? "DAY" : "MONTH",
+        membershipProduct: answer,
+        membershipAmount: membership.price * selectedDuration,
+        membershipCount:productDateElement,
+      });
+      
+      if (memberships && memberships.length > 0) {
+        const firstProduct = memberships[0].membershipProduct;
+        paymentProduct =
+            memberships.length > 1
+                ? `${firstProduct} 외 ${memberships.length - 1}건`
+                : firstProduct;
     }
+  }
 
     return { membership, selectedValue, selectedDuration };
   });
@@ -462,7 +510,8 @@ const updateMembershipContainer = () => {
   membershipList.forEach(({ membership, selectedValue, selectedDuration }) => {
     if (selectedValue === "none" || selectedDuration <= 0) return;
 
-    const calculatedPrice = membership.price * selectedDuration;
+    calculatedPrice = 0;
+    calculatedPrice = membership.price * selectedDuration;
     sumResult += calculatedPrice; // 합산
 
     const userMembership = getMembershipDetailsByType(Number(selectedValue));
@@ -554,9 +603,7 @@ const updateMembershipContainer = () => {
   sumContainer.classList.add("payments-expense-bgr");
   sumContainer.innerHTML = ` <h1 class="payments-expense-result">합계 : ${sumResult.toLocaleString()}원</h1>`;
   productExpenseContainer.appendChild(sumContainer);
-  console.log("선택한 멤버십 번호:", selectedMembershipNumbers);
-
-  mno = selectedMembershipNumbers;
+  
 };
 
 
@@ -577,23 +624,42 @@ document.addEventListener("DOMContentLoaded", () => {
           alert("결제할 금액이 없습니다.");
           return;
         }
-        console.log("테스트", selectedMembershipNumbers);
+      const checkmembershipDateValue = memberships.some(
+        (membership) => membership.membershipDateValue === 0
+      );
 
-        const employerNo = globalMembershipList[0]?.employerNo;
+      if (checkmembershipDateValue) {
+        alert("기간 입력을 확인 해주세요.");
+        return; 
+      }
 
+      if (!employerNo || employerNo === 0) {
+        alert("로그인을 진행해주세요.");
+        return;
+      }
+
+        
+        console.log("memberships 맴버정보 :", memberships);
+        console.log("validMembershipNumbers 정보있는 배열 :", validMembershipNumbers);
+        console.log("emptyMembershipCount  빈횟수 :", emptyMembershipCount);
+        console.log(paymentProduct);
+
+       
+        console.log("임플번호:",employerNo);
         IMP.request_pay(
           {
             storeId: "store-5b5cb483-ddb0-4a3b-a99f-eb4f7b4f4568",
-            channelKey: "channel-key-e5b8dde3-85d8-47b8-bb2a-b12187bc9dac",
+            channelKey: "channel-key-9babdf46-a539-436f-a27c-2be22501c94c",
             paymentId: `payment-${crypto.randomUUID()}`,
             currency: "CURRENCY_KRW",
             pay_method: "card",
-            amount: sumResult / 300, // 최종 결제 금액
+            amount: sumResult, // 최종 결제 금액
             name: "선택한 멤버십 상품",
             merchant_uid: `merchant_${new Date().getTime()}`, // 고유 주문 ID
           },
           function (rsp) {
             // callback
+            
             if (rsp.success) {
               // 결제성공시 로직
               let data = {
@@ -601,9 +667,11 @@ document.addEventListener("DOMContentLoaded", () => {
                 imp_uid: rsp.imp_uid,
                 merchantUid: rsp.merchant_uid, // merchant_uid를 포함
                 amount: Math.round(rsp.paid_amount),
-                membershipNumbers: selectedMembershipNumbers,
-                employerNo: employerNo,
-                paymentProduct: "abc",
+                validMembershipNumbers: validMembershipNumbers,
+                emptyMembershipCount: Number(emptyMembershipCount),
+                memberships: memberships,
+                employerNo: Number(employerNo),
+                paymentProduct: paymentProduct,
               };
               //결제 검증
               $.ajax({
@@ -613,16 +681,21 @@ document.addEventListener("DOMContentLoaded", () => {
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
                 success: function (result) {
-                  alert("결제 및 결제 검증이 완료되었습니다.");
-                  
+                  window.location.href = "/payments/testpay";
                 },
                 error: function (result) {
                   alert(result.responseText);
+                  setTimeout(() => {
+                    // 다음 로직 실행
+                }, 3000); // 3초 대기
                 },
               });
             } else {
               // 결제 실패 시 로직
               alert("결재 실패");
+              setTimeout(() => {
+                // 다음 로직 실행
+            }, 3000); // 3초 대기
               //alert(rsp.error_msg);
               //console.log(rsp);
             }
@@ -635,6 +708,3 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-  // 선택한 멤버십 번호 출력
-  console.log("선택한 멤버십 번호:", selectedMembershipNumbers);

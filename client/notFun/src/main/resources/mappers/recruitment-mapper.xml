@@ -2,31 +2,209 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.recruitment.model.mapper.RecruitmentMapper">
 
+<!-- 공고 추가 페이지 이동 관련 -->
 	<!-- 사업장 정보 얻어오기 -->
 	<select id="selectBusinessList">
-	SELECT EMPLOYER_NO, BUSINESS_NICKNAME
-	FROM "EMPLOYER"
-	WHERE MEMBER_NO = ${memberNo}
+		SELECT EMPLOYER_NO, BUSINESS_NICKNAME
+		FROM "EMPLOYER"
+		WHERE MEMBER_NO = ${memberNo}
 	</select>
 	
 	<!-- 선호조건 리스트 불러오기 -->
 	<select id="selectPreferredList">
-	SELECT PREFERRED_NO AS "preferredNo", PREFERRED_CATEGORY AS "preferredCategory"
-	FROM "PREFERRED"
+		SELECT PREFERRED_NO AS "preferredNo", PREFERRED_CATEGORY AS "preferredCategory"
+		FROM "PREFERRED"
 	</select>
 	
 	<!-- 복리후생 대분류 불러오기 -->
 	<select id="selectSupportTitleList">
-	SELECT SUBSTR(SUPPORT_NO, 1, 2) AS "supportNo", SUPPORT_CATEGORY AS "supportCategory"
-	FROM SUPPORT
-	WHERE SUPPORT_NO LIKE '__00'
+		SELECT SUBSTR(SUPPORT_NO, 1, 2) AS "supportNo", SUPPORT_CATEGORY AS "supportCategory"
+		FROM "SUPPORT"
+		WHERE SUPPORT_NO LIKE '__00'
 	</select>
 	
 	<!-- 복리후생 소분류 불러오기 -->
 	<select id="selectSubSupportList">
-	SELECT SUPPORT_NO AS "supportNo", SUPPORT_CATEGORY AS "supportCategory"
-	FROM SUPPORT
-	WHERE SUPPORT_NO LIKE #{supportNo}||'__'
-		AND SUPPORT_NO NOT LIKE '__00'
+		SELECT SUPPORT_NO AS "supportNo", SUPPORT_CATEGORY AS "supportCategory"
+		FROM "SUPPORT"
+		WHERE SUPPORT_NO LIKE #{supportNo}||'__'
+			AND SUPPORT_NO NOT LIKE '__00'
 	</select>
+
+
+<!-- 공고 추가(post) 관련 -->	
+	<!-- 공고 추가 -->
+	<insert id="insertRecruitment" useGeneratedKeys="true" parameterType="Recruitment">
+		INSERT INTO "RECRUITMENT"
+		VALUES(SEQ_RECRUITMENT_NO.NEXTVAL, #{recruitmentTitle}, #{recruitmentContent},
+			TO_DATE(#{recruitmentDeadline}, 'YYYY-MM-DD'), ${jobtypeNo}, #{numOfRecruitmentName},
+			${salaryNo}, ${gradeNo}, ${periodNo}, ${daysNo}, ${timeNo}, ${employerNo}, ${salaryMount},
+			DEFAULT, NULL, DEFAULT, ${memberNo})
+		<selectKey resultType="_int" keyProperty="recruitmentNo" order="AFTER">
+			SELECT SEQ_RECRUITMENT_NO.CURRVAL FROM DUAL
+		</selectKey>
+	</insert>
+	
+	<!-- 선택된 선호조건의 preferredNo 얻어 오기 -->
+	<select id="selectPreferredNo">
+		SELECT PREFERRED_NO
+		FROM "PREFERRED"
+		WHERE PREFERRED_CATEGORY = #{preferredCategory}
+	</select>
+	
+	<!-- M:N 관계 해소(RECRUITMENT_PREFERRED) -->
+	<insert id="insertRecruitmentPreferred">
+		INSERT INTO "RECRUITMENT_PREFERRED"
+		VALUES(SEQ_RECRUITMENT_PREFERRED_NO.NEXTVAL, ${recruitmentNo}, #{preferredNo})
+	</insert>
+	
+	<!-- 선택된 복리후생 조건의 supportNo 얻어 오기 -->
+	<select id="selectSupportNo">
+		SELECT SUPPORT_NO
+		FROM "SUPPORT"
+		WHERE SUPPORT_CATEGORY = #{supportCategory}
+	</select>
+	
+	<!-- M:N 관계 해소(RECRUITMENT_SUPPORT) -->
+	<insert id="insertRecruitmentSupport">
+		INSERT INTO "RECRUITMENT_SUPPORT"
+		VALUES(SEQ_RECRUITMENT_SUPPORT_NO.NEXTVAL, #{supportNo}, ${recruitmentNo})
+	</insert>
+	
+	
+<!-- 공고글 목록 조회 관련 -->
+	<!-- 전체 공고글 수 조회 -->
+	<select id="getListCount">
+		SELECT COUNT(*)
+		FROM "RECRUITMENT"
+		WHERE RECRUITMENT_DEL_FL = 'N'
+	</select>
+	
+	<!-- 전체 공고글 목록 조회 -->
+	<select id="selectRecruitmentList">
+		SELECT RECRUITMENT_NO, RECRUITMENT_TITLE, BUSINESS_NAME, BUSINESS_ADDRESS, SALARY_NAME, SALARY_MOUNT, TIME_NAME,
+			<![CDATA[
+			CASE
+				WHEN SYSDATE - WRITE_DATE < 1 / 24 / 60
+				THEN FLOOR((SYSDATE - WRITE_DATE) * 24 * 60 * 60) || '초 전'
+				
+				WHEN SYSDATE - WRITE_DATE < 1 / 24
+				THEN FLOOR((SYSDATE - WRITE_DATE) * 24 * 60) || '분 전'
+				
+				WHEN SYSDATE - WRITE_DATE < 1
+				THEN FLOOR((SYSDATE - WRITE_DATE) * 24) || '시간 전'
+				
+				ELSE TO_CHAR(WRITE_DATE, 'YYYY-MM-DD') 
+			END AS WRITE_DATE,
+			]]> 
+			TO_CHAR(RECRUITMENT_DEADLINE, 'YYYY/MM/DD') AS RECRUITMENT_DEADLINE
+		FROM RECRUITMENT r 
+		JOIN EMPLOYER e ON (r.EMPLOYER_NO = e.EMPLOYER_NO)
+		JOIN SALARY s ON(r.SALARY_NO = s.SALARY_NO)
+		JOIN WORKCOND_TIME wt ON(r.TIME_NO = wt.TIME_NO)
+		WHERE RECRUITMENT_DEL_FL = 'N'
+		ORDER BY RECRUITMENT_NO DESC
+	</select>
+	
+	<!-- 검색문이 포함된 공고글 수 조회 -->
+	<select id="getSearchCount">
+		SELECT COUNT(*)
+		FROM "RECRUITMENT" r
+		JOIN "EMPLOYER" e ON (r.EMPLOYER_NO = e.EMPLOYER_NO)
+		WHERE RECRUITMENT_DEL_FL = 'N'
+			AND (
+				RECRUITMENT_TITLE LIKE '%' || #{query} || '%'
+				OR
+				RECRUITMENT_CONTENT LIKE '%' || #{query} || '%'
+				OR
+				BUSINESS_NAME LIKE '%' || #{query} || '%'
+			)
+	</select>
+	
+	<!-- 검색문이 포함된 공고글 목록 조회 -->
+	<select id="selectSearchRecruitmentList">
+		SELECT RECRUITMENT_NO, RECRUITMENT_TITLE, BUSINESS_NAME, BUSINESS_ADDRESS, SALARY_NAME, SALARY_MOUNT, TIME_NAME,
+			<![CDATA[
+			CASE
+				WHEN SYSDATE - WRITE_DATE < 1 / 24 / 60
+				THEN FLOOR((SYSDATE - WRITE_DATE) * 24 * 60 * 60) || '초 전'
+				
+				WHEN SYSDATE - WRITE_DATE < 1 / 24
+				THEN FLOOR((SYSDATE - WRITE_DATE) * 24 * 60) || '분 전'
+				
+				WHEN SYSDATE - WRITE_DATE < 1
+				THEN FLOOR((SYSDATE - WRITE_DATE) * 24) || '시간 전'
+				
+				ELSE TO_CHAR(WRITE_DATE, 'YYYY-MM-DD') 
+			END AS WRITE_DATE,
+			]]> 
+			TO_CHAR(RECRUITMENT_DEADLINE, 'YYYY/MM/DD') AS RECRUITMENT_DEADLINE
+		FROM RECRUITMENT r 
+		JOIN EMPLOYER e ON (r.EMPLOYER_NO = e.EMPLOYER_NO)
+		JOIN SALARY s ON(r.SALARY_NO = s.SALARY_NO)
+		JOIN WORKCOND_TIME wt ON(r.TIME_NO = wt.TIME_NO)
+		WHERE RECRUITMENT_DEL_FL = 'N'
+			AND (
+				RECRUITMENT_TITLE LIKE '%' || #{query} || '%'
+				OR
+				RECRUITMENT_CONTENT LIKE '%' || #{query} || '%'
+				OR
+				BUSINESS_NAME LIKE '%' || #{query} || '%'
+			)
+		ORDER BY RECRUITMENT_NO DESC
+	</select>
+
+<!-- 공고 상세 페이지 이동 관련 -->
+	<!-- 공고글 상세 조회 -->
+	<select id="selectOne">
+		SELECT RECRUITMENT_NO, RECRUITMENT_TITLE, RECRUITMENT_CONTENT,
+			NUM_OF_RECRUITMENT_NAME, r.MEMBER_NO,
+			TO_CHAR(RECRUITMENT_DEADLINE, 'YYYY/MM/DD') AS RECRUITMENT_DEADLINE,
+			TO_CHAR(WRITE_DATE, 'YYYY/MM/DD') AS WRITE_DATE,
+			r.JOBTYPE_NO, j.JOBTYPE_NAME,
+			r.SALARY_NO, s.SALARY_NAME, r.SALARY_MOUNT,
+			r.GRADE_NO, g.GRADE_NAME,
+			r.PERIOD_NO, wp.PERIOD_NAME,
+			r.DAYS_NO, wd.DAYS_NAME,
+			r.TIME_NO, wt.TIME_NAME,
+			r.EMPLOYER_NO, e.BUSINESS_NICKNAME, e.BUSINESS_ADDRESS, e.BUSINESS_NAME
+		FROM "RECRUITMENT" r
+		JOIN JOBTYPE j ON (r.JOBTYPE_NO = j.JOBTYPE_NO)
+		JOIN SALARY s ON(r.SALARY_NO = s.SALARY_NO)
+		JOIN GRADE g ON(r.GRADE_NO = g.GRADE_NO)
+		JOIN WORKCOND_PERIOD wp ON(r.PERIOD_NO = wp.PERIOD_NO)
+		JOIN WORKCOND_DAYS wd ON(r.DAYS_NO = wd.DAYS_NO)
+		JOIN WORKCOND_TIME wt ON(r.TIME_NO = wt.TIME_NO)
+		JOIN EMPLOYER e ON(r.EMPLOYER_NO = e.EMPLOYER_NO)
+		WHERE RECRUITMENT_DEL_FL = 'N'
+			AND RECRUITMENT_NO = ${recruitmentNo}
+	</select>
+	
+	<!-- 업직종 조회 (selectOne 관련) -->
+	<select id="getBWList">
+		SELECT BUSINESS_WORKTYPE_NO, EMPLOYER_NO, bw.WORKTYPE_NO, WORKTYPE_CATEGORY
+		FROM BUSINESS_WORKTYPE bw
+		JOIN EMPLOYER_WORKTYPE ew ON(bw.WORKTYPE_NO = ew.WORKTYPE_NO)
+		WHERE EMPLOYER_NO = ${employerNo}
+	</select>
+	
+	<!-- 우대사항 조회 (selectOne 관련) -->
+	<select id="getPreferredList">
+		SELECT RECRUITMENT_PREFERRED_NO, RECRUITMENT_NO, rp.PREFERRED_NO, p.PREFERRED_CATEGORY 
+		FROM RECRUITMENT_PREFERRED rp
+		JOIN PREFERRED p ON(rp.PREFERRED_NO = p.PREFERRED_NO)
+		WHERE RECRUITMENT_NO = ${recruitmentNo}
+		ORDER BY RECRUITMENT_PREFERRED_NO
+	</select>
+	
+
+	<!-- 복리후생 조회 (selectOne 관련) -->
+	<select id="getSupportList">
+		SELECT RECRUITMENT_SUPPORT_NO, RECRUITMENT_NO, rs.SUPPORT_NO, s.SUPPORT_CATEGORY 
+		FROM RECRUITMENT_SUPPORT rs
+		JOIN SUPPORT s ON(rs.SUPPORT_NO = s.SUPPORT_NO)
+		WHERE RECRUITMENT_NO = ${recruitmentNo}
+		ORDER BY RECRUITMENT_SUPPORT_NO
+	</select>
+	
 </mapper>

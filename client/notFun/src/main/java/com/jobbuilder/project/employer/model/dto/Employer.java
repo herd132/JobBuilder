@@ -2,6 +2,8 @@ package com.jobbuilder.project.employer.model.dto;
 
 import java.util.List;
 
+import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -47,6 +49,8 @@ public class Employer {
 	
 	/* ***** 사업장 이미지 있는 경우 ***** */
 	private List<BusinessImg> businessImgList;	// 사업장 이미지 리스트(최대 5개)
-	
 	private String thumbnail;					// 대표이미지 불러오기용
+	
+	/* ***** 사업장당 공고 불러오는 경우 ***** */
+	private List<Recruitment> recruitmentList;
 }

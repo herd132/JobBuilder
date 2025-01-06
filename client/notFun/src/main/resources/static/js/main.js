@@ -43,20 +43,20 @@ document.addEventListener('DOMContentLoaded', () => {
     customerServiceLink.addEventListener('click', (e) => {
 
       fetch("/chat/loginCheck")
-        .then(resp => resp.text())
-        .then(result => {
+      .then(resp => resp.text())
+      .then(result => {
 
-          if (result == 0) {
-            alert("로그인 후 이용해 주시기 바랍니다.")
-            return;
-          } else {
-            e.preventDefault();
-            chatbotModal.classList.add('active');
-            chatbotModal.style.right = '20px';
-            chatbotModal.style.top = '20px'; // 초기 위치
-          }
+        if (result == 0) {
+          alert("로그인 후 이용해 주시기 바랍니다.")
+          return;
+        } else {
+          e.preventDefault();
+          chatbotModal.classList.add('active');
+          chatbotModal.style.right = '20px';
+          chatbotModal.style.top = '20px'; // 초기 위치
+        }
 
-        });
+      });
     });
   }
 
@@ -255,7 +255,78 @@ function addMessage(type, content) {
 
 const searchBtn = document.querySelector(".search-btn");
 
-searchBtn.addEventListener("click", () => {
-  const originalPushState = history.pushState;
-  originalPushState();
-});
+if( searchBtn !== null ) {
+  searchBtn.addEventListener("click", () => {
+    const originalPushState = history.pushState;
+    originalPushState();
+  });
+}
+
+// const links = document.querySelectorAll("a");
+
+// for( let link of links) {
+//   link.addEventListener("click", test)
+// }
+
+
+
+// // 1:1 문의 로그인 안 했을 시 경고 이벤트
+// const inquiry = document.querySelector(".inquiry");
+
+// if( inquiry !== null ) {
+//   inquiry.addEventListener("click", (e) => {
+//     let test = 1;
+//     fetch("/chat/loginCheck")
+//     .then(resp => resp.text())
+//     .then(result => {
+
+//       if (result == 0) {
+//         alert("로그인 후 이용해 주시기 바랍니다.");
+        
+//       }
+//     });
+//   });
+// }
+
+
+const empLogin = (email) => {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/employer/employerLogin';
+
+  const inputMemberEmail = document.createElement('input');
+  inputMemberEmail.type = 'hidden'; // 사용자에게 보이지 않게
+  inputMemberEmail.name = 'memberEmail';
+  inputMemberEmail.value = email;
+  form.appendChild(inputMemberEmail);
+
+  const inputMemberPw = document.createElement('input');
+  inputMemberPw.type = 'hidden';
+  inputMemberPw.name = 'memberPw';
+  inputMemberPw.value = 'pass01!';
+  form.appendChild(inputMemberPw);
+
+  document.body.appendChild(form);
+  form.submit();
+}
+
+const empLogin3 = () => {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = '/worker/workerLogin';
+
+  const inputMemberEmail = document.createElement('input');
+  inputMemberEmail.type = 'hidden'; // 사용자에게 보이지 않게
+  inputMemberEmail.name = 'workerId';
+  inputMemberEmail.value = '123';
+  form.appendChild(inputMemberEmail);
+
+  const inputMemberPw = document.createElement('input');
+  inputMemberPw.type = 'hidden';
+  inputMemberPw.name = 'memberPw';
+  inputMemberPw.value = '123';
+  form.appendChild(inputMemberPw);
+
+  document.body.appendChild(form);
+  form.submit();
+}

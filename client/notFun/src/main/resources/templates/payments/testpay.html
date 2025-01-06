@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="/css/payments/testpay.css">
   <link rel="stylesheet" href="/css/payments/payments.css">
 
-
+  <meta name="employerNo" th:content="${session.loginEmployer != null ? session.loginEmployer.employerNo : ''}">
 </head>
 
 
@@ -28,24 +28,32 @@
     <div class="payments-background-white">
 
       <!-- 상단 제목 스타일 -->
-      <h1 class="payments-title">결제 서비스
+      <h1 class="payments-title">결제 결과
         <hr>
       </h1>
 
       <div style="height: 300px;" id="finalResult">
-      <button id="button">Pay now</button>
+
+        <div class="resultp" id="resultp">
+
+        </div>
+        <div class="payments-t-inside-middle-item">
+          <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments';"
+            style="cursor:pointer;">돌아가기</button>
+        </div>
+
       </div>
 
-      
 
 
 
 
-      </div>
+
+    </div>
 
 
 
-    </div> <!-- 흰색부분 -->
+  </div> <!-- 흰색부분 -->
   </div> <!-- 회색부분 -->
 
 
@@ -54,8 +62,8 @@
 
 
 
-  <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-  <script src="/js/payments/test3.js"></script>
+
+  <script src="/js/payments/testpay.js"></script>
 </body>
 
 </html>

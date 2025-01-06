@@ -110,11 +110,37 @@ public class MyPageEmployerController {
 	}
 	
 	/** 내가 쓴 공고 페이지 이동(get) 작성 중
-	 * @return myPageEmployer/recruitmentList.html
-	 * @author JWJ
+	 * @param loginEmployer
+	 * @param cp (현재 조회 요청한 페이지 번호)
+	 * @param paramMap (검색할 경우)
+	 * @param model
+	 * @return
 	 */
 	@GetMapping("recruitmentList")
-	public String MyPageEmpRecruitmentList() {
+	public String MyPageEmpRecruitmentList(@SessionAttribute("loginEmployer") Employer loginEmployer,
+								@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+								@RequestParam Map<String, Object> paramMap,
+								Model model) {
+		
+		Map<String, Object> map = null;
+		
+		// 검색 안한 경우 : paramMap == {}
+		// 검색 한 경우 : paramMap == {key=t, query=서울}
+		if(paramMap.get("key") == null) {
+			map = service.selectRecruitmentList(loginEmployer.getMemberNo(), cp);
+			
+		} else {
+			paramMap.put("memberNo", loginEmployer.getMemberNo());
+			map = service.searchRecruitmentList(paramMap, cp);
+		}
+		
+		model.addAttribute("paginationRecruitment", map.get("paginationRecruitment"));
+		model.addAttribute("recruitmentList", map.get("recruitmentList"));
+		
+		log.debug("paginationRecruitment : " + map.get("paginationRecruitment"));
+		log.debug("recruitmentList : " + map.get("recruitmentList"));
+		
+		
 		return "myPageEmployer/recruitmentList";
 	}
 	
@@ -163,6 +189,7 @@ public class MyPageEmployerController {
 						Employer addBusiness,
 						@RequestParam("subCategory") List<String> subCategory,
 						@RequestParam("businessAddress") String[] businessAddress,
+						@RequestParam("images") List<MultipartFile> images,
 						RedirectAttributes ra) {
 		
 		log.debug("loginEmployer : " + loginEmployer);

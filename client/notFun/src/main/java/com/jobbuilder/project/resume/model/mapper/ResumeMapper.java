@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
 
 @Mapper
 public interface ResumeMapper {
@@ -23,10 +25,22 @@ public interface ResumeMapper {
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
 
-	/** 이력서 작성 테스트
-	 * @param addResume :WorkerNo, gradeNo, workDate, payType, inputPay
+	/** 이력서 기본 작성 
+	 * @param resume
 	 * @return
 	 */
-	int writeResume(Resume addResume);
+	int insertResume(Resume resume);
+	
+	int insertResumePeriod(Resume resume);
+
+	int insertResumeWorkType(Map<String, Object> map);
+
+	int insertResumeJobType(Map<String, Object> map);
+	
+	int insertResumeDaysTime(List<ResumeDaysTime> daysTimeList);
+
+	int insertCareerInfo(CareerInfo careerInfo);
+
+	int insertResumeCareer(Map<String, Integer> resumeCareerMap);
 
 }

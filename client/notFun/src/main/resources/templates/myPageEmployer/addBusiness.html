@@ -6,9 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>사업장 추가</title>
 
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/myPageEmployer/myPageHeader.css">
-  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpAddBusiness.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/addBusiness.css">
+
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -44,7 +49,7 @@
       </section>
 
       <div class="add-business-container">
-        <form action="addBusiness" method="post" id="addBusinessForm">
+        <form action="addBusiness" method="post" id="addBusinessForm" enctype="multipart/form-data">
           <h4>사업장 별칭</h4>
           <div class="business-nickname">
             <input type="text" name="businessNickname" id="businessNickname" placeholder="ex) 본점, 서울 구로점">
@@ -101,17 +106,45 @@
           <div class="img-box">
             <div class="businessImg thumbnail">
               <label for="img0">
-                <img src="#" alt="">
+                <img class="preview" src="">
               </label>
-              <input type="file" name="images" class="business-image" id="img0" accept="image/*">
+              <input type="file" name="images" class="inputImage" id="img0" accept="image/*">
               <span class="delete-image">&times;</span>
             </div>
           </div>
 
-          <div class="add-business-container" id="addBusinessContainer">
-            <div class="add-business-text-area">
-              <button id="addBusinessImgBtn">이미지 추가</button>
-              <span>최대 4개 추가 가능</span>
+          <h4>사업장 추가 이미지</h4>
+          <div class="img-box" id="addBusinessContainer">
+            <div class="businessImg">
+              <label for="img1">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img1" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+
+            <div class="businessImg">
+              <label for="img2">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img2" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+
+            <div class="businessImg">
+              <label for="img3">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img3" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+
+            <div class="businessImg">
+              <label for="img4">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img4" accept="image/*">
+              <span class="delete-image">&times;</span>
             </div>
           </div>
 
@@ -129,6 +162,7 @@
   <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
 
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
   <script src="/js/myPageEmployer/addBusiness.js"></script>
 </body>
 

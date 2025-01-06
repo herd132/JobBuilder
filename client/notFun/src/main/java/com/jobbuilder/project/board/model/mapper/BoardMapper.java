@@ -20,14 +20,14 @@ public interface BoardMapper {
 	// 게시판 종류 조회
 	List<Map<String, Object>> selectBoardTypeList();
 
-	// 게시글 상세 조회
-	Board selectOne(Map<String, Integer> map);
-
+	
 	// 조회수 1 증가
 	int updateReadCount(int boardNo);
 
 	// 조회수 조회
 	int selectReadCount(int boardNo);
-	
+
+	// 게시글 상세 조회
+	Board selectOne(Map<String, Integer> map);
 
 }

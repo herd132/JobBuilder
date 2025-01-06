@@ -22,7 +22,7 @@ public class FilterConfig {
 		
 		// 필터가 동작할 URL을 세팅
 		String[] filteringURL = {
-			"/myPageEmployer/*", "/myPageWorker/*", "/editBoard/*", "/chatting/*", "/recruitment/addRecruitment"
+			"/myPageEmp/*", "/myPageWorker/*", "/editBoard/*", "/chatting/*", "/recruitment/addRecruitment", "/serviceCenter/inquiry"
 				};
 		filter.setUrlPatterns(Arrays.asList(filteringURL));	// Collection이 () 안에 있어야함
 		

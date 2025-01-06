@@ -2,4 +2,76 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.serviceCenter.model.mapper.ServiceCenterMapper">
 
+	<!-- 게시글 수 세기-->
+	<select id="getInquiryListCount">
+		SELECT COUNT(*) FROM "INQUIRY_ONE_ON_ONE"
+		WHERE MEMBER_NO = #{memberNo}	
+	</select>
+
+	<!-- noteList 조회용 쿼리 -->
+	<select id="selectInquiryList">
+	
+		SELECT 
+			I.INQUIRY_TITLE ,
+			I.INQUIRY_CONTENT,
+			TO_CHAR(I.INQUIRY_ENROLL_DATE, 'YYYY.MM.DD') "INQUIRY_ENROLL_DATE",
+			I.INQUIRY_STATUS,
+			IMAT.INQUIRY_MAJOR_CATEGORY_NAME, 
+			IMIT.INQUIRY_MINOR_CATEGORY_NAME,
+			M.MEMBER_EMAIL
+		
+		FROM INQUIRY_ONE_ON_ONE I
+		
+		JOIN INQUIRY_MAJOR_CATEGORY_TYPE IMAT 
+		
+			ON(I.INQUIRY_MAJOR_CATEGORY = IMAT.INQUIRY_MAJOR_CATEGORY_CODE)
+		
+		JOIN INQUIRY_MINOR_CATEGORY_TYPE IMIT 
+		
+			ON(I.INQUIRY_MINOR_CATEGORY = IMIT.INQUIRY_MINOR_CATEGORY_CODE
+			AND I.INQUIRY_MAJOR_CATEGORY = IMIT.INQUIRY_MAJOR_CATEGORY_CODE)
+			
+		JOIN "MEMBER" M ON (I.MEMBER_NO = M.MEMBER_NO)
+			
+		WHERE M.MEMBER_NO = #{memberNo}
+		
+		ORDER BY I.INQUIRY_NO DESC
+	</select>
+
+	<!-- 문의글 삽입-->
+	<insert id="inquiryInsert">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="inquiryNo">
+			SELECT SEQ_INQUIRY_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		
+		INSERT INTO "INQUIRY_ONE_ON_ONE"	VALUES(
+			   #{inquiryNo},
+			   #{inquiryMajorCategory},
+			   #{inquiryMinorCategory},
+			   #{inquiryTitle}, 
+			   #{inquiryContent}, 
+			   DEFAULT,
+			   DEFAULT,
+			   #{memberNo}
+		)
+	</insert>
+	
+	<!-- 문의글 이미지 삽입-->
+	<insert id="insertUploadList">
+		INSERT INTO "INQUIRY_IMAGE"
+		
+		<foreach collection="list" item="img"
+				 open="(" close=")" separator=" UNION ">
+				 
+			 SELECT NEXT_INQUIRY_IMG_NO(),
+			 #{img.inquiryImagePath},
+			 #{img.inquiryImageOriginalName},
+			 #{img.inquiryImageRename},
+			 #{img.inquiryImageOrder},
+			 #{img.inquiryNo}
+			 FROM DUAL
+		
+		</foreach>
+	</insert>
+	
 </mapper>

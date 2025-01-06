@@ -2,167 +2,197 @@
 <html lang="en">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>이력서 작성 페이지</title>
+
+	<!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+	<th:block th:replace="~{common/common}"></th:block>
+
+	<link rel="stylesheet" href="/css/resume/resumeWrite.css">
 </head>
 
 <body>
-  <h2>이력서작성페이지입니다.</h2>
+	<!-- 로고 및 검색바 로그인 -->
+	<th:block th:replace="~{common/main-header}"></th:block>
 
-  <h2> 이력서 관리 </h2>
+	<main>
+		<form action="/resume/writeResume" method="post" id="writeResumeForm">
+			<h2>이력서 관리</h2>
+			<input type="text" name="resumeTitle" class="inputTitle" placeholder="이력서 제목" autocomplete="off">
 
-  <table>
-    <tr>
-      <th scope="col"> <span th:text="${session.loginWorker.memberName}"></span></td>
-      <td scope="col"><span th:text="${year} + 년생"></span>/
-      <span th:text="${#dates.format(#dates.createNow(), 'yyyy')} - ${year} + 살"></span></td>
-      <td scope="col"></td>
-    </tr>
-    <tr>
-      <td>주소 <span th:text="${#strings.replace(session.loginWorker.workerAddress, '^^^', ' ')}"></span></td>
-      <td>이메일 <span th:text="${session.loginWorker.memberEmail}"></span></td>
+			<table>
+				<h2>기본 인적사항</h2>
+				<tr>
+					<td scope="col">이름 <span th:text="${session.loginWorker.memberName}"></span></td>
+					<td scope="col">생년월일 <span th:text="${year} + 년생"></span>/
+						<span th:text="${#dates.format(#dates.createNow(), 'yyyy')} - ${year} + 살"></span>
+					</td>
+					<td scope="col"></td>
+				</tr>
+				<tr>
+					<td>주소 <span th:text="${#strings.replace(session.loginWorker.workerAddress, '^^^', ' ')}"></span>
+					</td>
+					<td>이메일 <span th:text="${session.loginWorker.memberEmail}"></span></td>
 
-    </tr>
-    <tr>
-      <td>연락처 <span th:text="${session.loginWorker.memberTel}"></span></td>
-    </tr>
-  </table>
+				</tr>
+				<tr>
+					<td>연락처 <span th:text="${session.loginWorker.memberTel}"></span></td>
+				</tr>
+			</table>
 
-  <form action="/resume/writeResume" method="post" class="form-section">
-    <h2>학력</h2>
+			<h2>학력 및 경력</h2>
 
-    <select name="gradeNo" id="gradeNo">
-      <option value="1">비공개</option>
-      <option value="2">중졸</option>
-      <option value="3">고졸</option>
-      <option value="4">대졸(2,3년제)</option>
-      <option value="5">대졸(4년제)</option>
-      <option value="6">대학원이상</option>
-    </select>
+			<section class="form-section">
+				<h3>학력</h3>
+				<select name="gradeNo" id="gradeNo">
+					<option value="1">비공개</option>
+					<option value="2">중졸</option>
+					<option value="3">고졸</option>
+					<option value="4">대졸(2,3년제)</option>
+					<option value="5">대졸(4년제)</option>
+					<option value="6">대학원이상</option>
+				</select>
 
-    <h2>경력사항</h2>
-    <div class="career-container">
-        <div>
-          경력구분
-          <button class="newbie" onclick="showInputs(false)" type="button">신입</button>
-          <button class="exp" onclick="showInputs(true)" type="button">경력</button>
-        </div>
-        <div class="input-container" style="display: none;">
-          <label>
-            회사명:
-            <input type="text" name="companyName" class="company-name" placeholder="회사명을 입력하세요" disabled>
-          </label>
-          <label>
-            근무기간:
-            <input type="date" name="startDate" class="start-date" disabled>
-            <input type="date" name="endDate" class="end-date" disabled>
-          </label>
-          <label>
-            담당업무:
-            <textarea name="jobPart" class="job-part" placeholder="담당업무를 입력하세요" disabled></textarea>
-          </label>
-        </div>
+				<h3>경력</h3>
+				<div class="career-container">
+					<section>
+						<span>경력구분</span>
+						<div class="career-toggle">
+							<button class="newbie active" onclick="showInputs(false)" type="button">신입</button>
+							<button class="exp" onclick="showInputs(true)" type="button">경력</button>
+						</div>
+					</section>
+					<div class="input-container" style="display: none;">
+						<label>
+							회사명:
+							<input type="text" class="company-name" placeholder="회사명을 입력하세요" disabled>
+						</label>
+						<label>
+							근무기간:
+							<input type="date" class="start-date" disabled>
+							<input type="date" class="end-date" disabled>
+						</label>
+						<label>
+							담당업무:
+							<textarea class="career-description" placeholder="담당업무를 입력하세요" disabled></textarea>
+						</label>
+					</div>
 
-      <button class="exp-append" onclick="expappend()" style="display: none" type="button">경력사항 추가</button>
-    </div>
+					<button class="exp-append" onclick="expappend()" style="display: none" type="button">경력사항
+						추가</button>
+				</div>
 
-
-    <h2>희망근무 조건</h2>
-
-    <h4>업직종(최대 5개 선택 가능)</h4>
-    <div>
-      <h5>선택한 업직종</h5>
-      <ul id="selectCategoryUl" style="border: 1px solid black;">
-
-      </ul>
-    </div>
-    <div>
-      <div>
-        <ul style="background-color: yellow;">
-          <th:block th:each="category : ${majorCategoryList}">
-            <li th:text="${category.majorCategoryName}" class="workType" th:workTypeNo="${category.workTypeNo}"
-              th:onclick="subCategory(this.getAttribute('workTypeNo'))" style="cursor: pointer;"></li>
-          </th:block>
-        </ul>
-      </div>
-      <div>
-        <ul id="subWorkType">
-
-        </ul>
-      </div>
-    </div>
-
-    <h2>근무형태</h2>
-    <div>
-    <input type="checkbox" id="partTime" name="workType" value="1">알바
-    <input type="checkbox" id="fullTime" name="workType" value="2">정규직
-    </div>
-
-    <h2>근무기간</h2>
-    <select name="workDateNo">
-      <option value="1">무관</option>
-      <option value="2">하루</option>
-      <option value="3">1주일이하</option>
-      <option value="4">1주일 ~ 1개월</option>
-      <option value="5">1개월 ~ 3개월</option>
-      <option value="6">3개월 ~ 6개월</option>
-      <option value="7">6개월 ~ 1년</option>
-      <option value="8">1년 이상</option>
-    </select>
-
-    <h2>근무일시</h2>
-    <div id="select-container">
-
-      <select name="workDay">
-        <option value="1">무관</option>
-        <option value="2">월~일</option>
-        <option value="3">월~토</option>
-        <option value="4">월~금</option>
-        <option value="5">주말(토,일)</option>
-        <option value="6">주6일</option>
-        <option value="7">주5일</option>
-        <option value="8">주4일</option>
-        <option value="9">주3일</option>
-        <option value="10">주2일</option>
-        <option value="11">주1일</option>
-      </select>
-
-      <select name="workPart">
-        <option value="1">무관</option>
-        <option value="2">오전 파트타임(06:00~12:00)</option>
-        <option value="3">오후 파트타임(12:00~18:00)</option>
-        <option value="4">저녁 파트타임(18:00~24:00)</option>
-        <option value="5">새벽 파트타임(00:00~06:00)</option>
-        <option value="6">오전~오후 파트타임</option>
-        <option value="7">오후~저녁 파트타임</option>
-        <option value="8">저녁~새벽 파트타임</option>
-        <option value="9">새벽~오전 파트타임</option>
-        <option value="10">풀타임(8시간이상)</option>
-      </select>
-    </div>
-
-    <button onclick="addSelect()" type="button">추가</button>
-
-    <h2>급여</h2>
-    <div name="workPay">
-      <select name="payType">
-        <option value="1">시급</option>
-        <option value="2">월급</option>
-        <option value="3" selected >추후협의</option>
-      </select>
-
-      <input type="number" name="inputPay" min="0">원
-    </div>
-
-    
-
-    
-    <button class="submit-btn" type="submit"> 제출하기 </button>
-  </form>
+			</section>
 
 
-  <script src="/js/resume/resumeSample.js"></script>
+			<h2>희망근무 조건</h2>
+			<section class="form-section">
+				<h3>업직종(최대 5개 선택 가능)</h3>
+				<div>
+					<ul id="selectCategoryUl"></ul>
+				</div>
+				<div>
+					<div class="category-section">
+						<ul>
+							<th:block th:each="category : ${majorCategoryList}">
+								<li th:text="${category.majorCategoryName}" class="workType"
+									th:workTypeNo="${category.workTypeNo}"
+									th:onclick="subCategory(this.getAttribute('workTypeNo'))" style="cursor: pointer;">
+								</li>
+							</th:block>
+						</ul>
+					</div>
+					<div>
+						<ul id="subWorkType"></ul>
+					</div>
+				</div>
+				<h3>근무형태</h3>
+				<div class="jobTypeSection">
+					<label>
+						<input type="checkbox" id="partTime" name="jobTypeNo" value="1">알바
+					</label>
+					<label>
+						<input type="checkbox" id="fullTime" name="jobTypeNo" value="2">정규직
+					</label>
+				</div>
+
+				<h3>근무기간</h3>
+				<select name="periodNo">
+					<option value="1">무관</option>
+					<option value="2">하루</option>
+					<option value="3">1주일이하</option>
+					<option value="4">1주일 ~ 1개월</option>
+					<option value="5">1개월 ~ 3개월</option>
+					<option value="6">3개월 ~ 6개월</option>
+					<option value="7">6개월 ~ 1년</option>
+					<option value="8">1년 이상</option>
+				</select>
+
+				<h3>근무일시</h3>
+				<div id="select-container">
+					<section class="daysTimeSection">
+						<select class="daysNo">
+							<option value="1">무관</option>
+							<option value="2">월~일</option>
+							<option value="3">월~토</option>
+							<option value="4">월~금</option>
+							<option value="5">주말(토,일)</option>
+							<option value="6">주6일</option>
+							<option value="7">주5일</option>
+							<option value="8">주4일</option>
+							<option value="9">주3일</option>
+							<option value="10">주2일</option>
+							<option value="11">주1일</option>
+						</select>
+
+						<select class="timeNo">
+							<option value="1">무관</option>
+							<option value="2">오전 파트타임(06:00~12:00)</option>
+							<option value="3">오후 파트타임(12:00~18:00)</option>
+							<option value="4">저녁 파트타임(18:00~24:00)</option>
+							<option value="5">새벽 파트타임(00:00~06:00)</option>
+							<option value="6">오전~오후 파트타임</option>
+							<option value="7">오후~저녁 파트타임</option>
+							<option value="8">저녁~새벽 파트타임</option>
+							<option value="9">새벽~오전 파트타임</option>
+							<option value="10">풀타임(8시간이상)</option>
+						</select>
+					</section>
+				</div>
+
+				<button onclick="addSelect()" type="button" class="addSelectBtn">추가</button>
+
+				<h3>급여</h3>
+				<div name="workPay">
+					<select name="salaryNo">
+						<option value="1">시급</option>
+						<option value="2">월급</option>
+						<option value="3" selected>추후협의(시급)</option>
+						<option value="4">추후협의(월급)</option>
+					</select>
+
+					<input type="number" name="salAmount" min="0">원
+				</div>
+			</section>
+
+			<h2>자기소개</h2>
+			<section class="form-section">
+				<h3>자기소개 내용작성</h3>
+				<textarea placeholder="자기소개를 작성하세요." class="selfInfo" name="resumeContent" maxlength="1500"></textarea>
+				<div class="char-counter">0 / 1500자</div>
+			</section>
+
+			<div class="btn-section">
+				<button class="cancel-btn" type="button" onclick="window.history.back()"> 취소 </button>
+				<button class="submit-btn" type="submit"> 이력서 등록 </button>
+			</div>
+		</form>
+	</main>
+
+	<!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+	<th:block th:replace="~{common/main-footer}"></th:block>
+	<script src="/js/resume/resumeWrite.js"></script>
 </body>
 
 </html>

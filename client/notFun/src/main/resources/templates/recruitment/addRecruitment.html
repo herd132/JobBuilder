@@ -6,8 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>공고추가 하기</title>
 
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/myPageEmployer/myPageHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/recruitment/addRecruitment.css">
+
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
 </head>
 
 <body>
@@ -41,7 +47,40 @@
             </div>
 
             <div class="business-etcImg-area">
+              <h4>추가 이미지(대표이미지 포함 최대 5개)</h4>
               <button type="button" onclick="addBusinessImg()">사업장 이미지 추가</button>
+
+              <div class="businessImg">
+                <label for="img1">
+                  <img class="preview" src="">
+                </label>
+                <input type="file" name="images" class="inputImage" id="img1" accept="image/*">
+                <span class="delete-image">&times;</span>
+              </div>
+      
+              <div class="businessImg">
+                <label for="img2">
+                  <img class="preview" src="">
+                </label>
+                <input type="file" name="images" class="inputImage" id="img2" accept="image/*">
+                <span class="delete-image">&times;</span>
+              </div>
+      
+              <div class="businessImg">
+                <label for="img3">
+                  <img class="preview" src="">
+                </label>
+                <input type="file" name="images" class="inputImage" id="img3" accept="image/*">
+                <span class="delete-image">&times;</span>
+              </div>
+      
+              <div class="businessImg">
+                <label for="img4">
+                  <img class="preview" src="">
+                </label>
+                <input type="file" name="images" class="inputImage" id="img4" accept="image/*">
+                <span class="delete-image">&times;</span>
+              </div>
 
             </div>
 
@@ -75,9 +114,9 @@
 
           <div class="workcond-jobtype-area">
             <h4>근무형태</h4>
-            <input type="radio" name="workcondJobtype" value="1" id="partTime" checked> 
+            <input type="radio" name="jobtypeNo" value="1" id="partTime" checked> 
             <label for="partTime">알바</label>
-            <input type="radio" name="workcondJobtype" value="2" id="fullTime">
+            <input type="radio" name="jobtypeNo" value="2" id="fullTime">
             <label for="fullTime">정규직</label>
           </div>
 
@@ -85,10 +124,10 @@
             <h4>학력조건</h4>
             <select name="gradeNo" id="gradeNo">
               <option value="1">무관</option>
-              <option value="2">중졸</option>
-              <option value="3">고졸</option>
-              <option value="4">대졸(2,3년제)</option>
-              <option value="5">대졸(4년제)</option>
+              <option value="2">중졸 이상</option>
+              <option value="3">고졸 이상</option>
+              <option value="4">대졸(2,3년제) 이상</option>
+              <option value="5">대졸(4년제) 이상</option>
               <option value="6">대학원 이상</option>
             </select>
           </div>
@@ -98,7 +137,8 @@
             <select name="salaryNo" id="salaryNo">
               <option value="1">시급</option>
               <option value="2">월급</option>
-              <option value="3">추후협의</option>
+              <option value="3">추후협의(시급)</option>
+              <option value="4">추후협의(월급)</option>
             </select>
             <input type="number" name="salaryMount" id="salaryMount" min="0" placeholder="금액을 입력하세요"> 원
           </div>
@@ -207,8 +247,9 @@
     </main>
   </div>
 
-  <!-- footer 임시용(메인 푸터)-->
-  <th:block th:replace="~{common/main-footer}"></th:block>
+  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
+
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
   <script src="/js/recruitment/addRecruitment.js"></script>
 </body>
 

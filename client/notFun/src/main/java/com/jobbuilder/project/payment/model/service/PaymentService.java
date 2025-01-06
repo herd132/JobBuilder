@@ -9,9 +9,12 @@ public interface PaymentService {
 
 	List<Membership> getMembershipDetails(int employerNo);
 
-	void savePayment(Payment payment, List<Integer> membershipNumbers);
+	void savePayment(Payment payment, List<Integer> validMembershipNumbers, int emptyMembershipCount,
+			List<Membership> membershipList);
 
-	
+	List<Payment> getPaymentList(int employerNo);
+
+
 
 
 }

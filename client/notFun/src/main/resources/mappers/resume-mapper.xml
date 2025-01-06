@@ -1,26 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.jobbuilder.project.resume.model.mapper.ResumeMapper">
+<mapper
+	namespace="com.jobbuilder.project.resume.model.mapper.ResumeMapper">
 
 	<!-- 대분류 리스트 얻어오기 -->
 	<select id="selectMajorCategory">
-	SELECT SUBSTR(WORKTYPE_NO, 1, 2) AS "workTypeNo", 
+		SELECT SUBSTR(WORKTYPE_NO, 1, 2) AS "workTypeNo",
 		SUBSTR(WORKTYPE_CATEGORY, 1, INSTR(WORKTYPE_CATEGORY, '전체')-2) AS "majorCategoryName"
-	FROM EMPLOYER_WORKTYPE
-	WHERE WORKTYPE_NO LIKE '__00'
+		FROM EMPLOYER_WORKTYPE
+		WHERE WORKTYPE_NO LIKE '__00'
 	</select>
-	
+
 	<!-- workType 가 일치한 소분류 업직종 불러오기 -->
 	<select id="selectsubCategoryList">
-	SELECT WORKTYPE_NO AS "workTypeNo", WORKTYPE_CATEGORY AS "worktypeCategory"
-	FROM EMPLOYER_WORKTYPE
-	WHERE WORKTYPE_NO LIKE #{workTypeNo}||'__'
+		SELECT WORKTYPE_NO AS "workTypeNo", WORKTYPE_CATEGORY AS "worktypeCategory"
+		FROM EMPLOYER_WORKTYPE
+		WHERE WORKTYPE_NO LIKE #{workTypeNo}||'__'
 		AND WORKTYPE_NO NOT LIKE '__00'
 	</select>
-	
-	<insert id="writeResume">
-	INSERT INTO RESUME (RESUME_NO, WORKER_NO, GRADE_NO, WORK_DATE_NO, PAY_TYPE, INPUT_PAY)
-	VALUES (SEQ_RESUME_NO.NEXTVAL, #{workerNo}, #{gradeNo}, #{workDateNo}, #{payType}, #{inputPay})
+
+	<!-- <insert id="writeResume"> INSERT INTO RESUME (RESUME_NO, WORKER_NO, 
+		GRADE_NO, WORK_DATE_NO, PAY_TYPE, INPUT_PAY) VALUES (SEQ_RESUME_NO.NEXTVAL, 
+		#{workerNo}, #{gradeNo}, #{workDateNo}, #{payType}, #{inputPay}) </insert> -->
+
+	<!-- 1. 이력서 기본 작성 -->
+	<insert id="insertResume" useGeneratedKeys="true" parameterType="Resume">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="resumeNo">
+			SELECT SEQ_RESUME_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO RESUME (
+		RESUME_NO,
+		RESUME_TITLE,
+		RESUME_CONTENT,
+		WORKER_NO,
+		GRADE_NO,
+		PERIOD_NO,
+		SALARY_NO,
+		SALARY_AMOUNT) VALUES (
+		#{resumeNo},
+		#{resumeTitle},
+		#{resumeContent},
+		#{workerNo},
+		#{gradeNo},
+		#{periodNo},
+		#{salaryNo},
+		#{salaryAmount})
 	</insert>
+
+
+	<!-- 2. 이력서 관련 RESUME_PERIOD 삽입 -->
+	<insert id="insertResumePeriod">
+		INSERT INTO RESUME_PERIOD VALUES(#{resumeNo}, #{periodNo})
+	</insert>
+
+	<!-- 3. 이력서 관련 RESUME_WORKTYPE 삽입 -->
+	<insert id="insertResumeWorkType" parameterType="map">
+		INSERT INTO RESUME_WORKTYPE (RESUME_NO, WORKTYPE_NO)
+		SELECT * FROM (
+        <foreach collection="workTypeList" item="workTypeNo" separator="UNION ALL">
+            SELECT #{resumeNo}, #{workTypeNo} FROM DUAL
+        </foreach>
+    	)
+	</insert>
+
+	<!-- 4. 이력서 관련 RESUME_JOB_TYPE 삽입 -->
+	<insert id="insertResumeJobType" parameterType="map">
+		INSERT INTO RESUME_JOB_TYPE (RESUME_NO, JOBTYPE_NO)
+	    SELECT * FROM (
+	        <foreach collection="jobTypeNoList" item="jobTypeNo" separator="UNION ALL">
+	            SELECT #{resumeNo}, #{jobTypeNo} FROM DUAL
+	        </foreach>
+	    )
+	</insert>
+
+
+	<!-- 5. 이력서 관련 RESUME_DAYSTIME 삽입 -->
+	<insert id="insertResumeDaysTime">
+		INSERT INTO RESUME_DAYSTIME (RESUME_NO, DAYS_NO, TIME_NO)
+	    SELECT * FROM (
+	        <foreach collection="list" item="item" separator="UNION ALL">
+	            SELECT #{item.resumeNo}, #{item.daysNo}, #{item.timeNo} FROM DUAL
+	        </foreach>
+	    )
+	</insert>
+
+
+	<!-- 6-1. 이력서 관련 CAREER_INFO 삽입 -->
+	<insert id="insertCareerInfo"  parameterType="CareerInfo" useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int" keyProperty="careerNo">
+			SELECT SEQ_CAREER_INFO_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CAREER_INFO VALUES (
+		#{careerNo}, 
+		#{companyName}, 
+		TO_DATE(#{startDate}, 'yyyy-MM-dd'), 
+		TO_DATE(#{endDate}, 'yyyy-MM-dd'), 
+		#{careerDescription},
+		#{workerNo}
+		)
+	</insert>
+
+	<!-- 6-2. 이력서 관련 RESUME_CAREER 삽입-->
+	<insert id="insertResumeCareer" parameterType="map">
+		INSERT INTO RESUME_CAREER VALUES (#{resumeNo}, #{careerNo})
+	</insert>
+
+
+
+
+
+
+
 
 </mapper>
