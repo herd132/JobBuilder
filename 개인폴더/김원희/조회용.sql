@@ -624,3 +624,6 @@ WHERE
         )      
             
 	);
+
+
+COMMIT;

@@ -36,7 +36,7 @@ public class Member {
 	private String workerMbti;		// 알바생 MBTI
 	private String workerBirthDate; // 알바생 생년월일
 	
-
+	private String memberDelFl;
 	
 	
 	

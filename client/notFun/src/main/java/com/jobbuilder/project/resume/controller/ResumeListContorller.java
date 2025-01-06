@@ -81,10 +81,6 @@ public class ResumeListContorller {
 	        // resumeNo로 데이터를 조회
 	    	
 	    	
-            if (loginWorker != null) {
-            int workerNo = loginWorker.getWorkerNo();
-            }
-	    	
 	        Resume resume = service.getResumeByNo(resumeNo);
 
 	        // 모델에 데이터 추가
@@ -94,6 +90,24 @@ public class ResumeListContorller {
 	        return "resume/resumeDetail"; // templates/resume/resumeDetail.html
 	    }
 
+
+	    @PostMapping("/resumeDetaila")
+	    @ResponseBody
+	    public Resume getResumeDetail(@RequestBody Map<String, Object> requestBody) {
+	        int resumeNo = Integer.parseInt(requestBody.get("resumeNo").toString());
+	        Resume resume = service.getResumeByNo(resumeNo);
+
+	        if (resume == null) {
+	            throw new IllegalArgumentException("Resume not found for resumeNo: " + resumeNo);
+	        }
+	        return resume; // JSON 형태로 반환
+	    }
+
+
+
+	    
+	    
+	    
 
 	    @GetMapping("/resumeRecommend")
 	    public String getRecommendations(@RequestParam("resumeNo") int resumeNo, Model model) {
