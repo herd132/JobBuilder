@@ -13,42 +13,7 @@
   </article>
 </footer>
 
-<!-- 고객센터 채팅봇 모달 -->
-<div id="chatbotModal" class="chatbot-modal">
-  <div class="chatbot-header">
-      <div class="drag-handle">
-          <div class="bot-status">
-              <span class="status-dot"></span>
-              챗봇 상담중
-          </div>
-      </div>
-      <button class="close-btn">&times;</button>
-  </div>
-  <div class="chatbot-body">
-      <div class="chat-messages">
-          <div class="message bot">
-              <div class="message-avatar">
-                  <i class="fas fa-robot"></i>
-              </div>
-              <div class="message-content">
-                  안녕하세요! 무엇을 도와드릴까요?
-                  <div class="quick-buttons">
-                      <button>자주 묻는 질문</button>
-                      <button>채용 문의</button>
-                      <button>이력서 관련</button>
-                      <button class="counselor">상담원 연결</button>
-                  </div>
-              </div> 
-          </div>
-      </div>
-      <div class="chat-input">
-          <input type="text" placeholder="메시지를 입력하세요..." disabled>
-          <button class="send-btn">
-              <i class="fas fa-paper-plane"></i>
-          </button>
-      </div>
-  </div>
-</div>
+
 
 <script th:inline="javascript">
   const message =  /*[[${message}]]*/ "전달 받은 message";
@@ -57,4 +22,3 @@
 </script>
 
 <script src="/js/main.js"></script>
-<script src="/js/chatting/websocket_chat.js"></script>

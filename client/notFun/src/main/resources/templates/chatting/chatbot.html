@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+  <link rel="stylesheet" href="/css/chatting/chatbot.css">
+</head>
+<body>
+  <!-- 고객센터 채팅봇 모달 -->
+<div id="chatbotModal" class="chatbot-modal active">
+  <div class="chatbot-header">
+      <div class="drag-handle">
+          <div class="bot-status">
+              <span class="status-dot"></span>
+              챗봇 상담중
+          </div>
+      </div>
+      <button class="close-btn">&times;</button>
+  </div>
+  <div class="chatbot-body">
+      <div class="chat-messages">
+          <div class="message bot">
+              <div class="message-avatar">
+                  <i class="fas fa-robot"></i>
+              </div>
+              <div class="message-content">
+                  안녕하세요! 무엇을 도와드릴까요?
+                  <div class="quick-buttons">
+                      <button>자주 묻는 질문</button>
+                      <button>채용 문의</button>
+                      <button>이력서 관련</button>
+                      <button class="counselor">상담원 연결</button>
+                  </div>
+              </div> 
+          </div>
+      </div>
+      <div class="chat-input">
+          <input type="text" placeholder="메시지를 입력하세요..." disabled>
+          <button class="send-btn">
+              <i class="fas fa-paper-plane"></i>
+          </button>
+      </div>
+  </div>
+
+  <script src="/js/chatting/chatbot.js"></script>
+
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+  
+</div>
+</body>
+</html>

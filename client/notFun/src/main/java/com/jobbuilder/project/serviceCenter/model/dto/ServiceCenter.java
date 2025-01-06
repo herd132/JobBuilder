@@ -20,7 +20,7 @@ public class ServiceCenter {
 	private String serviceCenterContent;
 	private String serviceCenterWriteDate;
 	private String serviceCenterUpdateDate;
-	private String serviceCenterReadCount;
+	private int serviceCenterReadCount;
 	private char serviceCenterDelFl;
 	private int serviceCenterCode;
 	

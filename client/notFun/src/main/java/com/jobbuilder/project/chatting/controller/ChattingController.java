@@ -37,6 +37,11 @@ public class ChattingController {
 	
 	private final ChattingService service;
 	
+	@GetMapping("bot")
+	public String chatBot() {
+		return "chatting/chatbot";
+	}
+	
 	@GetMapping("/main")
 	public String chattingMain(@SessionAttribute(name = "loginCounselor", required = false) Counselor loginCounselor,
 							Model model) {

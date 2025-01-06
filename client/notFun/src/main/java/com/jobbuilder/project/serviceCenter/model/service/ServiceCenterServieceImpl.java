@@ -17,6 +17,7 @@ import com.jobbuilder.project.board.model.dto.Pagination;
 import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.serviceCenter.model.dto.InquiryImage;
 import com.jobbuilder.project.serviceCenter.model.dto.InquiryOneOnOne;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 import com.jobbuilder.project.serviceCenter.model.mapper.ServiceCenterMapper;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,41 @@ public class ServiceCenterServieceImpl implements ServiceCenterService{
 
 	@Value("${my.inquery.folder-path}")
 	private String folderPath; // C:/uploadFiles/board
+	
+	// 게시글 리스트 조회
+	@Override
+	public Map<String, Object> serviceCenterList(int typeNo, int cp) {
+
+		int listCount = mapper.getListCount(typeNo);
+		
+		Pagination pagination = null;
+		
+		switch (typeNo) {
+		case 1: pagination = new Pagination(cp, listCount);
+			break;
+
+		case 2: pagination = new Pagination(cp, listCount, 15, 5);
+			break;
+
+		case 3: pagination = new Pagination(cp, listCount, 6, 10);
+			break;
+
+		default:
+		}
+		
+		int limit = pagination.getLimit();
+		int offset = (cp - 1 ) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+		List<ServiceCenter> serviceCenterList = mapper.serviceCenterList(typeNo, rowBounds); 
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("pagination", pagination);
+		map.put("serviceCenterList", serviceCenterList);
+		
+		return map;
+	}
 	
 	// 문의 내역 리스트 조회
 	@Override
@@ -56,6 +92,18 @@ public class ServiceCenterServieceImpl implements ServiceCenterService{
 		map.put("inquiryList", boardList);
 		
 		return map;
+	}
+	
+	@Override
+	public ServiceCenter selectOne(Map<String, Integer> map) {
+		// TODO Auto-generated method stub
+		return mapper.selectOne(map);
+	}
+	
+	@Override
+	public int updateReadCount(int serviceCenterNo) {
+		// TODO Auto-generated method stub
+		return mapper.updateReadCount(serviceCenterNo);
 	}
 
 	// 문의글 삽입
@@ -114,6 +162,7 @@ public class ServiceCenterServieceImpl implements ServiceCenterService{
 				throw new RuntimeException();
 			}
 		}
+		
 		return result;
 	}
 }
