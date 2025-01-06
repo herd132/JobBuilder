@@ -6,8 +6,16 @@ import java.util.Map;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jobbuilder.project.serviceCenter.model.dto.InquiryOneOnOne;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 
 public interface ServiceCenterService {
+	
+	/** 고객센터 글 리스트 조회 종합
+	 * @param i
+	 * @param cp
+	 * @return
+	 */
+	Map<String, Object> serviceCenterList(int typeNo, int cp);
 
 	/** 유저 문의 글 작성
 	 * @param images
@@ -22,5 +30,9 @@ public interface ServiceCenterService {
 	 * @return
 	 */
 	Map<String, Object> selectInquiryList(int memberNo, int cp);
+
+	ServiceCenter selectOne(Map<String, Integer> map);
+
+	int updateReadCount(int serviceCenterNo);
 
 }

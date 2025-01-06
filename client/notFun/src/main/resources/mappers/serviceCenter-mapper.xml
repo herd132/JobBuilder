@@ -2,12 +2,91 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.serviceCenter.model.mapper.ServiceCenterMapper">
 
-	<!-- 게시글 수 세기-->
+	<!-- 고객센터 글 수 -->
+	<select id="getListCount">
+		SELECT COUNT(*) FROM "SERVICE_CENTER"
+		WHERE SERVICE_CENTER_CODE = #{typeNo}	
+	</select>
+	
+	
+	<!-- 고객센터 글 종합 조회 -->
+	<select id="serviceCenterList">
+	
+		SELECT SERVICE_CENTER_NO, SERVICE_CENTER_TITLE,
+		
+		<choose>
+			<when test='typeNo == "1"'>
+				SERVICE_CENTER_READ_COUNT,
+			</when>
+			
+			<when test='typeNo == "2"'>
+				SERVICE_CENTER_CONTENT,
+			</when>
+			
+			<when test='typeNo == "3"'>
+				SERVICE_CENTER_CONTENT,
+			</when>
+		</choose>
+		
+		<![CDATA[
+		CASE
+			WHEN SYSDATE - SERVICE_CENTER_WRITE_DATE < 1 / 24 / 60
+			THEN FLOOR((SYSDATE - SERVICE_CENTER_WRITE_DATE) * 24 * 60 * 60 ) || '초 전'
+			
+			WHEN SYSDATE - SERVICE_CENTER_WRITE_DATE < 1 / 24
+			THEN FLOOR((SYSDATE - SERVICE_CENTER_WRITE_DATE) * 24 * 60) || '분 전'
+			
+			WHEN SYSDATE - SERVICE_CENTER_WRITE_DATE < 1
+			THEN FLOOR((SYSDATE - SERVICE_CENTER_WRITE_DATE) * 24) || '시간 전'
+			
+			ELSE TO_CHAR(SERVICE_CENTER_WRITE_DATE, 'YYYY.MM.DD') 
+		END SERVICE_CENTER_WRITE_DATE
+		]]>
+		
+		FROM "SERVICE_CENTER"
+		WHERE SERVICE_CENTER_DEL_FL = 'N'
+		AND SERVICE_CENTER_CODE = #{typeNo}
+		ORDER BY SERVICE_CENTER_NO  DESC
+		
+	</select>
+	
+	<select id="selectOne">
+		SELECT SERVICE_CENTER_NO, SERVICE_CENTER_TITLE, SERVICE_CENTER_CONTENT,
+		
+		
+		<![CDATA[
+		CASE
+			WHEN SYSDATE - SERVICE_CENTER_WRITE_DATE < 1 / 24 / 60
+			THEN FLOOR((SYSDATE - SERVICE_CENTER_WRITE_DATE) * 24 * 60 * 60 ) || '초 전'
+			
+			WHEN SYSDATE - SERVICE_CENTER_WRITE_DATE < 1 / 24
+			THEN FLOOR((SYSDATE - SERVICE_CENTER_WRITE_DATE) * 24 * 60) || '분 전'
+			
+			WHEN SYSDATE - SERVICE_CENTER_WRITE_DATE < 1
+			THEN FLOOR((SYSDATE - SERVICE_CENTER_WRITE_DATE) * 24) || '시간 전'
+			
+			ELSE TO_CHAR(SERVICE_CENTER_WRITE_DATE, 'YYYY.MM.DD') 
+		END SERVICE_CENTER_WRITE_DATE
+		]]>
+		
+		FROM "SERVICE_CENTER"
+		WHERE SERVICE_CENTER_DEL_FL = 'N'
+		AND SERVICE_CENTER_NO = #{serviceCenterNo}
+		ORDER BY SERVICE_CENTER_NO  DESC
+	</select>
+	
+	<update id="updateReadCount">
+		UPDATE "SERVICE_CENTER" SET
+		SERVICE_CENTER_READ_COUNT = SERVICE_CENTER_READ_COUNT + 1
+		WHERE SERVICE_CENTER_NO = #{serviceCenterNo}
+	</update>
+	
+	<!-- 1:1 문의글 수 세기-->
 	<select id="getInquiryListCount">
 		SELECT COUNT(*) FROM "INQUIRY_ONE_ON_ONE"
 		WHERE MEMBER_NO = #{memberNo}	
 	</select>
-
+		
 	<!-- noteList 조회용 쿼리 -->
 	<select id="selectInquiryList">
 	

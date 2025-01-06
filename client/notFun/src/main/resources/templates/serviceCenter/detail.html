@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>공지사항 상세보기</title>
+    
+    <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+    <th:block th:replace="~{common/common}"></th:block>
+
+    <!-- <main> 안쪽 CSS -->
+    <link rel="stylesheet" href="/css//serviceCenter/detail.css">
+</head>
+
+<body>
+  
+  <th:block th:replace="~{common/main-header}"></th:block>
+
+    <div class="container">
+        <div class="notice-card">
+            <div class="notice-header">
+                <div >
+                  <h1 class="notice-title" th:text="${serviceCenter.serviceCenterTitle}">제목</h1>
+                  <button class="list-button">목록으로</button>
+                </div>
+
+                <div class="notice-meta">
+                    <div class="meta-item">
+                        <i class="fa-regular fa-calendar"></i>
+                        <span th:text="${serviceCenter.serviceCenterTitle}">게시일</span>
+                    </div>
+                    <div class="meta-item">
+                        <i class="fa-regular fa-eye"></i>
+                        <span th:text="|조회수 ${serviceCenter.serviceCenterReadCount}|">조회수</span>
+                    </div>
+                </div>
+            </div>
+            <div class="notice-content" th:text="${serviceCenter.serviceCenterContent}">
+                내용
+            </div>
+        </div>
+    </div>
+
+    
+    <th:block th:replace="~{common/main-footer}"></th:block>
+    <script src="/js/serviceCenter/detail.js"></script>
+</body>
+</html>
