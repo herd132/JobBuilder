@@ -2,18 +2,148 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.resume.model.mapper.ResumeListMapper">
 
-<!-- 시간될때 필요한걸로 추가해야함.. -->
+
 	<resultMap id="resumeResultMap" type="Resume">
+	    <result property="resumeNo" column="RESUME_NO"/>
+	    <result property="resumeTitle" column="RESUME_TITLE"/>
+	    <result property="resumeContent" column="RESUME_CONTENT"/>
 	    <result property="workerNo" column="WORKER_NO"/>
+	    <result property="gradeNo" column="GRADE_NO"/>
+	    <result property="periodNo" column="PERIOD_NO"/>
+	    <result property="salaryNo" column="SALARY_NO"/>
+	    <result property="salaryAmount" column="SALARY_AMOUNT"/>
+	    <result property="workcondAddressNo" column="WORKCOND_ADDRESS_NO"/>
+	    <result property="registrationDate" column="REGISTRATION_DATE"/>
+	    <result property="modificationDate" column="MODIFICATION_DATE"/>
+	    <result property="resumeDelFl" column="RESUME_DEL_FL"/>
+	    <result property="resumeHideFl" column="RESUME_HIDE_FL"/>
+	    <result property="workcondAddressTypeNo" column="WORKCOND_ADDRESS_TYPE_NO"/>
+	    <result property="workcondAddressTypeInfo" column="WORKCOND_ADDRESS_TYPE_INFO"/>
+	    <result property="totalCareer" column="TOTAL_CAREER"/>
 	</resultMap>
 
 
-	<select id="getResumeList" parameterType="Resume">
-		SELECT * FROM RESUME
-		WHERE WORKER_NO =#{workerNo}
+
+	<select id="getResumeList" parameterType="Resume" resultMap="resumeResultMap">
+				SELECT 
+		    A.GRADE_NO AS GRADE_NO,
+		    A.MODIFICATION_DATE AS MODIFICATION_DATE,
+		    A.PERIOD_NO AS PERIOD_NO,
+		    A.REGISTRATION_DATE AS REGISTRATION_DATE,
+		    A.RESUME_CONTENT AS RESUME_CONTENT,
+		    A.RESUME_DEL_FL AS RESUME_DEL_FL,
+		    A.RESUME_DEL_FL AS RESUME_HIDE_FL,
+		    A.RESUME_NO AS RESUME_NO,
+		    A.RESUME_TITLE AS RESUME_TITLE,
+		    A.SALARY_AMOUNT AS SALARY_AMOUNT,
+		    A.SALARY_NO AS SALARY_NO,
+		    A.WORKER_NO AS WORKER_NO,
+		    (
+		        SELECT 
+		            LISTAGG(D.WORKCOND_ADDRESS_TYPE_INFO, ', ') WITHIN GROUP (ORDER BY D.WORKCOND_ADDRESS_TYPE_NO)
+		        FROM 
+		            WORKCOND_ADDRESS B
+		        JOIN 
+		            WORKCOND_ADDRESS_TYPE D
+		        ON 
+		            B.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
+		        WHERE 
+		            B.RESUME_NO = A.RESUME_NO
+		    ) AS WORKCOND_ADDRESS_TYPE_INFO,
+		    (
+		        SELECT 
+		            NVL(SUM(
+		                CASE 
+		                    WHEN E.END_DATE IS NULL THEN TRUNC(SYSDATE) - TRUNC(E.START_DATE)
+		                    ELSE TRUNC(E.END_DATE) - TRUNC(E.START_DATE)
+		                END
+		            ), 0)
+		        FROM 
+		            RESUME_CAREER C
+		        JOIN 
+		            CAREER_INFO E
+		        ON 
+		            C.CAREER_NO = E.CAREER_NO
+		        WHERE 
+		            C.RESUME_NO = A.RESUME_NO
+		    ) AS TOTAL_CAREER,
+		    (
+		        SELECT 
+		            COUNT(DISTINCT B.RECRUITMENT_NO)
+		        FROM 
+		            WORKCOND_ADDRESS B
+		        WHERE 
+		            B.WORKCOND_ADDRESS_TYPE_NO IN (
+		                SELECT DISTINCT F.WORKCOND_ADDRESS_TYPE_NO
+		                FROM WORKCOND_ADDRESS F
+		                WHERE F.RESUME_NO = A.RESUME_NO
+		            )
+		            AND B.RECRUITMENT_NO IS NOT NULL
+		    ) AS RECOMMENDATION
+		FROM 
+		    RESUME A
+		WHERE 
+		    A.WORKER_NO = #{workerNo}
+		    AND A.RESUME_DEL_FL = 'N'
+		ORDER BY 
+		    A.RESUME_NO DESC
+
 	</select>
 
+	<update id="updateResumeHideStatus">
+	    UPDATE RESUME
+	    SET RESUME_HIDE_FL = #{value}
+	    WHERE RESUME_NO = #{resumeNo}
+	</update>
+	
+	<update id="updateResumeDeleteStatus">
+	    UPDATE RESUME
+	    SET RESUME_DEL_FL = #{value}
+	    WHERE RESUME_NO = #{resumeNo}
+	</update>
 
+
+    <select id="selectResumeByNo" resultType="com.jobbuilder.project.resume.model.dto.Resume">
+        SELECT *
+        FROM RESUME
+        WHERE RESUME_NO = #{resumeNo}
+    </select>
+
+
+    <select id="selectRecommendationsByResumeNo" resultType="com.jobbuilder.project.recruitment.model.dto.Recruitment">
+        SELECT DISTINCT
+            A.RECRUITMENT_NO AS RECRUITMENT_NO,
+            A.RECRUITMENT_TITLE AS RECRUITMENT_TITLE,
+            A.RECRUITMENT_CONTENT AS RECRUITMENT_CONTENT,
+            A.RECRUITMENT_DEADLINE AS RECRUITMENT_DEADLINE,
+            A.NUM_OF_RECRUITMENT_NAME AS NUM_OF_RECRUITMENT_NAME,
+            A.SALARY_NO AS SALARY_NO,
+            A.GRADE_NO AS GRADE_NO,
+            A.PERIOD_NO AS PERIOD_NO,
+            A.DAYS_NO AS DAYS_NO,
+            A.TIME_NO AS TIME_NO,
+            A.EMPLOYER_NO AS EMPLOYER_NO,
+            A.SALARY_MOUNT AS SALARY_MOUNT,
+            A.WRITE_DATE AS WRITE_DATE,
+            A.UPDATE_DATE AS UPDATE_DATE,
+            A.RECRUITMENT_DEL_FL AS RECRUITMENT_DEL_FL,
+            A.MEMBER_NO AS MEMBER_NO,
+            A.RECRUIT_COMPLETE_FL AS RECRUIT_COMPLETE_FL,
+            A.RECRUITMENT_PROFILE AS RECRUITMENT_PROFILE
+        FROM 
+            WORKCOND_ADDRESS B
+        JOIN 
+            WORKCOND_ADDRESS C
+        ON 
+            B.WORKCOND_ADDRESS_TYPE_NO = C.WORKCOND_ADDRESS_TYPE_NO
+        JOIN 
+            RECRUITMENT A
+        ON 
+            C.RECRUITMENT_NO = A.RECRUITMENT_NO
+        WHERE 
+            B.RESUME_NO = #{resumeNo}
+            AND C.RECRUITMENT_NO IS NOT NULL
+    </select>
 
 
 </mapper>

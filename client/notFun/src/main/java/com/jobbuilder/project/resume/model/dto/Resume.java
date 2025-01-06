@@ -3,13 +3,20 @@ package com.jobbuilder.project.resume.model.dto;
 import java.util.List;
 import java.util.Map;
 
+import com.jobbuilder.project.payment.model.dto.Payment;
+
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+@Getter
+@Setter
+@ToString
+@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -26,6 +33,7 @@ public class Resume {
 	private String registrationDate; // 작성일
 	private String modificationDate; // 수정일
 	private String resumeDelFl; // 삭제여부(Y/N)
+	private String resumeHideFl; // 공개여부(Y/N)
 	
 	private List<String> resumeJobTypeList; // 희망근무형태List
 	private List<CareerInfo> resumeCareerInfoList; // 희망경력사항List
@@ -33,5 +41,17 @@ public class Resume {
 	private List<ResumePeriod> resumePeriodList; // 희망근무기간List
 	private List<ResumeDaysTime> resumeDaysTimeList; // 희망근무요일시간List
 	
+
+    private int workcondAddressNo; // 해소테이블 주소구분번호
+    private String workcondAddressTypeNo;  // 희망주소코드 0100 등
+    private String workcondAddressTypeInfo;// 희망주소명 서울 등
+    
+    
+    private int totalCareer; // 총경력 (셀렉용)
+    private int updateType;
+    private String value;
+    
+    private int recommendation; // 추천알바건수
+    
 	
 }

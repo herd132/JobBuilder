@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div class="recommendation-header">맞춤 알바 추천 목록</div>
+  <ul class="recommendation-list">
+      <li th:each="recruitment : ${recommendations}" class="recommendation-item">
+        <div class="recommendation-title">
+          <strong>공고 제목:</strong>
+          <a th:href="@{/recruitment/detail/{id}(id=${recruitment.recruitmentNo})}" th:text="${recruitment.recruitmentTitle}">[공고 제목]</a>
+      </div>
+          <div><strong>공고 내용:</strong> <span th:text="${recruitment.recruitmentContent}">[공고 내용]</span></div>
+          <div><strong>마감일:</strong> <span th:text="${recruitment.recruitmentDeadline}">[마감일]</span></div>
+          <div><strong>급여:</strong> <span th:text="${recruitment.salaryMount}">[급여]</span></div>
+          <div><strong>모집 인원:</strong> <span th:text="${recruitment.numOfRecruitmentName}">[모집 인원]</span></div>
+          <br>
+      </li>
+  </ul>
+</body>
+</html>

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이력서 관리</title>
+    <!-- CSS, font awesome 라이브러리-->
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/resume/resumeList.css">
+    <link rel="stylesheet" href="/css/resume/resume.css">
+    <meta name="workerNo" th:content="${session.loginWorker != null ? session.loginWorker.workerNo : ''}">
+
+</head>
+
+
+<body>
+
+    <!-- header (홈버튼, 홈페이지 이름, 로그인버튼, 네비바, 검색창)-->
+    <th:block th:replace="~{common/main-header}"></th:block>
+    <div class="resume-background-gray">
+
+        <!-- 흰색배경영역(안쪽)  -->
+        <div class="resume-background-white">
+
+            <div class="resume-detail">
+                <div class="resume-header">이력서 상세 정보</div>
+
+                <div class="resume-field">
+                    <span>이력서 제목:</span>
+                    <span th:text="${resume.resumeTitle}">[이력서 제목]</span>
+                </div>
+
+
+
+
+
+
+                <div class="resume-field">
+                    <span>작성일:</span>
+                    <span th:text="${resume.registrationDate}">[작성일]</span>
+                </div>
+
+                <div class="resume-field">
+                    <span>수정일:</span>
+                    <span th:text="${resume.modificationDate}">[수정일]</span>
+                </div>
+
+                <div class="resume-field">
+                    <span>공개 여부:</span>
+                    <span th:text="${resume.resumeHideFl == 'Y' ? '비공개' : '공개'}">[공개 여부]</span>
+                </div>
+
+                <div class="resume-field">
+                    <span>경력:</span>
+                    <span th:text="${resume.totalCareer}">[총 경력]</span>
+                </div>
+
+                <div class="resume-field">
+                    <span>자기소개:</span>
+                    <p th:text="${resume.resumeContent}">[자기소개 내용]</p>
+                </div>
+
+
+
+
+
+
+
+            </div>
+
+
+
+        </div> <!-- 흰색부분 -->
+    </div> <!-- 회색부분 -->
+
+
+    <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+    <th:block th:replace="~{common/main-footer}"></th:block>
+
+
+
+
+    <script src="/js/resume/resumeDatail.js"></script>
+</body>
+
+</html>
