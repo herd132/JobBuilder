@@ -91,8 +91,7 @@ public class ResumeController {
 		log.debug("resume {}", resume); // gradeNo, periodNo, salaryNo, salaryAmount
 		log.debug("희망업종 workTypeList {}", workTypeList);
 		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
-		log.debug("희망급여 salAmount {} ", salAmount);
-		
+		log.debug("희망급여 salAmount {} ", salAmount);		
 		log.debug("careerInfoListJson {}", careerInfoListJson);
 
 		List<CareerInfo> careerInfoList = null;

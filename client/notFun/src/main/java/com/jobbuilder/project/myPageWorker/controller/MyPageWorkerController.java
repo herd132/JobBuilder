@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jobbuilder.project.myPageWorker.model.service.MyPageWorkerService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -74,7 +75,8 @@ public class MyPageWorkerController {
 	public String WorkerChangePw(@SessionAttribute("loginWorker") Worker loginWorker,
 								@RequestParam("WorkerPw") String WorkerPw,
 								RedirectAttributes ra,
-								SessionStatus status) {
+								SessionStatus status,
+								HttpSession session) {
 		log.debug("workerPw : " + WorkerPw);
 		log.debug("memberNo : " + loginWorker.getMemberNo());
 		
@@ -85,8 +87,10 @@ public class MyPageWorkerController {
 		if(result > 0) { 
 			
 			message = "비밀번호가 성공적으로 변경되었습니다. 다시 로그인 해주세요~";
-			status.setComplete();
+			session.invalidate();				
+			
 		}
+		
 		ra.addFlashAttribute("message", message);  
 		
 		return "redirect:/"; 
