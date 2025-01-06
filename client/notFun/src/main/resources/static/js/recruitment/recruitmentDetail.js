@@ -1,21 +1,17 @@
 console.log("recruitmentDetail.js 와 연결됨");
 
-
-
-
-
-
-// 마이 페이지에서 상세 공고 페이지 들어온 경우
+// 마이 페이지에서 상세 공고 페이지 들어온 경우, 마이페이지로 돌아가기
 const goToMyRecruitmentListBtn = document.querySelector("#goToMyRecruitmentListBtn");
 
 if(goToMyRecruitmentListBtn != null){
   goToMyRecruitmentListBtn.addEventListener("click", () => {
-    location.href = "/myPageEmp/recruitmentList" + location.search;
+    const urlParams = new URLSearchParams(location.search);
+    location.href = "/myPageEmp/recruitmentList?cp=" + urlParams.get("cp");
   })
-
 }
 
-// 공고 전체페이지에서 상세 공고 페이지 들어온 경우
+
+// 공고 전체페이지에서 상세 공고 페이지 들어온 경우, 공고전체목록으로 돌아가기
 const goToRecruitmentListBtn = document.querySelector("#goToRecruitmentListBtn");
 
 if(goToRecruitmentListBtn != null){
@@ -26,6 +22,27 @@ if(goToRecruitmentListBtn != null){
   })
 }
 
+// 공고작성한 고용주와와 로그인한 고용주가 일치하는 경우(수정, 삭제)
+const updateRecruitmentBtn = document.querySelector("#updateRecruitmentBtn");
+const deleteRecruitmentBtn = document.querySelector("#deleteRecruitmentBtn");
+
+if(updateRecruitmentBtn != null){
+  updateRecruitmentBtn.addEventListener("click", () => {
+    location.href = location.pathname.replace("detail", "update") + location.search;
+  })
+}
+
+if(deleteRecruitmentBtn != null){
+  deleteRecruitmentBtn.addEventListener("click", () => {
+
+    if (!confirm("삭제 하시겠습니까?")) {
+      alert("취소되었습니다.");
+      return;
+    }
+
+    location.href = location.pathname.replace("detail", "delete") + location.search;
+  })
+}
 
 
 

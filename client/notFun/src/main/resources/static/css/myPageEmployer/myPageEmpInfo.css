@@ -1,3 +1,59 @@
+.modal-recruitment-content ul {
+  display: grid;
+  grid-template-columns: 1fr 2.5fr 1.5fr 1fr 1fr;
+  padding: 15px;
+  margin: 0;
+  list-style: none;
+  border-bottom: 1px solid #e6e6e6;
+  background-color: #ffffff;
+}
+
+/* 첫 번째 ul (헤더) 스타일링 */
+.modal-recruitment-content ul:first-child {
+  background-color: #f8f9fa;
+  font-weight: 600;
+  color: #333;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+}
+
+/* 마지막 ul 스타일링 */
+.modal-recruitment-content ul:last-child {
+  border-bottom: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+}
+
+/* 짝수 번째 행 스타일링 */
+.modal-recruitment-content ul:nth-child(even) {
+  background-color: #fafafa;
+}
+
+.modal-recruitment-content li {
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 14px;
+  color: #4a4a4a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 반응형 디자인 */
+@media screen and (max-width: 768px) {
+  .modal-recruitment-content ul {
+      padding: 10px;
+  }
+
+  .modal-recruitment-content li {
+      padding: 6px;
+      font-size: 13px;
+  }
+}
+
+
+
+
 /* 모달 기본 스타일 */
 .modal-container {
   position: fixed;
@@ -15,7 +71,7 @@
 .modal-area {
   position: relative;
   width: 90%;
-  max-width: 500px;
+  max-width: 700px;
   padding: 20px;
   background: #ffffff;
   border-radius: 20px;
@@ -24,20 +80,36 @@
 
 /* 버튼 영역 스타일링 */
 .btn-area {
-  display: flex;
+  /* display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  margin-bottom: 20px; */
+
+  position: absolute;
+  top: -60px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
 }
 
 /* 수정/삭제 버튼 스타일 */
 .update-business-btn,
 .delete-business-btn {
-  padding: 8px 16px;
+  /* padding: 8px 16px;
   border: none;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 14px; */
+
+  padding: 10px 20px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
   font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 .update-business-btn {
@@ -51,20 +123,50 @@
   margin-left: 10px;
 }
 
-/* X 버튼 스타일링 */
-.close-modal {
+/* 이하 새로 추가*/
+.update-business-btn:hover,
+.delete-business-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.back-info {
+  position: absolute;
+  top: 72px;
+  right: 20px;
   font-size: 24px;
   color: #666;
   cursor: pointer;
-  padding: 5px 10px;
-  position: absolute;
-  top: 10px;
-  right: 10px;
+  transition: color 0.2s ease;
 }
 
-.close-modal:hover {
+.back-info:hover {
   color: #000;
 }
+
+.modal-business-content {
+  margin-top: 10px;
+}
+
+.modal-business-content > div {
+  padding: 12px 0;
+  border-bottom: 1px solid #eee;
+  color: #333;
+  font-size: 15px;
+}
+
+.modal-business-content > div:last-child {
+  border-bottom: none;
+}
+
+.modal-recruitment-content {
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  color: #666;
+}
+
 
 .hidden {
   display: none;
@@ -91,6 +193,8 @@ body {
 /* 기본 정보 컨테이너 스타일 */
 
 .businessList-info-area {
+  max-width: 1200px;
+  margin: 0 auto;
   padding: 0 2rem;
 }
 
@@ -134,7 +238,7 @@ body {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 2rem;
-  padding: 2rem;
+  padding: 0.9rem 2rem;
 }
 
 .business-info-container h3,
@@ -149,6 +253,7 @@ body {
   padding: 1.5rem;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: transform 0.2s;
+  position: relative;
 }
 
 [class^="business-box"]:hover {
@@ -157,6 +262,7 @@ body {
 
 [class^="business-box"] > div {
   margin-bottom: 1rem;
+  width: 383px;
 }
 
 [class^="business-box"] span:first-child {
@@ -170,8 +276,13 @@ body {
   height: 150px;
   background-color: beige;
   position: absolute;
-  top: 0px;
-  right: 0px;
+  top: 10px;
+  right: 10px;
+}
+
+.business-image-area > img {
+  width: 100%;
+  height: 100%;
 }
 
 /* 버튼 스타일 */

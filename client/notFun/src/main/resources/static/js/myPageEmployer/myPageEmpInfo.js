@@ -8,12 +8,19 @@ const newEl = (tag, attr, cls) => {
   return el;                                              // 생성된 요소 반환
 };
 
+const updataInfo = () => {
+  location.href= "/myPageEmp/updateInfo";
+}
+
+const updateBusinessBtn = document.querySelector(".update-business-btn");
+const deleteBusinessBtn = document.querySelector(".delete-business-btn");
 const modalContainer = document.querySelector(".modal-container");
 const modalBusinessContent = document.querySelector(".modal-business-content");
 const nicknameArea = document.querySelector(".nickname-area");
 const telArea = document.querySelector(".tel-area");
 const addressArea = document.querySelector(".address-area");
 const worktypeArea = document.querySelector(".worktype-area");
+const modalRecruitmentContent = document.querySelector(".modal-recruitment-content");
 
 const businessDetailModal = async (employerNo) => {
 
@@ -39,7 +46,79 @@ const businessDetailModal = async (employerNo) => {
     telArea.innerHTML += result.businessTel;
     addressArea.innerHTML += result.businessAddress;
     worktypeArea.innerHTML += result.businessWorktype;
+
+    // 공고목록 불러와서 제목, 마감일, 인원, 완료여부 표시
+    modalRecruitmentContent.innerHTML = "";
+
+    console.log(result.recruitmentList);
+    if(result.recruitmentList.length === 0){
+      const noRecruitmentDiv = document.createElement("div");
+      noRecruitmentDiv.innerText = "등록된 공고가 없습니다";
+      modalRecruitmentContent.append(noRecruitmentDiv);
+
+    } else{
+
+      const recruitmentUl = document.createElement("ul");
+
+      const recruitNo = document.createElement("li");
+      recruitNo.innerText = "공고번호";
+
+      const titleLi = document.createElement("li");
+      titleLi.innerText = "공고명";
+
+      const deadlineLi = document.createElement("li");
+      deadlineLi.innerText = "마감일";
+
+      const numOfRecruitLi = document.createElement("li");
+      numOfRecruitLi.innerText = "모집인원";
+
+      const completLi = document.createElement("li");
+      completLi.innerText = "완료여부";
+
+      recruitmentUl.append(recruitNo, titleLi, deadlineLi, numOfRecruitLi, completLi);
+      modalRecruitmentContent.append(recruitmentUl);
+
+      for(let i=0; i<result.recruitmentList.length; i++){
+
+        const employerRecruitmentUl = document.createElement("ul");
+
+        const recruitmentNo = document.createElement("li");
+        recruitmentNo.innerText = result.recruitmentList[i].recruitmentNo;
+
+        const recruitmentTitleLi = document.createElement("li");
+        recruitmentTitleLi.innerText = result.recruitmentList[i].recruitmentTitle;
+
+        const recruitmentDeadlineLi = document.createElement("li");
+        recruitmentDeadlineLi.innerText = result.recruitmentList[i].recruitmentDeadline;
+
+        const numOfRecruitmentNameLi = document.createElement("li");
+        numOfRecruitmentNameLi.innerText = result.recruitmentList[i].numOfRecruitmentName;
+
+        const recruitCompleteFl = document.createElement("li");
+        recruitCompleteFl.innerText = result.recruitmentList[i].recruitCompleteFl;
+
+        employerRecruitmentUl.append(recruitmentNo, recruitmentTitleLi, recruitmentDeadlineLi, numOfRecruitmentNameLi, recruitCompleteFl);
+        
+        modalRecruitmentContent.append(employerRecruitmentUl);
+      }
+    }
   }
+
+  // 수정하기 버튼 클릭 시 수정 페이지로 이동
+  updateBusinessBtn.addEventListener("click", () => {
+    window.location.href = `updateBusiness/${employerNo}`;
+  });
+
+  deleteBusinessBtn.addEventListener("click", () => {
+
+    if (!confirm("해당 사업장을 삭제 하시겠습니까?")) {
+      alert("취소되었습니다.");
+      return;
+    }
+
+    window.location.href = `deleteBusiness/${employerNo}`;
+  })
+  
   modalContainer.classList.remove("hidden");
 
 }

@@ -7,6 +7,16 @@
   border: 1px solid #e9ecef !important;
   border-radius: 8px;
   background-color: white;
+  position: relative;
+}
+
+.recruite-complete-area {
+  position: absolute;
+  top: 50px;
+  right: 50px;
+  width: 100px;
+  height: 100px;
+  background-color: yellow;
 }
 
 /* 제목 영역 스타일 */

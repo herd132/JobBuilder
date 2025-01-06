@@ -81,8 +81,8 @@ public class RecruitmentController {
 					@SessionAttribute("loginEmployer") Employer loginEmployer,
 					@RequestParam(value="recruitmentPrefers", required=false) List<String> preferredList,
 					@RequestParam(value="recruitmentSupports", required=false) List<String> supportList,
-					@RequestParam(value="images", required=false) List<MultipartFile> images,
-					RedirectAttributes ra) {
+					@RequestParam(value="recruitmentImg", required=false) MultipartFile recruitmentImg,
+					RedirectAttributes ra) throws Exception {
 		
 		log.debug("addRecruitment : " + addRecruitment);
 		log.debug("recruitmentPrefers : " + preferredList);
@@ -97,7 +97,8 @@ public class RecruitmentController {
 		 * preferredList : PREFERRED TABLE에서 PREFERRED_CATEGORY를 모아놓은 리스트
 		 * supportList : SUPPORT TABLE 에서 SUPPORT_CATEGORY를 모아놓은 리스트
 		 * */
-		int recruitmentNo = service.insertRecruitment(loginEmployer.getMemberNo() ,addRecruitment, preferredList, supportList);
+		int recruitmentNo = service.insertRecruitment(loginEmployer.getMemberNo() ,addRecruitment,
+								preferredList, supportList, recruitmentImg);
 		
 		String message = null;
 		String path = null;
@@ -157,8 +158,131 @@ public class RecruitmentController {
 		model.addAttribute("recruitment", recruitment);
 		model.addAttribute("businessWorktypeList", recruitment.getBusinessWorktypeList());
 		model.addAttribute("preferredList", recruitment.getPreferredList());
-		model.addAttribute("supportList", recruitment.getSupportList());;
+		model.addAttribute("supportList", recruitment.getSupportList());
 		
 		return "recruitment/recruitmentDetail";
 	}
+
+	/** 공고 수정 페이지 이동(get)	
+	 * @param recruitmentNo
+	 * @param loginEmployer
+	 * @return
+	 */
+	@GetMapping("update/{recruitmentNo:[0-9]+}")
+	public String updateRecruitment(@PathVariable("recruitmentNo") int recruitmentNo,
+						@SessionAttribute("loginEmployer") Employer loginEmployer,
+						Model model, RedirectAttributes ra) {
+		
+		Recruitment recruitment = service.selectOne(recruitmentNo);
+		
+		String message = null;
+		String path = null;
+		
+		if(recruitment == null) {
+			message = "해당 공고가 존재하지 않습니다.";
+			path = "redirect:/";
+			ra.addFlashAttribute("message", message);
+			
+		} else if (recruitment.getMemberNo() != loginEmployer.getMemberNo()){
+			message = "자신이 작성한 공고만 수정할 수 있습니다";
+			path = "redirect:/recruitment/list";
+			ra.addFlashAttribute("message", message);
+			
+		} else {
+			path = "recruitment/updateRecruitment";
+			
+			String[] deadlineArr = recruitment.getRecruitmentDeadline().split("/");
+			String deadline = deadlineArr[0] + "-" + deadlineArr[1] + "-" + deadlineArr[2];
+			recruitment.setRecruitmentDeadline(deadline);
+			
+			model.addAttribute("recruitment", recruitment);
+			model.addAttribute("selectedBusinessWorktypeList", recruitment.getBusinessWorktypeList());
+			model.addAttribute("selectedPreferredList", recruitment.getPreferredList());
+			model.addAttribute("selectedSupportList", recruitment.getSupportList());
+			
+			List<Map<String, String>> preferredList = service.selectPreferredList();
+			List<Map<String, String>> supportTitleList = service.selectSupportTitleList();
+			model.addAttribute("preferredList", preferredList);
+			model.addAttribute("supportTitleList", supportTitleList);
+		}
+		
+		return path;
+	}
+	
+	/** 공고 수정 (post)
+	 * @param updateRecruitment
+	 * @param recruitmentNo
+	 * @param cp
+	 * @param preferredList
+	 * @param supportList
+	 * @param businessImage
+	 * @throws Exception
+	 */
+	@PostMapping("update/{recruitmentNo:[0-9]+}")
+	public String updateRecruitment(Recruitment updateRecruitment,
+					@PathVariable("recruitmentNo") int recruitmentNo,
+					@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+					@RequestParam(value="recruitmentPrefers", required=false) List<String> preferredList,
+					@RequestParam(value="recruitmentSupports", required=false) List<String> supportList,
+					@RequestParam(value="recruitmentImg", required=false) MultipartFile recruitmentImg,
+					RedirectAttributes ra) throws Exception {
+		
+		updateRecruitment.setRecruitmentNo(recruitmentNo);
+		
+		int result = service.updateRecruitment(updateRecruitment, preferredList, supportList, recruitmentImg);
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "공고가 수정되었습니다";
+			path = "/recruitment/detail/" + recruitmentNo;
+			
+		} else {
+			message = "공고 수정 실패...";
+			path = "/recruitment/update/" + recruitmentNo;
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:" + path;
+	}
+	
+	/** 공고삭제(get)
+	 * @param recruitmentNo
+	 * @param cp
+	 * @param stat (마이페이지에서 들어온 경우)
+	 * @return
+	 */
+	@GetMapping("delete/{recruitmentNo:[0-9]+}")
+	public String deleteRecruitment(@PathVariable("recruitmentNo") int recruitmentNo,
+					@RequestParam(value="cp", required=false, defaultValue="1") int cp,
+					@RequestParam(value="stat", required=false, defaultValue="") String stat,
+					RedirectAttributes ra) {
+		
+		int result = service.deleteRecruitment(recruitmentNo);
+		
+		String path = null;
+		String message = null;
+		
+		if(result > 0) {
+			message = "해당 공고가 삭제되었습니다";
+			
+			if(stat.length() > 0) path = "/myPageEmp/recruitmentList?cp=" + cp + "&stat=" + stat;
+			else path = "/recruitment/list?cp=" + cp;
+			
+		} else {
+			
+			message = "공고삭제를 실패하였습니다";
+			path = "";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		return "redirect:" + path;
+	}
+	
+	
+	
+	
+	
 }

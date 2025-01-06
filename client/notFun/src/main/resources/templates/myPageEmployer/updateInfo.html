@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내 정보 수정</title>
+
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/updateInfo.css">
+  
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+</head>
+
+<body>
+  <!-- 로고 및 검색바 로그인 -->
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+
+  <span th:text="${session.loginEmployer}"></span>
+  <div class="mypageEmpInfo-gray">
+    <main class="myPageEmpInfo-white">
+      <div class="basic-info-container">
+        <h4>
+          이메일 정보
+          <span th:text="${session.loginEmployer.memberEmail}" id="memberEmail"></span>
+        </h4>
+      </div>
+      <div class="input-pw-area">
+        <h4>비밀번호를 입력해주세요</h4>
+        <input type="password" id="memberPw">
+        <button type="button" onclick="confirmPw()">확인</button>
+      </div>
+      <div class="wrong-pw-area">
+        <span id="wrongPwMessage"></span>
+      </div>
+    </main>
+  </div>
+
+
+
+
+  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
+  <script src="/js/myPageEmployer/updateInfo.js"></script>
+</body>
+
+</html>

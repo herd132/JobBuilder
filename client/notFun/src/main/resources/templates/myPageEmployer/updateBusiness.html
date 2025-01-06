@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>사업장 수정페이지 입니다.</title>
+
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/updateBusiness.css">
+
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+</head>
+
+<body>
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+
+  <div>
+    <span th:text="${business}"></span> <br>
+    <span th:text="${postcode}"></span>
+    <span th:text="${address}"></span>
+    <span th:text="${detailAddress}"></span>
+  </div>
+
+  <div class="updateBusiness-gray">
+    <main class="updateBusiness-white">
+      <section class="basic-info-container" th:object="${session.loginEmployer}">
+        <h3 th:text="|*{memberName}님의 사업장 변경 페이지입니다.|"></h3>
+        <div class="business-registration-number-area">
+          <span>사업자 등록번호 : </span>
+          <span th:text="*{businessRegistrationNumber}"></span>
+        </div>
+        <div class="business-name-area">
+          <span>회사명 : </span>
+          <span th:text="*{businessName}"></span>
+        </div>
+        <div class="member-name-area">
+          <span>대표자명 :</span>
+          <span th:text="*{memberName}"></span>
+        </div>
+      </section>
+
+      <section class="business-info-container" th:object="${business}">
+        <form th:action="@{/myPageEmp/updateBusiness/{employerNo} (employerNo=*{employerNo})}"
+          method="post" enctype="multipart/form-data" id="updateBusinessForm"
+        >
+
+          <h4 th:text="|기존 사업장 별칭 : *{businessNickname}|"></h4>
+          <div class="business-nickname">
+            <span>변경할 사업장 별칭 : </span>
+            <input type="text" name="businessNickname" id="businessNickname" th:value="*{businessNickname}">
+          </div>
+  
+          <h4 th:text="|기존 사업장 주소 : ${address}, ${detailAddress}|"></h4>
+          <div class="business-address-area">
+            <div>변경할 사업장 주소</div>
+            <div>
+              <input type="text" name="businessAddress" id="postcode" th:value="${postcode}"
+                placeholder="우편번호" readonly
+              >
+              <button type="button" id="searchAddressBtn" class="searah-address-btn">검색</button>
+            </div>
+            <div>
+              <input type="text" name="businessAddress" id="address" th:value="${address}"
+                placeholder="도로명/지번 주소" readonly
+              >
+            </div>
+            <div>
+              <input type="text" name="businessAddress" id="detailAddress" th:value="${detailAddress}"
+                placeholder="상세 주소"
+              >
+              <button type="button" id="addressResetBtn">초기화</button>
+            </div>
+          </div>
+  
+          <h4 th:text="|기존 사업장 전화번호 : *{businessTel}|"></h4>
+          <div>
+            <span> 변경할 사업장 전화번호 : </span>
+            <input type="text" name="businessTel" id="businessTel" th:value="*{businessTel}"
+              maxlength="11" placeholder="-없이 숫자만 입력해주세요"
+            >
+          </div>
+  
+          <h4 th:text="|기존 업직종 : *{businessWorktype}|"></h4>
+          <div>
+            <h5>변경할 업직종(최대 5개 선택 가능)</h5>
+            <ul id="selectCategoryUl" style="border: 1px solid black;"></ul>
+          </div>
+          <div class="business-worktype-area">
+            <div>
+              <ul style="background-color: yellow;">
+                <th:block th:each="category : ${majorCategoryList}">
+                  <li th:text="${category.majorCategoryName}" class="workType"
+                    th:workTypeNo="${category.workTypeNo}"
+                    th:onclick="subCategory(this.getAttribute('workTypeNo'))"
+                    style="cursor: pointer;"
+                  />
+                </th:block>
+              </ul>
+            </div>
+            
+            <div>
+              <ul id="subWorkType"></ul>
+            </div>
+          </div>
+  
+          <h4>사업장 대표 이미지</h4>
+          <div class="img-box">
+            <div class="businessImg thumbnail">
+              <label for="img0">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img0" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+          </div>
+  
+          <h4>사업장 추가 이미지</h4>
+          <div class="img-box" id="addBusinessContainer">
+            <div class="businessImg">
+              <label for="img1">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img1" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+  
+            <div class="businessImg">
+              <label for="img2">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img2" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+  
+            <div class="businessImg">
+              <label for="img3">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img3" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+  
+            <div class="businessImg">
+              <label for="img4">
+                <img class="preview" src="">
+              </label>
+              <input type="file" name="images" class="inputImage" id="img4" accept="image/*">
+              <span class="delete-image">&times;</span>
+            </div>
+          </div>
+
+          <div class="recruitment-btn-area">
+            <button type="button">돌아가기</button>
+            <button>제출하기</button>
+          </div>
+        </form>
+
+      </section>
+
+    </main>
+  </div>
+    
+
+
+  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
+
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
+  <script src="/js/myPageEmployer/updateBusiness.js"></script>
+
+  <script th:inline="javascript">
+
+    const imageList = /*[[${business.businessImgList}]]*/[];
+    const previewList = document.querySelectorAll('img.preview'); // img 태그 중 preview
+    const orderList = [];  // 기존에 존재하던 이미지의 순서(order)를 기록할 배열
+
+    for (let img of imageList) {
+      previewList[img.businessImgOrder].src = img.businessImgPath + img.businessImgRename;
+      // previewList의 0번(썸네일)의 src 속성에 이미지 경로와 이미지 변경명을 대입
+
+      // 미리보기가 출력된 이미지 순서를 orderList에 추가
+      orderList.push(img.businessImgOrder);
+    }
+
+  </script>
+
+
+</body>
+
+</html>

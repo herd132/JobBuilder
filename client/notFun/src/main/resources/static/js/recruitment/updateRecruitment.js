@@ -1,5 +1,3 @@
-console.log("addRecruitment.js 와 연결됨");
-
 // 요소 생성 + 속성 추가 + 클래스 추가 함수
 const newEl = (tag, attr, cls) => {
 
@@ -110,9 +108,6 @@ const addSubSupport = (liSubSupportLi) => {
 
 }
 
-
-
-
-const backToRecruitmentList = () => {
-  location.href = "/myPageEmp/recruitmentList";
+const backToRecruitmentDetail = () => {
+  location.href = location.pathname.replace("update", "detail") + location.search;
 }

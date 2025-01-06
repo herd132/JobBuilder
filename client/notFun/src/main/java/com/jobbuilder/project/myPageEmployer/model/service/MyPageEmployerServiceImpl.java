@@ -1,13 +1,19 @@
 package com.jobbuilder.project.myPageEmployer.model.service;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
@@ -28,7 +34,13 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 
 	/* ********** 필드 ********** */
 	private final MyPageEmployerMapper mapper;
+	private final BCryptPasswordEncoder bcrypt;
 	
+	@Value("${my.business.web-path}")
+	private String myBusinessWebPath;
+	
+	@Value("${my.business.folder-path}")
+	private String myBusinessFolderPath;
 	
 	/* ********** 메서드 ********** */
 	
@@ -43,7 +55,7 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		
 		for(Employer employer: selectBusinessList) {
 			List<BusinessWorktype> worktypeList = mapper.selectWorktype(employer.getEmployerNo());
-			List<BusinessImg> imageList = mapper.selectImage(employer.getEmployerNo());
+			String thumbnail = mapper.selectThumbNail(employer.getEmployerNo());
 			
 			String businessWorktype = "";
 			
@@ -54,7 +66,7 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 			
 			employer.setBusinessWorktypeList(worktypeList);
 			employer.setBusinessWorktype(businessWorktype);
-			employer.setBusinessImgList(imageList);
+			employer.setThumbnail(thumbnail);
 
 		}
 		
@@ -81,9 +93,22 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		return business;
 	}
 	
+	@Override	// 각 사업장의 공고목록 얻어오기
+	public List<Recruitment> getRecruitmentList(int empNo) {
+		return mapper.getRecruitmentList(empNo);
+	}
+	
 	
 	/* ********** 기본정보 수정 페이지 관련 ********** */
-	
+	@Override	// 비밀번호 확인
+	public Employer checkPw(Map<String, String> bodyMap) {
+		
+		String memberPw = mapper.getPw(bodyMap.get("memberEmail"));
+		
+		if(!bcrypt.matches(bodyMap.get("memberPw"), memberPw)) return null;
+		
+		return mapper.getEmployer(bodyMap.get("memberEmail"));
+	}
 	
 	
 	/* ********** 비밀번호 변경 페이지 관련 ********** */
@@ -134,6 +159,11 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		return map;
 	}
 	
+	@Override	// 구인완료여부 변경 (내가 쓴 공고 페이지 내)
+	public int changeRecruitComplete(Map<String, Object> badyMap) {
+		return mapper.changeRecruitComplete(badyMap);
+	}
+	
 	/* ********** 내가 쓴 글 페이지 관련 ********** */
 	
 	
@@ -152,7 +182,7 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	
 	@Override	// 사업장 추가
 	public int addBusiness(Employer loginEmployer, Employer addBusiness, List<String> subCategory,
-			String[] businessAddress) {
+			String[] businessAddress, List<MultipartFile> images) throws Exception {
 		
 		// 사업장 주소 처리(필수입력 사항)
 		String address = String.join("^^^", businessAddress);
@@ -163,16 +193,15 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		addBusiness.setMemberNo(loginEmployer.getMemberNo());
 		addBusiness.setBusinessRegistrationNumber(loginEmployer.getBusinessRegistrationNumber());
 		addBusiness.setBusinessName(loginEmployer.getBusinessName());
-		addBusiness.setMembershipLevel(loginEmployer.getMembershipLevel());
 		addBusiness.setOptionalAgreeFl(loginEmployer.getOptionalAgreeFl());
-		
-		log.debug("addBusiness : " + addBusiness);
+
 		
 		int result = mapper.addBusiness(addBusiness);
 		if(result == 0) return 0;
 		
 		int employerNo = addBusiness.getEmployerNo();
 		
+		// M:N 해소테이블(BUSINESS_WORKTYPE)에 값 대입
 		for(String category : subCategory) {
 			String worktypeNo = mapper.getWorktypeNo(category);
 			
@@ -183,9 +212,139 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 			result = mapper.addBusinessWorktype(map);
 		}
 		
+		List<BusinessImg> uploadBusinessImgList = new ArrayList<>();
+		
+		for(int i=0; i<images.size(); i++) {
+			
+			if(!images.get(i).isEmpty()) {
+				String originalName = images.get(i).getOriginalFilename();
+				String rename = Utility.fileRename(originalName);
+				
+				BusinessImg img = BusinessImg.builder()
+									.businessImgOriginalName(originalName)
+									.businessImgRename(rename)
+									.businessImgPath(myBusinessWebPath)
+									.businessImgOrder(i)
+									.employerNo(employerNo)
+									.uploadFile(images.get(i))
+									.build();
+				
+				uploadBusinessImgList.add(img);
+			}
+		}
+		
+		if(uploadBusinessImgList.isEmpty()) return employerNo;
+		
+		result = mapper.insertUploadList(uploadBusinessImgList);
+		
+		if(result == uploadBusinessImgList.size()) {
+			for(BusinessImg img : uploadBusinessImgList) {
+				img.getUploadFile().transferTo(new File(myBusinessFolderPath + img.getBusinessImgRename()));
+			}
+		} else {
+			throw new RuntimeException();
+		}
+		
 		return employerNo;
 	}
 	
+	
+	
+	/* ********** 사업장 수정 페이지 관련 ********** */
+	
+	@Override	// 사업장 이미지정보 얻어오기
+	public List<BusinessImg> getBusinessImgList(int employerNo) {
+		return mapper.getBusinessImgList(employerNo);
+	}
+	
+	@Override	// 사업장 수정
+	public int updateBusiness(Employer updateBusiness, List<String> subCategory, String[] businessAddress,
+			List<MultipartFile> images, String deleteOrderList) throws Exception {
+		
+		// EMPLOYER 테이블 수정
+		String arr = null;
+		if(businessAddress.length > 2) {
+			arr = businessAddress[0] + "^^^" + businessAddress[1] + "^^^" + businessAddress[2];
+		}
+		updateBusiness.setBusinessAddress(arr);
+		
+		int result = mapper.updateBusiness(updateBusiness);
+		
+		if (result == 0) return 0;
+		
+		// M:M 테이블(업직종) 해소
+		result = mapper.deleteBusinessWorktype(updateBusiness.getEmployerNo());
+		
+		for(String category : subCategory) {
+			String worktypeNo = mapper.getWorktypeNo(category);
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("employerNo", updateBusiness.getEmployerNo());
+			map.put("worktypeNo", worktypeNo);
+			
+			result = mapper.addBusinessWorktype(map);
+		}
+		
+		// 기존에 이미지 있었는데 삭제한 경우 BUSINESS_IMG 테이블 수정
+		if(deleteOrderList != null && !deleteOrderList.equals("")) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("deleteOrderList", deleteOrderList);
+			map.put("employerNo", updateBusiness.getEmployerNo());
+			
+			result = mapper.deleteImage(map);
+			
+			if(result == 0) throw new RuntimeException();
+		}
+		
+		// 선택한 파일이 존재할 경우 BUSINESS_IMG 테이블에 추가
+		List<BusinessImg> uploadList = new ArrayList<>();
+		for(int i=0; i<images.size(); i++) {
+			
+			if(!images.get(i).isEmpty()) {
+				
+				String originalName = images.get(i).getOriginalFilename();	// 원본명
+				String rename = Utility.fileRename(originalName);			// 변경명
+				
+				BusinessImg img = BusinessImg.builder()
+						.businessImgOriginalName(originalName)
+						.businessImgRename(rename)
+						.businessImgPath(myBusinessWebPath)
+						.businessImgOrder(i)
+						.employerNo(updateBusiness.getEmployerNo())
+						.uploadFile(images.get(i))
+						.build();
+				
+				uploadList.add(img);
+				
+				result = mapper.updateImage(img);
+				if(result == 0) result = mapper.insertImage(img);
+			}
+			
+			if(result == 0) throw new RuntimeException();
+			
+		}
+		
+		if(uploadList.isEmpty()) return result;
+		
+		for(BusinessImg img : uploadList) {
+			img.getUploadFile().transferTo(new File(myBusinessFolderPath + img.getBusinessImgRename()));
+		}
+		
+		return result;
+	}
+	
+	
+	/* ********** 사업장 삭제 관련 ********** */
+	
+	@Override	// 본점의 memberNo 얻어오기
+	public int getMemberNo(int employerNo) {
+		return mapper.getMemberNo(employerNo);
+	}
+	
+	@Override	// 해당 사업장 삭제
+	public int deleteBusiness(int employerNo) {
+		return mapper.deleteBusiness(employerNo);
+	}
 	
 	/* ********** 사업장 홍보 페이지 관련 ********** */
 	

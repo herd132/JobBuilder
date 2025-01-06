@@ -1,13 +1,18 @@
 package com.jobbuilder.project.recruitment.model.serivce;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.RowBounds;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.PaginationRecruitment;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
@@ -19,11 +24,18 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @Transactional(rollbackFor = Exception.class)
 @RequiredArgsConstructor
+@PropertySource("classpath:/config.properties")
 @Slf4j
 public class RecruitmentServiceImpl implements RecruitmentService{
 
 	/* ********** 필드 ********** */
 	private final RecruitmentMapper mapper;
+	
+	@Value("${my.recruitment.web-path}")
+	private String recruitmentWebPath;
+	
+	@Value("${my.recruitment.folder-path}")
+	private String recruitmentFolderPath;
 	
 	
 	/* ********** 메서드 ********** */
@@ -53,7 +65,8 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	
 	/* ***** 공고 추가(post) 관련 ***** */
 	@Override	// 공고 추가
-	public int insertRecruitment(int memberNo, Recruitment addRecruitment, List<String> preferredList, List<String> supportList) {
+	public int insertRecruitment(int memberNo, Recruitment addRecruitment, List<String> preferredList,
+							List<String> supportList, MultipartFile recruitmentImg) throws Exception {
 		
 		addRecruitment.setMemberNo(memberNo);
 		
@@ -87,6 +100,27 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 				recruitmentSupportNoMap.put("supportNo", supportNo);
 				
 				result = mapper.insertRecruitmentSupport(recruitmentSupportNoMap);
+			}
+		}
+		
+		String rename = null;
+		String recruitmentProfile = null;
+		
+		if(!recruitmentImg.isEmpty()) {
+			
+			rename = Utility.fileRename(recruitmentImg.getOriginalFilename());
+			recruitmentProfile = recruitmentWebPath + rename;
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("recruitmentNo", recruitmentNo);
+			map.put("recruitmentProfile", recruitmentProfile);
+			
+			result = mapper.updateRecruitmentImg(map);
+		}
+		
+		if(result > 0) {
+			if(!recruitmentImg.isEmpty()) {
+				recruitmentImg.transferTo(new File(recruitmentFolderPath + rename));
 			}
 		}
 		
@@ -184,4 +218,93 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 		
 		return recruitment;
 	}
+	
+	/* ********** 공고 수정(post) 관련 ********** */
+	
+	@Override	// 공고 수정
+	public int updateRecruitment(Recruitment updateRecruitment, List<String> preferredList, List<String> supportList,
+			MultipartFile recruitmentImg) throws Exception{
+		
+		log.debug("updateRecruitment : " + updateRecruitment);
+		log.debug("preferredList : " + preferredList);
+		log.debug("supportList : " + supportList);
+				
+		int result = mapper.updateRecruitment(updateRecruitment);
+		
+		if(result == 0) return 0;
+		
+		// 기존 M:N 해소 테이블에 있는 정보 삭제
+		result = mapper.deleteRecruitmentPreferred(updateRecruitment.getRecruitmentNo());
+		result = mapper.deleteRecruitmentSupport(updateRecruitment.getRecruitmentNo());
+		
+		// 이하 insertRecruitment 내 M:N 해소테이블 관련 코드와 동일
+		if (preferredList != null) {
+			
+			for(String preferredCategory : preferredList) {
+				
+				String preferredNo = mapper.selectPreferredNo(preferredCategory);
+				
+				Map<String, Object> recruitmentPreferredNoMap = new HashMap<>();
+				recruitmentPreferredNoMap.put("recruitmentNo", updateRecruitment.getRecruitmentNo());
+				recruitmentPreferredNoMap.put("preferredNo", preferredNo);
+				
+				result = mapper.insertRecruitmentPreferred(recruitmentPreferredNoMap);
+				
+				if (result == 0) {
+					log.debug("선호조건 삽입 중 문제발생");
+					return 0;
+				}
+			}
+		}
+		
+		if (supportList != null) {
+			
+			for(String supportCategory : supportList) {
+				
+				String supportNo = mapper.selectSupportNo(supportCategory);
+				
+				Map<String, Object> recruitmentSupportNoMap = new HashMap<>();
+				recruitmentSupportNoMap.put("recruitmentNo", updateRecruitment.getRecruitmentNo());
+				recruitmentSupportNoMap.put("supportNo", supportNo);
+				
+				result = mapper.insertRecruitmentSupport(recruitmentSupportNoMap);
+				
+				if (result == 0) {
+					log.debug("복리후생 조건 삽입 중 문제발생");
+					return 0;
+				}
+			}
+		}
+		
+		String rename = null;
+		String recruitmentProfile = null;
+		
+		if(!recruitmentImg.isEmpty()) {
+			
+			rename = Utility.fileRename(recruitmentImg.getOriginalFilename());
+			recruitmentProfile = recruitmentWebPath + rename;
+			
+			Map<String, Object> map = new HashMap<>();
+			map.put("recruitmentNo", updateRecruitment.getRecruitmentNo());
+			map.put("recruitmentProfile", recruitmentProfile);
+			
+			result = mapper.updateRecruitmentImg(map);
+		}
+		
+		if(result > 0) {
+			if(!recruitmentImg.isEmpty()) {
+				recruitmentImg.transferTo(new File(recruitmentFolderPath + rename));
+			}
+		}
+		
+		return result;	// Controller 에 recruitmentNo 있어서 recruitmentNo 로 return 할 필요 없음
+	}
+	
+	
+	/* ********** 공고 삭제 관련 ********** */
+	@Override	// 공고 삭제
+	public int deleteRecruitment(int recruitmentNo) {
+		return mapper.deleteRecruitment(recruitmentNo);
+	}
+	
 }
