@@ -85,7 +85,7 @@ public class WorkerController {
 	 */
 	@PostMapping("workerLogin")
 	public String login(Worker inputWorker,
-						@RequestParam(value="saveId", required = false) String saveId,
+						@RequestParam(value="saveWorkerId", required = false) String saveWorkerId,
 						Model model, HttpServletResponse resp,
 						RedirectAttributes ra) {		
 			
@@ -104,10 +104,10 @@ public class WorkerController {
 						model.addAttribute("loginWorker", loginWorker);
 						
 						// ******************* Cookie ***********************
-						Cookie cookie = new Cookie("saveId", loginWorker.getWorkerId());		
+						Cookie cookie = new Cookie("saveWorkerId", loginWorker.getWorkerId());		
 						cookie.setPath("/");
 						
-						if(saveId != null) 	cookie.setMaxAge(31536000); 
+						if(saveWorkerId != null) 	cookie.setMaxAge(31536000); 
 						else	cookie.setMaxAge(0);		
 						
 						

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jobbuilder.project.board.model.mapper.OneTalkMapper">
+
+<!--  한줄톡 목록 조회 -->
+<select id="select">
+SELECT LEVEL, C.* FROM
+			(SELECT COMMENT_NO_BOARD, COMMENT_CONTENT_BOARD,
+			    TO_CHAR(COMMENT_WRITE_DATE_BOARD, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE_BOARD,
+			    BOARD_NO, MEMBER_NO, MEMBER_NAME, PARENT_COMMENT_NO, COMMENT_DEL_FL_BOARD
+			FROM "COMMENT_BOARD"
+			JOIN MEMBER USING(MEMBER_NO)
+			WHERE BOARD_NO = #{boardNo}) C
+		WHERE COMMENT_DEL_FL_BOARD = 'N'
+		OR 0 != (SELECT COUNT(*) FROM "COMMENT_BOARD" SUB
+						WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO_BOARD
+						AND COMMENT_DEL_FL_BOARD = 'N')
+		START WITH PARENT_COMMENT_NO IS NULL
+		CONNECT BY PRIOR COMMENT_NO_BOARD = PARENT_COMMENT_NO
+		ORDER SIBLINGS BY COMMENT_NO_BOARD
+</select>
+
+</mapper>

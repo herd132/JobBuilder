@@ -24,8 +24,10 @@ public class CommentBoard {
 		private int memberNo;
 		private int parentCommentNo;
 		
-		// 댓글 조회시 회원 프로필, 닉네임
+		// 댓글 조회시 회원 프로필, 닉네임				
+		// 테이블 조인
+		private String workerNickname;
+		private String businessName;
 		private String memberName;
-		private String profileImg;
 	
 }
