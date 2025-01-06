@@ -1,56 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
 <th:block th:replace="~{common/common}"></th:block>
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>회원탈퇴</title>
   <th:block th:replace="~{common/common}"></th:block>
 
-  <!-- 서버 연결 시 주소 변경 할 것!!!!! -->
-  <link rel="stylesheet" href="/notFun/src/main/resources/static/css/myPageWorker/secession.css">
+  <link rel="stylesheet" href="/css/myPageWorker/secession.css">
 </head>
 
 <body>
   <th:block th:replace="~{common/myPageWorker-header}"></th:block>
 
 
-  <input type="text" class="input-field" placeholder="현재 비밀번호">
 
-  <h2>회원탈퇴</h2>
-
-  <div class="content-box">
-    <ol>
-      <li>회원탈퇴시 작성한 모든 데이터와 서비스 이용기록은 모두 삭제되며 임의로 복구 하
-        실 수 없습니다. 삭제되는 내용을 확인하시고 필요한 데이터의 경우 개별적으로 저장
-        해 주시기 바랍니다</li>
-      <li>회원탈퇴가 완료된 이후에는 해당 아이디로
-        다시 서비스를 이용하실 수 없습니다.</li>
-      <li> 회원탈퇴 후 7일 이내에는 동일 신상으로 계정 생성
-        이 불가능합니다.
-      </li>
-      <li>메일 발송에서 수신까지의 시간차로 인해 회원탈퇴 이 후 약 하루 동안 알바몬 메일을 수신할 수 있습니다.</li>
-      <li>소셜 로그인 회원의 경우, 서비스에서 관리하는 모든 정보가 삭제되며, 같은 소셜 아
-        이디로 재가입 시 신규 회원으로 가입됩니다.</li>
-      <li>이용중인 멤버십의 경우 회원탈퇴시 결제 정보가 사라지므로 현재 적용중인 멤버십
-        혜택은 즉시 사라지며 환불되지 않습니다.
-        반드시 멤버십을 해지하신 후 탈퇴 해 주세요</li>
+  <div>
+    <form class="form-field">
       
+      <span ></span>
+      <div class="secession-container">
+        <div class="header">
+          <h2 class="title">회원탈퇴</h2>
+        </div>
+        <input type="text" class="input-field" placeholder="현재 비밀번호">
+        <span class="change-message" id="checkCurrentPw"></span>
+        <div class="info-container-background">
+          <div class="content-box">
+            <textarea class="checkpoint-content"  disabled>
+1. 회원탈퇴시 작성한 모든 데이터와 서비스 이용기록은 모두 삭제되며 임의로 복구 하실 수 없습니다.
+   삭제되는 내용을 확인하시고 필요한 데이터의 경우 개별적으로 저장 해주시기 바랍니다
 
-    </ol>
+2. 회원탈퇴가 완료된 이후에는 해당 아이디로 다시 서비스를 이용하실 수 없습니다.
+   회원탈퇴 후 7일 이내에는 동일 신상으로 계정 생성이 불가능합니다.
 
-    <p class="notice">삭제된 데이터와 서비스 이용기록 등은 복구할 수 없으니 신중하게 선택하시길 바랍니다.
-    </p>
+3. 메일 발송에서 수신까지의 시간차로 인해 회원탈퇴 이 후 약 하루 동안 알바몬 메일을 수신할 수 있습니다.
+   소셜 로그인 회원의 경우, 서비스에서 관리하는 모든 정보가 삭제되며, 
+   같은 소셜 아이디로 재가입 시 신규 회원으로 가입됩니다.
+        
+            삭제된 데이터와 서비스 이용기록 등은 복구할 수 없으니 신중하게 선택하시길 바랍니다.
+        
+            </textarea>
+
+            <div class="checkbox-container">
+              <input type="checkbox" id="agree">
+              <label for="agree">동의합니다.</label>
+            </div>
+            <div class="btn-container">
+              <button class="submit-btn">탈퇴</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+    </form>
   </div>
-
-  <div class="checkbox-container">
-    <input type="checkbox" id="agree">
-    <label for="agree">동의합니다.</label>
-  </div>
-
-  <button class="submit-btn">탈퇴하기</button>
 </body>
 
 <th:block th:replace="~{common/main-footer}"></th:block>
+<script src="/js/myPageWorker/secession.js"></script>
 
 </html>

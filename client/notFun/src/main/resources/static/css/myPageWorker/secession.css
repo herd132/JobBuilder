@@ -1,61 +1,75 @@
-body {
-  font-family: Arial, sans-serif;
-  max-width: 500px;
-  margin: 20px auto;
-  padding: 0 20px;
+/* 타이틀 */
+.header {
+  width: 1000px;
+  margin-top: 40px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  text-align: justify;
+  align-items: center;
+}
+
+.secession-container {
+  display: flex;
+  flex-direction: column;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.info-container-background{
+  background-color: #f0bb78;
+  width: 1000px;
+  height: 450px;
+  border-radius: 20px;
+  margin-bottom: 300px;
 }
 
 .input-field {
-  width: 100%;
+  width: 300px;
   padding: 8px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #FFA500;
   border-radius: 20px;
   box-sizing: border-box;
 }
 
-.content-box {
-  border: 2px solid #FFA500;
-  border-radius: 15px;
-  padding: 20px;
-  margin-top: 20px;
-  background-color: #FFF;
-}
-
-h2 {
-  margin: 0 0 20px 0;
-  font-size: 20px;
-}
-
-ol {
-  margin: 0;
-  padding-left: 20px;
-}
-
-li {
-  margin-bottom: 15px;
-  line-height: 1.5;
-  color: #333;
-}
-
-.notice {
-  margin-top: 20px;
-  font-size: 14px;
-  color: #666;
-}
-
-.checkbox-container {
-  margin-top: 20px;
+.change-message{
+  display: inline-block;
+  height: 20px; /* 고정된 높이 */
+  min-height: 40px; /* 최소 높이 설정 */
+  overflow: hidden; /* 텍스트가 넘칠 경우 숨기기 */
+  line-height: 20px; /* 텍스트가 수직 가운데 정렬되도록 설정 */
 }
 
 .submit-btn {
-  display: block;
-  width: 100px;
-  margin: 20px auto;
-  padding: 10px;
-  background-color: #4A3425;
+  background-color: #695132;
   color: white;
   border: none;
-  border-radius: 5px;
+  border-radius: 4px;
+  font-size: 30px;
   cursor: pointer;
+  width: 100px;
+  height: 50px;
+  margin-left: 400px;
+  margin-top: 20px;
+}
+
+.content-box{
+    width: 950px;
+    height: 410px;
+    margin-left: 18px;
+    margin-top: 20px;
+     background-color: #ffffff;
+     border: 1px solid #E6E6E6;
+     padding: 30px;
+     border-radius: 20px;
+}
+
+.checkpoint-content{
+  width: 870px;
+  height: 250px;
+  resize: none;
+  padding-left: 5px;
 }

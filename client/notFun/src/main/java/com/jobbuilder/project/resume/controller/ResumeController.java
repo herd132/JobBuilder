@@ -58,8 +58,12 @@ public class ResumeController {
 							 @RequestParam("payType") int payType, // 급여형태
 							 @RequestParam(name = "inputPay", defaultValue = "0") int inputPay,  // int형은 null을 가질 수 없어 value값을 정해주거나 Integer 로 받아야 한다 // 원하는 급여
 							 
-							 @RequestParam (value = "subCategory", required=false) List<String> subCategoryList, // 선호직종
 							 @RequestParam (value = "workType", required=false) List<Integer> workTypeList, // 알바/정규직
+							 // 이거부터 해결을 해보자
+							 
+							 
+							 @RequestParam (value = "subCategory", required=false) List<String> subCategoryList, // 선호직종
+							 
 							 
 							 
 							 @RequestParam ("workDay") List<Integer> workDayList, // 근무일시(날짜)
