@@ -59,7 +59,7 @@ const createResumeItem = (item, index) => `
       <div class="resume-summary">
         <p class="summary-line">
           <strong>
-          <form action="/resume/resumeDetail" method="POST" style="display:inline;">
+          <form action="/resume/resumeDetail" method="get" style="display:inline;">
               <input type="hidden" name="resumeNo" value="${item.resumeNo}">
               <button type="submit" style="all: unset; cursor: pointer; color: blue; text-decoration: underline;">
                   이력서 제목 : ${item.resumeTitle || "선택없음"}
@@ -71,7 +71,7 @@ const createResumeItem = (item, index) => `
           수정일 : ${formatTime(item.modificationDate)}<br>
           공개여부 : <span id="visibility_${index}">${getVisibilityLabel(item.resumeHideFl)}</span><br>
           경력 : ${formatCareer(item.totalCareer)}<br>
-          <form action="/resume/resumeRecommend" method="POST" style="display:inline;">
+          <form action="/resume/resumeRecommend" method="get" style="display:inline;">
             <input type="hidden" name="resumeNo" value="${item.resumeNo}">
             <button type="submit" style="all: unset; cursor: pointer; color: blue; text-decoration: underline;">
               맞춤알바 : ${item.recommendation || 0}건
@@ -85,22 +85,6 @@ const createResumeItem = (item, index) => `
     </div>
   </div>
 `;
-
-const redirectToResumeDetail = (resumeNo) => {
-  const form = document.createElement("form");
-  form.method = "POST";
-  form.action = "/resume/resumeDetail";
-  form.style.display = "none";
-
-  const input = document.createElement("input");
-  input.type = "hidden";
-  input.name = "resumeNo";
-  input.value = resumeNo;
-  form.appendChild(input);
-
-  document.body.appendChild(form);
-  form.submit();
-};
 
 
 

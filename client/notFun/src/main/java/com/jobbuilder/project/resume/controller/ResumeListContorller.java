@@ -75,20 +75,27 @@ public class ResumeListContorller {
 	    }
 	
 
-	    @PostMapping("/resumeDetail")
-	    public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model) {
+	    @GetMapping("/resumeDetail")
+	    public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model,
+	    		@SessionAttribute("loginWorker") Worker loginWorker) {
 	        // resumeNo로 데이터를 조회
+	    	
+	    	
+            if (loginWorker != null) {
+            int workerNo = loginWorker.getWorkerNo();
+            }
+	    	
 	        Resume resume = service.getResumeByNo(resumeNo);
 
 	        // 모델에 데이터 추가
 	        model.addAttribute("resume", resume);
-
+	        model.addAttribute("loginWorker", loginWorker);
 	        // 상세 페이지로 이동
 	        return "resume/resumeDetail"; // templates/resume/resumeDetail.html
 	    }
 
 
-	    @PostMapping("/resumeRecommend")
+	    @GetMapping("/resumeRecommend")
 	    public String getRecommendations(@RequestParam("resumeNo") int resumeNo, Model model) {
 	        // Resume 정보를 조회
 	        Resume resume = service.getResumeByNo(resumeNo);
