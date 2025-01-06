@@ -11,6 +11,12 @@ import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentPreferred;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentSupport;
+import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
+import com.jobbuilder.project.resume.model.dto.CareerInfo;
+import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
+import com.jobbuilder.project.resume.model.dto.ResumePeriod;
+import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 
 @Mapper
 public interface RecruitmentMapper {
@@ -135,6 +141,53 @@ public interface RecruitmentMapper {
 	 */
 	List<RecruitmentSupport> getSupportList(int recruitmentNo);
 	
+	/** 로그인한 알바생의 이력서 목록 조회
+	 * @param workerNo
+	 * @return
+	 */
+	List<ResumeWJ> selectResumeList(int workerNo);
+	
+	/** 이력서에 등록한 희망 업직종 불러오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<ResumeWorkType> getWorkTypeList(int resumeNo);
+
+	/** 이력서에 등록한 희망 근무형태 불러오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<String> getJobTypeList(int resumeNo);
+
+	/** 이력서에 등록한 희망 근무기간 불러오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<ResumePeriod> getPeriodList(int resumeNo);
+
+	/** 이력서에 등록한 희망 근무요일, 근무시간 불러오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<ResumeDaysTime> getDaysTimeList(int resumeNo);
+	
+	/** 이력서에 등록한 경력사항 불러오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<CareerInfo> getCareerInfoList(int resumeNo);
+	
+	/** 한 공고에 동일한 이력서를 제출했는 지 조회
+	 * @param map(recruitmentNo, resumeNo)
+	 * @return
+	 */
+	int selectRecruitmentResume(Map<String, Integer> map);
+	
+	/** 특정 공고에 이력서 제출
+	 * @param map(recruitmentNo, resumeNo)
+	 * @return
+	 */
+	int submitResume(Map<String, Integer> map);
 	
 	/* ********** 공고 수정(post) 관련 ********** */
 
@@ -165,6 +218,16 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	int deleteRecruitment(int recruitmentNo);
+
+
+
+
+
+
+
+
+
+
 
 
 

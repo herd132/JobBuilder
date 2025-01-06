@@ -7,6 +7,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
+import com.jobbuilder.project.resume.model.dto.Resume;
 
 public interface RecruitmentService {
 
@@ -76,6 +78,26 @@ public interface RecruitmentService {
 	 */
 	Recruitment selectOne(int recruitmentNo);
 	
+	/** 로그인한 알바생의 이력서 목록 조회
+	 * @param workerNo
+	 * @return
+	 */
+	List<ResumeWJ> selectResumeList(int workerNo);
+	
+	
+	/** 한 공고에 동일한 이력서를 제출했는 지 조회
+	 * @param recruitmentNo
+	 * @param resumeNo
+	 * @return
+	 */
+	int selectRecruitmentResume(int recruitmentNo, int resumeNo);
+	
+	/** 특정 공고에 이력서 제출
+	 * @param recruitmentNo
+	 * @param resumeNo
+	 * @return
+	 */
+	int submitResume(int recruitmentNo, int resumeNo);
 	
 	/* ********** 공고 수정(post) 관련 ********** */
 
@@ -97,6 +119,12 @@ public interface RecruitmentService {
 	 * @return
 	 */
 	int deleteRecruitment(int recruitmentNo);
+
+
+
+
+
+
 
 
 

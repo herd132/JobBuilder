@@ -3,6 +3,7 @@ package com.jobbuilder.project.recruitment.controller;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,14 +19,17 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
 import com.jobbuilder.project.recruitment.model.serivce.RecruitmentService;
+import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.worker.model.dto.Worker;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequestMapping("recruitment")
-@SessionAttributes({"loginEmployer"})
+@SessionAttributes({"loginEmployer", "loginWorker"})
 @RequiredArgsConstructor
 @Slf4j
 public class RecruitmentController {
@@ -161,6 +165,61 @@ public class RecruitmentController {
 		model.addAttribute("supportList", recruitment.getSupportList());
 		
 		return "recruitment/recruitmentDetail";
+	}
+	
+	/** 로그인한 알바생의 이력서 목록 조회
+	 * @param workerNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("selectResume")
+	public ResponseEntity<List<ResumeWJ>> selectResume(@RequestParam("workerNo") int workerNo){
+		
+		List<ResumeWJ> resumeList = service.selectResumeList(workerNo);
+		
+		if(resumeList == null) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(resumeList);
+	}
+	
+	/** 무결성 검사(PFK 조건 확인용)
+	 * @param recruitmentNo
+	 * @param resumeNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("confirm/{recruitmentNo:[0-9]+}")
+	public ResponseEntity<Integer> confirmResume(@PathVariable("recruitmentNo") int recruitmentNo,
+						@RequestParam("resumeNo") int resumeNo){
+		
+		int confirmResume = service.selectRecruitmentResume(recruitmentNo, resumeNo);
+		
+		if(confirmResume > 0) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(1);
+	}
+	
+	/** PFK 테이블(RECURITMENT_RESUME)에 데이터 추가
+	 * @param recruitmentNo
+	 * @param loginWorker
+	 * @param resumeNo
+	 * @return
+	 */
+	@GetMapping("submit/{recruitmentNo:[0-9]+}")
+	public String submitResume(@PathVariable("recruitmentNo") int recruitmentNo,
+							@RequestParam("resumeNo") int resumeNo,
+							RedirectAttributes ra) {
+		
+		int result = service.submitResume(recruitmentNo, resumeNo);
+		
+		String message = null;
+		
+		if(result > 0) message = "해당 공고에 지원을 완료했습니다.";
+		else message = "공고에 지원 실패했습니다.";
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:/recruitment/detail/" + recruitmentNo;
 	}
 
 	/** 공고 수정 페이지 이동(get)	

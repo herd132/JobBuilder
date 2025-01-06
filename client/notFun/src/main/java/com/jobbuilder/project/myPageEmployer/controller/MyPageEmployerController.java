@@ -1,5 +1,6 @@
 package com.jobbuilder.project.myPageEmployer.controller;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.service.MyPageEmployerService;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -373,9 +375,12 @@ public class MyPageEmployerController {
 	 * @return myPageEmployer/viewRecruitments.html
 	 * @author JWJ
 	 */
-	@GetMapping("viewRecruitments")
-	public String MyPageEmpViewRecruitments() {
-		return "myPageEmployer/viewRecruitments";
+	@GetMapping("viewResumes")
+	public String MyPageEmpViewResumes(@SessionAttribute("loginEmployer") Employer loginEmployer,
+							Model model) {
+		Map<Integer, List<ResumeWJ>> recruitmentResumeList = service.getRecruitmentResumeList(loginEmployer);
+		
+		return "myPageEmployer/viewResumes";
 	}
 	
 	/** 회원 탈퇴 페이지 이동(get) 아직 작성 안함
