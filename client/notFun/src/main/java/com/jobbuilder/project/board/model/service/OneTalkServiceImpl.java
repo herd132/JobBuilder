@@ -25,7 +25,7 @@ public class OneTalkServiceImpl implements OneTalkService {
 	private final OneTalkMapper mapper;
 	
 	@Override
-	public Map<String, Object> selectOneTalkList( int cp ) {
+	public Map<String, Object> selectOneTalkList(int cp) {
 		int listCount = mapper.getListCount();
 		if(listCount < (cp * 10)) cp = 1;
 		
