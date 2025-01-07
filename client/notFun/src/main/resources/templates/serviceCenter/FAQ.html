@@ -73,25 +73,25 @@
             <!-- Pagination -->
             <div class="pagination">
                 <div class="pagination" th:object="${pagination}">
-                    <a th:href="@{/serviceCenter/notice (cp=1)}" class="page-btn">&lt;&lt;</a>
-                    <a th:href="@{/serviceCenter/notice (cp=*{prevPage})}" class="page-btn">&lt;</a>
+                    <a th:href="@{/serviceCenter/faq (cp=1)}" class="page-btn">&lt;&lt;</a>
+                    <a th:href="@{/serviceCenter/faq (cp=*{prevPage})}" class="page-btn">&lt;</a>
     
                     <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
                             
                         <!-- 현재 보고있는 페이지 -->
                         <th:block th:if="${i} == *{currentPage}">
-                            <a th:href="@{/serviceCenter/notice (cp=${i})}" 
+                            <a th:href="@{/serviceCenter/faq (cp=${i})}" 
                             class="page-btn active" th:text="${i}">현재페이지</a>
                         </th:block>
                         
                         <!-- 보고있지 않은 페이지 -->
                         <th:block th:unless="${i} == *{currentPage}">
-                            <a th:href="@{/serviceCenter/notice (cp=${i})}" 
+                            <a th:href="@{/serviceCenter/faq (cp=${i})}" 
                                 th:text="${i}" class="page-btn">이동할 페이지</a>
                         </th:block>
                     </th:block>
-                    <a th:href="@{/serviceCenter/notice (cp=*{nextPage})}" class="page-btn">&gt;</a>
-                    <a th:href="@{/serviceCenter/notice (cp=*{maxPage})}" class="page-btn">&gt;&gt;</a>
+                    <a th:href="@{/serviceCenter/faq (cp=*{nextPage})}" class="page-btn">&gt;</a>
+                    <a th:href="@{/serviceCenter/faq (cp=*{maxPage})}" class="page-btn">&gt;&gt;</a>
     
                 </div>
             </div>
@@ -99,7 +99,6 @@
 
     </main>
 
-    <a href="#">임시용 글쓰기 링크</a>
 
     <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
     <th:block th:replace="~{common/main-footer}"></th:block>

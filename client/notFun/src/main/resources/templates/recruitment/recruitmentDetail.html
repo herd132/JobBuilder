@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>공고 상세보기</title>
-  
+
   <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
   <th:block th:replace="~{common/common}"></th:block>
 
@@ -14,7 +14,7 @@
 
 <body>
   <th:block th:replace="~{common/main-header}"></th:block>
-  
+
   <!-- 모달 영역 -->
   <div class="modal-container hidden">
     <div class="modal-area">
@@ -25,7 +25,7 @@
   <div class="recruitmentDetail-gray">
     <main class="recruitmentDetail-white" th:object="${recruitment}">
 
-      <div class="recruitment-title-container" style="border: 1px solid black;">
+      <div class="recruitment-title-container">
         <div class="recruitment-title-area">
           <span th:text="*{recruitmentTitle}" id="recruitmentTitle"></span>
           <span th:text="| ~*{recruitmentDeadline}|" id="recruitmentDeadline"></span>
@@ -37,15 +37,20 @@
           <br>
           <span th:text="|근무지역 : *{workcondAddressTypeInfo}|"></span>
         </div>
-        <div class="recruite-complete-area">
-          <span th:if="*{recruitCompleteFl == 'N'}"> 모집 중입니다.</span>
-          <span th:unless="*{recruitCompleteFl == 'N'}"> 모집완료</span>
+
+        <div class="status-box recruiting" th:if="*{recruitCompleteFl == 'N'}">
+          모집 중
         </div>
+        
+        <div class="status-box closed" th:unless="*{recruitCompleteFl == 'N'}">
+          모집 완료
+        </div>
+
       </div>
 
       <h3>근무조건</h3>
       <div class="work-condition-container">
-        <div class="salary-period-days-time-area" style="border: 1px solid black;">
+        <div class="salary-period-days-time-area">
           <table>
             <tr>
               <th>급여</th>
@@ -72,12 +77,13 @@
           </table>
         </div>
 
-        <div class="worktype-jobtype-preferred-support-area" style="border: 1px solid red;">
+        <div class="worktype-jobtype-preferred-support-area" style="solid red;">
           <table>
             <tr>
               <th>업직종</th>
               <td>
-                <th:block th:each="businessWorktype, iterStat : ${businessWorktypeList}" th:object="${businessWorktype}">
+                <th:block th:each="businessWorktype, iterStat : ${businessWorktypeList}"
+                  th:object="${businessWorktype}">
                   <th:block th:if="${iterStat.last}">
                     <span th:text="*{worktypeCategory}"></span>
                   </th:block>
@@ -112,7 +118,7 @@
 
       <h3>모집조건</h3>
       <div class="work-condition-container">
-        <div class="recruitmentDeadline-numOfRecruitmentName-area" style="border: 1px solid black;">
+        <div class="recruitmentDeadline-numOfRecruitmentName-area">
           <table>
             <tr>
               <th>모집마감일</th>
@@ -126,7 +132,7 @@
           </table>
         </div>
 
-        <div class="grade-preferred-area" style="border: 1px solid red;">
+        <div class="grade-preferred-area">
           <table>
             <tr>
               <th>학력</th>
@@ -160,11 +166,27 @@
         <pre th:text="*{recruitmentContent}" id="recruitmentContent"></pre>
       </div>
 
+      <!-- 추천 이력서 1.7 신동국 추가-->
+      <th:block th:if="${session.loginEmployer}">
+        <th:block th:if="${recruitment.memberNo == session.loginEmployer?.memberNo}">
+
+        <!-- <span style="font-weight: bold; font-size: 1.2rem; margin-top: 1rem;">추천 이력서</span> -->
+        <h3>추천 이력서 </h3>
+        <div class="recommend">
+          <span >총 몇 ?건의 이력서가 조회되었습니다.</span>
+          <button type="button" class="recommend-select"> 조회하기</button>
+        </div>
+
+        </th:block>
+      </th:block>
+
       <div class="recruitment-btn-area">
         <th:block th:if="${session.loginEmployer}">
           <th:block th:if="${recruitment.memberNo == session.loginEmployer?.memberNo}">
-            <button id="updateRecruitmentBtn">수정</button>
-            <button id="deleteRecruitmentBtn">삭제</button>
+            <div class="update-delete">
+              <button id="updateRecruitmentBtn">수정</button>
+              <button id="deleteRecruitmentBtn">삭제</button>
+            </div>
             <th:block th:if="${param.stat}">
               <button id="goToMyRecruitmentListBtn">목록으로</button>
             </th:block>
@@ -179,9 +201,7 @@
         </th:block>
 
         <th:block th:if="${session.loginWorker}" th:object="${session.loginWorker}">
-          <button id="submitResumeBtn" 
-            th:attr="onclick='selectResumeBtn(' + ${session.loginWorker.workerNo} + ')'"
-            >
+          <button id="submitResumeBtn" th:attr="onclick='selectResumeBtn(' + ${session.loginWorker.workerNo} + ')'">
             이력서 제출</button>
           <button id="goToRecruitmentListBtn">목록으로</button>
         </th:block>
@@ -189,17 +209,91 @@
         <th:block th:if="${session.loginEmployer} == null and ${session.loginWorker} == null">
           <button id="goToRecruitmentListBtn">목록으로</button>
         </th:block>
-        
+
       </div>
     </main>
   </div>
 
+  <div class="recommend-modal">
+    <span class="modal-close">&times;</span>
+    <div class="resume-grid">
+      <div class="resume-card">
+        <div class="resume-header">
+          <div class="basic-info">
+            <div class="name">김민수</div>
+            <div class="age">28세 (1996년생)</div>
+          </div>
+        </div>
+        <div class="contact-info">
+          <div class="info-item">
+            <span class="info-label">연락처</span>
+            <span>010-1234-5678</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">이메일</span>
+            <span>kim@email.com</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">지역</span>
+            <span>서울시 강남구</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">경력</span>
+            <span>5년</span>
+          </div>
+        </div>
+        <div class="career-info">
+          <div class="career-title">주요 경력</div>
+          <div class="career-detail">
+            네이버 프론트엔드 개발 (3년)<br>
+            카카오 UI 개발 (2년)
+          </div>
+        </div>
+        <a class="view-button">이력서 보기</a>
+      </div>
 
+      <div class="resume-card">
+        <div class="resume-header">
+          <div class="basic-info">
+            <div class="name">이지은</div>
+            <div class="age">32세 (1992년생)</div>
+          </div>
+        </div>
+        <div class="contact-info">
+          <div class="info-item">
+            <span class="info-label">연락처</span>
+            <span>010-2345-6789</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">이메일</span>
+            <span>lee@email.com</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">지역</span>
+            <span>성남시 분당구</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">경력</span>
+            <span>7년</span>
+          </div>
+        </div>
+        <div class="career-info">
+          <div class="career-title">주요 경력</div>
+          <div class="career-detail">
+            라인 백엔드 개발 (4년)<br>
+            쿠팡 서버 개발 (3년)
+          </div>
+        </div>
+        <a class="view-button">이력서 보기</a>
+      </div>
+    </div>
+  </div>
+  <div class="recommend-modal-outside"></div>
 
 
   <script src="/js/recruitment/recruitmentDetail.js"></script>
 
-  
+
   <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
   <th:block th:replace="~{common/main-footer}"></th:block>
 </body>

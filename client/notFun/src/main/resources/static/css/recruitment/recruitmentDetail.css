@@ -20,7 +20,8 @@
   background: #ffffff;
   border-radius: 20px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  overflow-y: auto; /* 모달 세로 길어질 수 있도록 */
+  overflow-y: auto;
+  /* 모달 세로 길어질 수 있도록 */
 }
 
 .hidden {
@@ -66,11 +67,17 @@
   color: #333;
 }
 
-.job-type-list, .work-type-list, .period-list, .days-time-list {
+.job-type-list,
+.work-type-list,
+.period-list,
+.days-time-list {
   margin-top: 10px;
 }
 
-.job-type-item, .work-type-item, .period-item, .days-time-item {
+.job-type-item,
+.work-type-item,
+.period-item,
+.days-time-item {
   display: inline-block;
   padding: 5px 10px;
   margin-right: 10px;
@@ -93,18 +100,21 @@
 }
 
 .goBack-btn {
-  background-color: #f44336;  /* 빨간색 */
+  background-color: #f44336;
+  /* 빨간색 */
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   margin-top: 20px;
-  margin-left: 10px;  /* 두 버튼 간격 */
+  margin-left: 10px;
+  /* 두 버튼 간격 */
 }
 
 .goBack-btn:hover {
-  background-color: #e53935;  /* 마우스 오버 시 더 진한 빨간색 */
+  background-color: #e53935;
+  /* 마우스 오버 시 더 진한 빨간색 */
 }
 
 
@@ -114,19 +124,31 @@
 .recruitment-title-container {
   padding: 2rem;
   margin-bottom: 2rem;
-  border: 1px solid #e9ecef !important;
+  border: 5px solid var(--secondary-orange) !important;
   border-radius: 8px;
   background-color: white;
   position: relative;
 }
 
-.recruite-complete-area {
+.status-box {
   position: absolute;
   top: 50px;
   right: 50px;
-  width: 100px;
-  height: 100px;
-  background-color: yellow;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 1.2em;
+  font-weight: bold;
+  text-align: center;
+  cursor: default;
+}
+
+.recruiting {
+  color: var(--primary-orange);
+}
+
+.closed {
+  color: #757575;
+  background-size: 20px 20px;
 }
 
 /* 제목 영역 스타일 */
@@ -144,7 +166,7 @@
 
 /* 마감일 스타일 */
 #recruitmentDeadline {
-  color: #ff6b6b;
+  color: #FF5722  ;
   font-size: 1rem;
 }
 
@@ -199,10 +221,10 @@
 }
 
 /* 테이블 영역 스타일 */
-.work-condition-container > div {
+.work-condition-container>div {
   flex: 1;
   background-color: white;
-  border: 1px solid #e9ecef !important;
+  border: 2px solid var(--primary-orange) !important;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -212,14 +234,26 @@
   width: 100%;
   border-collapse: separate;
   border-spacing: 0;
+  height: 100%;  /* 테이블 높이를 100%로 설정 */
 }
 
 /* 테이블 셀 스타일 */
-.work-condition-container th,
+.work-condition-container th, 
 .work-condition-container td {
-  padding: 1rem;
-  border-bottom: 1px solid #e9ecef;
+  padding: 0.75rem 1rem;  /* 상하 패딩 줄임 */
+  border-bottom: 2px solid var(--primary-orange);
   text-align: left;
+  height: 1px;  /* 모든 행의 높이를 동일하게 설정 */
+}
+
+/* tbody 스타일 추가 */
+.work-condition-container tbody {
+  height: 100%;  /* tbody 높이를 100%로 설정 */
+}
+
+/* tr 스타일 추가 */
+.work-condition-container tr {
+  height: 1px;  /* 각 행의 높이를 동일하게 분배 */
 }
 
 /* 마지막 행의 테이블 셀 테두리 제거 */
@@ -231,9 +265,9 @@
 /* 테이블 헤더 스타일 */
 .work-condition-container th {
   width: 120px;
-  background-color: #f8f9fa;
-  color: #666;
-  font-weight: normal;
+  background-color: var(--secondary-orange);
+  color: #ffffff;
+  font-weight: bolder;
 }
 
 /* 태그 스타일 */
@@ -245,18 +279,31 @@
 
 /* 급여 강조 스타일 */
 .salary-period-days-time-area td span:nth-child(2) {
-  color: #ff6b6b;
+  color: var(--warning-orange);
   font-weight: bold;
 }
 
 /* 상세 요강 스타일 */
 #recruitmentContent {
   background-color: white;
+  margin-bottom: 1rem;
   padding: 2rem;
-  border: 1px solid #e9ecef;
+  border: 5px solid var(--secondary-orange);
   border-radius: 8px;
   min-height: 200px;
   white-space: pre-wrap;
+}
+
+.recommend-select {
+  width: 5rem;
+  height: 2rem;
+  border: none;
+  color: white;
+  font-weight: bold;
+  font-size: 1rem;
+  border-radius: 10px;
+  background-color: var(--button);
+  cursor: pointer;
 }
 
 /* 반응형 디자인 */
@@ -264,8 +311,245 @@
   .work-condition-container {
     flex-direction: column;
   }
-  
-  .work-condition-container > div {
+
+  .work-condition-container>div {
     width: 100%;
   }
+}
+
+.resume-grid-container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 16px;
+}
+
+.resume-grid {
+  margin: 1.5rem 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+}
+
+.resume-card {
+  background: white;
+  border: 3px solid var(--secondary-orange);
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  padding: 16px;
+  animation: fadeInUp 0.6s ease backwards;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  animation-delay: 0.1s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.resume-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 12px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--secondary-orange);
+}
+
+.profile-image {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  margin-right: 12px;
+  background-color: #e9ecef;
+}
+
+.basic-info {
+  flex: 1;
+}
+
+.name {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin-bottom: 2px;
+}
+
+.age {
+  font-size: 12px;
+  color: #666;
+}
+
+.contact-info {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  font-size: 12px;
+  color: #444;
+}
+
+.info-label {
+  color: #666;
+  width: 60px;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+
+.career-info {
+  background-color: var(--background-orange);
+  padding: 10px;
+  border-radius: 6px;
+}
+
+.career-title {
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 6px;
+  color: #1a1a1a;
+}
+
+.career-detail {
+  font-size: 12px;
+  color: #666;
+  line-height: 1.4;
+}
+
+.view-button {
+  display: inline-block;
+  background-color: var(--button);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-weight: 500;
+  font-size: 12px;
+  cursor: pointer;
+  text-decoration: none;
+  margin-top: 12px;
+  transition: background-color 0.2s;
+}
+
+.view-button:hover {
+  background-color:#473211be;
+}
+
+@media (max-width: 768px) {
+  .resume-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.recruitment-btn-area  {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.recruitment-btn-area button {
+  cursor: pointer;
+}
+
+.update-delete {
+  display: flex;
+  flex-direction: row;
+  gap: 1.5rem;
+}
+
+#updateRecruitmentBtn {
+  background-color: var(--secondary-orange);
+  padding: 4px 16px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+#deleteRecruitmentBtn {
+  background-color: var(--warning-orange);
+  padding: 4px 16px;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+
+#goToRecruitmentListBtn {
+  border: 3px solid var(--secondary-orange);
+  border-radius: 20px;
+  padding: 4px 8px;
+  background-color: white;
+  margin-left: auto;
+  color: var(--secondary-orange);
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+#goToMyRecruitmentListBtn {
+  border: 3px solid var(--secondary-orange);
+  border-radius: 20px;
+  padding: 4px 8px;
+  background-color: white;
+  margin-left: auto;
+  color: var(--secondary-orange);
+  font-size: 1rem;
+  font-weight: bolder;
+}
+
+
+.recommend-modal {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 700px;
+  max-height: 900px;
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(255, 152, 56, 0.2);
+  display: none;
+  flex-direction: column;
+  z-index: 1000;
+  border: 2px solid var(--primary-orange);
+}
+
+.recommend-modal.active {
+  padding: 1rem;
+  display: flex;
+}
+
+.recommend-modal-outside {
+	position: absolute;
+	top: 0%;
+	left: 0%;
+	width: 100%;
+	height: 100vh;
+	background-color:   rgba(0, 0, 0, 0.322);
+	z-index:999;
+	-moz-opacity: 0.8;
+	opacity:.80;
+  display: none;
 }
