@@ -9,68 +9,36 @@
 </head>
 
 <body>
-  <th:block th:replace="~{common/main-header}"></th:block>
 
   <h1> 한줄톡톡 </h1>
 
 
   <!-- 댓글 작성 부분 -->
-  <div class="oneTalk-write-area">
-    <textarea id="oneTalkContentBoard"></textarea>
-    <button id="addoneTalk">
+  <div class="onetalk-write-area">
+    <textarea id="onetalkContentBoard"></textarea>
+    <button id="addonetalk">
       댓글<br>
       등록
     </button>
   </div>
 
-  <th:block th:if="${#lists.isEmpty(oneTalkList)}">
+  <th:block th:if="${#lists.isEmpty(onetalkList)}">
     <tr>
       <th colspan="6">게시글이 존재하지 않습니다.</th>
     </tr>
   </th:block>
 
   <!-- 게시글이 존재할 때 -->
-  <th:block th:unless="${#lists.isEmpty(oneTalkList)}">
+  <th:block th:unless="${#lists.isEmpty(onetalkList)}">
     <!-- iterStat : Varstatus 같은 역할 반복변수-->
-    <tr th:each="oneTalk, iterStat : ${oneTalkList}" th:object="${oneTalk}">
-      <td th:text="*{boardNo}">게시글 번호</td>
-
-      <td>
-        <!-- 썸네일 추가 예정 -->
-
-        <!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
-
-
-        <!-- 검색 X ( 전체가 보여지고있는상태 )  자리마련안되어있는 CP는 쿼리스트링에 들어감-->
-        <a th:unless="${param.key}"
-          th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
-          th:text="*{boardTitle}" class="text-title">게시글 제목</a>
-
-        <!-- 검색 O -->
-        <a th:if="${param.key}"
-          th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
-          th:text="*{boardTitle}" class="text-title">게시글 제목</a>
-
-        <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
-      </td>
-      <th:block th:if="${board?.workerNickname == null}">
-        <td class="board-writer" th:text="*{businessName}">작성자 닉네임</td>
-      </th:block>
-      <th:block th:if="${board?.workerNickname != null}">
-        <td class="board-writer" th:text="*{workerNickname}">작성자 닉네임</td>
-      </th:block>
-      <!-- 작성일 -->
-      <td th:text="*{boardWriteDate}">2023-10-26</td>
-
-      <!-- 조회수 -->
-      <td th:text="*{boardReadCount}">0</td>
+    <tr th:each="onetalk, iterStat : ${onetalkList}" th:object="${onetalk}">
+      
     </tr>
   </th:block>
 
 
 
-  <th:block th:replace="~{common/main-footer}"></th:block>
-  <script href="/js/board/oneTalk.js"></script>
+  
 </body>
 
 </html>

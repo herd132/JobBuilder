@@ -43,10 +43,11 @@ public class OneTalkController {
 			
 			
 			model.addAttribute("pagination", map.get("pagination"));
-			model.addAttribute("oneTalkList" , map.get("oneTalkList"));
-			
-			return "board/oneTalk";
+			model.addAttribute("onetalkList" , map.get("onetalkList"));
+			log.debug("원톡컨트롤러디버그" + map.get("oneTalkList"));
+			return "board/oneTalkMain";
 		}
+		
 		// 한줄톡 등록
 		@PostMapping("")	
 		@ResponseBody
