@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 import com.jobbuilder.project.resume.model.mapper.ResumeListMapper;
 
 import lombok.RequiredArgsConstructor;
@@ -49,6 +51,21 @@ public class ResumeListServiceImpl implements ResumeListService {
     @Override
     public List<Recruitment> getRecommendations(int resumeNo) {
         return mapper.selectRecommendationsByResumeNo(resumeNo);
+    }
+    
+    @Override
+    public List<CareerInfo> careerInfo(int resumeNo) {
+    	return mapper.careerInfo(resumeNo);
+    }
+    
+    @Override
+    public List<ResumeWorkType> resumeWorkType(int resumeNo) {
+    	return mapper.resumeWorkType(resumeNo);
+    }
+    
+    @Override
+    public List<String> resumeJobTypeList(int resumeNo) {
+    	return mapper.resumeJobTypeList(resumeNo);
     }
     
 }

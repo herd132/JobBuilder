@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 import com.jobbuilder.project.resume.model.service.ResumeListService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
@@ -82,10 +84,17 @@ public class ResumeListContorller {
 	    	
 	    	
 	        Resume resume = service.getResumeByNo(resumeNo);
+	        List<CareerInfo> careerInfo = service.careerInfo(resumeNo);
+	        List<ResumeWorkType> resumeWorkType = service.resumeWorkType(resumeNo);
+	        List<String> resumeJobTypeList = service.resumeJobTypeList(resumeNo);
 
 	        // 모델에 데이터 추가
 	        model.addAttribute("resume", resume);
 	        model.addAttribute("loginWorker", loginWorker);
+	        model.addAttribute("careerInfo", careerInfo);
+	        model.addAttribute("resumeWorkType", resumeWorkType);
+	        model.addAttribute("resumeJobTypeList", resumeJobTypeList);
+	        
 	        // 상세 페이지로 이동
 	        return "resume/resumeDetail"; // templates/resume/resumeDetail.html
 	    }
@@ -93,15 +102,27 @@ public class ResumeListContorller {
 
 	    @PostMapping("/resumeDetaila")
 	    @ResponseBody
-	    public Resume getResumeDetail(@RequestBody Map<String, Object> requestBody) {
+	    public Map<String, Object> getResumeDetail(@RequestBody Map<String, Object> requestBody) {
 	        int resumeNo = Integer.parseInt(requestBody.get("resumeNo").toString());
-	        Resume resume = service.getResumeByNo(resumeNo);
 
+	        Resume resume = service.getResumeByNo(resumeNo);
 	        if (resume == null) {
 	            throw new IllegalArgumentException("Resume not found for resumeNo: " + resumeNo);
 	        }
-	        return resume; // JSON 형태로 반환
+
+	        List<CareerInfo> careerInfo = service.careerInfo(resumeNo);
+	        List<ResumeWorkType> resumeWorkType = service.resumeWorkType(resumeNo);
+	        List<String> resumeJobTypeList = service.resumeJobTypeList(resumeNo);
+
+	        Map<String, Object> response = new HashMap<>();
+	        response.put("resume", resume);        
+	        response.put("careerInfo", careerInfo); 
+	        response.put("resumeWorkType", resumeWorkType); 
+	        response.put("resumeJobTypeList", resumeJobTypeList);
+	        
+	        return response; 
 	    }
+
 
 
 

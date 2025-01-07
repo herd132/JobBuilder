@@ -62,5 +62,7 @@ public class Resume {
 	private String workerBirthDate; // 알바생 생년월일
 	private String workerAddress;	// 알바생 주소
 	private int age;
+	private String gradeName;
+	private String jobtypeName;
     
 }
