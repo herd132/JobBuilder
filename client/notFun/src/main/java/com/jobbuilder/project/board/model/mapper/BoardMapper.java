@@ -29,5 +29,10 @@ public interface BoardMapper {
 
 	// 게시글 상세 조회
 	Board selectOne(Map<String, Integer> map);
+	
+	
+	// 검색이용할경우 게시글수 조회
+	int getSearchCount(Map<String, Object> paramMap);
+	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
 
 }

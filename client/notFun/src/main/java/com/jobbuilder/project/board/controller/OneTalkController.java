@@ -39,8 +39,8 @@ public class OneTalkController {
 				Model model ) {
 			
 			Map<String, Object> map = null;
-			map = service.selectOneTalkList(cp); 
 			
+			map = service.selectOneTalkList(cp); 			
 			
 			model.addAttribute("pagination", map.get("pagination"));
 			model.addAttribute("onetalkList" , map.get("onetalkList"));
