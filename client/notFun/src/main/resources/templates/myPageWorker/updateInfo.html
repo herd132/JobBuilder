@@ -21,10 +21,10 @@
     <h2 class="title">내 정보 수정</h2>
     </div>
     <main class="container">
-        <form action="/myPageWorkee/updateInfo" class="update-form" method="post">
+        <form action="/myPageWorkee/updateInfo" class="update-form" method="post" enctype="multipart/form-data">
             <div class="profile-image-area">
 
-                <img th:with="user=#{avatar.default.image}" th:src="${session.loginWorker.profileImg ?: user}"
+                <img th:with="user=#{user.default.image}" th:src="${session.loginWorker.profileImg ?: user}"
                     id="profileImg" class="profile-img">
                 <!-- 기본 이미지 경로 적을 것 -->
 
@@ -33,36 +33,40 @@
 
             <div class="profile-btn-area">
                 <label for="imageInput">프로필 선택</label>
-                <input type="file" name="profileImg" id="imageInput" accept="image/*">
+                <input type="file" name="imageInput" id="imageInput" accept="image/*">
             </div>
 
             <br>
+            <br>
+                
+                <div class="change-button-area">
+                    <label style="font-size: 15px;">닉네임/연락처/이메일 변경을 원하시면 눌러주세요</label>
+                    <button type="button" id="change-button" class="change-button">변경</button>
+                </div>
+            <br>
             <div class="form-group">
-                <label style="color: red;">* 필수 입력사항입니다</label>
                 <label for="workerNickname">닉네임</label>
                 <div class="nickname-input-area">
-                    <input type="text" name="workerNickname" maxlength="20" id="workerNickname">
-                    <button type="button" id="checkNickname" class="info-button">중복확인</button>
+                    <input type="text" name="workerNickname" maxlength="20" id="workerNickname" th:value="${session.loginWorker.workerNickname}" disabled>
+                    <button type="button" id="checkNickname" class="info-button" disabled>중복확인</button>
                 </div>
-                <span class="signUp-message" id="nicknameMessage">한글, 영어, 숫자로만 2~20 글자로 입력해주세요.</span>
+                <span class="signUp-message" id="nicknameMessage"></span>
             </div>
 
             <br>
             <div class="form-group">
-                <label style="color: red;">* 필수 입력사항입니다</label>
                 <label for="memberTel">연락처</label>
-                <input type="text" name="memberTel" maxlength="11" id="memberTel" placeholder="-를 제외한 숫자를 입력해 주세요">
+                <input type="text" name="memberTel" maxlength="11" id="memberTel" th:value="${session.loginWorker.memberTel}" disabled>
                 <span class="signUp-message" id="memberTelMessage"></span>
             </div>
 
             <br>
             <div class="form-group">
-                <label style="color: red;">* 필수 입력사항입니다</label>
                 <label for="memberEmail">이메일</label>
                 <div class="email-input-area">
-                    <input type="email" id="memberEmail" name="memberEmail">
+                    <input type="email" id="memberEmail" name="memberEmail" th:value="${session.loginWorker.memberEmail}" disabled>
                     <span class="email-input-message"></span>
-                    <button type="button" id="sendAuthKeyBtn" class="btn-secondary">인증번호 받기</button>
+                    <button type="button" id="sendAuthKeyBtn" class="btn-secondary" disabled>인증번호 받기</button>
                 </div>
                 <span class="workerEmailMessage" id="workerEmailMessage"></span>
             </div>
@@ -70,8 +74,8 @@
             <div class="form-group">
                 <label for="authKey">인증번호 입력</label>
                 <div class="authkey-input-area">
-                  <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력">
-                  <button type="button" id="checkAuthKeyBtn" class="btn-secondary2">확인</button>
+                  <input type="text" name="authKey" id="authKey" placeholder="인증번호 입력" disabled>
+                  <button type="button" id="checkAuthKeyBtn" class="btn-secondary2" disabled>확인</button>
                 </div>
                 <span id="authKeyMessage"></span>
             </div>
@@ -79,17 +83,17 @@
 
             <div class="form-group">
                 <label for="workerMbti">MBTI</label>
-                <input placeholder="대문자 알파벳만 입력 가능합니다" type="text" oninput="handleOnInput(this)" name="workerMbti" id="workerMbti" maxlength="4">
-                <span class="workerMbtiMessage" id="workerMbtiMessage"></span>
+                <input type="text" oninput="handleOnInput(this)" name="workerMbti" id="workerMbti" maxlength="4">
+                <span class="workerMbtiMessage" id="workerMbtiMessage">대문자 알파벳만 입력 가능합니다.</span>
             </div>
 
             <div class="form-group address-group">
                 <label for="postcode">주소</label>
                 <div class="address-inputs">
-                    <input type="text" name="workerAddress" id="postcode" placeholder="우편번호">
+                    <input type="text" name="workerAddress" id="postcode" placeholder="우편번호" readonly>
                     <button type="button" class="search-button">검색</button>
                 </div>
-                <input type="text" placeholder="도로명 지번 주소" id="address" name="workerAddress" class="full-width">
+                <input type="text" placeholder="도로명 지번 주소" id="address" name="workerAddress" class="full-width" readonly>
                 <input type="text" placeholder="상세주소" id="detailAddress" name="workerAddress">
             </div>
 
@@ -98,6 +102,9 @@
                 <button type="button" class="cancel-button"
                     onclick="location.href='http://localhost/myPageWorkee/myPageWorkerInfo'";>취소</button>
             </div>
+            
+            <!-- 프로필 이미지가 변경되지 않으면 -1, x를 눌러 삭제되면 0, 새 이미지 선택되면 1 -->
+            <input type="hidden" name="status" value="-1"> 
         </form>
 
     </main>

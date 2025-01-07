@@ -73,3 +73,12 @@
   resize: none;
   padding-left: 5px;
 }
+
+
+.confirm{
+  color: green;
+}
+
+.error{
+  color: red;
+}

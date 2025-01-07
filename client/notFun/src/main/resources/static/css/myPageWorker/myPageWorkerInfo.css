@@ -8,6 +8,7 @@
   width: 100%;
   height: 100%;
 }
+
 .main-nav {
   display: flex;
   align-items: center;
@@ -48,16 +49,22 @@
   height: 50px;
 }
 
-.info-container-background{
+.info-container-background {
   background-color: #f0bb78;
   width: 1000px;
   height: 450px;
   border-radius: 20px;
   margin-bottom: 500px;
+  display: flex; /* Flexbox 사용 */
+  justify-content: space-between; /* 왼쪽과 오른쪽으로 나누기 */
 }
 
 /* 상세정보창 container */
 .info-container {
+  display: flex; /* Flexbox로 컨테이너 정렬 */
+  flex-direction: row; /* 가로 정렬 */
+  align-items: flex-start; /* 상단 정렬 */
+
  width: 950px;
  height: 410px;
  margin-left: 18px;
@@ -71,13 +78,17 @@
 
 .form-field > *{
 font-size: 25px;
-margin-left: 50px;
+margin-left: 20px;
 margin-bottom: 20px;
 line-height: 2.7;
 }
 
-.workerAddress2,.workerMbti2{
-  margin-left: 75px;
+.workerAddress2{
+  margin-left: 45px;
+}
+
+.workerMbti2 {
+  margin-left: 40px;
 }
 
 
@@ -110,4 +121,37 @@ line-height: 2.7;
   font-size: 17px;
   cursor: pointer;
   width: 20px;
+}
+
+/* 프로필 이미지 스타일 */
+.profile-img {
+  width: 150px; /* 적절한 크기 조정 */
+  height: 150px;
+  object-fit: cover; /* 이미지 크기 비율에 맞게 잘림 */
+}
+
+/* 프로필 이미지 컨테이너 */
+.profile-img-container {
+  width: 120px;
+  height: 120px;
+  margin-top: 30px;
+  display: flex;
+  justify-content: center; /* 이미지 가운데 정렬 */
+  align-items: center;
+}
+
+/* 상세 정보 섹션 (오른쪽) */
+.details-section {
+  flex: 1; /* 남은 공간 모두 차지 */
+  margin-left: 30px; /* 프로필 섹션과 간격 */
+}
+
+.profile-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 150px;
+  margin-top: 70px;
+  margin-right: 30px;
+  margin-left: 20px;
 }
