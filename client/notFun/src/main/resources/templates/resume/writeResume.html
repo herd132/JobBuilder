@@ -97,8 +97,7 @@
 					<div class="category-section">
 						<ul>
 							<th:block th:each="category : ${majorCategoryList}">
-								<li th:text="${category.majorCategoryName}" class="workType"
-									th:workTypeNo="${category.workTypeNo}"
+								<li th:text="${category.majorCategoryName}" class="workType" th:workTypeNo="${category.workTypeNo}"
 									th:onclick="subCategory(this.getAttribute('workTypeNo'))" style="cursor: pointer;">
 								</li>
 							</th:block>
@@ -108,6 +107,28 @@
 						<ul id="subWorkType"></ul>
 					</div>
 				</div>
+
+				<h3>희망 근무지역 (최대 5개 선택 가능)</h3>
+				<div>
+					<ul id="selectAddressCategoryUl"></ul>
+				</div>
+				<div>
+					<div class="address-section">
+						<ul>
+							<th:block th:each="address : ${majorAddressList}">
+								<li th:text="${address.workcondAddressTypeInfo}" class="address-categoty"
+									th:workcondAddressTypeNo="${address.workcondAddressTypeNo}"
+									th:onclick="selectDetailAddress(this.getAttribute('workcondAddressTypeNo'))" style="cursor: pointer;">
+								</li>
+							</th:block>
+						</ul>
+					</div>
+					<div>
+						<ul id="subAddressType"></ul>
+					</div>
+				</div>
+
+
 				<h3>근무형태</h3>
 				<div class="jobTypeSection">
 					<label>
@@ -116,6 +137,9 @@
 					<label>
 						<input type="checkbox" id="fullTime" name="jobTypeNo" value="2">정규직
 					</label>
+					<labe>
+						<input type="checkbox" id="fullTime" name="jobTypeNo" value="3">기간 계약직
+					</labe>
 				</div>
 
 				<h3>근무기간</h3>

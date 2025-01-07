@@ -18,6 +18,24 @@
 		WHERE WORKTYPE_NO LIKE #{workTypeNo}||'__'
 		AND WORKTYPE_NO NOT LIKE '__00'
 	</select>
+	
+	<!-- 주소 대분류 불러오기 -->
+	<select id="selectAddressList">
+		SELECT WORKCOND_ADDRESS_TYPE_NO AS "workcondAddressTypeNo",
+			WORKCOND_ADDRESS_TYPE_INFO AS "workcondAddressTypeInfo"
+		FROM WORKCOND_ADDRESS_TYPE
+		WHERE WORKCOND_ADDRESS_TYPE_NO LIKE '__00'
+	</select>
+	
+	<!-- 주소 소분류 불러오기 -->
+	<select id="selectSubAddress">
+		SELECT WORKCOND_ADDRESS_TYPE_NO AS "workcondAddressTypeNo",
+			WORKCOND_ADDRESS_TYPE_INFO AS "workcondAddressTypeInfo"
+		FROM WORKCOND_ADDRESS_TYPE
+		WHERE WORKCOND_ADDRESS_TYPE_NO LIKE #{workcondAddressTypeNo}||'__'
+			AND WORKCOND_ADDRESS_TYPE_NO NOT LIKE '__00'
+	</select>
+	
 
 	<!-- <insert id="writeResume"> INSERT INTO RESUME (RESUME_NO, WORKER_NO, 
 		GRADE_NO, WORK_DATE_NO, PAY_TYPE, INPUT_PAY) VALUES (SEQ_RESUME_NO.NEXTVAL, 
@@ -62,6 +80,17 @@
         </foreach>
     	)
 	</insert>
+	
+	<!-- 이력서 관련 RESUME_ADDRESS 삽입 -->
+	<insert id="insertResumeAddress" parameterType="map">
+		INSERT INTO RESUME_ADDRESS (RESUME_NO, WORKCOND_ADDRESS_TYPE_NO)
+		SELECT * FROM (
+        <foreach collection="addressList" item="workcondAddressTypeNo" separator="UNION ALL">
+            SELECT #{resumeNo}, #{workcondAddressTypeNo} FROM DUAL
+        </foreach>
+    	)
+	</insert>
+	
 
 	<!-- 4. 이력서 관련 RESUME_JOB_TYPE 삽입 -->
 	<insert id="insertResumeJobType" parameterType="map">

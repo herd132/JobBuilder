@@ -23,6 +23,16 @@ public interface ResumeService {
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
 
+	/** 주소 대분류 불러오기
+	 * @return
+	 */
+	List<Map<String, String>> selectAddressList();
+
+	/** 주소 소분류 불러오기
+	 * @param workcondAddressTypeNo
+	 * @return
+	 */
+	List<Map<String, String>> selectSubAddress(String workcondAddressTypeNo);
 	
 	/** 이력서 작성
 	 * @param resume
@@ -32,7 +42,9 @@ public interface ResumeService {
 	 * @param daysTimeList
 	 * @return
 	 */
-	int writeResume(Resume resume, List<String> workTypeList, List<Integer> jobTypeNoList, List<CareerInfo> careerInfoList, List<ResumeDaysTime> daysTimeList);
+	int writeResume(Resume resume, List<String> workTypeList, List<String> addressList, List<Integer> jobTypeNoList, List<CareerInfo> careerInfoList, List<ResumeDaysTime> daysTimeList);
+
+
 
 
 }

@@ -39,14 +39,19 @@ public class ResumeController {
 
 	private final ResumeService service;
 
+	
 	@GetMapping("writeResume")
 	public String writeResume(@SessionAttribute("loginWorker") Worker loginWorker, Model model) {
 
 		String year = loginWorker.getWorkerBirthDate().substring(0, 4);
 		model.addAttribute("year", year);
+		
 		List<Map<String, String>> majorCategoryList = service.selectMajorCategory();
 		model.addAttribute("majorCategoryList", majorCategoryList);
-
+		
+		List<Map<String,String>> majorAddressList = service.selectAddressList();
+		model.addAttribute("majorAddressList", majorAddressList);
+		
 		return "resume/writeResume";
 	}
 
@@ -62,6 +67,17 @@ public class ResumeController {
 		return service.selectsubCategoryList(workTypeNo);
 	}
 
+	/** 주소 소분류 불러오기(사업장 추가페이지 내)
+	 * @param workcondAddressTypeNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("selectSubAddress/{workcondAddressTypeNo}")
+	private List<Map<String, String>> subAddressList(@PathVariable("workcondAddressTypeNo") String workcondAddressTypeNo){
+		return service.selectSubAddress(workcondAddressTypeNo);
+	}
+	
+	
 	/** 이력서 작성 제출
 	 * @param loginWorker
 	 * @param gradeNo 학력구분
@@ -72,6 +88,7 @@ public class ResumeController {
 	 * @param careerInfoListJson 경력사항List JSON
 	 * @param jobTypeNo 근로형태 list(알바/정규직)
 	 * @param daysTimeListJson 희망요일시간List JSON
+	 * @param 
 	 * @return
 	 * @throws JsonMappingException
 	 * @throws JsonProcessingException
@@ -82,6 +99,7 @@ public class ResumeController {
 			// int형은 null을 가질 수 없어 value값을 정해주거나 Integer 로 받아야 한다
 			Resume resume,
 			@RequestParam("workTypeList") List<String> workTypeList, // 업직종고유번호 list,
+			@RequestParam("addressList") List<String> addressList, // 희망 근무지역 list
 			@RequestParam("jobTypeNo") List<Integer> jobTypeNoList, // 근무형태 list
 			@RequestParam(value ="careerInfoList", required = false) String careerInfoListJson, // 경력사항 JSON
 			@RequestParam("daysTimeList") String daysTimeListJson, // 요일날짜 JSON
@@ -93,6 +111,7 @@ public class ResumeController {
 		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
 		log.debug("희망급여 salAmount {} ", salAmount);		
 		log.debug("careerInfoListJson {}", careerInfoListJson);
+		log.debug("희망 근무지 addressList {}", addressList);
 
 		List<CareerInfo> careerInfoList = null;
 		if(careerInfoListJson != null) {
@@ -135,7 +154,7 @@ public class ResumeController {
 			
 		}
 		
-		int result = service.writeResume(resume, workTypeList, jobTypeNoList, careerInfoList, daysTimeList);
+		int result = service.writeResume(resume, workTypeList, addressList, jobTypeNoList, careerInfoList, daysTimeList);
 		
 		String message = null;
 		if(result > 0) {
