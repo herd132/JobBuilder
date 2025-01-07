@@ -65,5 +65,6 @@ public class Resume {
 	private String gradeName;
 	private String jobtypeName;
 	private String periodName;
+	private String salaryName;
     
 }

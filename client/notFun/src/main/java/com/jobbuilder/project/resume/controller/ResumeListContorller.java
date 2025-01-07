@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,10 +20,12 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
 import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 import com.jobbuilder.project.resume.model.service.ResumeListService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,7 +39,12 @@ public class ResumeListContorller {
 	private final ResumeListService service;
 	
 	@GetMapping("resumeList")
-	public String myPageWorkerInfo() {
+	public String myPageWorkerInfo(HttpSession session) {
+		Worker loginWorker = (Worker) session.getAttribute("loginWorker");
+        // 세션에 loginWorker가 없는 경우 처리
+        if (loginWorker == null) {
+            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
+        }
 		return "resume/resumeList";
 	}
 	
@@ -78,25 +86,27 @@ public class ResumeListContorller {
 	
 
 	    @GetMapping("/resumeDetail")
-	    public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model,
-	    		@SessionAttribute("loginWorker") Worker loginWorker) {
-	        // resumeNo로 데이터를 조회
-	    	
-	    	
+	    public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model, HttpSession session) {
+	        // 세션에서 loginWorker 조회
+	        Worker loginWorker = (Worker) session.getAttribute("loginWorker");
+
+	        // 세션에 loginWorker가 없는 경우 처리
+	        if (loginWorker == null) {
+	            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
+	        }
+
+	        // 데이터 조회
 	        Resume resume = service.getResumeByNo(resumeNo);
-	        List<CareerInfo> careerInfo = service.careerInfo(resumeNo);
-	        List<ResumeWorkType> resumeWorkType = service.resumeWorkType(resumeNo);
-	        List<String> resumeJobTypeList = service.resumeJobTypeList(resumeNo);
+
+	        // 이력서가 없는 경우 처리
+	        if (resume == null) {
+	            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
+	        }
 
 	        // 모델에 데이터 추가
-	        model.addAttribute("resume", resume);
+	        model.addAttribute("resumeNo", resumeNo);
 	        model.addAttribute("loginWorker", loginWorker);
-	        model.addAttribute("careerInfo", careerInfo);
-	        model.addAttribute("resumeWorkType", resumeWorkType);
-	        model.addAttribute("resumeJobTypeList", resumeJobTypeList);
-	        
-	        // 상세 페이지로 이동
-	        return "resume/resumeDetail"; // templates/resume/resumeDetail.html
+	        return "resume/resumeDetail";
 	    }
 
 
@@ -113,14 +123,34 @@ public class ResumeListContorller {
 	        List<CareerInfo> careerInfo = service.careerInfo(resumeNo);
 	        List<ResumeWorkType> resumeWorkType = service.resumeWorkType(resumeNo);
 	        List<String> resumeJobTypeList = service.resumeJobTypeList(resumeNo);
+	        List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(resumeNo);
 
 	        Map<String, Object> response = new HashMap<>();
+	        
 	        response.put("resume", resume);        
 	        response.put("careerInfo", careerInfo); 
 	        response.put("resumeWorkType", resumeWorkType); 
 	        response.put("resumeJobTypeList", resumeJobTypeList);
+	        response.put("resumeDaysTime", resumeDaysTime);
 	        
 	        return response; 
+	    }
+
+
+	    @PostMapping("/updateContent")
+	    @ResponseBody
+	    public Map<String, Object> updateResumeContent(@RequestBody Map<String, Object> requestBody) {
+	        int result = service.updateResumeContent(requestBody);
+
+	        Map<String, Object> response = new HashMap<>();
+	        if (result > 0) {
+	            response.put("status", "success");
+	            response.put("message", "자기소개가 성공적으로 업데이트되었습니다.");
+	        } else {
+	            response.put("status", "error");
+	            response.put("message", "업데이트에 실패했습니다.");
+	        }
+	        return response;
 	    }
 
 

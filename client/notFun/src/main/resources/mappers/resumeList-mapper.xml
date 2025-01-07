@@ -191,6 +191,7 @@
 		    D.GRADE_NAME AS GRADE_NAME, 
 		    A.SALARY_AMOUNT AS SALARY_AMOUNT,
 		    A.SALARY_NO AS SALARY_NO,
+		    (SELECT SALARY_NAME FROM SALARY WHERE SALARY.SALARY_NO = A.SALARY_NO) AS SALARY_NAME,
 		    A.REGISTRATION_DATE AS REGISTRATION_DATE,
 		    A.MODIFICATION_DATE AS MODIFICATION_DATE,
 		    					(
@@ -292,7 +293,15 @@
 	        A.RESUME_NO = #{resumeNo}
 	</select>
 
-
+	<select id="resumeDaysTime" resultType="com.jobbuilder.project.resume.model.dto.ResumeDaysTime">
+		SELECT 
+		    A.DAYS_NAME AS DAYS_NAME,
+		    B.TIME_NAME AS TIME_NAME
+		FROM RESUME_DAYSTIME C
+		LEFT JOIN WORKCOND_DAYS A ON C.DAYS_NO = A.DAYS_NO
+		LEFT JOIN WORKCOND_TIME B ON C.TIME_NO = B.TIME_NO
+		WHERE C.RESUME_NO = #{resumeNo}
+	</select>
 
     <select id="selectRecommendationsByResumeNo" resultType="com.jobbuilder.project.recruitment.model.dto.Recruitment">
 	    SELECT DISTINCT
@@ -404,6 +413,24 @@
 			)
 		   ORDER BY RECRUITMENT_NO DESC
     </select>
+
+
+
+	<update id="updateResumeContent" parameterType="map">
+    UPDATE RESUME
+    SET RESUME_CONTENT = #{resumeContent}
+    WHERE RESUME_NO = #{resumeNo}
+</update>
+
+
+
+
+
+
+
+
+
+
 
 
 </mapper>

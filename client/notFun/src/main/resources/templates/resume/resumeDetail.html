@@ -7,11 +7,7 @@
     <title>이력서 관리</title>
     <!-- CSS, font awesome 라이브러리-->
     <th:block th:replace="~{common/common}"></th:block>
-    <link rel="stylesheet" href="/css/resume/resumeList.css">
-    <link rel="stylesheet" href="/css/resume/resume.css">
     <link rel="stylesheet" href="/css/resume/resumeDatail.css">
-    <meta name="workerNo" th:content="${session.loginWorker != null ? session.loginWorker.workerNo : ''}">
-
 </head>
 
 
@@ -23,172 +19,128 @@
 
         <!-- 흰색배경영역(안쪽)  -->
         <div class="resume-background-white">
-
+            <button class="cancel-btn" type="button" onclick="window.history.back()"> 목록으로 </button>
             <form action="/resume/writeResume" method="post" id="writeResumeForm">
-                <h2 th:text="'제목 : ' + ${resume.resumeTitle}"></h2>
-        
-                <div class="info-section">
+
+                <div class="edit">
+                    <h2 id="resumeTitle"></h2>
+                </div>
+
+                <section class="form-section">
                     <div class="profile-container">
                         <!-- 프로필 사진 -->
                         <div class="profile-photo">
-                            <img th:src="${resume.profileImg}" alt="Profile Photo" />
+                            <img id="profileImg" alt="Profile Photo" />
                         </div>
                         <!-- 프로필 정보 -->
                         <div class="profile-info">
                             <div class="name-age">
-                                <span class="name" th:text="${resume.memberName}"></span>
-                                <span class="gender-age" th:text="${resume.workerBirthDate} + '년 (만 ' + ${resume.age} + '세)'"></span>
+                                <span class="name" id="memberName"></span>
+                                <span class="gender-age" id="workerBirthDate"></span>
                             </div>
                             <div class="contact-info">
                                 <div>
                                     <span>휴대폰</span>
-                                    <span class="phone" th:text="${resume.memberTel}"></span>
+                                    <span id="memberTel" class="phone"></span>
                                 </div>
                                 <div>
                                     <span>MBTI</span>
-                                    <span class="tel" th:text="${resume.workerMbti}"></span>
+                                    <span id="workerMbti" class="tel"></span>
                                 </div>
                                 <div>
                                     <span>Email</span>
-                                    <span class="email" th:text="${resume.memberEmail}"></span>
+                                    <span id="memberEmail" class="email"></span>
                                 </div>
                                 <div>
                                     <span>주소</span>
-                                    <span class="address" th:text="${resume.workerAddress}"></span>
+                                    <span id="workerAddress" class="address"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
+                </section>
+
+                <div class="edit">
+                    <h2>학력 및 경력</h2>
                 </div>
-                
-                
-            
-                
-    
-                <h2>학력 및 경력</h2>
-    
                 <section class="form-section">
-                    <h3 th:text="'학력 : ' + ${resume.gradeName}"></h3>
-                    
-                    <div th:if="${resume.totalCareer}">
+                    <h3 id="gradeName"></h3>
 
-                        <div class="career-toggle-exp">
-                            <div class="newbie">신입</div>
-                            <div class="exp">경력</div>
-                        </div>
-
-                        <h3 id="content"></h3> 
+                    <div id="career-section">
+                        <h3 id="content"></h3>
                         <div class="career-container">
-                                <table id="data-table">
-                                    <thead>
-                                        <tr>
-                                            <th>회사명</th>
-                                            <th>근무기간</th>
-                                            <th>담당업무</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr th:each="career : ${careerInfo}">
-                                            <td th:text="${career.companyName}"></td>
-                                            <td>
-                                                <span th:text="${career.startDate}"></span> ~ 
-                                                <span th:text="${career.endDate}"></span>
-                                            </td>
-                                            <td th:text="${career.careerDescription}"></td>
-                                        </tr>
-                                    </tbody>
-                                </table>
+                            <table id="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>회사명</th>
+                                        <th>근무기간</th>
+                                        <th>담당업무</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="career-tbody">
+                                    <!-- 데이터는 JS에서 동적으로 추가 -->
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                
-                    <!-- resume.totalCareer가 없을 경우 -->
-                    <div th:if="${resume.totalCareer == null || resume.totalCareer == 0 }">
-                        <div class="career-toggle-newbie">
-                            <div class="newbie">신입</div>
-                            <div class="exp">경력</div>
+                </section>
+
+                <div class="edit">
+                    <h2>희망근무 조건</h2>
+                </div>
+                <section class="form-section">
+                    <h3>
+                        <div class="item">
+                            근무직종 :
+                            <div class="subitem-container" id="resumeWorkType"></div>
                         </div>
-                        <h3>경력 : 신입</h3>
-                        <p>경력 정보가 없습니다.</p>
-                    </div>
-    
-                </section>
-    
-    
-                <h2>희망근무 조건</h2>
-                <section class="form-section">
-                    <h3>
-                        희망 업직종 : <span th:each="workType, iterStat : ${resumeWorkType}">
-                            <span th:text="${workType.workTypeCategory}"></span>
-                            <span th:if="!${iterStat.last}">, </span>
-                        </span>
                     </h3>
+
                     <h3>
-                        희망 근무형태 : <span th:each="jobType, iterStat : ${resumeJobTypeList}">
-                            <span th:text="${jobType}"></span>
-                            <span th:if="!${iterStat.last}">, </span>
-                        </span>
+                        <div class="item">
+                            근무형태 :
+                            <div class="subitem-container" id="resumeJobTypeList"></div>
+                        </div>
                     </h3>
-                    
-    
-                    <h3 th:text="'희망 근무기간 : ' + ${resume.periodName}"></h3>
-    
-                    <h3>근무일시</h3>
-                    <div id="select-container">
-                        <section class="daysTimeSection">
-                            <select class="daysNo">
-                                <option value="1">무관</option>
-                                <option value="2">월~일</option>
-                                <option value="3">월~토</option>
-                                <option value="4">월~금</option>
-                                <option value="5">주말(토,일)</option>
-                                <option value="6">주6일</option>
-                                <option value="7">주5일</option>
-                                <option value="8">주4일</option>
-                                <option value="9">주3일</option>
-                                <option value="10">주2일</option>
-                                <option value="11">주1일</option>
-                            </select>
-    
-                            <select class="timeNo">
-                                <option value="1">무관</option>
-                                <option value="2">오전 파트타임(06:00~12:00)</option>
-                                <option value="3">오후 파트타임(12:00~18:00)</option>
-                                <option value="4">저녁 파트타임(18:00~24:00)</option>
-                                <option value="5">새벽 파트타임(00:00~06:00)</option>
-                                <option value="6">오전~오후 파트타임</option>
-                                <option value="7">오후~저녁 파트타임</option>
-                                <option value="8">저녁~새벽 파트타임</option>
-                                <option value="9">새벽~오전 파트타임</option>
-                                <option value="10">풀타임(8시간이상)</option>
-                            </select>
-                        </section>
-                    </div>
-    
-                    <button onclick="addSelect()" type="button" class="addSelectBtn">추가</button>
-    
-                    <h3>급여</h3>
-                    <div name="workPay">
-                        <select name="salaryNo">
-                            <option value="1">시급</option>
-                            <option value="2">월급</option>
-                            <option value="3" selected>추후협의(시급)</option>
-                            <option value="4">추후협의(월급)</option>
-                        </select>
-    
-                        <input type="number" name="salAmount" min="0">원
-                    </div>
+
+                    <h3>
+                        <div class="item">
+                            근무기간 :
+                            <span class="subitem" id="periodName"></span>
+                        </div>
+                    </h3>
+
+                    <h3>
+                        <div class="item">
+                            근무요일 :
+                            <div class="subitem-container" id="dayList"></span>
+                            </div>
+                    </h3>
+
+                    <h3>
+                        <div class="item">
+                            근무시간 :
+                            <div class="subitem-container" id="timeList"></div>
+                        </div>
+                    </h3>
+
+                    <h3>
+                        <div class="item">
+                            희망급여 :
+                            <span class="subitem" id="salary"></span>
+                        </div>
+                    </h3>
+
                 </section>
-    
-                <h2>자기소개</h2>
-                <section class="form-section">
-                    <h3>자기소개 내용작성</h3>
-                    <textarea placeholder="자기소개를 작성하세요." class="selfInfo" name="resumeContent" maxlength="1500"></textarea>
-                    <div class="char-counter">0 / 1500자</div>
-                </section>
-    
-                <div class="btn-section">
-                    <button class="cancel-btn" type="button" onclick="window.history.back()"> 취소 </button>
-                    <button class="submit-btn" type="submit"> 이력서 등록 </button>
+
+                <div id="selfArea">
+                    <div class="edit">
+                        <h2>자기소개</h2>
+                        <button class="edit-btn" type="button" id="selfBtn"> Edit </button>
+                    </div>
+                    <section class="form-section">
+                        <div id="resumeContent" style="white-space: pre-wrap;"></div>
+                    </section>
                 </div>
             </form>
 
@@ -202,13 +154,11 @@
     <th:block th:replace="~{common/main-footer}"></th:block>
 
 
-    <div id="resume-data" data-resume='{"resumeNo": "[[${resume.resumeNo}]]"}'></div>
-
     <script th:inline="javascript">
-        const resumeNo = /*[[${resume.resumeNo}]]*/1;
+        const resumeNo = /*[[${resumeNo}]]*/1;
     </script>
-    
-    
+
+
 
     <script src="/js/resume/resumeDatail.js"></script>
 </body>
