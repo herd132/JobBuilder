@@ -62,49 +62,53 @@
                 </div>
                 
                 
-                <div id="resume-data" data-resume-json="{&quot;resumeNo&quot;:41,&quot;resumeTitle&quot;:&quot;Sample Title&quot;}"></div>
+            
                 
     
                 <h2>학력 및 경력</h2>
     
                 <section class="form-section">
-                    <h3>학력</h3>
-                    <select name="gradeNo" id="gradeNo">
-                        <option value="1">비공개</option>
-                        <option value="2">중졸</option>
-                        <option value="3">고졸</option>
-                        <option value="4">대졸(2,3년제)</option>
-                        <option value="5">대졸(4년제)</option>
-                        <option value="6">대학원이상</option>
-                    </select>
-    
-                    <h3>경력</h3>
-                    <div class="career-container">
-                        <section>
-                            <span>경력구분</span>
-                            <div class="career-toggle">
-                                <button class="newbie active" onclick="showInputs(false)" type="button">신입</button>
-                                <button class="exp" onclick="showInputs(true)" type="button">경력</button>
-                            </div>
-                        </section>
-                        <div class="input-container" style="display: none;">
-                            <label>
-                                회사명:
-                                <input type="text" class="company-name" placeholder="회사명을 입력하세요" disabled>
-                            </label>
-                            <label>
-                                근무기간:
-                                <input type="date" class="start-date" disabled>
-                                <input type="date" class="end-date" disabled>
-                            </label>
-                            <label>
-                                담당업무:
-                                <textarea class="career-description" placeholder="담당업무를 입력하세요" disabled></textarea>
-                            </label>
+                    <h3 th:text="'학력 : ' + ${resume.gradeName}">학력</h3>
+                    
+                    <div th:if="${resume.totalCareer}">
+
+                        <div class="career-toggle-exp">
+                            <div class="newbie">신입</div>
+                            <div class="exp">경력</div>
                         </div>
-    
-                        <button class="exp-append" onclick="expappend()" style="display: none" type="button">경력사항
-                            추가</button>
+
+                        <h3 id="content"></h3> 
+                        <div class="career-container">
+                                <table id="data-table">
+                                    <thead>
+                                        <tr>
+                                            <th>회사명</th>
+                                            <th>근무기간</th>
+                                            <th>담당업무</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="career : ${careerInfo}">
+                                            <td th:text="${career.companyName}"></td>
+                                            <td>
+                                                <span th:text="${career.startDate}"></span> ~ 
+                                                <span th:text="${career.endDate}"></span>
+                                            </td>
+                                            <td th:text="${career.careerDescription}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                        </div>
+                    </div>
+                
+                    <!-- resume.totalCareer가 없을 경우 -->
+                    <div th:if="${resume.totalCareer == null || resume.totalCareer == 0 }">
+                        <div class="career-toggle-newbie">
+                            <div class="newbie">신입</div>
+                            <div class="exp">경력</div>
+                        </div>
+                        <h3>경력 : 신입</h3>
+                        <p>경력 정보가 없습니다.</p>
                     </div>
     
                 </section>
@@ -112,28 +116,19 @@
     
                 <h2>희망근무 조건</h2>
                 <section class="form-section">
-                    <h3>업직종(최대 5개 선택 가능)</h3>
-                    <div>
-                        <ul id="selectCategoryUl"></ul>
-                    </div>
-                    <div>
-                        <div class="category-section">
-                            <ul>
-  
-                        </div>
-                        <div>
-                            <ul id="subWorkType"></ul>
-                        </div>
-                    </div>
-                    <h3>근무형태</h3>
-                    <div class="jobTypeSection">
-                        <label>
-                            <input type="checkbox" id="partTime" name="jobTypeNo" value="1">알바
-                        </label>
-                        <label>
-                            <input type="checkbox" id="fullTime" name="jobTypeNo" value="2">정규직
-                        </label>
-                    </div>
+                    <h3>
+                        업직종 : <span th:each="workType, iterStat : ${resumeWorkType}">
+                            <span th:text="${workType.workTypeCategory}"></span>
+                            <span th:if="!${iterStat.last}">, </span>
+                        </span>
+                    </h3>
+                    <h3>
+                        근무형태 : <span th:each="jobType, iterStat : ${resumeJobTypeList}">
+                            <span th:text="${jobType}"></span>
+                            <span th:if="!${iterStat.last}">, </span>
+                        </span>
+                    </h3>
+                    
     
                     <h3>근무기간</h3>
                     <select name="periodNo">

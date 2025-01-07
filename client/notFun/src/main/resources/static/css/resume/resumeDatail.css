@@ -68,31 +68,67 @@ select {
 /* 경력사항 */
 .career-container {
 	border-radius: 8px;
-	margin-bottom: 20px;
+	margin-bottom: 1px;
 }
 
-.career-container button {
-	padding: 8px 16px;
-	margin-right: 10px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-.career-container>section {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-}
-
-.career-toggle {
+.career-toggle-newbie {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	border: 2px solid #F0BB78;
 	border-radius: 25px;
 	width: 150px;
-	position: relative;
+	overflow: hidden;
+}
+
+.career-toggle-exp {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid #F0BB78;
+	border-radius: 25px;
+	width: 150px;
+	overflow: hidden;
+}
+
+.career-toggle-newbie .newbie {
+	flex: 1;
+	text-align: center;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: #F0BB78;
+	color: white;
+	border-right: 1px solid #F0BB78;
+}
+
+.career-toggle-newbie .exp {
+	flex: 1;
+	text-align: center;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #555;
+}
+
+.career-toggle-exp .newbie {
+	flex: 1;
+	text-align: center;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	color: #555;
+	border-right: 1px solid #F0BB78;
+}
+
+.career-toggle-exp .exp {
+	flex: 1;
+	text-align: center;
+	padding: 10px;
+	font-size: 16px;
+	font-weight: bold;
+	background-color: #F0BB78;
+	color: white;
 }
 
 /* 경력구분 텍스트 스타일 */
@@ -354,25 +390,6 @@ select[name="salaryNo"] {
 
 input[name="salAmount"] {
 	width: 50%;
-}
-
-/* 반응형 디자인 */
-@media (max-width: 768px) {
-	body {
-		padding: 10px;
-	}
-
-	.form-section {
-		padding: 15px;
-	}
-
-	#select-container {
-		flex-direction: column;
-	}
-
-	#select-container select {
-		width: 100%;
-	}
 }
 
 .info-section {
