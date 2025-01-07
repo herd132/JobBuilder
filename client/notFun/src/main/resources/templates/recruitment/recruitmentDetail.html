@@ -14,6 +14,13 @@
 
 <body>
   <th:block th:replace="~{common/main-header}"></th:block>
+  
+  <!-- 모달 영역 -->
+  <div class="modal-container hidden">
+    <div class="modal-area">
+      모달영역
+    </div>
+  </div>
 
   <div class="recruitmentDetail-gray">
     <main class="recruitmentDetail-white" th:object="${recruitment}">
@@ -27,6 +34,8 @@
           <span th:text="|회사명 : *{businessName}|"></span>
           <br>
           <span th:text="|지점 : *{businessNickname}|"></span>
+          <br>
+          <span th:text="|근무지역 : *{workcondAddressTypeInfo}|"></span>
         </div>
         <div class="recruite-complete-area">
           <span th:if="*{recruitCompleteFl == 'N'}"> 모집 중입니다.</span>
@@ -169,8 +178,11 @@
           </th:block>
         </th:block>
 
-        <th:block th:if="${session.loginWorker}">
-          <button id="submitResumeBtn">이력서 제출</button>
+        <th:block th:if="${session.loginWorker}" th:object="${session.loginWorker}">
+          <button id="submitResumeBtn" 
+            th:attr="onclick='selectResumeBtn(' + ${session.loginWorker.workerNo} + ')'"
+            >
+            이력서 제출</button>
           <button id="goToRecruitmentListBtn">목록으로</button>
         </th:block>
 

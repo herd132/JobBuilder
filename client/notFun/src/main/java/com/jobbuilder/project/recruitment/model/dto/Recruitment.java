@@ -40,6 +40,7 @@ public class Recruitment {
 	private int memberNo;					// 회원번호(FK)
 	private String recruitCompleteFl;		// 구인 완료여부(FK)
 	private String recruitmentProfile;		// 공고 이미지(선택사항)
+	private String workcondAddressTypeNo;	// 근무지역번호
 	
 	/* ***** FK 관련 TABLE ***** */
 	private String jobtypeName;				// JOBTYPE, 근무형태
@@ -53,6 +54,7 @@ public class Recruitment {
 	private String businessName;			// 회사명
 	private String businessAddress;			// 지점명주소
 	private String thumbnail;				// 대표이미지(경로 저장용)
+	private String workcondAddressTypeInfo;	// 근무지역명
 	
 	private List<BusinessWorktype> businessWorktypeList;// 업직종 테이블 DTO List
 	private List<RecruitmentPreferred> preferredList;	// 우대사항 테이블 DTO List

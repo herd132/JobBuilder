@@ -16,7 +16,9 @@ import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.PaginationRecruitment;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
 import com.jobbuilder.project.recruitment.model.mapper.RecruitmentMapper;
+import com.jobbuilder.project.resume.model.dto.Resume;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -56,12 +58,21 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 		return mapper.selectSupportTitleList();
 	}
 	
+	@Override	// 주소 대분류 불러오기
+	public List<Map<String, String>> selectAddressList() {
+		return mapper.selectAddressList();
+	}
+	
 	@Override	// 복리후생 소분류 불러오기
 	public List<Map<String, String>> selectSubSupportList(String supportNo) {
 		// TODO Auto-generated method stub
 		return mapper.selectSubSupportList(supportNo);
 	}
 	
+	@Override	// 주소 소분류 불러오기
+	public List<Map<String, String>> selectSubAddress(String workcondAddressTypeNo) {
+		return mapper.selectSubAddress(workcondAddressTypeNo.substring(0, 2));
+	}
 	
 	/* ***** 공고 추가(post) 관련 ***** */
 	@Override	// 공고 추가
@@ -211,12 +222,59 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	public Recruitment selectOne(int recruitmentNo) {
 		
 		Recruitment recruitment = mapper.selectOne(recruitmentNo);
+		log.debug("recruitment : " + recruitment);
 		
 		recruitment.setBusinessWorktypeList(mapper.getBWList(recruitment.getEmployerNo()));
 		recruitment.setPreferredList(mapper.getPreferredList(recruitmentNo));
 		recruitment.setSupportList(mapper.getSupportList(recruitmentNo));
 		
 		return recruitment;
+	}
+	
+	@Override	// 로그인한 알바생의 이력서 목록 조회
+	public List<ResumeWJ> selectResumeList(int workerNo) {
+		
+		List<ResumeWJ> resumeList = mapper.selectResumeList(workerNo);
+		if(resumeList.isEmpty()) return null;
+		// 각 ResumeWJ 에 resumeNo, resumeTitle, salaryNo, salaryName, salaryAmount,
+		// gradeNo, gradeName 이 세팅되어 있음
+		// 추가로 jobtype, period, days, time, 경력사항 추가해야함
+		
+		for(ResumeWJ resume : resumeList) {
+			int resumeNo = resume.getResumeNo();
+			
+			resume.setResumeWorkTypeList(mapper.getWorkTypeList(resumeNo));		// 바리스타, 노래방 등
+			resume.setResumeJobTypeList(mapper.getJobTypeList(resumeNo));		// 알바, 정규직
+			resume.setResumePeriodList(mapper.getPeriodList(resumeNo));			// 1개월~3개월 등
+			resume.setResumeDaysTimeList(mapper.getDaysTimeList(resumeNo));		// 요일시간 세트
+			resume.setResumeCareerInfoList(mapper.getCareerInfoList(resumeNo));	// 경력사항
+			
+			log.debug("resume : " + resume);
+		}
+		
+		return resumeList;
+	}
+	
+	@Override	// 한 공고에 동일한 이력서를 제출했는 지 조회
+	public int selectRecruitmentResume(int recruitmentNo, int resumeNo) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		
+		map.put("recruitmentNo", recruitmentNo);
+		map.put("resumeNo", resumeNo);
+		
+		return mapper.selectRecruitmentResume(map);
+	}
+	
+	@Override	// 특정 공고에 이력서 제출
+	public int submitResume(int recruitmentNo, int resumeNo) {
+		
+		Map<String, Integer> map = new HashMap<>();
+		
+		map.put("recruitmentNo", recruitmentNo);
+		map.put("resumeNo", resumeNo);
+		
+		return mapper.submitResume(map);
 	}
 	
 	/* ********** 공고 수정(post) 관련 ********** */

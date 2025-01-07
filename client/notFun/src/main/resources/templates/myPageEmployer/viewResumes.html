@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>제출된 이력서 보기</title>
+
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/viewResumes.css">
+  
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+</head>
+
+<body>
+  <!-- 로고 및 검색바 로그인 -->
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+  
+  <!-- 모달 영역 -->
+  <div class="modal-container hidden">
+    <div class="modal-area">
+    </div>
+  </div>
+
+  <div class="viewResumes-gray">
+    <main class="viewResumes-white">
+      <span th:text="${session.loginEmployer}"></span>
+
+
+    </main>
+  </div>
+  
+</body>
+
+</html>

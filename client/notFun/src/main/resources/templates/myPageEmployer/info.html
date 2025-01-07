@@ -77,9 +77,9 @@
       <section class="business-info-container">
 
         <th:block th:each="business, iterStat: ${businessList}" th:object="${business}">
-          <div th:class="|business-box${iterStat.count}|" th:employerNo="*{employerNo}"
+          <div th:class="|business-box${iterStat.count}|"
             style="border: 1px solid black; cursor: pointer;"
-            th:onclick="businessDetailModal(this.getAttribute('employerNo'))">
+            th:attr="onclick='businessDetailModal(' + ${business.employerNo} + ')'">
 
             <div class="business-image-area">
               <img th:if="*{thumbnail}" th:src="*{thumbnail}">

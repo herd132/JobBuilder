@@ -10,6 +10,39 @@ const newEl = (tag, attr, cls) => {
   return el;                                              // 생성된 요소 반환
 };
 
+
+/* ********** 근무지조건 관련 ********** */
+
+const selectDetailAddress = async (workcondAddressTypeNo) => {
+
+  const subAddressType = document.querySelector("#subAddressType");
+  subAddressType.innerHTML = "";
+
+  const resp = await fetch(`/recruitment/selectSubAddress/${workcondAddressTypeNo}`);
+  const result = await resp.json();
+
+  for (let element of result) {
+
+    const liSubAddressName = document.createElement("li");
+
+    liSubAddressName.innerText = element.workcondAddressTypeInfo;
+    liSubAddressName.id = element.workcondAddressTypeNo;
+    liSubAddressName.style.cursor = "pointer";
+
+    subAddressType.appendChild(liSubAddressName);
+
+    liSubAddressName.addEventListener("click", () => {
+      const workcondAddressTypeInfo = document.querySelector("#workcondAddressTypeInfo"); // input태그
+      const workcondAddressTypeNo = document.querySelector("#workcondAddressTypeNo");
+      workcondAddressTypeInfo.value = element.workcondAddressTypeInfo;
+      workcondAddressTypeNo.value = element.workcondAddressTypeNo;
+    })
+
+  }
+}
+
+
+
 /* ********** 선호조건 관련 ********** */
 const selectedPreferredArea = document.querySelector(".selected-preferred-area");
 
