@@ -300,7 +300,7 @@
 	<!-- 특정 공고에 이력서 제출 -->
 	<insert id="submitResume">
 		INSERT INTO "RECRUITMENT_RESUME"
-		VALUES(${recruitmentNo}, ${resumeNo})
+		VALUES(${recruitmentNo}, ${resumeNo}, DEFAULT)
 	</insert>
 	
 	

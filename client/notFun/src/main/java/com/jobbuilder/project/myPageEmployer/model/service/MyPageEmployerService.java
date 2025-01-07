@@ -7,6 +7,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.Employer;
+import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 
 public interface MyPageEmployerService {
@@ -151,16 +152,17 @@ public interface MyPageEmployerService {
 
 
 
-
-
-
 	/* ********** 사업장 홍보 페이지 관련 ********** */
 	
 	
 	
 	/* ********** 제출된 이력서 보기 페이지 관련 ********** */
 	
-	
+	/** 공고에 제출된 이력서 조회
+	 * @param memberNo
+	 * @return
+	 */
+	Map<List<Integer>, RecruitmentResume> viewResumes(int memberNo);
 	
 	/* ********** 회원탈퇴 페이지 관련 ********** */
 	
