@@ -1,5 +1,5 @@
 /* ***** 댓글 목록 조회(ajax) ***** */
-const selectCommentList = () => {
+const selectoneTalkList = () => {
   // [GET]
   // fetch(주소?쿼리스트링)
 
@@ -9,87 +9,83 @@ const selectCommentList = () => {
   // response.json()
   // - 응답 받은 JSON 데이터 -> JS 객체로 변환
 
-  fetch("/comment?boardNo=" + boardNo) // GET 방식 요청
+  fetch("/oneTalk") // GET 방식 요청
     .then((response) => response.json())
-    .then((commentList) => {
+    .then((oneTalkList) => {
       // 화면에 존재하는 기존 댓글 목록 삭제 후
-      // 조회된 commentList를 이용해서 새로운 댓글 목록 출력
-      console.log(commentList);
+      // 조회된 oneTalkList를 이용해서 새로운 댓글 목록 출력
+      console.log(oneTalkList);
       // ul태그(댓글 목록 감싸는 요소)
-      const ul = document.querySelector("#commentList");
+      const ul = document.querySelector("#oneTalkList");
       ul.innerHTML = ""; // 기존 댓글 목록 삭제
 
-      /* ******* 조회된 commentList를 이용해 댓글 출력 ******* */
-      for (let comment of commentList) {
-        console.log(comment.memberNo);
+      /* ******* 조회된 oneTalkList를 이용해 댓글 출력 ******* */
+      for (let oneTalk of oneTalkList) {
+        console.log(oneTalk.memberNo);
 
         // 행(li) 생성 + 클래스 추가
-        const commentRow = document.createElement("li");
-        commentRow.classList.add("comment-row");
+        const oneTalkRow = document.createElement("li");
+        oneTalkRow.classList.add("oneTalk-row");
 
-        // 대댓글(자식 댓글)인 경우 "child-comment" 클래스 추가
-        if (comment.parentCommentNo != 0)
-          commentRow.classList.add("child-comment");
+        // 대댓글(자식 댓글)인 경우 "child-oneTalk" 클래스 추가
+        if (oneTalk.parentoneTalkNo != 0)
+          oneTalkRow.classList.add("child-oneTalk");
 
         // 만약 삭제된 댓글이지만 자식 댓글이 존재하는 경우
-        if (comment.commentDelFlBoard == "Y")
-          commentRow.innerText = "삭제된 댓글 입니다";
+        if (oneTalk.oneTalkDelFlBoard == "Y")
+          oneTalkRow.innerText = "삭제된 댓글 입니다";
         else {
           // 삭제되지 않은 댓글
-          const commentWriter = document.createElement("p");
+          const oneTalkWriter = document.createElement("p");
           // 닉네임
           const nickname = document.createElement("span");
-          if(comment.workerNickname != null) {
-            nickname.innerText = comment.workerNickname;
-          } else {
-            nickname.innerText = comment.businessName;
-          }
+          nickname.innerText = oneTalk.memberName;
 
           // 날짜(작성일)
-          const commentDate = document.createElement("span");
-          commentDate.classList.add("comment-date");
-          commentDate.innerText = comment.commentWriteDateBoard;
+          const oneTalkDate = document.createElement("span");
+          oneTalkDate.classList.add("oneTalk-date");
+          oneTalkDate.innerText = oneTalk.oneTalkWriteDateBoard;
 
-          // 작성자 영역(commentWriter)에 프로필, 닉네임, 날짜 추가
-          commentWriter.append(nickname, commentDate);
+          // 작성자 영역(oneTalkWriter)에 프로필, 닉네임, 날짜 추가
+          oneTalkWriter.append(nickname, oneTalkDate);
 
           // 댓글 행에 작성자 영역 추가
-          commentRow.append(commentWriter);
+          oneTalkRow.append(oneTalkWriter);
 
           // ----------------------------------------------------
 
           // 댓글 내용
           const content = document.createElement("p");
-          content.classList.add("comment-content");
-          content.innerText = comment.commentContentBoard;
+          content.classList.add("oneTalk-content");
+          content.innerText = oneTalk.oneTalkContentBoard;
 
-          commentRow.append(content); // 행에 내용 추가
+          oneTalkRow.append(content); // 행에 내용 추가
 
           // ----------------------------------------------------
 
           // 버튼 영역
-          const commentBtnArea = document.createElement("div");
-          commentBtnArea.classList.add("comment-btn-area");
+          const oneTalkBtnArea = document.createElement("div");
+          oneTalkBtnArea.classList.add("oneTalk-btn-area");
 
           // 답글 버튼
-          const childCommentBtn = document.createElement("button");
-          childCommentBtn.innerText = "답글";
+          const childoneTalkBtn = document.createElement("button");
+          childoneTalkBtn.innerText = "답글";
 
           // 답글 버튼에 onclick 이벤트 리스너 추가
-          childCommentBtn.setAttribute(
+          childoneTalkBtn.setAttribute(
             "onclick",
-            `showInsertComment(${comment.commentNoBoard}, this)`
+            `showInsertoneTalk(${oneTalk.oneTalkNoBoard}, this)`
           );
 
           // 버튼 영역에 답글 추가
-          commentBtnArea.append(childCommentBtn);
+          oneTalkBtnArea.append(childoneTalkBtn);
 
           // 로그인한 회원 번호가 댓글 작성자 번호와 같을 때
           // 댓글 수정/삭제 버튼 출력
 
           if (
-            (loginWorkerNo != null && loginWorkerNo == comment.memberNo) ||
-            (loginEmployerNo != null && loginEmployerNo == comment.memberNo)
+            (loginWorkerNo != null && loginWorkerNo == oneTalk.memberNo) ||
+            (loginEmployerNo != null && loginEmployerNo == oneTalk.memberNo)
           ) {
             // 수정 버튼
             const updateBtn = document.createElement("button");
@@ -98,7 +94,7 @@ const selectCommentList = () => {
             // 수정 버튼에 onclick 이벤트 리스너 추가
             updateBtn.setAttribute(
               "onclick",
-              `showUpdateComment(${comment.commentNoBoard}, this)`
+              `showUpdateoneTalk(${oneTalk.oneTalkNoBoard}, this)`
             );
 
             // 삭제 버튼
@@ -108,30 +104,30 @@ const selectCommentList = () => {
             // 삭제 버튼에 onclick 이벤트 리스너 추가
             deleteBtn.setAttribute(
               "onclick",
-              `deleteComment(${comment.commentNoBoard})`
+              `deleteoneTalk(${oneTalk.oneTalkNoBoard})`
             );
 
             // 버튼 영역에 수정, 삭제 버튼 추가
-            commentBtnArea.append(updateBtn, deleteBtn);
+            oneTalkBtnArea.append(updateBtn, deleteBtn);
           }
 
           // 행에 버튼 영역 추가
-          commentRow.append(commentBtnArea);
+          oneTalkRow.append(oneTalkBtnArea);
         } // else 끝
 
         // 댓글 목록(ul)에 행(li) 추가
-        ul.append(commentRow);
+        ul.append(oneTalkRow);
       } // for 끝
     });
 };
-selectCommentList();
+selectoneTalkList();
 
 // -----------------------------------------------------------------------
 
 /* ***** 댓글 등록(ajax) ***** */
 
-const addContent = document.querySelector("#addComment"); // button
-const commentContentBoard = document.querySelector("#commentContentBoard"); // textarea
+const addContent = document.querySelector("#addoneTalk"); // button
+const oneTalkContentBoard = document.querySelector("#oneTalkContentBoard"); // textarea
 
 // 댓글 등록 버튼 클릭 시
 addContent.addEventListener("click", (e) => {
@@ -142,13 +138,13 @@ addContent.addEventListener("click", (e) => {
   }
 
   // 댓글 내용이 작성되지 않은 경우
-  if (commentContentBoard.value.trim().length == 0) {
+  if (oneTalkContentBoard.value.trim().length == 0) {
     alert("내용 작성 후 등록 버튼을 클릭해 주세요");
-    commentContentBoard.focus();
+    oneTalkContentBoard.focus();
     return;
   }
   const data = {
-    commentContentBoard: commentContentBoard.value,
+    oneTalkContentBoard: oneTalkContentBoard.value,
     boardNo: boardNo,
     memberNo: loginMemberNo, // 또는 Session 회원 번호 이용도 가능
   };
@@ -160,7 +156,7 @@ addContent.addEventListener("click", (e) => {
     data.memberNo = loginEmployerNo;
   }
   
-  fetch("/comment", {
+  fetch("/oneTalk", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data), // data 객체를 JSON 문자열로 변환
@@ -169,8 +165,8 @@ addContent.addEventListener("click", (e) => {
     .then((result) => {
       if (result > 0) {
         alert("댓글이 등록 되었습니다");
-        commentContentBoard.value = ""; // 작성한 댓글 내용 지우기
-        selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
+        oneTalkContentBoard.value = ""; // 작성한 댓글 내용 지우기
+        selectoneTalkList(); // 댓글 목록을 다시 조회해서 화면에 출력
       } else {
         alert("댓글 등록 실패");
       }
@@ -179,12 +175,12 @@ addContent.addEventListener("click", (e) => {
 });
 
 /** 답글 작성 화면 추가
- * @param {*} parentCommentNo
+ * @param {*} parentoneTalkNo
  * @param {*} btn
  */
-const showInsertComment = (parentCommentNo, btn) => {
+const showInsertoneTalk = (parentoneTalkNo, btn) => {
   // ** 답글 작성 textarea가 한 개만 열릴 수 있도록 만들기 **
-  const temp = document.getElementsByClassName("commentInsertContent");
+  const temp = document.getElementsByClassName("oneTalkInsertContent");
 
   if (temp.length > 0) {
     // 답글 작성 textara가 이미 화면에 존재하는 경우
@@ -203,21 +199,21 @@ const showInsertComment = (parentCommentNo, btn) => {
 
   // 답글을 작성할 textarea 요소 생성
   const textarea = document.createElement("textarea");
-  textarea.classList.add("commentInsertContent");
+  textarea.classList.add("oneTalkInsertContent");
 
   // 답글 버튼의 부모의 뒤쪽에 textarea 추가
   // after(요소) : 뒤쪽에 추가
   btn.parentElement.after(textarea);
 
   // 답글 버튼 영역 + 등록/취소 버튼 생성 및 추가
-  const commentBtnArea = document.createElement("div");
-  commentBtnArea.classList.add("comment-btn-area");
+  const oneTalkBtnArea = document.createElement("div");
+  oneTalkBtnArea.classList.add("oneTalk-btn-area");
 
   const insertBtn = document.createElement("button");
   insertBtn.innerText = "등록";
   insertBtn.setAttribute(
     "onclick",
-    "insertChildComment(" + parentCommentNo + ", this)"
+    "insertChildoneTalk(" + parentoneTalkNo + ", this)"
   );
 
   const cancelBtn = document.createElement("button");
@@ -225,10 +221,10 @@ const showInsertComment = (parentCommentNo, btn) => {
   cancelBtn.setAttribute("onclick", "insertCancel(this)");
 
   // 답글 버튼 영역의 자식으로 등록/취소 버튼 추가
-  commentBtnArea.append(insertBtn, cancelBtn);
+  oneTalkBtnArea.append(insertBtn, cancelBtn);
 
   // 답글 버튼 영역을 화면에 추가된 textarea 뒤쪽에 추가
-  textarea.after(commentBtnArea);
+  textarea.after(oneTalkBtnArea);
 };
 
 // ---------------------------------------
@@ -245,10 +241,10 @@ const insertCancel = (cancelBtn) => {
 };
 
 /** 답글 (자식 댓글) 등록
- * @param {*} parentCommentNo : 부모 댓글 번호
+ * @param {*} parentoneTalkNo : 부모 댓글 번호
  * @param {*} btn  :  클릭된 등록 버튼
  */
-const insertChildComment = (parentCommentNo, btn) => {
+const insertChildoneTalk = (parentoneTalkNo, btn) => {
   // 답글 내용이 작성된 textarea
   const textarea = btn.parentElement.previousElementSibling;
 
@@ -261,10 +257,10 @@ const insertChildComment = (parentCommentNo, btn) => {
   
   // ajax를 이용해 댓글 등록 요청
   const data = {
-    commentContentBoard: textarea.value,
+    oneTalkContentBoard: textarea.value,
     boardNo: boardNo,
     memberNo: loginMemberNo, // 또는 Session 회원 번호 이용도 가능
-    parentCommentNo: parentCommentNo, // 부모 댓글 번호
+    parentoneTalkNo: parentoneTalkNo, // 부모 댓글 번호
   };
 
   if(loginEmployerNo != null){
@@ -275,7 +271,7 @@ const insertChildComment = (parentCommentNo, btn) => {
   };
 
 
-  fetch("/comment", {
+  fetch("/oneTalk", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data), // data 객체를 JSON 문자열로 변환
@@ -284,7 +280,7 @@ const insertChildComment = (parentCommentNo, btn) => {
     .then((result) => {
       if (result > 0) {
         alert("답글이 등록 되었습니다");
-        selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
+        selectoneTalkList(); // 댓글 목록을 다시 조회해서 화면에 출력
       } else {
         alert("답글 등록 실패");
       }
@@ -295,22 +291,22 @@ const insertChildComment = (parentCommentNo, btn) => {
 // --------------------------------------------------
 
 /** 댓글 삭제
- * @param {*} commentNoBoard
+ * @param {*} oneTalkNoBoard
  */
-const deleteComment = (commentNoBoard) => {
+const deleteoneTalk = (oneTalkNoBoard) => {
   // 취소 선택 시
   if (!confirm("삭제 하시겠습니까?")) return;
 
-  fetch("/comment", {
+  fetch("/oneTalk", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: commentNoBoard,
+    body: oneTalkNoBoard,
   })
     .then((resp) => resp.text())
     .then((result) => {
       if (result > 0) {
         alert("삭제 되었습니다");
-        selectCommentList(); // 다시 조회해서 화면 다시 만들기
+        selectoneTalkList(); // 다시 조회해서 화면 다시 만들기
       } else {
         alert("삭제 실패");
       }
@@ -321,22 +317,22 @@ const deleteComment = (commentNoBoard) => {
 // ----------------------------------
 
 // 수정 취소 시 원래 댓글 형태로 돌아가기 위한 백업 변수
-let beforeCommentRow;
+let beforeoneTalkRow;
 
 /** 댓글 수정 화면 전환
- * @param {*} commentNo
+ * @param {*} oneTalkNo
  * @param {*} btn
  */
-const showUpdateComment = (commentNoBoard, btn) => {
+const showUpdateoneTalk = (oneTalkNoBoard, btn) => {
   /* 댓글 수정 화면이 1개만 열릴 수 있게 하기 */
   const temp = document.querySelector(".update-textarea");
 
   // .update-textarea 존재 == 열려있는 댓글 수정창이 존재
   if (temp != null) {
     if (confirm("수정 중인 댓글이 있습니다. 현재 댓글을 수정 하시겠습니까?")) {
-      const commentRow = temp.parentElement; // 기존 댓글 행
-      commentRow.after(beforeCommentRow); // 기존 댓글 다음에 백업 추가
-      commentRow.remove(); // 기존 삭제 -> 백업이 기존 행 위치로 이동
+      const oneTalkRow = temp.parentElement; // 기존 댓글 행
+      oneTalkRow.after(beforeoneTalkRow); // 기존 댓글 다음에 백업 추가
+      oneTalkRow.remove(); // 기존 삭제 -> 백업이 기존 행 위치로 이동
     } else {
       // 취소
       return;
@@ -345,20 +341,20 @@ const showUpdateComment = (commentNoBoard, btn) => {
 
   // -------------------------------------------
 
-  // 1. 댓글 수정이 클릭된 행 (.comment-row) 선택
-  const commentRow = btn.closest("li");
+  // 1. 댓글 수정이 클릭된 행 (.oneTalk-row) 선택
+  const oneTalkRow = btn.closest("li");
 
   // 2. 행 전체를 백업(복제)
   // 요소.cloneNode(true) : 요소 복제,
   //           매개변수 true == 하위 요소도 복제
-  beforeCommentRow = commentRow.cloneNode(true);
-  // console.log(beforeCommentRow);
+  beforeoneTalkRow = oneTalkRow.cloneNode(true);
+  // console.log(beforeoneTalkRow);
 
   // 3. 기존 댓글에 작성되어 있던 내용만 얻어오기
-  let beforeContent = commentRow.children[1].innerText;
+  let beforeContent = oneTalkRow.children[1].innerText;
 
   // 4. 댓글 행 내부를 모두 삭제
-  commentRow.innerHTML = "";
+  oneTalkRow.innerHTML = "";
 
   // 5. textarea 생성 + 클래스 추가 + 내용 추가
   const textarea = document.createElement("textarea");
@@ -366,16 +362,16 @@ const showUpdateComment = (commentNoBoard, btn) => {
   textarea.value = beforeContent;
 
   // 6. 댓글 행에 textarea 추가
-  commentRow.append(textarea);
+  oneTalkRow.append(textarea);
 
   // 7. 버튼 영역 생성
-  const commentBtnArea = document.createElement("div");
-  commentBtnArea.classList.add("comment-btn-area");
+  const oneTalkBtnArea = document.createElement("div");
+  oneTalkBtnArea.classList.add("oneTalk-btn-area");
 
   // 8. 수정 버튼 생성
   const updateBtn = document.createElement("button");
   updateBtn.innerText = "수정";
-  updateBtn.setAttribute("onclick", `updateComment(${commentNoBoard}, this)`);
+  updateBtn.setAttribute("onclick", `updateoneTalk(${oneTalkNoBoard}, this)`);
 
   // 9. 취소 버튼 생성
   const cancelBtn = document.createElement("button");
@@ -384,8 +380,8 @@ const showUpdateComment = (commentNoBoard, btn) => {
 
   // 10. 버튼 영역에 수정/취소 버튼 추가 후
   //     댓글 행에 버튼 영역 추가
-  commentBtnArea.append(updateBtn, cancelBtn);
-  commentRow.append(commentBtnArea);
+  oneTalkBtnArea.append(updateBtn, cancelBtn);
+  oneTalkRow.append(oneTalkBtnArea);
 };
 
 // --------------------------------------------------------------------
@@ -395,19 +391,19 @@ const showUpdateComment = (commentNoBoard, btn) => {
  */
 const updateCancel = (btn) => {
   if (confirm("취소 하시겠습니까?")) {
-    const commentRow = btn.closest("li"); // 기존 댓글 행
-    commentRow.after(beforeCommentRow); // 기존 댓글 다음에 백업 추가
-    commentRow.remove(); // 기존 삭제 -> 백업이 기존 행 위치로 이동
+    const oneTalkRow = btn.closest("li"); // 기존 댓글 행
+    oneTalkRow.after(beforeoneTalkRow); // 기존 댓글 다음에 백업 추가
+    oneTalkRow.remove(); // 기존 삭제 -> 백업이 기존 행 위치로 이동
   }
 };
 
 // ----------------------------------------------------------
 
 /** 댓글 수정
- * @param {*} commentNo : 수정할 댓글 번호
+ * @param {*} oneTalkNo : 수정할 댓글 번호
  * @param {*} btn       : 클릭된 수정 버튼
  */
-const updateComment = (commentNoBoard, btn) => {
+const updateoneTalk = (oneTalkNoBoard, btn) => {
   // 수정된 내용이 작성된 textarea 얻어오기
   const textarea = btn.parentElement.previousElementSibling;
 
@@ -420,11 +416,11 @@ const updateComment = (commentNoBoard, btn) => {
 
   // 댓글 수정 (ajax)
   const data = {
-    commentNoBoard: commentNoBoard,
-    commentContentBoard: textarea.value,
+    oneTalkNoBoard: oneTalkNoBoard,
+    oneTalkContentBoard: textarea.value,
   };
 
-  fetch("/comment", {
+  fetch("/oneTalk", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data),
@@ -433,7 +429,7 @@ const updateComment = (commentNoBoard, btn) => {
     .then((result) => {
       if (result > 0) {
         alert("댓글이 수정 되었습니다");
-        selectCommentList();
+        selectoneTalkList();
       } else {
         alert("댓글 수정 실패");
       }

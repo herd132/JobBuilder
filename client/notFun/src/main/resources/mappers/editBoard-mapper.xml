@@ -16,7 +16,24 @@
 		#{memberNo},
 		#{boardCode}
 		)
-	</insert> 	
+	</insert>
+	
+	<!--  게시글 작성시 ( 고용주 ) -->
+	<insert id="boardInsertEmp" useGeneratedKeys="true" parameterType="Board">
+		
+		<selectKey order="BEFORE" resultType="_int" keyProperty="boardNo">
+			SELECT SEQ_BOARD_NO.NEXTVAL FROM DUAL
+		</selectKey>	
+		INSERT INTO "BOARD"
+		VALUES(
+		#{boardNo}, #{boardTitle}, 
+		#{boardContent}, 
+		DEFAULT,DEFAULT,DEFAULT,DEFAULT, 
+		#{memberNo},
+		#{boardCode}
+		)		
+	</insert>
+	 	
 	<!--  게시글 이미지 삽입 -->
 	<insert id="insertUploadList" parameterType="list">
 	INSERT INTO "BOARD_IMG"

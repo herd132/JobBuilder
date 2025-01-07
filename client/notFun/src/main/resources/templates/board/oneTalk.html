@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="oneTalkArea">
+    <!-- 댓글 목록 -->
+    <div class="oneTalk-list-area">
+      <ul id="oneTalkList">
+  
+        <!-- 대댓글(자식)인 경우 child-oneTalk 클래스 추가 -->
+        <li class="oneTalk-row" th:each="oneTalk : ${board.oneTalkList}"
+          th:classappend="${oneTalk.parentoneTalkNo} != 0 ? child-oneTalk" th:object="${oneTalk}">
+  
+          <th:block th:if="*{oneTalkDelFlBoard} == 'Y'">
+            삭제된 댓글 입니다
+          </th:block>
+  
+          <th:block th:if="*{oneTalkDelFlBoard} == 'N'">
+            <p class="oneTalk-writer">
+              
+              <span th:text="*{memberName}">닉네임</span>
+              <span class="oneTalk-date" th:text="*{oneTalkWriteDateBoard}">작성일</span>
+            </p>
+  
+            <p class="oneTalk-content" th:text="*{oneTalkContentBoard}">댓글 내용</p>
+  
+            <!-- 버튼 영역 --></button>
+            <div class="oneTalk-btn-area">
+              <button th:onclick="|showInsertoneTalk(*{oneTalkNoBoard}, this)|">답글</button>
+  
+              <!-- 로그인 회원(근로자)과 댓글 작성자가 같은 경우 -->
+              <th:block th:if="${session.loginWorker != null and session.loginWorker.memberNo == oneTalk.memberNo}">
+                <button th:onclick="|showUpdateoneTalk(*{oneTalkNoBoard}, this)|">수정</button>
+                <button th:onclick="|deleteoneTalk(*{oneTalkNoBoard})|">삭제 </button>
+              </th:block>
+              <!-- 로그인 회원 (고용주) 가 댓글 작성자가 같은 경우-->
+              <th:block th:if="${session.loginEmployer != null and session.loginEmployer.memberNo == oneTalk.memberNo}">
+                <button th:onclick="|showUpdateoneTalk(*{oneTalkNoBoard}, this)|">수정</button>
+                <button th:onclick="|deleteoneTalk(*{oneTalkNoBoard})|">삭제 </button>
+              </th:block>
+  
+  
+            </div>
+          </th:block>  
+        </li>  
+      </ul>
+    </div>
+  
+    <!-- 댓글 작성 부분 -->
+    <div class="oneTalk-write-area">
+      <textarea id="oneTalkContentBoard"></textarea>
+      <button id="addoneTalk">
+        댓글<br>
+        등록
+      </button>
+    </div>
+  
+  </div>
+  
+</body>
+</html>

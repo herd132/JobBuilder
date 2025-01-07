@@ -1,7 +1,7 @@
 console.log("login.js와 연결됨");
-const workerLoginForm = document.querySelector("#workerloginForm");
-const workerLoginId = document.querySelector("#loginForm input[name='workerId']");
-const workerLoginPw = document.querySelector("input[name='workerPw']");
+const workerLoginForm = document.querySelector("#workerLoginForm");
+const workerLoginId = document.querySelector("input[name='workerId']");
+const workerLoginPw = document.querySelector("input[name='memberPw']");
 
 
 if(workerLoginForm != null) {
@@ -25,6 +25,7 @@ if(workerLoginForm != null) {
 /* ********** 쿠키(아이디 저장) 활용 ********** */
 const getCookie = (key) => {
   const cookies = document.cookie;
+  console.log(cookies);
   const cookiArray = cookies.split("; ").map(el => el.split("="));
   const obj = {};
 
@@ -36,12 +37,15 @@ const getCookie = (key) => {
 
   return obj[key];
 }
+
 if(workerLoginId != null) {
   const saveWorkerId = getCookie("saveWorkerId");
+
   if(saveWorkerId != undefined){
     workerLoginId.value = saveWorkerId;
     document.querySelector("input[name='saveWorkerId']").checked = true;
   };
+  
 }
 
 
