@@ -1,18 +1,20 @@
 package com.jobbuilder.project.board.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.jobbuilder.project.board.model.dto.CommentBoard;
 import com.jobbuilder.project.board.model.dto.OneTalk;
 
 public interface OneTalkService {
 
-	List<OneTalk> select(); // 한줄톡 조회
+	 
+	  
+	Map<String, Object> selectOneTalkList(int cp); // 한줄톡톡 리스트
+	int insert(OneTalk oneTalk);		// 삽입
+	int delete(int oneTalkNoBoard);		// 수정
+	int update(OneTalk oneTalk);		// 삭제
+	
 
-	int insert(OneTalk oneTalk); // 한줄톡 등록
-
-	int delete(int oneTalkNoBoard); // 한줄톡 삭제
-
-	int update(OneTalk oneTalk); // 한줄톡 수정
 
 }

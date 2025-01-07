@@ -620,7 +620,7 @@ memberTel.addEventListener("input", (e) => {
       // count : 1이면 중복, 0이면 중복 아님
       // == : 값만 비교
       // === : 값 + 자료형 비교
-      if (count == 1) {
+      if (count >= 1) {
         // 증복이면
         telMessage.innerText = "이미 사용중인 전화번호 입니다.";
         telMessage.classList.add("error");

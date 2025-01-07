@@ -19,7 +19,8 @@
 	select="selectCommentList"
 	column="BOARD_NO"
 	javaType="java.util.ArrayList"
-	ofType="CommentBoard"/>	
+	ofType="CommentBoard"/>
+		
 </resultMap>
 
 
@@ -134,6 +135,4 @@ ORDER BY BOARD_IMG_ORDER
 		CONNECT BY PRIOR COMMENT_NO_BOARD = PARENT_COMMENT_NO
 		ORDER SIBLINGS BY COMMENT_NO_BOARD
 	</select>
-
-
 </mapper>
