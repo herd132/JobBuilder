@@ -189,7 +189,6 @@
 		    A.RESUME_NO AS RESUME_NO,
 		    A.RESUME_TITLE AS RESUME_TITLE,
 		    D.GRADE_NAME AS GRADE_NAME, 
-		    A.PERIOD_NO AS PERIOD_NO,
 		    A.SALARY_AMOUNT AS SALARY_AMOUNT,
 		    A.SALARY_NO AS SALARY_NO,
 		    A.REGISTRATION_DATE AS REGISTRATION_DATE,
@@ -211,6 +210,16 @@
 							        WHERE 
 							            C.RESUME_NO = A.RESUME_NO
 							    ) AS TOTAL_CAREER,
+							    (
+								    SELECT
+										    F.PERIOD_NAME
+										FROM
+										    WORKCOND_PERIOD F
+										JOIN
+										    RESUME_PERIOD G ON F.PERIOD_NO  = G.PERIOD_NO
+										WHERE
+										    G.RESUME_NO = A.RESUME_NO
+								    ) AS PERIOD_NAME,    
 		    B.PROFILE_IMG AS PROFILE_IMG,
 		    REGEXP_REPLACE(REGEXP_REPLACE(B.WORKER_ADDRESS, '^\d+\^\^\^', ''), '\^\^\^', '') AS WORKER_ADDRESS,
 		    TO_CHAR(B.WORKER_BIRTHDATE, 'YYYY') AS WORKER_BIRTHDATE,
