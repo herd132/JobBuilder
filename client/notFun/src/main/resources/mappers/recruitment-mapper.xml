@@ -23,12 +23,29 @@
 		WHERE SUPPORT_NO LIKE '__00'
 	</select>
 	
+	<!-- 주소 대분류 불러오기 -->
+	<select id="selectAddressList">
+		SELECT WORKCOND_ADDRESS_TYPE_NO AS "workcondAddressTypeNo",
+			WORKCOND_ADDRESS_TYPE_INFO AS "workcondAddressTypeInfo"
+		FROM WORKCOND_ADDRESS_TYPE
+		WHERE WORKCOND_ADDRESS_TYPE_NO LIKE '__00'
+	</select>
+	
 	<!-- 복리후생 소분류 불러오기 -->
 	<select id="selectSubSupportList">
 		SELECT SUPPORT_NO AS "supportNo", SUPPORT_CATEGORY AS "supportCategory"
 		FROM "SUPPORT"
 		WHERE SUPPORT_NO LIKE #{supportNo}||'__'
 			AND SUPPORT_NO NOT LIKE '__00'
+	</select>
+	
+	<!-- 주소 소분류 불러오기 -->
+	<select id="selectSubAddress">
+		SELECT WORKCOND_ADDRESS_TYPE_NO AS "workcondAddressTypeNo",
+			WORKCOND_ADDRESS_TYPE_INFO AS "workcondAddressTypeInfo"
+		FROM WORKCOND_ADDRESS_TYPE
+		WHERE WORKCOND_ADDRESS_TYPE_NO LIKE #{workcondAddressTypeNo}||'__'
+			AND WORKCOND_ADDRESS_TYPE_NO NOT LIKE '__00'
 	</select>
 
 
@@ -39,7 +56,7 @@
 		VALUES(SEQ_RECRUITMENT_NO.NEXTVAL, #{recruitmentTitle}, #{recruitmentContent},
 			TO_DATE(#{recruitmentDeadline}, 'YYYY-MM-DD'), ${jobtypeNo}, #{numOfRecruitmentName},
 			${salaryNo}, ${gradeNo}, ${periodNo}, ${daysNo}, ${timeNo}, ${employerNo}, ${salaryMount},
-			DEFAULT, NULL, DEFAULT, ${memberNo}, DEFAULT, NULL)
+			DEFAULT, NULL, DEFAULT, ${memberNo}, DEFAULT, NULL, #{workcondAddressTypeNo})
 		<selectKey resultType="_int" keyProperty="recruitmentNo" order="AFTER">
 			SELECT SEQ_RECRUITMENT_NO.CURRVAL FROM DUAL
 		</selectKey>
@@ -173,7 +190,8 @@
 			r.PERIOD_NO, wp.PERIOD_NAME,
 			r.DAYS_NO, wd.DAYS_NAME,
 			r.TIME_NO, wt.TIME_NAME,
-			r.EMPLOYER_NO, e.BUSINESS_NICKNAME, e.BUSINESS_ADDRESS, e.BUSINESS_NAME
+			r.EMPLOYER_NO, e.BUSINESS_NICKNAME, e.BUSINESS_ADDRESS, e.BUSINESS_NAME,
+			r.WORKCOND_ADDRESS_TYPE_NO, wat.WORKCOND_ADDRESS_TYPE_INFO 
 		FROM "RECRUITMENT" r
 		JOIN JOBTYPE j ON (r.JOBTYPE_NO = j.JOBTYPE_NO)
 		JOIN SALARY s ON(r.SALARY_NO = s.SALARY_NO)
@@ -182,6 +200,7 @@
 		JOIN WORKCOND_DAYS wd ON(r.DAYS_NO = wd.DAYS_NO)
 		JOIN WORKCOND_TIME wt ON(r.TIME_NO = wt.TIME_NO)
 		JOIN EMPLOYER e ON(r.EMPLOYER_NO = e.EMPLOYER_NO)
+		LEFT JOIN WORKCOND_ADDRESS_TYPE wat ON(r.WORKCOND_ADDRESS_TYPE_NO = wat.WORKCOND_ADDRESS_TYPE_NO)
 		WHERE RECRUITMENT_DEL_FL = 'N'
 			AND RECRUITMENT_NO = ${recruitmentNo}
 	</select>

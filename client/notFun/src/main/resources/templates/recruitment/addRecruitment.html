@@ -37,6 +37,30 @@
             </select>
           </div>
 
+          <div class="business-address-area">
+            <h4>근무지역을 선택해주세요</h4>
+            <input type="text" id="workcondAddressTypeInfo" name="workcondAddressTypeInfo" readonly>
+            <input type="hidden" id="workcondAddressTypeNo" name="workcondAddressTypeNo">
+            <div>
+              <ul>
+                <th:block th:each="address : ${majorAddressList}">
+                  <li th:text="${address.workcondAddressTypeInfo}" class="address-categoty"
+                    th:workcondAddressTypeNo="${address.workcondAddressTypeNo}"
+                    th:onclick="selectDetailAddress(this.getAttribute('workcondAddressTypeNo'))"
+                  />
+
+                </th:block>
+              </ul>
+            </div>
+
+            <div>
+              <ul id="subAddressType">
+
+              </ul>
+            </div>
+            
+          </div>
+
           <div class="business-img-area">
             <div class="businessImg">
               <h4>공고 이미지(선택)</h4>

@@ -52,10 +52,12 @@ public class RecruitmentController {
 		List<Employer> businessList = service.selectBusinessList(loginEmployer.getMemberNo());
 		List<Map<String, String>> preferredList = service.selectPreferredList();
 		List<Map<String, String>> supportTitleList = service.selectSupportTitleList();
+		List<Map<String,String>> majorAddressList = service.selectAddressList();
 		
 		model.addAttribute("businessList", businessList);
 		model.addAttribute("preferredList", preferredList);
 		model.addAttribute("supportTitleList", supportTitleList);
+		model.addAttribute("majorAddressList", majorAddressList);
 
 		return "recruitment/addRecruitment";
 	}
@@ -69,6 +71,16 @@ public class RecruitmentController {
 	@GetMapping("selectSubSupport/{supportNo}")
 	private List<Map<String, String>> subSupportList(@PathVariable("supportNo") String supportNo){
 		return service.selectSubSupportList(supportNo);
+	}
+	
+	/** 주소 소분류 불러오기(사업장 추가페이지 내)
+	 * @param workcondAddressTypeNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("selectSubAddress/{workcondAddressTypeNo}")
+	private List<Map<String, String>> subAddressList(@PathVariable("workcondAddressTypeNo") String workcondAddressTypeNo){
+		return service.selectSubAddress(workcondAddressTypeNo);
 	}
 	
 	/** 공고 추가 (post)

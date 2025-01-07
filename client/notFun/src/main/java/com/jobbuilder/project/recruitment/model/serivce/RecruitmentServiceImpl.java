@@ -58,12 +58,21 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 		return mapper.selectSupportTitleList();
 	}
 	
+	@Override	// 주소 대분류 불러오기
+	public List<Map<String, String>> selectAddressList() {
+		return mapper.selectAddressList();
+	}
+	
 	@Override	// 복리후생 소분류 불러오기
 	public List<Map<String, String>> selectSubSupportList(String supportNo) {
 		// TODO Auto-generated method stub
 		return mapper.selectSubSupportList(supportNo);
 	}
 	
+	@Override	// 주소 소분류 불러오기
+	public List<Map<String, String>> selectSubAddress(String workcondAddressTypeNo) {
+		return mapper.selectSubAddress(workcondAddressTypeNo.substring(0, 2));
+	}
 	
 	/* ***** 공고 추가(post) 관련 ***** */
 	@Override	// 공고 추가
@@ -213,6 +222,7 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	public Recruitment selectOne(int recruitmentNo) {
 		
 		Recruitment recruitment = mapper.selectOne(recruitmentNo);
+		log.debug("recruitment : " + recruitment);
 		
 		recruitment.setBusinessWorktypeList(mapper.getBWList(recruitment.getEmployerNo()));
 		recruitment.setPreferredList(mapper.getPreferredList(recruitmentNo));

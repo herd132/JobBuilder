@@ -40,6 +40,11 @@ public interface RecruitmentMapper {
 	 * @author JWJ
 	 */
 	List<Map<String, String>> selectSupportTitleList();
+	
+	/** 주소 대분류 불러오기
+	 * @return
+	 */
+	List<Map<String, String>> selectAddressList();
 
 	/** 복리후생 소분류 불러오기
 	 * @param supportNo
@@ -47,6 +52,13 @@ public interface RecruitmentMapper {
 	 * @author JWJ
 	 */
 	List<Map<String, String>> selectSubSupportList(String supportNo);
+	
+	/** 주소 소분류 불러오기
+	 * @param workcondAddressTypeNo
+	 * @return
+	 */
+	List<Map<String, String>> selectSubAddress(String workcondAddressTypeNo);
+	
 	
 	/* ********** 공고 추가(post) 관련 ********** */
 
@@ -218,14 +230,6 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	int deleteRecruitment(int recruitmentNo);
-
-
-
-
-
-
-
-
 
 
 

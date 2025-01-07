@@ -57,13 +57,38 @@
   height: 333px;
 }
 
+
+
+/* 근무지 영역 스타일링*/
+.business-address-area {
+  border: 1px solid black;
+  border-radius: 10px;
+  position: absolute;
+  top: 0px;
+  right: 45px;
+  width: 500px;
+  height: 350px;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.business-address-area ul {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  padding: 0;
+  list-style: none;
+  margin: 10px 0;
+}
+
+
 /* 이미지 업로드 영역 스타일링 (기존 위치 유지) */
 .business-img-area {
   border: 1px solid black;
   border-radius: 30px;
   position: absolute;
-  top: 0px;
-  right: 100px;
+  top: 400px;
+  right: 45px;
   width: 500px;
   height: 680px;
   display: flex;

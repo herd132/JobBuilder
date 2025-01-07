@@ -378,7 +378,7 @@ public class MyPageEmployerController {
 	@GetMapping("viewResumes")
 	public String MyPageEmpViewResumes(@SessionAttribute("loginEmployer") Employer loginEmployer,
 							Model model) {
-		Map<Integer, List<ResumeWJ>> recruitmentResumeList = service.getRecruitmentResumeList(loginEmployer);
+//		Map<Integer, List<ResumeWJ>> recruitmentResumeList = service.getRecruitmentResumeList(loginEmployer);
 		
 		return "myPageEmployer/viewResumes";
 	}
