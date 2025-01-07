@@ -135,3 +135,35 @@ const empLogin3 = () => {
   document.body.appendChild(form);
   form.submit();
 }
+
+
+
+// 초기 화면 크기 저장
+const initialWidth = window.innerWidth;
+const initialHeight = window.innerHeight;
+const mobileWidth = 1280;
+
+// 크기 조정 함수
+function adjustSizes() {
+  console.log("됨")
+  // const currentWidth = window.innerWidth;
+  // const currentHeight = window.innerHeight;
+  const zoom = Math.min(window.innerWidth / mobileWidth, 1);
+
+  // 비율 계산 (너비 기준)
+  // const widthRatio = currentWidth / initialWidth;
+  // const heightRatio = currentHeight / initialHeight;
+
+  // 모든 아이템 크기 조정
+  
+  document.documentElement.style.zoom = `${zoom}`;
+}
+
+// 이벤트 리스너 추가 (화면 크기 변경 시 실행)
+window.addEventListener('resize', adjustSizes);
+
+// 페이지 로드 시 실행
+adjustSizes();
+
+const onResize = () => {
+};

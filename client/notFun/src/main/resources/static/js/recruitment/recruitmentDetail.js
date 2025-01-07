@@ -240,10 +240,6 @@ function openModal(data) {
     
   });
 }
-
-
-
-
 /* 상세 공고 에서 띄울 사항
   * 1. recruitment
   * recruitmentNo, recruitmentTitle, recruitmentContent/ 공고제목, 공고내용
@@ -277,3 +273,35 @@ function openModal(data) {
   * supportCategory
   * 
 */
+
+
+const recommendSelect = document.querySelector(".recommend-select");
+const recommendModal = document.querySelector(".recommend-modal");
+const recommendModalOutside = document.querySelector(".recommend-modal-outside");
+let popupOpenType = false;
+
+if (recommendSelect !== null ) {
+  recommendSelect.addEventListener("click", () => {
+
+    recommendModal.classList.add('active');
+    recommendModalOutside.style.height = document.body.offsetHeight;
+    recommendModalOutside.style.display = 'block';
+  });
+
+  recommendModal.addEventListener("mouseenter", () => {
+    popupOpenType = true;
+  });
+  
+  recommendModal.addEventListener("mouseleave", () => {
+    popupOpenType = false;
+  });
+}
+
+
+window.addEventListener('mousewheel', function(e) {
+  
+	if(popupOpenType) {
+    e.preventDefault();
+    return false;
+  } 
+}, {passive: false});
