@@ -1,9 +1,6 @@
 package com.jobbuilder.project.resume.model.dto;
 
 import java.util.List;
-import java.util.Map;
-
-import com.jobbuilder.project.payment.model.dto.Payment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -53,5 +50,17 @@ public class Resume {
     
     private int recommendation; // 추천알바건수
     
+    //private Worker worker;
+    //private Member member;
 	
+    
+    private String profileImg;
+    private String memberEmail;		// 회원이메일
+    private String memberName;		// 회원 이름
+	private String memberTel;			// 회원 전화번호 (비밀번호 찾기용)
+	private String workerMbti;		// 알바생 MBTI
+	private String workerBirthDate; // 알바생 생년월일
+	private String workerAddress;	// 알바생 주소
+	private int age;
+    
 }

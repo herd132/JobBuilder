@@ -20,66 +20,169 @@
 	    <result property="workcondAddressTypeNo" column="WORKCOND_ADDRESS_TYPE_NO"/>
 	    <result property="workcondAddressTypeInfo" column="WORKCOND_ADDRESS_TYPE_INFO"/>
 	    <result property="totalCareer" column="TOTAL_CAREER"/>
+	    
+	    <!--
+	        <association property="worker" javaType="com.jobbuilder.project.worker.model.dto.Worker">
+            <id property="workerNo" column="WORKER_NO" />
+            <result property="workerId" column="WORKER_ID" />
+            <result property="workerNickname" column="WORKER_NICKNAME" />
+            <result property="workerAddress" column="WORKER_ADDRESS" />
+            <result property="profileImg" column="PROFILE_IMG" />
+            <result property="signUpPath" column="SIGN_UP_PATH" />
+            <result property="fastLoginToken" column="FAST_LOGIN_TOKEN" />
+            <result property="blindLoginId" column="BLIND_LOGIN_ID" />
+            <result property="workerMbti" column="WORKER_MBTI" />
+            <result property="workerBirthDate" column="WORKER_BIRTHDATE" />
+    	    </association>
+        
+            <association property="member" javaType="com.jobbuilder.project.worker.model.dto.Member">
+	        <id property="memberNo" column="MEMBER_MEMBER_NO" />
+	        <result property="memberEmail" column="MEMBER_MEMBER_EMAIL" />
+	        <result property="memberPw" column="MEMBER_MEMBER_PW" />
+	        <result property="memberName" column="MEMBER_MEMBER_NAME" />
+	        <result property="memberTel" column="MEMBER_MEMBER_TEL" />
+	        <result property="enrollDate" column="MEMBER_ENROLL_DATE" />
+	        <result property="authorityNo" column="MEMBER_AUTHORITY_NO" />
+	        <result property="memberDelFl" column="MEMBER_MEMBER_DEL_FL" />
+		    </association>
+		-->    
 	</resultMap>
 
 
 
 	<select id="getResumeList" parameterType="Resume" resultMap="resumeResultMap">
-				SELECT 
-		    A.GRADE_NO AS GRADE_NO,
-		    A.MODIFICATION_DATE AS MODIFICATION_DATE,
-		    A.PERIOD_NO AS PERIOD_NO,
-		    A.REGISTRATION_DATE AS REGISTRATION_DATE,
-		    A.RESUME_CONTENT AS RESUME_CONTENT,
-		    A.RESUME_DEL_FL AS RESUME_DEL_FL,
-		    A.RESUME_DEL_FL AS RESUME_HIDE_FL,
-		    A.RESUME_NO AS RESUME_NO,
-		    A.RESUME_TITLE AS RESUME_TITLE,
-		    A.SALARY_AMOUNT AS SALARY_AMOUNT,
-		    A.SALARY_NO AS SALARY_NO,
-		    A.WORKER_NO AS WORKER_NO,
-		    (
-		        SELECT 
-		            LISTAGG(D.WORKCOND_ADDRESS_TYPE_INFO, ', ') WITHIN GROUP (ORDER BY D.WORKCOND_ADDRESS_TYPE_NO)
-		        FROM 
-		            WORKCOND_ADDRESS B
-		        JOIN 
-		            WORKCOND_ADDRESS_TYPE D
-		        ON 
-		            B.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
-		        WHERE 
-		            B.RESUME_NO = A.RESUME_NO
-		    ) AS WORKCOND_ADDRESS_TYPE_INFO,
-		    (
-		        SELECT 
-		            NVL(SUM(
-		                CASE 
-		                    WHEN E.END_DATE IS NULL THEN TRUNC(SYSDATE) - TRUNC(E.START_DATE)
-		                    ELSE TRUNC(E.END_DATE) - TRUNC(E.START_DATE)
-		                END
-		            ), 0)
-		        FROM 
-		            RESUME_CAREER C
-		        JOIN 
-		            CAREER_INFO E
-		        ON 
-		            C.CAREER_NO = E.CAREER_NO
-		        WHERE 
-		            C.RESUME_NO = A.RESUME_NO
-		    ) AS TOTAL_CAREER,
-		    (
-		        SELECT 
-		            COUNT(DISTINCT B.RECRUITMENT_NO)
-		        FROM 
-		            WORKCOND_ADDRESS B
-		        WHERE 
-		            B.WORKCOND_ADDRESS_TYPE_NO IN (
-		                SELECT DISTINCT F.WORKCOND_ADDRESS_TYPE_NO
-		                FROM WORKCOND_ADDRESS F
-		                WHERE F.RESUME_NO = A.RESUME_NO
-		            )
-		            AND B.RECRUITMENT_NO IS NOT NULL
-		    ) AS RECOMMENDATION
+		SELECT 
+			    A.GRADE_NO AS GRADE_NO,
+			    A.MODIFICATION_DATE AS MODIFICATION_DATE,
+			    A.PERIOD_NO AS PERIOD_NO,
+			    A.REGISTRATION_DATE AS REGISTRATION_DATE,
+			    A.RESUME_CONTENT AS RESUME_CONTENT,
+			    A.RESUME_DEL_FL AS RESUME_DEL_FL,
+			    A.RESUME_DEL_FL AS RESUME_HIDE_FL,
+			    A.RESUME_NO AS RESUME_NO,
+			    A.RESUME_TITLE AS RESUME_TITLE,
+			    A.SALARY_AMOUNT AS SALARY_AMOUNT,
+			    A.SALARY_NO AS SALARY_NO,
+			    A.WORKER_NO AS WORKER_NO,
+				    (
+				        SELECT 
+				            LISTAGG(D.WORKCOND_ADDRESS_TYPE_INFO, ', ') WITHIN GROUP (ORDER BY D.WORKCOND_ADDRESS_TYPE_NO)
+				        FROM 
+				            WORKCOND_ADDRESS B
+				        JOIN 
+				            WORKCOND_ADDRESS_TYPE D
+				        ON 
+				            B.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
+				        WHERE 
+				            B.RESUME_NO = A.RESUME_NO
+				    ) AS WORKCOND_ADDRESS_TYPE_INFO,
+					    (
+					        SELECT 
+					            NVL(SUM(
+					                CASE 
+					                    WHEN E.END_DATE IS NULL THEN TRUNC(SYSDATE) - TRUNC(E.START_DATE)
+					                    ELSE TRUNC(E.END_DATE) - TRUNC(E.START_DATE)
+					                END
+					            ), 0)
+					        FROM 
+					            RESUME_CAREER C
+					        JOIN 
+					            CAREER_INFO E
+					        ON 
+					            C.CAREER_NO = E.CAREER_NO
+					        WHERE 
+					            C.RESUME_NO = A.RESUME_NO
+					    ) AS TOTAL_CAREER,
+						    (
+								SELECT COUNT(*)
+								FROM 
+								    RECRUITMENT A
+								WHERE 
+									    -- 삭제되지 않은 공고
+									    A.RECRUITMENT_DEL_FL = 'N'
+									    AND (
+							    
+								        -- 1.학력 조건
+								        A.GRADE_NO = (
+								            SELECT B.GRADE_NO
+								            FROM RESUME B
+								            WHERE B.RESUME_NO = A.RESUME_NO
+								        )
+					            
+								        -- 2. 급여 조건 
+								        OR (
+								            A.SALARY_NO IN (1, 2) -- SALARY_NO가 1 또는 2일 때만 희망 금액 비교
+								            AND A.SALARY_NO = (
+								                SELECT B.SALARY_NO
+								                FROM RESUME B
+								                WHERE B.RESUME_NO = A.RESUME_NO
+								            )
+								            AND A.SALARY_MOUNT >= (
+								                SELECT B.SALARY_AMOUNT
+								                FROM RESUME B
+								                WHERE B.RESUME_NO = A.RESUME_NO
+								            )
+								        )
+								        
+								        OR A.SALARY_NO NOT IN (1, 2) -- SALARY_NO가 1, 2가 아닌 경우 SALARY_NO만 비교
+								        AND A.SALARY_NO = (
+								            SELECT B.SALARY_NO
+								            FROM RESUME B
+								            WHERE B.RESUME_NO = A.RESUME_NO
+								        )
+								            
+								        -- 3.근무기간 조건
+								        OR A.PERIOD_NO = (
+								            SELECT B.PERIOD_NO
+								            FROM RESUME B
+								            WHERE B.RESUME_NO = A.RESUME_NO
+								        )
+								            
+								        ----- 여기까진 단순비교 이후로는 1:다 ) --    
+								            
+								        -- 4.근무요일 조건
+								        OR A.DAYS_NO IN (
+								            SELECT E.DAYS_NO
+								            FROM RESUME_DAYSTIME E
+								            WHERE E.RESUME_NO = A.RESUME_NO
+								        )
+									        
+									    -- 5.근무시간 조건
+									    OR A.TIME_NO IN (
+									        SELECT E.TIME_NO
+									        FROM RESUME_DAYSTIME E
+									        WHERE E.RESUME_NO = A.RESUME_NO
+									    )
+									    
+									    -- 6.근무형태 조건
+									    OR A.JOBTYPE_NO IN (
+									        SELECT F.JOBTYPE_NO
+									        FROM RESUME_JOB_TYPE F
+									        WHERE F.RESUME_NO = A.RESUME_NO
+									    )
+									        
+									    ----- 여기까진 1:다 이후로는 다:다) -- 	    
+									        
+									    -- 7.희망지역 조건
+								        OR A.RECRUITMENT_NO IN (
+								            SELECT DISTINCT D.RECRUITMENT_NO
+								            FROM WORKCOND_ADDRESS C
+								            JOIN WORKCOND_ADDRESS D
+								            ON C.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
+								            WHERE C.RESUME_NO = A.RESUME_NO
+								        )
+								            
+									    -- 8.업직종 조건    
+								        OR A.EMPLOYER_NO IN (
+								            SELECT DISTINCT G.EMPLOYER_NO
+								            FROM RESUME_WORKTYPE H
+								            JOIN BUSINESS_WORKTYPE G
+								            ON H.WORKTYPE_NO = G.WORKTYPE_NO
+								            WHERE H.RESUME_NO = A.RESUME_NO
+								        )      
+							            
+								)
+									    ) AS RECOMMENDATION
 		FROM 
 		    RESUME A
 		WHERE 
@@ -103,46 +206,163 @@
 	</update>
 
 
-    <select id="selectResumeByNo" resultType="com.jobbuilder.project.resume.model.dto.Resume">
-        SELECT *
-        FROM RESUME
-        WHERE RESUME_NO = #{resumeNo}
-    </select>
+    <select id="selectResumeByNo" resultMap="resumeResultMap">
+	    SELECT 
+		        A.RESUME_CONTENT AS RESUME_CONTENT,
+		        A.RESUME_DEL_FL AS RESUME_DEL_FL,
+		        A.RESUME_HIDE_FL AS RESUME_HIDE_FL,
+		        A.RESUME_NO AS RESUME_NO,
+		        A.RESUME_TITLE AS RESUME_TITLE,
+		        A.GRADE_NO AS GRADE_NO,
+		        A.PERIOD_NO AS PERIOD_NO,
+		        A.SALARY_AMOUNT AS SALARY_AMOUNT,
+		        A.SALARY_NO AS SALARY_NO,
+		        A.REGISTRATION_DATE AS REGISTRATION_DATE,
+		        A.MODIFICATION_DATE AS MODIFICATION_DATE,
+		
+		        B.BLIND_LOGIN_ID AS BLIND_LOGIN_ID,
+		        B.FAST_LOGIN_TOKEN AS FAST_LOGIN_TOKEN,
+		        B.PROFILE_IMG AS PROFILE_IMG,
+		        B.SIGN_UP_PATH AS SIGN_UP_PATH,
+		        REGEXP_REPLACE(REGEXP_REPLACE(B.WORKER_ADDRESS, '^\d+\^\^\^', ''), '\^\^\^', '') AS WORKER_ADDRESS,
+		        TO_CHAR(B.WORKER_BIRTHDATE, 'YYYY') AS WORKER_BIRTHDATE,
+		        B.WORKER_BIRTHDATE,
+   				FLOOR(MONTHS_BETWEEN(TRUNC(SYSDATE), B.WORKER_BIRTHDATE) / 12) AS AGE,
+		        B.WORKER_ID AS WORKER_ID,
+		        B.WORKER_MBTI AS WORKER_MBTI,
+		        B.WORKER_NICKNAME AS WORKER_NICKNAME,
+		        B.WORKER_NO AS WORKER_NO,
+		        
+		        C.AUTHORITY_NO AS AUTHORITY_NO,
+		        C.ENROLL_DATE AS ENROLL_DATE,
+		        C.MEMBER_DEL_FL AS MEMBER_DEL_FL,
+		        C.MEMBER_EMAIL AS MEMBER_EMAIL,
+		        C.MEMBER_NAME AS MEMBER_NAME,
+		        C.MEMBER_NO AS MEMBER_NO,
+		        C.MEMBER_PW AS MEMBER_PW,
+		        SUBSTR(C.MEMBER_TEL, 1, 3) || '-' || 
+		        SUBSTR(C.MEMBER_TEL, 4, 4) || '-' || 
+		        SUBSTR(C.MEMBER_TEL, 8, 4) AS MEMBER_TEL
+	    FROM 
+	        RESUME A
+	    LEFT JOIN WORKER B ON A.WORKER_NO = B.WORKER_NO
+	    LEFT JOIN MEMBER C ON B.MEMBER_NO = C.MEMBER_NO
+	    WHERE 
+	        A.RESUME_NO = #{resumeNo}
+	</select>
+
+
 
 
     <select id="selectRecommendationsByResumeNo" resultType="com.jobbuilder.project.recruitment.model.dto.Recruitment">
-        SELECT DISTINCT
-            A.RECRUITMENT_NO AS RECRUITMENT_NO,
-            A.RECRUITMENT_TITLE AS RECRUITMENT_TITLE,
-            A.RECRUITMENT_CONTENT AS RECRUITMENT_CONTENT,
-            A.RECRUITMENT_DEADLINE AS RECRUITMENT_DEADLINE,
-            A.NUM_OF_RECRUITMENT_NAME AS NUM_OF_RECRUITMENT_NAME,
-            A.SALARY_NO AS SALARY_NO,
-            A.GRADE_NO AS GRADE_NO,
-            A.PERIOD_NO AS PERIOD_NO,
-            A.DAYS_NO AS DAYS_NO,
-            A.TIME_NO AS TIME_NO,
-            A.EMPLOYER_NO AS EMPLOYER_NO,
-            A.SALARY_MOUNT AS SALARY_MOUNT,
-            A.WRITE_DATE AS WRITE_DATE,
-            A.UPDATE_DATE AS UPDATE_DATE,
-            A.RECRUITMENT_DEL_FL AS RECRUITMENT_DEL_FL,
-            A.MEMBER_NO AS MEMBER_NO,
-            A.RECRUIT_COMPLETE_FL AS RECRUIT_COMPLETE_FL,
-            A.RECRUITMENT_PROFILE AS RECRUITMENT_PROFILE
-        FROM 
-            WORKCOND_ADDRESS B
-        JOIN 
-            WORKCOND_ADDRESS C
-        ON 
-            B.WORKCOND_ADDRESS_TYPE_NO = C.WORKCOND_ADDRESS_TYPE_NO
-        JOIN 
-            RECRUITMENT A
-        ON 
-            C.RECRUITMENT_NO = A.RECRUITMENT_NO
-        WHERE 
-            B.RESUME_NO = #{resumeNo}
-            AND C.RECRUITMENT_NO IS NOT NULL
+	    SELECT DISTINCT
+		    A.RECRUITMENT_NO AS RECRUITMENT_NO,
+		    A.RECRUITMENT_TITLE AS RECRUITMENT_TITLE,
+		    A.RECRUITMENT_CONTENT AS RECRUITMENT_CONTENT,
+		    A.RECRUITMENT_DEADLINE AS RECRUITMENT_DEADLINE,
+		    A.JOBTYPE_NO AS JOBTYPE_NO,
+		    A.NUM_OF_RECRUITMENT_NAME AS NUM_OF_RECRUITMENT_NAME,
+		    A.SALARY_NO AS SALARY_NO,
+		    A.GRADE_NO AS GRADE_NO,
+		    A.PERIOD_NO AS PERIOD_NO,
+		    A.DAYS_NO AS DAYS_NO,
+		    A.TIME_NO AS TIME_NO,
+		    A.EMPLOYER_NO AS EMPLOYER_NO,
+		    A.SALARY_MOUNT AS SALARY_MOUNT,
+		    A.WRITE_DATE AS WRITE_DATE,
+		    A.UPDATE_DATE AS UPDATE_DATE,
+		    A.RECRUITMENT_DEL_FL AS RECRUITMENT_DEL_FL,
+		    A.MEMBER_NO AS MEMBER_NO,
+		    A.RECRUIT_COMPLETE_FL AS RECRUIT_COMPLETE_FL,
+		    A.RECRUITMENT_PROFILE AS RECRUITMENT_PROFILE
+		FROM 
+		    RECRUITMENT A
+		WHERE 
+		    -- 삭제되지 않은 공고
+		    A.RECRUITMENT_DEL_FL = 'N'
+		    AND (
+		    
+		        -- 1.학력 조건
+		        A.GRADE_NO = (
+		            SELECT B.GRADE_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = #{resumeNo})
+		            
+		        -- 2. 급여 조건 
+		        OR (
+		            A.SALARY_NO IN (1, 2) -- SALARY_NO가 1 또는 2일 때만 희망 금액 비교
+		            AND A.SALARY_NO = (
+		                SELECT B.SALARY_NO
+		                FROM RESUME B
+		                WHERE B.RESUME_NO = #{resumeNo}
+		            )
+		            AND A.SALARY_MOUNT >= (
+		                SELECT B.SALARY_AMOUNT
+		                FROM RESUME B
+		                WHERE B.RESUME_NO = #{resumeNo}
+		            )
+		        )
+		        
+		        OR A.SALARY_NO NOT IN (1, 2) -- SALARY_NO가 1, 2가 아닌 경우 SALARY_NO만 비교
+		        AND A.SALARY_NO = (
+		            SELECT B.SALARY_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = #{resumeNo}
+		        )
+		            
+		        -- 3.근무기간 조건
+		        OR
+		        A.PERIOD_NO = (
+		            SELECT B.PERIOD_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = #{resumeNo})
+		            
+		        ----- 여기까진 단순비교 이후로는 1:다 ) --    
+		            
+		        -- 4.근무요일 조건
+		        OR
+			        A.DAYS_NO IN (
+			        SELECT E.DAYS_NO
+			        FROM RESUME_DAYSTIME E
+			        WHERE E.RESUME_NO = #{resumeNo})
+			        
+			    -- 5.근무시간 조건
+			    OR 
+			    	A.TIME_NO IN (
+			        SELECT E.TIME_NO
+			        FROM RESUME_DAYSTIME E
+			        WHERE E.RESUME_NO = #{resumeNo})
+			    
+			    -- 6.근무형태 조건
+			    OR 
+			    	A.JOBTYPE_NO IN (
+			        SELECT F.JOBTYPE_NO
+			        FROM RESUME_JOB_TYPE F
+			        WHERE F.RESUME_NO = #{resumeNo})
+			    
+			        
+		        ----- 여기까진 1:다 이후로는 다:다) -- 	    
+			        
+			    -- 7.희망지역 조건
+		        OR
+		        A.RECRUITMENT_NO IN (
+		            SELECT DISTINCT D.RECRUITMENT_NO
+		            FROM WORKCOND_ADDRESS C
+		            JOIN WORKCOND_ADDRESS D
+		            ON C.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
+		            WHERE C.RESUME_NO = #{resumeNo})
+		            
+			    -- 8.업직종 조건    
+		        OR A.EMPLOYER_NO IN (
+		            SELECT DISTINCT G.EMPLOYER_NO
+		            FROM RESUME_WORKTYPE H
+		            JOIN BUSINESS_WORKTYPE G
+		            ON H.WORKTYPE_NO = G.WORKTYPE_NO
+		            WHERE H.RESUME_NO = #{resumeNo}
+		        )      
+		            
+			)
+		   ORDER BY RECRUITMENT_NO DESC
     </select>
 
 

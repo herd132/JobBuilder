@@ -1,0 +1,5 @@
+    <script th:inline="javascript">
+        const resumeNo = /*[[${resume.resumeNo}]]*/1;
+    </script>
+
+사용해서 js에 추가
