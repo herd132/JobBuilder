@@ -17,10 +17,10 @@ import lombok.ToString;
 @ToString
 public class OneTalk {
 	// 임시
-	private int oneTalkNoBoard;
-	private String oneTalkContentBoard;
-	private String oneTalkWriteDateBoard;
-	private String oneTalkDelFlBoard;
+	private int oneTalkNo;
+	private String oneTalkContent;
+	private String oneTalkWriteDate;
+	private String oneTalkDelFl;
 	private int boardNo;
 	private int memberNo;
 	private int parentoneTalkNo;

@@ -14,14 +14,13 @@ const selectCommentList = () => {
     .then((commentList) => {
       // 화면에 존재하는 기존 댓글 목록 삭제 후
       // 조회된 commentList를 이용해서 새로운 댓글 목록 출력
-      console.log(commentList);
+     
       // ul태그(댓글 목록 감싸는 요소)
       const ul = document.querySelector("#commentList");
       ul.innerHTML = ""; // 기존 댓글 목록 삭제
-
       /* ******* 조회된 commentList를 이용해 댓글 출력 ******* */
       for (let comment of commentList) {
-        console.log(comment.memberNo);
+        
 
         // 행(li) 생성 + 클래스 추가
         const commentRow = document.createElement("li");
