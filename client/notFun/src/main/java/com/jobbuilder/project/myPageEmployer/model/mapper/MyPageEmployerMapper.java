@@ -9,6 +9,7 @@ import org.apache.ibatis.session.RowBounds;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
+import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentPreferred;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentSupport;
@@ -214,8 +215,6 @@ public interface MyPageEmployerMapper {
 
 
 
-
-
 	
 	
 	/* ********** 사업장 홍보 페이지 관련 ********** */
@@ -224,6 +223,23 @@ public interface MyPageEmployerMapper {
 	
 	/* ********** 제출된 이력서 보기 페이지 관련 ********** */
 	
+	/** 고용주의 공고번호(recruitmentNo)리스트 얻어오기
+	 * @param memberNo
+	 * @return
+	 */
+	List<Integer> getRecuritmentNoList(int memberNo);
+
+	/** 공고에 제출된 이력서번호(resumeNo) 리스트 얻어오기
+	 * @param recruitmentNo
+	 * @return
+	 */
+	List<Integer> getRusemeNoList(Integer recruitmentNo);
+
+	/** 공고목록에서 공고, 이력서 정보 얻어오기
+	 * @param recruitmentResumeNoMap(recruitmentNo, resumeNo)
+	 * @return
+	 */
+	RecruitmentResume getResume(Map<String, Integer> recruitmentResumeNoMap);
 	
 	
 	/* ********** 회원 탈퇴 페이지 관련 ********** */

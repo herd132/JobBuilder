@@ -23,6 +23,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
+import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.myPageEmployer.model.service.MyPageEmployerService;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
@@ -381,6 +382,16 @@ public class MyPageEmployerController {
 //		Map<Integer, List<ResumeWJ>> recruitmentResumeList = service.getRecruitmentResumeList(loginEmployer);
 		
 		return "myPageEmployer/viewResumes";
+	}
+	
+	/** 공고에 제출된 이력서 조회
+	 * @param memberNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("viewResumes/{memberNo:[0-9]+}")
+	public Map<List<Integer>, RecruitmentResume> viewResumes(@PathVariable("memberNo") int memberNo){
+		return service.viewResumes(memberNo);
 	}
 	
 	/** 회원 탈퇴 페이지 이동(get) 아직 작성 안함
