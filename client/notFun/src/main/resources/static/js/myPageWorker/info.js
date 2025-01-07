@@ -13,9 +13,14 @@ closeModal.addEventListener("click", () => {
 });
 
 
-checkPwbtn.addEventListener("click", () => {
-
+checkPwbtn.addEventListener("click", (e) => {
   const obj = currentPassword.value;
+
+  if (!obj.trim()) {
+    alert("비밀번호를 입력해주세요."); // 경고 메시지 표시
+    currentPassword.focus(); // 입력 필드로 포커스 이동
+    return; // 요청 차단
+  }
 
   fetch("/myPageWorkee/checkPw", {
     method: "POST",

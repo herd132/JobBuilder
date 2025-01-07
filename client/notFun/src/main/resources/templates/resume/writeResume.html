@@ -19,25 +19,26 @@
 	<main>
 		<form action="/resume/writeResume" method="post" id="writeResumeForm">
 			<h2>이력서 관리</h2>
+
 			<input type="text" name="resumeTitle" class="inputTitle" placeholder="이력서 제목" autocomplete="off">
 
 			<table>
 				<h2>기본 인적사항</h2>
 				<tr>
-					<td scope="col">이름 <span th:text="${session.loginWorker.memberName}"></span></td>
-					<td scope="col">생년월일 <span th:text="${year} + 년생"></span>/
+					<td scope="col">이름 : <span th:text="${session.loginWorker.memberName}"></span></td>
+					<td scope="col">생년월일 : <span th:text="${year} + 년생"></span>/
 						<span th:text="${#dates.format(#dates.createNow(), 'yyyy')} - ${year} + 살"></span>
 					</td>
 					<td scope="col"></td>
 				</tr>
 				<tr>
-					<td>주소 <span th:text="${#strings.replace(session.loginWorker.workerAddress, '^^^', ' ')}"></span>
+					<td>주소 : <span th:text="${#strings.replace(session.loginWorker.workerAddress, '^^^', ' ')}"></span>
 					</td>
-					<td>이메일 <span th:text="${session.loginWorker.memberEmail}"></span></td>
+					<td>이메일 : <span th:text="${session.loginWorker.memberEmail}"></span></td>
 
 				</tr>
 				<tr>
-					<td>연락처 <span th:text="${session.loginWorker.memberTel}"></span></td>
+					<td>연락처 : <span th:text="${session.loginWorker.memberTel}"></span></td>
 				</tr>
 			</table>
 

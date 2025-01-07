@@ -46,37 +46,6 @@ function showInputs(isExperienced) {
 	}
 }
 
-const payNoneElements = document.getElementsByName("payNone");
-payNoneElements.forEach((element) => {
-	element.addEventListener("click", function() {
-		// 급여 입력 필드를 비활성화
-		document.getElementsByName("payInput").forEach((input) => {
-			input.disabled = true;
-		});
-	});
-});
-
-const payHourlyElements = document.getElementsByName("payHourly");
-payHourlyElements.forEach((element) => {
-	element.addEventListener("click", function() {
-		// 급여 입력 필드를 활성화
-		document.getElementsByName("payInput").forEach((input) => {
-			input.disabled = false;
-		});
-	});
-});
-
-// 'payMonthly'에 클릭 이벤트 추가
-const payMonthlyElements = document.getElementsByName("payMonthly");
-payMonthlyElements.forEach((element) => {
-	element.addEventListener("click", function() {
-		// 급여 입력 필드를 활성화
-		document.getElementsByName("payInput").forEach((input) => {
-			input.disabled = false;
-		});
-	});
-});
-
 /* ********** 업직종 부분 ********** */
 // checkObj.worktypeList 는 등록하기 클릭 시에 입력되었는지만 확인
 // 업직종 대분류 클릭 했을 때 소분류 불러오기
@@ -288,11 +257,25 @@ textarea.addEventListener("input", () => {
 writeResumeForm.addEventListener("submit", (e) => {
 	e.preventDefault();
 
+	// -------------- 근무형태 관련 ------------
+	const partTime = document.getElementById("partTime");
+	const fullTime = document.getElementById("fullTime");
+	if(!partTime.checked && !fullTime.checked ) {
+		alert("근무 형태를 선택 해 주세요");
+		return;
+	}
+
+
 	// -------------- 업직종 관련 --------------
 	workTypeList = []; // 초기화
 
 	for (let element of selectCategoryUl.children) {
 		workTypeList.push(element.firstChild.attributes.worktypeno.value);
+	}
+
+	if(workTypeList.length == 0) {
+		alert("희망 직종을 선택 해주세요");
+		return;
 	}
 
 	const hiddenInput = document.createElement("input");

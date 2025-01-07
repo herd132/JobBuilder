@@ -1,6 +1,8 @@
 package com.jobbuilder.project.myPageWorker.controller;
 
 
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("myPageWorkee")
 @RequiredArgsConstructor
 @Slf4j
-@SessionAttributes({ "loginMember" })
+@SessionAttributes({ "loginWorker" })
 public class MyPageWorkerController {
 
 	private final MyPageWorkerService service;
@@ -75,10 +77,7 @@ public class MyPageWorkerController {
 	public String WorkerChangePw(@SessionAttribute("loginWorker") Worker loginWorker,
 								@RequestParam("WorkerPw") String WorkerPw,
 								RedirectAttributes ra,
-								SessionStatus status,
-								HttpSession session) {
-		log.debug("workerPw : " + WorkerPw);
-		log.debug("memberNo : " + loginWorker.getMemberNo());
+								SessionStatus status) {		
 		
 		int result = service.workerChangePw(loginWorker.getMemberNo(),WorkerPw);
 		
@@ -87,7 +86,7 @@ public class MyPageWorkerController {
 		if(result > 0) { 
 			
 			message = "비밀번호가 성공적으로 변경되었습니다. 다시 로그인 해주세요~";
-			session.invalidate();				
+			status.setComplete();				
 			
 		}
 		
@@ -131,27 +130,66 @@ public class MyPageWorkerController {
 	}
 	
 	
-	@ResponseBody
+	@GetMapping("secession")
+	public String secession(@SessionAttribute("loginWorker") Worker loginWorker,
+							HttpSession session,
+							RedirectAttributes ra) {
+		
+		int result = service.secession(loginWorker);
+		
+		String message = null;
+		
+		if(result > 0) { 
+			
+			message = "회원탈퇴 되었습니다. 그동안 이용해 주셔서 감사합니다.";
+			session.invalidate();				
+			
+		}
+		
+		ra.addFlashAttribute("message", message);  
+		
+		return "redirect:/";
+	}
+	
+	
 	@PostMapping("updateInfo")
-	public int updateInfo(  @RequestParam("workerNickname") String workerNickname,
-							@RequestParam("postcode") String postcode,
-							@RequestParam("address") String address,
-							@RequestParam("detailAddress") String detailAddress,
-							@RequestParam("memberTel") String memberTel,
-							@RequestParam("workerMbti") String workerMbti,
-							@RequestParam("memberEmail") String memberEmail,
-							@RequestParam(value = "profileImg", required = false) MultipartFile profileImg,
-							@SessionAttribute("loginWorker") Worker loginWorker) {
+	public String updateInfo(@SessionAttribute("loginWorker") Worker loginWorker,
+							@RequestParam(value = "workerNickname", required = false) String workerNickname,
+					        @RequestParam(value = "memberTel", required = false) String memberTel,
+					        @RequestParam(value = "memberEmail", required = false) String memberEmail,
+					        @RequestParam(value = "workerMbti", required = false) String workerMbti,
+					        @RequestParam(value = "imageInput", required = false) MultipartFile imageInput,
+					        @RequestParam(value = "workerAddress", required = false) String[] workerAddress,
+					        @RequestParam("status") int status,
+					        RedirectAttributes ra) throws Exception {
+		log.debug("status : " + status);
+		if (workerNickname != null) {
+			loginWorker.setWorkerNickname(workerNickname);
+		}
 		
-		String[] workerAddress = {postcode, address, detailAddress};
+		if (memberTel != null) {
+			loginWorker.setMemberTel(memberTel);
+		}
 		
+		if (memberEmail != null) {
+			loginWorker.setMemberEmail(memberEmail);
+		}
 		
-		loginWorker.setWorkerNickname(workerNickname);
-		loginWorker.setMemberTel(memberTel);
 		loginWorker.setWorkerMbti(workerMbti);
-		loginWorker.setMemberEmail(memberEmail);
-		log.debug("loginWorker : " + loginWorker);
-		int result = service.updateInfo(loginWorker,workerAddress);
-		return result; 
+		
+		int result = service.updateInfo(loginWorker, imageInput, workerAddress, status);
+
+		// 변경 성공 시 "변경되었습니다." 메시지
+		String message = null;
+
+		if (result > 0)
+			message = "변경되었습니다.";
+		else
+			message = "변경에 실패하였습니다.";
+
+		ra.addFlashAttribute("message", message);
+
+		return "redirect:/";
+
 	}
 }

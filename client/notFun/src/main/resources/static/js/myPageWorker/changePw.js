@@ -41,7 +41,7 @@ workerCurrentPw.addEventListener("input", (e) => {
         checkCurrentPw.innerText = "현재 비밀번호가 일치하지 않습니다";
         checkCurrentPw.classList.add("error");
         checkCurrentPw.classList.remove("confirm");
-        checkObj.workerCurrentPw = false; // 비밀번호 확인 true
+        checkObj.workerCurrentPw = false; // 비밀번호 확인 
         return;
       }
       }

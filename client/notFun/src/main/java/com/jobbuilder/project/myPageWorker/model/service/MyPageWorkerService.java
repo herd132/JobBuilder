@@ -31,12 +31,20 @@ public interface MyPageWorkerService {
 	 */
 	int workerChangePw(int memberNo, String workerPw);
 
-	/** 정보변경
+	/** 회원탈퇴
 	 * @param loginWorker
-	 * @param workerAddress
 	 * @return
 	 */
-	int updateInfo(Worker loginWorker, String[] workerAddress);
+	int secession(Worker loginWorker);
+
+	/** 업데이트
+	 * @param loginWorker
+	 * @param imageInput
+	 * @param workerAddress
+	 * @return 
+	 */
+	int updateInfo(Worker loginWorker, MultipartFile imageInput,String[] workerAddress, int status) throws Exception;
+
 
 
 }

@@ -1,6 +1,5 @@
 // 다음 주소 API
 function execDaumPostcode() {
-  checkObj.workerAddress = false;
   new daum.Postcode({
     oncomplete: function (data) {
       // 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
@@ -27,36 +26,57 @@ function execDaumPostcode() {
   }).open();
 }
 
+const updateform = document.querySelector(".update-form");
+
 const checkObj = {
-  workerNickname: false,
-  memberTel: false,
-  memberEmail: false,
-  workerMbti: true,
-  workerAddress: true,
-  authKey: false,
+  "memberTel": true,
+  "workerNickname": true,
+  "memberEmail": true,
+  "authKey": true,
+  "workerMbti" : false,
+  "workerAddress" : false
 };
 
-const updateform = document.querySelector(".update-form");
+
+const changeBtn = document.querySelector(".change-button");
+changeBtn.addEventListener("click", (e) => {
+  checkObj.memberTel = false;
+  checkObj.workerNickname = false;
+  checkObj.memberEmail = false;
+  checkObj.authKey = false;
+  checkNickname.disabled = false;
+  workerNickname.disabled = false;
+  nicknameMessage.innerText = "한글, 영어, 숫자로 10글자까지 가능합니다.";
+  memberTel.disabled = false;
+  memberEmail.disabled = false;
+  sendAuthKeyBtn.disabled = false;
+  authKey.disabled = false;
+  checkAuthKeyBtn.disabled = false;
+
+});
+
 
 // 주소
 const addressPostcode = document.querySelector("#postcode");
 const address = document.querySelector("#address");
-const detaileAddress = document.querySelector("#detailAddress");
+const detailAddress = document.querySelector("#detailAddress");
 
 // 주소 검색 버튼
-const searchBtn = document.querySelector(".search-button");
+const searcAddresshBtn = document.querySelector(".search-button");
 
-searchBtn.addEventListener("click", execDaumPostcode);
-function validateAddress() {
-  if (
-    (addressPostcode.value.trim() === "" && address.value.trim() === "" && detailAddress.value.trim() === "") || // 모두 비어있을 때
-    (addressPostcode.value.trim() !== "" && address.value.trim() !== "" && detailAddress.value.trim() !== "") // 모두 입력되었을 때
-     ) {
+searcAddresshBtn.addEventListener("click", execDaumPostcode);
+
+// 주소 입력 검사
+function checkAddressInput() {
+  // 세 필드가 모두 입력되었을 때 checkObj.workerAddress를 true로 설정
+  if (addressPostcode.value.trim() !== "" && address.value.trim() !== "" && detailAddress.value.trim() !== "") {
     checkObj.workerAddress = true;
   } else {
     checkObj.workerAddress = false;
   }
 }
+
+
 // 전화번호 입력 처리
 const memberTel = document.querySelector("#memberTel");
 const memberTelMessage = document.querySelector("#memberTelMessage");
@@ -109,9 +129,8 @@ function handleOnInput(e) {
 workerMbti.addEventListener("input", () => {
   const regExp = /^[EI][SN][TF][PJ]$/g;
   if (workerMbti.value.trim().length === 0) {
-    workerMbtiMessage.innerText = ""; // 메시지를 지운다
+    workerMbtiMessage.innerText = "대문자 알파벳만 입력 가능합니다."; // 메시지를 지운다
     workerMbtiMessage.classList.remove("confirm", "error"); // 클래스도 초기화
-    checkObj.workerMbti = true; // 필요에 따라 설정 (입력값이 없을 때 false로 할 수도 있음)
     return;
   }
 
@@ -131,18 +150,18 @@ workerMbti.addEventListener("input", () => {
 // 닉네임 체크
 const checkNickname = document.querySelector("#checkNickname");
 const nicknameMessage = document.querySelector("#nicknameMessage");
+const workerNickname = document.querySelector("#workerNickname");
 
 checkNickname.addEventListener("click", (e) => {
-  const workerNickname = document.querySelector("#workerNickname");
   if (workerNickname.value.trim().length === 0) {
     nicknameMessage.innerText =
-      "한글, 영어, 숫자로만 2~20 글자로 입력해주세요.";
+      "한글, 영어, 숫자로 10글자까지 가능합니다.";
     nicknameMessage.classList.remove("confirm", "error");
     checkObj.workerNickname = false;
     workerNickname.value = "";
     return;
   }
-  const regExp = /^[가-힣\w\d]{2,20}$/;
+  const regExp = /^[가-힣\w\d]{2,10}$/;
 
   if (!regExp.test(workerNickname.value)) {
     nicknameMessage.innerText = "유효하지 않은 닉네임 형식입니다.";
@@ -416,34 +435,34 @@ checkAuthKeyBtn.addEventListener("click", () => {
     });
 });
 
-
+const profileImg = document.getElementById("profileImg");
 const imageInput = document.getElementById("imageInput"); // 파일 선택 input
 const deleteImage = document.getElementById("deleteImage"); // 이미지 삭제 버튼
 
-const defaultImageUrl = `${window.location.origin}/images/avatar.png`;
+const defaultImageUrl = `${window.location.origin}/images/user.png`;
 
-let statusCheck = -1; // -1이면 초기 상태, 0이면 이미지 삭제, 1이면 새 이미지 선택
 let previousImage = profileImg.src; // 이전 이미지(초기 상태 이미지 URL 저장)
 let previousFile = null; // 이전에 선택된 파일 객체 저장
 
 // 이미지 선택 시 미리보기 및 파일 크기 검사
 imageInput.addEventListener("change", () => {
-    
   const file = imageInput.files[0];
-  
+
   if (file) {
     // 파일 선택된 경우
     const newImageUrl = URL.createObjectURL(file); // 임시 URL 생성
     // 미리보기 이미지 url 용도
     profileImg.src = newImageUrl; // 미리보기 이미지 설정(img 태그의 src에 선택한 파일 임시 경로 대입)
     statusCheck = 1; // 새 이미지 선택 상태 기록
-    checkObj.profileImg = true;
+    
     previousImage = newImageUrl; // 현재 선택된 이미지 이전 이미지로 저장(바뀔 경우 대비) --> src
     previousFile = file; // 현재 선택된 파일 객체를 이전 파일로 저장(바뀔 경우 대비) --> input
+    document.querySelector("[name='status']").value = 1;
+
   } else {
     // 파일 선택이 취소된 경우
     profileImg.src = previousImage; // 이전 미리보기 이미지로 복원
-    
+
     // 파일 입력 복구 : 이전 파일이 존재하면 다시 할당
     if (previousFile) {
       const dataTransfer = new DataTransfer();
@@ -459,63 +478,25 @@ deleteImage.addEventListener("click", () => {
   if (profileImg.src !== defaultImageUrl) {
     imageInput.value = ""; // 파일 선택 초기화
     profileImg.src = defaultImageUrl; // 기본 이미지로 설정
-    statusCheck = 0; // 삭제 상태 기록
     checkObj.profileImg = true; // 이미지 삭제됨
     previousFile = null; // 이전 파일 초기화 기록
+    document.querySelector("[name='status']").value = 0;
   } else {
     // 기본 이미지 상태에서 삭제 버튼 클릭 시 상태를 변경하지 않음
-    statusCheck = -1; // 변경 사항 없음 상태 유지
     checkObj.profileImg = false; // 변경 사항 없음
+    document.querySelector("[name='status']").value = -1;
   }
 });
 
-updateform.addEventListener("submit", async (e) => {
-  e.preventDefault(); // 폼 제출을 막음
-
-  // 1. 모든 유효성 검사 확인
-  validateAddress(); // 주소 유효성 검사 추가
+// 제출 전 체크
+updateform.addEventListener("submit", (e) => {
+  checkAddressInput();
   for (let key in checkObj) {
-    if (!checkObj[key]) {
-      alert("필수 입력 칸을 모두 입력해주세요!");
-      document.getElementById(key).focus(); // 첫 번째 잘못된 필드에 포커스
-      return; // 유효성 검사가 실패하면 전송 중지
+    if (checkObj[key] === false) {
+      e.preventDefault();  // 폼 제출을 막음
+      alert("모든 정보를 올바르게 입력해주세요.");  // 경고 메시지 표시
+      return;  // 더 이상 진행하지 않음
     }
   }
 
-  // 2. FormData 객체 생성
-  const formData = new FormData();
-
-  // 3. 일반 입력 데이터 추가
-  formData.append('postcode', document.getElementById("postcode").value); //주소
-  formData.append('address', document.getElementById("address").value);
-  formData.append('detailAddress', document.getElementById("detailAddress").value);
-  formData.append('workerNickname', document.getElementById("workerNickname").value);
-  formData.append('memberTel', document.getElementById("memberTel").value); // 전화번호
-  formData.append('memberEmail', document.getElementById("memberEmail").value); // 이메일
-  formData.append('workerMbti', document.getElementById("workerMbti").value); // MBTI
-
-  // 4. 이미지 파일 추가
-  const imageInput = document.getElementById("imageInput");
-  if (imageInput.files[0]) {
-    formData.append('profileImg', imageInput.files[0]); // 이미지 파일
-  }
-
-  // 5. 데이터 전송
-  try {
-    const response = await fetch("/myPageWorkee/updateInfo", {
-      method: 'POST',
-      body: formData,
-    });
-
-    const result = await response.json(); // 서버 응답 처리
-
-    if (result > 0) {
-      alert("업데이트되었습니다.");
-    } else {
-      alert("업데이트에 실패했습니다.");
-    }
-  } catch (error) {
-    console.error("업데이트 중 오류 발생:", error);
-    alert("서버 오류가 발생했습니다. 다시 시도해주세요.");
-  }
 });

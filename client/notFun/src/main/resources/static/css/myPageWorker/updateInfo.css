@@ -20,7 +20,7 @@
   transition: background-color 0.3s ease; /* 마우스 hover 효과 */
 }
 
-.search-button:hover {
+.search-button:hover, .change-button:hover, .btn-secondary:hover, .btn-secondary2:hover, .info-button:hover {
   background-color: #e4956a; /* 호버 시 배경색 */
 }
 
@@ -144,17 +144,18 @@ input::placeholder {
 .profile-btn-area{
   width: 230px;
   margin-top: 20px;
-  margin-left: 95px;
+  margin-left: 115px;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 .profile-img{
-width: 200px;
-height: 100px;
+width: 150px;
+height: 150px;
+object-fit: cover;
 }
 .profile-image-area{
-  margin-left: 100px;
+  margin-left: 150px;
   position: relative;
 }
 
@@ -185,7 +186,28 @@ height: 100px;
   color: red;
 }
 
-.nickname-input-area, .email-input-area, .authkey-input-area {
+.change-button-area{
+  display: flex;
+  align-items: center;  /* 세로로 중앙 정렬 */
+  gap: 18px;            /* 입력창과 버튼 사이의 간격 */
+  width: 500px;
+}
+
+.change-button{
+  text-align: center;
+    background-color: #f4b183;
+    color: white;
+    border: none;
+    width: 80px;
+    height: 44px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s ease; /* 마우스 hover 효과 */
+    white-space: nowrap;
+}
+
+.nickname-input-area, .email-input-area, .authkey-input-area{
   display: flex;
   align-items: center;  /* 세로로 중앙 정렬 */
   gap: 10px;            /* 입력창과 버튼 사이의 간격 */
@@ -200,7 +222,7 @@ height: 100px;
   font-size: 14px;
 }
 
-.info-button, .btn-secondary, .btn-secondary2 {
+.info-button, .btn-secondary, .btn-secondary2{
   text-align: center;
     background-color: #f4b183;
     color: white;
@@ -213,7 +235,3 @@ height: 100px;
     transition: background-color 0.3s ease; /* 마우스 hover 효과 */
     white-space: nowrap;
   }
-
-.nickname-input-area button:hover {
-  background-color: #e4956a; /* 호버 시 배경색 */
-}

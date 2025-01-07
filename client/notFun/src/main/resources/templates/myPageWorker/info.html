@@ -18,7 +18,7 @@
 
 	<div>
 		<a href="/resume/writeResume" class="btn btn-primary">이력서 작성</a>
-		
+
 		<div class="member-info-container">
 			<div class="header">
 				<h2 class="title">회원정보</h2>
@@ -27,29 +27,39 @@
 
 			<div class="info-container-background">
 				<div class="info-container">
-					<div class="form-field">
-						<label class="workerNickname">닉네임</label>
-						<label class="workerNickname" th:text="${session.loginWorker.workerNickname}"></label>
+
+					<div class="profile-section">
+						<div class="profile-img-container">
+							<img th:with="user=#{user.default.image}" th:src="${session.loginWorker.profileImg ?: user}"
+								id="profileImg" class="profile-img">
+						</div>
 					</div>
 
-					<div class="form-field">
-						<label class="memberTel">연락처</label>
-						<label class="memberTel" th:text="${session.loginWorker.memberTel}"></label>
-					</div>
+					<div class="details-section">
+						<div class="form-field">
+							<label class="workerNickname">닉네임 : </label>
+							<label class="workerNickname" th:text="${session.loginWorker.workerNickname}"></label>
+						</div>
 
-					<div class="form-field">
-						<span class="memberEmail">이메일</span>
-						<span class="memberEmail" th:text="${session.loginWorker.memberEmail}"></span>
-					</div>
+						<div class="form-field">
+							<label class="memberTel">연락처 : </label>
+							<label class="memberTel" th:text="${session.loginWorker.memberTel}"></label>
+						</div>
 
-					<div class="form-field">
-						<span class="workerAddress1">주소</span>
-						<span class="workerAddress2" th:text="${session.loginWorker.workerAddress}"></span>
-					</div>
+						<div class="form-field">
+							<span class="memberEmail">이메일 : </span>
+							<span class="memberEmail" th:text="${session.loginWorker.memberEmail}"></span>
+						</div>
 
-					<div class="form-field">
-						<span class="workerMbti1">MBTI</span>
-						<span class="workerMbti2" th:text="${session.loginWorker.workerMbti}"></span>
+						<div class="form-field">
+							<span class="workerAddress1">주소 : </span>
+							<span class="workerAddress2" th:text="${session.loginWorker.workerAddress.replace('^^^', ' ')}"></span>
+						</div>
+
+						<div class="form-field">
+							<span class="workerMbti1">MBTI : </span>
+							<span class="workerMbti2" th:text="${session.loginWorker.workerMbti}"></span>
+						</div>
 					</div>
 
 				</div>
@@ -61,10 +71,10 @@
 			<div class="modal-content">
 				<span class="close">X</span>
 				<h2>비밀번호 입력</h2>
-				
-					<input type="password" class="currentPassword" placeholder="현재 비밀번호" required />
-					<button type="submit" class="checkPwbtn">확인</button>
-				
+
+				<input type="password" class="currentPassword" placeholder="현재 비밀번호" required />
+				<button type="submit" class="checkPwbtn">확인</button>
+
 			</div>
 		</div>
 
