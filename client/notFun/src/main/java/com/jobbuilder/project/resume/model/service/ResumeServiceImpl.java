@@ -36,7 +36,7 @@ public class ResumeServiceImpl implements ResumeService {
 
 	// 이력서 작성
 	@Override
-	public int writeResume(Resume resume, List<String> workTypeList, List<Integer> jobTypeNoList,
+	public int writeResume(Resume resume, List<String> workTypeList, List<String> addressList, List<Integer> jobTypeNoList,
 			List<CareerInfo> careerInfoList, List<ResumeDaysTime> daysTimeList) {
 
 		// 1. RESUME 테이블 INSERT
@@ -66,6 +66,16 @@ public class ResumeServiceImpl implements ResumeService {
 		result = mapper.insertResumeWorkType(workTypeMap);
 		if (result != workTypeList.size()) {
 			throw new RuntimeException("RESUME_WORKTYPE 삽입 중 예외 발생");
+		}
+		
+		// addressList 삽입
+		Map<String, Object> addressMap = new HashMap<>();
+		addressMap.put("resumeNo", resumeNo);
+		addressMap.put("addressList", addressList);
+		
+		result = mapper.insertResumeAddress(addressMap);
+		if (result != addressList.size()) {
+			throw new RuntimeException("RESUME_ADDRESS 삽입 중 예외 발생");
 		}
 
 		// 4. RESUME 관련 RESUME_JOB_TYPE 삽입
@@ -116,6 +126,18 @@ public class ResumeServiceImpl implements ResumeService {
 		}
 
 		return result;
+	}
+
+	// 주소 대분류 불러오기
+	@Override
+	public List<Map<String, String>> selectAddressList() {
+		return mapper.selectAddressList();
+	}
+
+	// 주소 소분류 불러오기
+	@Override
+	public List<Map<String, String>> selectSubAddress(String workcondAddressTypeNo) {
+		return mapper.selectSubAddress(workcondAddressTypeNo.substring(0, 2));
 	}
 
 }

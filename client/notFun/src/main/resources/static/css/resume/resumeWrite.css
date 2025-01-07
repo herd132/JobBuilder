@@ -166,7 +166,7 @@ button.exp.active {
 
 
 /* 업직종 선택 */
-#selectCategoryUl {
+#selectCategoryUl, #selectAddressCategoryUl {
 	padding: 10px;
 	background-color: #fff;
 	border-radius: 4px;
@@ -176,11 +176,11 @@ button.exp.active {
 	gap: 10px;
 }
 
-.category-section {
+.category-section, .address-section {
 	margin: 10px 0 20px 0;
 }
 
-.workType {
+.workType, .address-categoty {
 	padding: 8px 12px;
 	margin: 5px;
 	border: 2px solid #F0BB78;
@@ -189,12 +189,12 @@ button.exp.active {
 	display: inline-block;
 }
 
-.workType:hover {
+.workType:hover, .address-categoty:hover {
 	background-color: #F0BB78;
 	color: #fff;
 }
 
-.select-category {
+.select-category, .select-address {
 	background-color: #e1f5fe;
 	padding: 5px 10px;
 	border-radius: 15px;
@@ -202,26 +202,26 @@ button.exp.active {
 	display: inline-block;
 }
 
-.subcategory-delete {
+.subcategory-delete, .subAddress-delete {
 	color: #ff5252;
 	cursor: pointer;
 }
 
-#subWorkType {
+#subWorkType, #subAddressType {
 	list-style: none;
 	display: flex;
 	flex-wrap: wrap;
 	gap: 10px;
 }
 
-#subWorkType li {
+#subWorkType li, #subAddressType li {
 	background-color: #F0BB78;
 	border-radius: 20px;
 	color: white;
 	padding: 10px;
 }
 
-#subWorkType li:hover {
+#subWorkType li:hover, #subAddressType li:hover {
 	background-color: #543A14;
 }
 

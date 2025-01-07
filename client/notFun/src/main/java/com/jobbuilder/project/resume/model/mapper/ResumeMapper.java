@@ -25,6 +25,18 @@ public interface ResumeMapper {
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
 
+	/** 주소 대분류 불러오기
+	 * @return
+	 */
+	List<Map<String, String>> selectAddressList();
+	
+	/** 주소 소분류 불러오기
+	 * @param workcondAddressTypeNo
+	 * @return
+	 */
+	List<Map<String, String>> selectSubAddress(String workcondAddressTypeNo);
+	
+	
 	/** 이력서 기본 작성 
 	 * @param resume
 	 * @return
@@ -42,5 +54,7 @@ public interface ResumeMapper {
 	int insertCareerInfo(CareerInfo careerInfo);
 
 	int insertResumeCareer(Map<String, Integer> resumeCareerMap);
+
+	int insertResumeAddress(Map<String, Object> map);
 
 }
