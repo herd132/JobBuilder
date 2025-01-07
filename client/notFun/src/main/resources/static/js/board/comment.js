@@ -39,7 +39,11 @@ const selectCommentList = () => {
           const commentWriter = document.createElement("p");
           // 닉네임
           const nickname = document.createElement("span");
-          nickname.innerText = comment.memberName;
+          if(comment.workerNickname != null) {
+            nickname.innerText = comment.workerNickname;
+          } else {
+            nickname.innerText = comment.businessName;
+          }
 
           // 날짜(작성일)
           const commentDate = document.createElement("span");
