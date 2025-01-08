@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
@@ -75,7 +76,12 @@ public interface MyPageEmployerService {
 	
 	/* ********** 내가 쓴 글 페이지 관련 ********** */
 	
-	
+	/** 내가 쓴 글 목록 불러오기
+	 * @param memberNo
+	 * @param cp
+	 * @return
+	 */
+	List<Board> viewMyBoard(int memberNo, int cp);
 	
 	/* ********** 사업장 추가 페이지 관련 ********** */
 	
@@ -163,6 +169,12 @@ public interface MyPageEmployerService {
 	 * @return
 	 */
 	Map<List<Integer>, RecruitmentResume> viewResumes(int memberNo);
+	
+	/** 무한스크롤 테스트용 공고에 제출된 이력서 조회
+	 * @param memberNo
+	 * @return
+	 */
+	List<RecruitmentResume> viewResumesList(int memberNo, int cp);
 
 	/** 해당 공고에 제출된 이력서 보기
 	 * @param recuritmentNo
@@ -170,6 +182,10 @@ public interface MyPageEmployerService {
 	 * @return
 	 */
 	RecruitmentResume viewRecruitResume(int recruitmentNo, int resumeNo);
+
+
+
+
 	
 	/* ********** 회원탈퇴 페이지 관련 ********** */
 	

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
@@ -168,7 +169,14 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	
 	/* ********** 내가 쓴 글 페이지 관련 ********** */
 	
-	
+	@Override	// 내가 쓴 글 목록 불러오기
+	public List<Board> viewMyBoard(int memberNo, int cp) {
+		int limit = 14;
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds =  new RowBounds(offset, limit);
+		
+		return mapper.viewMyBoard(memberNo, rowBounds);
+	}
 	
 	/* ********** 사업장 추가 페이지 관련 ********** */
 	
@@ -356,21 +364,22 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	
 	@Override	// 공고에 제출된 이력서 조회
 	public Map<List<Integer>, RecruitmentResume> viewResumes(int memberNo) {
+
 		
 		Map<List<Integer>, RecruitmentResume> viewReusmes = new HashMap<>();
-		
 		List<Integer> recuritmentNoList = mapper.getRecuritmentNoList(memberNo);
 		
 		for(Integer recruitmentNo : recuritmentNoList) {
-			
 			List<Integer> resumeNoList = mapper.getRusemeNoList(recruitmentNo);
 			
 			if(!resumeNoList.isEmpty()) {
+				
 				for(Integer resumeNo : resumeNoList) {
 					
 					List<Integer> recruitmentResumeNoList = new ArrayList<>();
 					recruitmentResumeNoList.add(recruitmentNo);
 					recruitmentResumeNoList.add(resumeNo);
+					// [12,27] [12,41] [15,61] 
 					
 					Map<String, Integer> recruitmentResumeNoMap = new HashMap<>();
 					recruitmentResumeNoMap.put("recruitmentNo", recruitmentNo);
@@ -387,13 +396,44 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 					log.debug("recruitmentResume : " + recruitmentResume);
 					
 					viewReusmes.put(recruitmentResumeNoList, recruitmentResume);
-					
-				}				
+				}
 			}
 		}
-		
+			
 		return viewReusmes;
 	}
+	
+	
+	@Override	// 무한스크롤 테스트용 공고에 제출된 이력서 조회
+	public List<RecruitmentResume> viewResumesList(int memberNo, int cp) {
+		
+		int limit = 8;
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds =  new RowBounds(offset, limit);
+		
+		List<RecruitmentResume> recruitmentResumelist = mapper.viewResumesList(memberNo, rowBounds);
+		
+		for(RecruitmentResume recruitmentResume : recruitmentResumelist) {
+			
+			Map<String, Integer> recruitmentResumeNoMap = new HashMap<>();
+			recruitmentResumeNoMap.put("recruitmentNo", recruitmentResume.getRecruitmentNo());
+			recruitmentResumeNoMap.put("resumeNo", recruitmentResume.getResumeNo());
+			
+			String careerFl = null;
+			
+			if(mapper.trueCareer(recruitmentResume.getResumeNo()) > 0) careerFl = "경력";
+			else careerFl = "신입";
+			
+			recruitmentResume.setCareerFl(careerFl);
+			
+		}
+		
+		return recruitmentResumelist;
+	}
+	
+	
+	
+	
 	
 	@Override	// 해당 공고에 제출된 이력서 보기
 	public RecruitmentResume viewRecruitResume(int recruitmentNo, int resumeNo) {

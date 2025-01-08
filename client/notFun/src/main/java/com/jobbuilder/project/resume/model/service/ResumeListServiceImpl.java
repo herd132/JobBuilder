@@ -24,57 +24,57 @@ public class ResumeListServiceImpl implements ResumeListService {
 
 	private final ResumeListMapper mapper;
 
-
+	// 이력서 리스트 내 정보 가져오는 패치요청
 	@Override
 	public List<Resume> getResumeList(int workerNo) {
         log.debug("Fetching membership details for workerNo: {}", workerNo);
         return mapper.getResumeList(workerNo);
 	}
 
-
+	// 이력서리스트 삭제/수정 버튼 패치요청
     @Override
     public int updateResumeStatus(Resume resume) {
         if (resume.getUpdateType() == 1) {
-            return mapper.updateResumeHideStatus(resume);
+            return mapper.updateResumeHideStatus(resume);	// 비공개요청
         } else if (resume.getUpdateType() == 2) {
-            return mapper.updateResumeDeleteStatus(resume);
+            return mapper.updateResumeDeleteStatus(resume);	// 삭제요청
         } else {
             throw new IllegalArgumentException("Invalid updateType: " + resume.getUpdateType());
         }
     }
     
-    
+    // 이력서디테일 페이지로 이동 내 이력서 조회
     @Override
     public Resume getResumeByNo(int resumeNo) {
-    	return mapper.selectResumeByNo(resumeNo);
+    	return mapper.getResumeByNo(resumeNo);
     }
 
-    
+    // 맞춤공고 목록페이지 이동
     @Override
     public List<Recruitment> getRecommendations(int resumeNo) {
-        return mapper.selectRecommendationsByResumeNo(resumeNo);
+        return mapper.getRecommendations(resumeNo);
     }
     
+    // 이력서 상세 페이지 내 정보 가져오는 패치요청 내 포함
     @Override
-    public List<CareerInfo> careerInfo(int resumeNo) {
+    public List<CareerInfo> careerInfo(int resumeNo) {					// 경력     배열
     	return mapper.careerInfo(resumeNo);
     }
-    
     @Override
-    public List<ResumeWorkType> resumeWorkType(int resumeNo) {
+    public List<ResumeWorkType> resumeWorkType(int resumeNo) {			// 근무직종 배열
     	return mapper.resumeWorkType(resumeNo);
     }
-    
     @Override
-    public List<String> resumeJobTypeList(int resumeNo) {
+    public List<String> resumeJobTypeList(int resumeNo) {				// 근무형태 배열
     	return mapper.resumeJobTypeList(resumeNo);
     }
-    
     @Override
-    public List<ResumeDaysTime> resumeDaysTime(int resumeNo) {
+    public List<ResumeDaysTime> resumeDaysTime(int resumeNo) {			// 근무일시 배열
        	return mapper.resumeDaysTime(resumeNo);
     }
     
+    
+    // 자기소개 수정 예제
 	@Override
 	public int updateResumeContent(Map<String, Object> requestBody) {
 	    return mapper.updateResumeContent(requestBody);
