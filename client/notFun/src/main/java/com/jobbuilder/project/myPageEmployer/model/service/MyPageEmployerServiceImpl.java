@@ -23,6 +23,7 @@ import com.jobbuilder.project.recruitment.model.dto.PaginationRecruitment;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentPreferred;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentSupport;
+import com.jobbuilder.project.resume.model.dto.CareerInfo;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -376,6 +377,13 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 					recruitmentResumeNoMap.put("resumeNo", resumeNo);
 					
 					RecruitmentResume recruitmentResume = mapper.getResume(recruitmentResumeNoMap);
+					
+					String careerFl = null;
+					if(mapper.trueCareer(resumeNo) > 0) careerFl = "경력";
+					else careerFl = "신입";
+					
+					recruitmentResume.setCareerFl(careerFl);
+					
 					log.debug("recruitmentResume : " + recruitmentResume);
 					
 					viewReusmes.put(recruitmentResumeNoList, recruitmentResume);
@@ -385,6 +393,33 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		}
 		
 		return viewReusmes;
+	}
+	
+	@Override	// 해당 공고에 제출된 이력서 보기
+	public RecruitmentResume viewRecruitResume(int recruitmentNo, int resumeNo) {
+		
+		Map<String, Integer> recruitmentResumeNoMap = new HashMap<>();
+		recruitmentResumeNoMap.put("recruitmentNo", recruitmentNo);
+		recruitmentResumeNoMap.put("resumeNo", resumeNo);
+		
+		RecruitmentResume recruitmentResume = mapper.viewRecruitResume(recruitmentResumeNoMap);
+		
+		recruitmentResume.setWorktypeList(mapper.getRecruitmentWorktypeList(recruitmentNo));
+		recruitmentResume.setResumeJobtypeList(mapper.getResumeJobtypeList(resumeNo));
+		recruitmentResume.setHopeDaysTimeList(mapper.getHopeDaysTimeList(resumeNo));
+		recruitmentResume.setHopeAddressList(mapper.getHopeAddressList(resumeNo));
+		recruitmentResume.setHopeWorkTypeList(mapper.getHopeWorkTypeList(resumeNo));
+		
+		List<CareerInfo> careerInfoList = mapper.getCareerInfoList(resumeNo);
+		recruitmentResume.setCareerInfoList(careerInfoList);
+		
+		String careerFl = null;
+		if(careerInfoList.isEmpty()) careerFl = "신입";
+		else careerFl = "경력";
+		
+		recruitmentResume.setCareerFl(careerFl);
+		
+		return recruitmentResume;
 	}
 	
 	

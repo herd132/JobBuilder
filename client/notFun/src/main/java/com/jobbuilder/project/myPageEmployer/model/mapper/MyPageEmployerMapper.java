@@ -13,6 +13,10 @@ import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentPreferred;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentSupport;
+import com.jobbuilder.project.resume.model.dto.CareerInfo;
+import com.jobbuilder.project.resume.model.dto.ResumeAddress;
+import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
+import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 
 @Mapper
 public interface MyPageEmployerMapper {
@@ -235,11 +239,61 @@ public interface MyPageEmployerMapper {
 	 */
 	List<Integer> getRusemeNoList(Integer recruitmentNo);
 
-	/** 공고목록에서 공고, 이력서 정보 얻어오기
+	/** 공고목록에서 공고, 이력서 정보 얻어오기 (목록용)
 	 * @param recruitmentResumeNoMap(recruitmentNo, resumeNo)
 	 * @return
 	 */
 	RecruitmentResume getResume(Map<String, Integer> recruitmentResumeNoMap);
+	
+	/** 공고목록에서 경력 있는 지 여부 확인
+	 * @param careerFl
+	 * @return
+	 */
+	int trueCareer(int resumeNo);
+
+	/** 해당 공고에 제출된 이력서 보기 (모달 내 상세보기용)
+	 * @param recruitmentResumeNoMap(recruitmentNo, resumeNo)
+	 * @return
+	 */
+	RecruitmentResume viewRecruitResume(Map<String, Integer> recruitmentResumeNoMap);
+
+	/** 사업장의 업직종 리스트 얻어오기
+	 * @param recruitmentNo
+	 * @return
+	 */
+	List<BusinessWorktype> getRecruitmentWorktypeList(int recruitmentNo);
+
+	/** 알바생의 희망 고용형태 리스트 얻어오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<String> getResumeJobtypeList(int resumeNo);
+
+	/** 알바생의 희망 요일시간 리스트 얻어오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<ResumeDaysTime> getHopeDaysTimeList(int resumeNo);
+
+	/** 알바생의 희망 근무지역 리스트 얻어오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<ResumeAddress> getHopeAddressList(int resumeNo);
+
+	/** 알바생의 희망 업직종 리스트 얻어오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<ResumeWorkType> getHopeWorkTypeList(int resumeNo);
+
+	/** 알바의 경력사항 리스트 얻어오기
+	 * @param resumeNo
+	 * @return
+	 */
+	List<CareerInfo> getCareerInfoList(int resumeNo);
+
+
 	
 	
 	/* ********** 회원 탈퇴 페이지 관련 ********** */

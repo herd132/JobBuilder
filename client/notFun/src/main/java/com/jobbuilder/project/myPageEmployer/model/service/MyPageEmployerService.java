@@ -163,6 +163,13 @@ public interface MyPageEmployerService {
 	 * @return
 	 */
 	Map<List<Integer>, RecruitmentResume> viewResumes(int memberNo);
+
+	/** 해당 공고에 제출된 이력서 보기
+	 * @param recuritmentNo
+	 * @param resumeNo
+	 * @return
+	 */
+	RecruitmentResume viewRecruitResume(int recruitmentNo, int resumeNo);
 	
 	/* ********** 회원탈퇴 페이지 관련 ********** */
 	
