@@ -71,6 +71,14 @@
 		= #{memberNo}
 	</update>
 
+	<!-- 내가 작성한 게시글 제목 가져오기 -->
+	<select id="writeView" resultType="Board">
+	SELECT BOARD_NO, BOARD_TITLE, BOARD_WRITE_DATE, BOARD_READ_COUNT
+	FROM "BOARD"
+	WHERE MEMBER_NO = #{memberNo}
+	AND BOARD_CODE != 1
+	AND BOARD_DEL_FL = 'N'
+	</select>
 
 
 </mapper>

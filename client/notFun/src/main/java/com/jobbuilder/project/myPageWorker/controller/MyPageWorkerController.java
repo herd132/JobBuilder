@@ -16,6 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.myPageWorker.model.service.MyPageWorkerService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
@@ -32,7 +33,6 @@ import lombok.extern.slf4j.Slf4j;
 public class MyPageWorkerController {
 
 	private final MyPageWorkerService service;
-	
 	
 	/**
 	 * @return 회원정보 페이지 이동
@@ -65,6 +65,30 @@ public class MyPageWorkerController {
 	@GetMapping("myPageWorkerChangePw")
 	public String myPageWorkerChangePw() {
 		return "myPageWorker/changePw";
+	}
+	
+	/**
+	 * @return 작성 글 목록으로 이동
+	 */
+	@GetMapping("myPageWorkerWrite")
+	public String myPageWorkerWrite() {
+		return "myPageWorker/writeBoard";
+	}
+	
+	/**
+	 * @return 작성 글 제목 가져오기
+	 */
+	@ResponseBody
+	@GetMapping("writeView")
+	public List<Board> writeView( @RequestParam(value="cp",required = false, defaultValue = "1") int cp,
+			@SessionAttribute("loginWorker") Worker loginWorker) {
+	    int memberNo = loginWorker.getMemberNo();
+	    
+	    // 페이지와 크기를 고려하여 해당 페이지에 맞는 데이터 조회
+	    List<Board> titles = service.writeView(memberNo, cp);
+	    log.debug("titles : " + titles);
+
+	    return titles;  // List<Board> 반환
 	}
 	
 	/** 비밀번호 변경

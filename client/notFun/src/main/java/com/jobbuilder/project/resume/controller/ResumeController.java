@@ -112,6 +112,7 @@ public class ResumeController {
 		log.debug("희망급여 salAmount {} ", salAmount);		
 		log.debug("careerInfoListJson {}", careerInfoListJson);
 		log.debug("희망 근무지 addressList {}", addressList);
+		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson);
 
 		List<CareerInfo> careerInfoList = null;
 		if(careerInfoListJson != null) {
