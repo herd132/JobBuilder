@@ -534,6 +534,7 @@
   flex-direction: column;
   z-index: 1000;
   border: 2px solid var(--primary-orange);
+  overflow-y: auto;
 }
 
 .recommend-modal.active {
@@ -552,4 +553,15 @@
 	-moz-opacity: 0.8;
 	opacity:.80;
   display: none;
+}
+
+.modal-close {
+  margin-left: auto;
+  font-weight: bold;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.recommend-modal::-webkit-scrollbar {
+  width: 0px;
 }
