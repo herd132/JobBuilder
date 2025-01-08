@@ -731,16 +731,138 @@ WHERE
    
 
 SELECT 
-    A.DAYS_NAME AS DAYS_NO,
-    B.TIME_NAME AS TIME_NAME
-FROM RESUME_DAYSTIME C
-LEFT JOIN WORKCOND_DAYS A ON C.DAYS_NO = A.DAYS_NO
-LEFT JOIN WORKCOND_TIME B ON C.TIME_NO = B.TIME_NO
-WHERE C.RESUME_NO = 41;
+    B.SALARY_NAME
+FROM RECRUITMENT A
+JOIN SALARY B ON A.SALARY_NO  = B.SALARY_NO 
+WHERE EMPLOYER_NO = A.RECRUITMENT_NO;
 
 
    
    
    
    
-   
+SELECT DISTINCT
+		    A.RECRUITMENT_NO AS RECRUITMENT_NO,
+   			B.BUSINESS_ADDRESS AS BUSINESS_ADDRESS,
+   			B.BUSINESS_NAME AS BBUSINESS_NAME,
+		    A.RECRUITMENT_TITLE AS RECRUITMENT_TITLE,
+		    A.RECRUITMENT_CONTENT AS RECRUITMENT_CONTENT,
+		    A.RECRUITMENT_DEADLINE AS RECRUITMENT_DEADLINE,
+		    A.JOBTYPE_NO AS JOBTYPE_NO,
+		    A.NUM_OF_RECRUITMENT_NAME AS NUM_OF_RECRUITMENT_NAME,
+			J.SALARY_NAME AS SALARY_NAME,
+		    A.GRADE_NO AS GRADE_NO,
+		    A.PERIOD_NO AS PERIOD_NO,
+		    A.DAYS_NO AS DAYS_NO,
+		    A.TIME_NO AS TIME_NO,
+		    K.TIME_NAME AS TIME_NAME,
+		    A.EMPLOYER_NO AS EMPLOYER_NO,
+		    A.SALARY_MOUNT AS SALARY_MOUNT,
+		    A.WRITE_DATE AS WRITE_DATE,
+		    A.UPDATE_DATE AS UPDATE_DATE,
+		    A.RECRUITMENT_DEL_FL AS RECRUITMENT_DEL_FL,
+		    A.MEMBER_NO AS MEMBER_NO,
+		    A.RECRUIT_COMPLETE_FL AS RECRUIT_COMPLETE_FL,
+		    A.RECRUITMENT_PROFILE AS RECRUITMENT_PROFILE
+		FROM 
+		    RECRUITMENT A
+		JOIN 
+			EMPLOYER B ON A.EMPLOYER_NO = B.EMPLOYER_NO
+		JOIN	
+			SALARY J ON A.SALARY_NO = J.SALARY_NO
+		JOIN
+			WORKCOND_TIME K ON A.TIME_NO = K.TIME_NO
+		WHERE 
+		    -- 삭제되지 않은 공고
+		    A.RECRUITMENT_DEL_FL = 'N'
+		    AND (
+		    
+		        -- 1.학력 조건
+		        A.GRADE_NO = (
+		            SELECT B.GRADE_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = 41)
+		            
+		        -- 2. 급여 조건 
+		        OR (
+		            A.SALARY_NO IN (1, 2) -- SALARY_NO가 1 또는 2일 때만 희망 금액 비교
+		            AND A.SALARY_NO = (
+		                SELECT B.SALARY_NO
+		                FROM RESUME B
+		                WHERE B.RESUME_NO = 41
+		            )
+		            AND A.SALARY_MOUNT >= (
+		                SELECT B.SALARY_AMOUNT
+		                FROM RESUME B
+		                WHERE B.RESUME_NO = 41
+		            )
+		        )
+		        
+		        OR A.SALARY_NO NOT IN (1, 2) -- SALARY_NO가 1, 2가 아닌 경우 SALARY_NO만 비교
+		        AND A.SALARY_NO = (
+		            SELECT B.SALARY_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = 41
+		        )
+		            
+		        -- 3.근무기간 조건
+		        OR
+		        A.PERIOD_NO = (
+		            SELECT B.PERIOD_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = 41)
+		            
+		        ----- 여기까진 단순비교 이후로는 1:다 ) --    
+		            
+		        -- 4.근무요일 조건
+		        OR
+			        A.DAYS_NO IN (
+			        SELECT E.DAYS_NO
+			        FROM RESUME_DAYSTIME E
+			        WHERE E.RESUME_NO = 41)
+			        
+			    -- 5.근무시간 조건
+			    OR 
+			    	A.TIME_NO IN (
+			        SELECT E.TIME_NO
+			        FROM RESUME_DAYSTIME E
+			        WHERE E.RESUME_NO = 41)
+			    
+			    -- 6.근무형태 조건
+			    OR 
+			    	A.JOBTYPE_NO IN (
+			        SELECT F.JOBTYPE_NO
+			        FROM RESUME_JOB_TYPE F
+			        WHERE F.RESUME_NO = 41)
+			    
+			        
+		        ----- 여기까진 1:다 이후로는 다:다) -- 	    
+			        
+			    -- 7.희망지역 조건
+		        OR
+		        A.RECRUITMENT_NO IN (
+		            SELECT DISTINCT D.RECRUITMENT_NO
+		            FROM WORKCOND_ADDRESS C
+		            JOIN WORKCOND_ADDRESS D
+		            ON C.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
+		            WHERE C.RESUME_NO = 41)
+		            
+			    -- 8.업직종 조건    
+		        OR A.EMPLOYER_NO IN (
+		            SELECT DISTINCT G.EMPLOYER_NO
+		            FROM RESUME_WORKTYPE H
+		            JOIN BUSINESS_WORKTYPE G
+		            ON H.WORKTYPE_NO = G.WORKTYPE_NO
+		            WHERE H.RESUME_NO = 41
+		        )      
+		            
+			)
+		   ORDER BY RECRUITMENT_NO DESC;  
+		   
+		  
+		  
+		  
+		
+		  
+		  
+		  

@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -38,6 +37,8 @@ public class ResumeListContorller {
 
 	private final ResumeListService service;
 	
+	// 이력서리스트 페이지로 이동
+	
 	@GetMapping("resumeList")
 	public String myPageWorkerInfo(HttpSession session) {
 		Worker loginWorker = (Worker) session.getAttribute("loginWorker");
@@ -47,6 +48,8 @@ public class ResumeListContorller {
         }
 		return "resume/resumeList";
 	}
+	
+	// 이력서 리스트 내 정보 가져오는 패치요청
 	
 	@PostMapping("/resumeLista")
 	@ResponseBody
@@ -70,111 +73,154 @@ public class ResumeListContorller {
 	    return response;
 	}
 
-
-	    @PostMapping("/updateResumeStatus")
-	    public ResponseEntity<Map<String, Object>> updateResumeStatus(@RequestBody Resume resume) {
-	        Map<String, Object> response = new HashMap<>();
-	        try {
-	            int result = service.updateResumeStatus(resume);
-	            response.put("success", result > 0);
-	        } catch (Exception e) {
-	            response.put("success", false);
-	            response.put("error", e.getMessage());
-	        }
-	        return ResponseEntity.ok(response);
-	    }
 	
+	// 이력서리스트 삭제/수정 버튼 패치요청
 
-	    @GetMapping("/resumeDetail")
-	    public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model, HttpSession session) {
-	        // 세션에서 loginWorker 조회
-	        Worker loginWorker = (Worker) session.getAttribute("loginWorker");
+    @PostMapping("/updateResumeStatus")
+    public ResponseEntity<Map<String, Object>> updateResumeStatus(@RequestBody Resume resume) {
+        Map<String, Object> response = new HashMap<>();
+        try {
+            int result = service.updateResumeStatus(resume);
+            response.put("success", result > 0);
+        } catch (Exception e) {
+            response.put("success", false);
+            response.put("error", e.getMessage());
+        }
+        return ResponseEntity.ok(response);
+    }
 
-	        // 세션에 loginWorker가 없는 경우 처리
-	        if (loginWorker == null) {
-	            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
-	        }
+    // 이력서디테일 페이지로 이동
 
-	        // 데이터 조회
-	        Resume resume = service.getResumeByNo(resumeNo);
+    @GetMapping("/resumeDetail")
+    public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model, HttpSession session) {
+        // 세션에서 loginWorker 조회
+        Worker loginWorker = (Worker) session.getAttribute("loginWorker");
 
-	        // 이력서가 없는 경우 처리
-	        if (resume == null) {
-	            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
-	        }
+        // 세션에 loginWorker가 없는 경우 처리
+        if (loginWorker == null) {
+            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
+        }
 
-	        // 모델에 데이터 추가
-	        model.addAttribute("resumeNo", resumeNo);
-	        model.addAttribute("loginWorker", loginWorker);
-	        return "resume/resumeDetail";
-	    }
+        // 데이터 조회
+        Resume resume = service.getResumeByNo(resumeNo);
 
+        // 이력서가 없는 경우 처리
+        if (resume == null) {
+            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
+        }
 
-	    @PostMapping("/resumeDetaila")
-	    @ResponseBody
-	    public Map<String, Object> getResumeDetail(@RequestBody Map<String, Object> requestBody) {
-	        int resumeNo = Integer.parseInt(requestBody.get("resumeNo").toString());
+        // 모델에 데이터 추가
+        model.addAttribute("resumeNo", resumeNo);
+        model.addAttribute("loginWorker", loginWorker);
+        return "resume/resumeDetail";
+    }
 
-	        Resume resume = service.getResumeByNo(resumeNo);
-	        if (resume == null) {
-	            throw new IllegalArgumentException("Resume not found for resumeNo: " + resumeNo);
-	        }
+    // 이력서 상세 페이지 내 정보 가져오는 패치요청
 
-	        List<CareerInfo> careerInfo = service.careerInfo(resumeNo);
-	        List<ResumeWorkType> resumeWorkType = service.resumeWorkType(resumeNo);
-	        List<String> resumeJobTypeList = service.resumeJobTypeList(resumeNo);
-	        List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(resumeNo);
+    @PostMapping("/resumeDetaila")
+    @ResponseBody
+    public Map<String, Object> getResumeDetail(@RequestBody Map<String, Object> requestBody) {
+        int resumeNo = Integer.parseInt(requestBody.get("resumeNo").toString());
 
-	        Map<String, Object> response = new HashMap<>();
-	        
-	        response.put("resume", resume);        
-	        response.put("careerInfo", careerInfo); 
-	        response.put("resumeWorkType", resumeWorkType); 
-	        response.put("resumeJobTypeList", resumeJobTypeList);
-	        response.put("resumeDaysTime", resumeDaysTime);
-	        
-	        return response; 
-	    }
+        Resume resume = service.getResumeByNo(resumeNo);
+        if (resume == null) {
+            throw new IllegalArgumentException("Resume not found for resumeNo: " + resumeNo);
+        }
 
+        List<CareerInfo> careerInfo = service.careerInfo(resumeNo);
+        List<ResumeWorkType> resumeWorkType = service.resumeWorkType(resumeNo);
+        List<String> resumeJobTypeList = service.resumeJobTypeList(resumeNo);
+        List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(resumeNo);
 
-	    @PostMapping("/updateContent")
-	    @ResponseBody
-	    public Map<String, Object> updateResumeContent(@RequestBody Map<String, Object> requestBody) {
-	        int result = service.updateResumeContent(requestBody);
+        Map<String, Object> response = new HashMap<>();
+        
+        response.put("resume", resume);        
+        response.put("careerInfo", careerInfo); 
+        response.put("resumeWorkType", resumeWorkType); 
+        response.put("resumeJobTypeList", resumeJobTypeList);
+        response.put("resumeDaysTime", resumeDaysTime);
+        
+        return response; 
+    }
 
-	        Map<String, Object> response = new HashMap<>();
-	        if (result > 0) {
-	            response.put("status", "success");
-	            response.put("message", "자기소개가 성공적으로 업데이트되었습니다.");
-	        } else {
-	            response.put("status", "error");
-	            response.put("message", "업데이트에 실패했습니다.");
-	        }
-	        return response;
-	    }
+    // 이력서 상세 페이지 자기소개 수정 예제
 
+    @PostMapping("/updateContent")
+    @ResponseBody
+    public Map<String, Object> updateResumeContent(@RequestBody Map<String, Object> requestBody) {
+        int result = service.updateResumeContent(requestBody);
 
+        Map<String, Object> response = new HashMap<>();
+        if (result > 0) {
+            response.put("status", "success");
+            response.put("message", "자기소개가 성공적으로 업데이트되었습니다.");
+        } else {
+            response.put("status", "error");
+            response.put("message", "업데이트에 실패했습니다.");
+        }
+        return response;
+    }
 
+    // 맞춤공고 목록페이지 이동
 
-	    
-	    
-	    
+    @GetMapping("/resumeRecommend")
+    public String getRecommendations(@RequestParam("resumeNo") int resumeNo, Model model, HttpSession session) {
+        // 세션에서 loginWorker 조회
+        Worker loginWorker = (Worker) session.getAttribute("loginWorker");
 
-	    @GetMapping("/resumeRecommend")
-	    public String getRecommendations(@RequestParam("resumeNo") int resumeNo, Model model) {
-	        // Resume 정보를 조회
-	        Resume resume = service.getResumeByNo(resumeNo);
+        // 세션에 loginWorker가 없는 경우 처리
+        if (loginWorker == null) {
+            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
+        }
 
-	        // 추천 공고 리스트 조회
-	        List<Recruitment> recommendations = service.getRecommendations(resumeNo);
+        // 데이터 조회
+        Resume resume = service.getResumeByNo(resumeNo);
 
-	        // 모델에 추가
-	        model.addAttribute("resume", resume);
-	        model.addAttribute("recommendations", recommendations);
+        // 이력서가 없는 경우 처리
+        if (resume == null) {
+            return "error/error"; // 잘못된 접근을 처리할 HTML로 이동
+        }
 
-	        // 추천 결과 페이지로 이동
-	        return "resume/resumeRecommend"; // templates/resume/recommendations.html
-	    }
+        // 삭제할부분
+        List<Recruitment> recommendations = service.getRecommendations(resumeNo);
+        model.addAttribute("recommendations", recommendations);
+        
+        // 모델에 데이터 추가
+        model.addAttribute("resumeNo", resumeNo);
+        model.addAttribute("loginWorker", loginWorker);
+        // 추천 결과 페이지로 이동
+        return "resume/resumeRecommend"; // templates/resume/recommendations.html
+    }
+
+    // 맞춤공고 목록 정보 가져오는 패치 요청
+    
+    @PostMapping("/resumeRecommenda")
+    @ResponseBody
+    public Map<String, Object> getRecommendations(@RequestBody Map<String, Object> requestBody) {
+        int resumeNo = Integer.parseInt(requestBody.get("resumeNo").toString());
+
+        Resume resume = service.getResumeByNo(resumeNo);
+        if (resume == null) {
+            throw new IllegalArgumentException("Resume not found for resumeNo: " + resumeNo);
+        }
+
+        // 추천 공고 리스트 조회
+        List<Recruitment> recommendations = service.getRecommendations(resumeNo);
+
+        Map<String, Object> response = new HashMap<>();
+        
+        List<ResumeWorkType> resumeWorkType = service.resumeWorkType(resumeNo);
+        List<String> resumeJobTypeList = service.resumeJobTypeList(resumeNo);
+        List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(resumeNo);
+
+        response.put("resumeWorkType", resumeWorkType); 
+        response.put("resumeJobTypeList", resumeJobTypeList);
+        response.put("resumeDaysTime", resumeDaysTime);
+        response.put("resume", resume);        
+        response.put("recommendations", recommendations);
+        
+        return response; 
+    }
 
 
 

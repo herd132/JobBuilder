@@ -24,7 +24,7 @@
 	</resultMap>
 
 
-
+	<!-- 이력서 리스트 내 정보 가져오는 패치요청 -->
 	<select id="getResumeList" parameterType="Resume" resultMap="resumeResultMap">
 		SELECT 
 			    A.GRADE_NO AS GRADE_NO,
@@ -167,21 +167,24 @@
 		    A.RESUME_NO DESC
 
 	</select>
+<!-- 이력서 리스트 내 정보 가져오는 패치요청  끝-->
 
+<!-- 이력서 숨김 요청  -->
 	<update id="updateResumeHideStatus">
 	    UPDATE RESUME
 	    SET RESUME_HIDE_FL = #{value}
 	    WHERE RESUME_NO = #{resumeNo}
 	</update>
-	
+
+<!-- 이력서 삭제 요청  -->
 	<update id="updateResumeDeleteStatus">
 	    UPDATE RESUME
 	    SET RESUME_DEL_FL = #{value}
 	    WHERE RESUME_NO = #{resumeNo}
 	</update>
 
-
-    <select id="selectResumeByNo" resultMap="resumeResultMap">
+<!-- 이력서디테일 페이지로 이동 내 이력서 조회 -->
+    <select id="getResumeByNo" resultMap="resumeResultMap">
 	    SELECT 
 		    A.RESUME_CONTENT AS RESUME_CONTENT,
 		    A.RESUME_DEL_FL AS RESUME_DEL_FL,
@@ -250,8 +253,11 @@
 		    A.RESUME_NO = #{resumeNo}
 
 	</select>
+<!-- 이력서디테일 페이지로 이동 내 이력서 조회 끝 -->
 
 
+<!-- 이력서 상세 페이지 내 정보 가져오는 패치요청 내 포함  -->
+	<!-- 경력 배열 -->
 	<select id="careerInfo" resultType="com.jobbuilder.project.resume.model.dto.CareerInfo">
 	    SELECT 
 	        A.CAREER_NO AS CAREER_NO,
@@ -269,6 +275,7 @@
 	    ORDER BY A.START_DATE ASC
 	</select>
 
+	<!-- 근무직종 배열 -->
 	<select id="resumeWorkType" resultType="com.jobbuilder.project.resume.model.dto.ResumeWorkType">
 		SELECT
 		    B.WORKTYPE_NO,
@@ -282,6 +289,7 @@
 		   	ORDER BY 1 ASC
 	</select>
 	
+	<!-- 근무형태 배열  -->
 	<select id="resumeJobTypeList">
 	    SELECT
 	        B.JOBTYPE_NAME AS JOBTYPE_NAME
@@ -293,6 +301,7 @@
 	        A.RESUME_NO = #{resumeNo}
 	</select>
 
+	<!-- 근무일시 배열 -->
 	<select id="resumeDaysTime" resultType="com.jobbuilder.project.resume.model.dto.ResumeDaysTime">
 		SELECT 
 		    A.DAYS_NAME AS DAYS_NAME,
@@ -302,16 +311,28 @@
 		LEFT JOIN WORKCOND_TIME B ON C.TIME_NO = B.TIME_NO
 		WHERE C.RESUME_NO = #{resumeNo}
 	</select>
+<!-- 이력서 상세 페이지 내 정보 가져오는 패치요청 내 포함 끝 -->
 
-    <select id="selectRecommendationsByResumeNo" resultType="com.jobbuilder.project.recruitment.model.dto.Recruitment">
-	    SELECT DISTINCT
+<!-- 맞춤공고 목록페이지 이동 -->
+    <select id="getRecommendations" resultType="com.jobbuilder.project.recruitment.model.dto.Recruitment">
+	    
+		SELECT DISTINCT
 		    A.RECRUITMENT_NO AS RECRUITMENT_NO,
+		    REGEXP_SUBSTR(
+		        SUBSTR(I.BUSINESS_ADDRESS, INSTR(I.BUSINESS_ADDRESS, '^^^') + 3, 
+		        INSTR(I.BUSINESS_ADDRESS || '^^^', '^^^', INSTR(I.BUSINESS_ADDRESS, '^^^') + 3) - 
+		        INSTR(I.BUSINESS_ADDRESS, '^^^') - 3),
+		        '[^ ]+ [^ ]+', 1, 1
+		    ) AS BUSINESS_ADDRESS,
+		    I.BUSINESS_NAME AS BUSINESS_NAME,
 		    A.RECRUITMENT_TITLE AS RECRUITMENT_TITLE,
 		    A.RECRUITMENT_CONTENT AS RECRUITMENT_CONTENT,
 		    A.RECRUITMENT_DEADLINE AS RECRUITMENT_DEADLINE,
 		    A.JOBTYPE_NO AS JOBTYPE_NO,
 		    A.NUM_OF_RECRUITMENT_NAME AS NUM_OF_RECRUITMENT_NAME,
 		    A.SALARY_NO AS SALARY_NO,
+		    J.SALARY_NAME AS SALARY_NAME,
+		    K.TIME_NAME AS TIME_NAME,
 		    A.GRADE_NO AS GRADE_NO,
 		    A.PERIOD_NO AS PERIOD_NO,
 		    A.DAYS_NO AS DAYS_NO,
@@ -326,6 +347,12 @@
 		    A.RECRUITMENT_PROFILE AS RECRUITMENT_PROFILE
 		FROM 
 		    RECRUITMENT A
+		JOIN 
+			EMPLOYER I ON A.EMPLOYER_NO = I.EMPLOYER_NO
+		JOIN	
+			SALARY J ON A.SALARY_NO = J.SALARY_NO
+		JOIN
+			WORKCOND_TIME K ON A.TIME_NO = K.TIME_NO
 		WHERE 
 		    -- 삭제되지 않은 공고
 		    A.RECRUITMENT_DEL_FL = 'N'
@@ -413,15 +440,16 @@
 			)
 		   ORDER BY RECRUITMENT_NO DESC
     </select>
+<!-- 맞춤공고 목록페이지 이동 끝 -->
 
 
-
+<!-- 업데이트 자기소개 예제 -->
 	<update id="updateResumeContent" parameterType="map">
-    UPDATE RESUME
-    SET RESUME_CONTENT = #{resumeContent},
-    MODIFICATION_DATE = SYSDATE
-    WHERE RESUME_NO = #{resumeNo}
-</update>
+	    UPDATE RESUME
+		    SET RESUME_CONTENT = #{resumeContent},
+		    MODIFICATION_DATE = SYSDATE
+		    WHERE RESUME_NO = #{resumeNo}
+	</update>
 
 
 

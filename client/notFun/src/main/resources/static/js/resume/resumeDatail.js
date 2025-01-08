@@ -11,6 +11,7 @@ const formatCareer = (totalCareer) => {
   const totalMonths = Math.floor(totalCareer / 30);
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
+  if(!years) return "1개월 미만";
   return `${years ? `${years}년 ` : ""}${months ? `${months}개월` : ""}`.trim();
 };
 
