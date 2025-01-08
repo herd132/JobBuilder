@@ -1,5 +1,6 @@
 package com.jobbuilder.project.board.controller;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.stereotype.Controller;
@@ -39,26 +40,37 @@ public class OneTalkController {
 				Model model ) {
 			
 			Map<String, Object> map = null;
-			
-			map = service.selectOneTalkList(cp); 			
-			
+						
+			map = service.selectOneTalkList(cp); 		
+						
 			model.addAttribute("pagination", map.get("pagination"));
-			model.addAttribute("onetalkList" , map.get("onetalkList"));
-			log.debug("원톡컨트롤러디버그" + map.get("oneTalkList"));
+			model.addAttribute("oneTalkList" , map.get("oneTalkList"));
+			log.debug("onetalklist"+ map.get("oneTalkList"));
 			return "board/oneTalkMain";
+		}
+		
+		
+		@GetMapping("select")
+		@ResponseBody
+		public List<OneTalk> select() {
+			log.debug("여기로들어오나");
+			// HttpMessageConverter가
+			// List -> JSON(문자열)로 변환해서 응답 -> JS
+			return service.select();
 		}
 		
 		// 한줄톡 등록
 		@PostMapping("")	
 		@ResponseBody
 		public int insert(@RequestBody OneTalk oneTalk) {
+			log.debug("삽입으로 들어오나" + oneTalk);
 			return service.insert(oneTalk);
 		}
 		// 한줄톡 삭제
 		@DeleteMapping("")
 		@ResponseBody
-		public int delete(@RequestBody int oneTalkNoBoard) {
-			return service.delete(oneTalkNoBoard);
+		public int delete(@RequestBody int oneTalkNo) {
+			return service.delete(oneTalkNo);
 		}
 		// 한줄톡 수정
 		@PutMapping("")

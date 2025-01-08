@@ -17,7 +17,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.board.model.service.BoardService;
 import com.jobbuilder.project.employer.model.dto.Employer;
-import com.jobbuilder.project.worker.model.dto.Member;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 import jakarta.servlet.http.Cookie;
@@ -211,6 +210,7 @@ public class BoardController {
 
 		return path;
 	}
+		
 }
 	
 	
