@@ -743,19 +743,25 @@ WHERE EMPLOYER_NO = A.RECRUITMENT_NO;
    
 SELECT DISTINCT
 		    A.RECRUITMENT_NO AS RECRUITMENT_NO,
-   			B.BUSINESS_ADDRESS AS BUSINESS_ADDRESS,
-   			B.BUSINESS_NAME AS BBUSINESS_NAME,
+		    REGEXP_SUBSTR(
+		        SUBSTR(I.BUSINESS_ADDRESS, INSTR(I.BUSINESS_ADDRESS, '^^^') + 3, 
+		        INSTR(I.BUSINESS_ADDRESS || '^^^', '^^^', INSTR(I.BUSINESS_ADDRESS, '^^^') + 3) - 
+		        INSTR(I.BUSINESS_ADDRESS, '^^^') - 3),
+		        '[^ ]+ [^ ]+', 1, 1
+		    ) AS BUSINESS_ADDRESS,
+		    I.BUSINESS_NAME AS BUSINESS_NAME,
 		    A.RECRUITMENT_TITLE AS RECRUITMENT_TITLE,
 		    A.RECRUITMENT_CONTENT AS RECRUITMENT_CONTENT,
 		    A.RECRUITMENT_DEADLINE AS RECRUITMENT_DEADLINE,
 		    A.JOBTYPE_NO AS JOBTYPE_NO,
 		    A.NUM_OF_RECRUITMENT_NAME AS NUM_OF_RECRUITMENT_NAME,
-			J.SALARY_NAME AS SALARY_NAME,
+		    A.SALARY_NO AS SALARY_NO,
+		    J.SALARY_NAME AS SALARY_NAME,
+		    K.TIME_NAME AS TIME_NAME,
 		    A.GRADE_NO AS GRADE_NO,
 		    A.PERIOD_NO AS PERIOD_NO,
 		    A.DAYS_NO AS DAYS_NO,
 		    A.TIME_NO AS TIME_NO,
-		    K.TIME_NAME AS TIME_NAME,
 		    A.EMPLOYER_NO AS EMPLOYER_NO,
 		    A.SALARY_MOUNT AS SALARY_MOUNT,
 		    A.WRITE_DATE AS WRITE_DATE,
@@ -763,11 +769,12 @@ SELECT DISTINCT
 		    A.RECRUITMENT_DEL_FL AS RECRUITMENT_DEL_FL,
 		    A.MEMBER_NO AS MEMBER_NO,
 		    A.RECRUIT_COMPLETE_FL AS RECRUIT_COMPLETE_FL,
-		    A.RECRUITMENT_PROFILE AS RECRUITMENT_PROFILE
+		    A.RECRUITMENT_PROFILE AS RECRUITMENT_PROFILE,
+		    A.WORKCOND_ADDRESS_TYPE_NO ASWORKCOND_ADDRESS_TYPE_NO
 		FROM 
 		    RECRUITMENT A
 		JOIN 
-			EMPLOYER B ON A.EMPLOYER_NO = B.EMPLOYER_NO
+			EMPLOYER I ON A.EMPLOYER_NO = I.EMPLOYER_NO
 		JOIN	
 			SALARY J ON A.SALARY_NO = J.SALARY_NO
 		JOIN
@@ -781,7 +788,7 @@ SELECT DISTINCT
 		        A.GRADE_NO = (
 		            SELECT B.GRADE_NO
 		            FROM RESUME B
-		            WHERE B.RESUME_NO = 41)
+		            WHERE B.RESUME_NO = 181)
 		            
 		        -- 2. 급여 조건 
 		        OR (
@@ -789,12 +796,12 @@ SELECT DISTINCT
 		            AND A.SALARY_NO = (
 		                SELECT B.SALARY_NO
 		                FROM RESUME B
-		                WHERE B.RESUME_NO = 41
+		                WHERE B.RESUME_NO = 181
 		            )
 		            AND A.SALARY_MOUNT >= (
 		                SELECT B.SALARY_AMOUNT
 		                FROM RESUME B
-		                WHERE B.RESUME_NO = 41
+		                WHERE B.RESUME_NO = 181
 		            )
 		        )
 		        
@@ -802,7 +809,7 @@ SELECT DISTINCT
 		        AND A.SALARY_NO = (
 		            SELECT B.SALARY_NO
 		            FROM RESUME B
-		            WHERE B.RESUME_NO = 41
+		            WHERE B.RESUME_NO = 181
 		        )
 		            
 		        -- 3.근무기간 조건
@@ -810,7 +817,14 @@ SELECT DISTINCT
 		        A.PERIOD_NO = (
 		            SELECT B.PERIOD_NO
 		            FROM RESUME B
-		            WHERE B.RESUME_NO = 41)
+		            WHERE B.RESUME_NO = 181)
+		            
+		        -- 4.희망지역 조건    
+		        OR
+		        A.WORKCOND_ADDRESS_TYPE_NO = (
+		            SELECT B.WORKCOND_ADDRESS_TYPE_NO
+		            FROM WORKCOND_ADDRESS B
+		            WHERE B.RESUME_NO = 181)
 		            
 		        ----- 여기까진 단순비교 이후로는 1:다 ) --    
 		            
@@ -819,33 +833,25 @@ SELECT DISTINCT
 			        A.DAYS_NO IN (
 			        SELECT E.DAYS_NO
 			        FROM RESUME_DAYSTIME E
-			        WHERE E.RESUME_NO = 41)
+			        WHERE E.RESUME_NO = 181)
 			        
 			    -- 5.근무시간 조건
 			    OR 
 			    	A.TIME_NO IN (
 			        SELECT E.TIME_NO
 			        FROM RESUME_DAYSTIME E
-			        WHERE E.RESUME_NO = 41)
+			        WHERE E.RESUME_NO = 181)
 			    
 			    -- 6.근무형태 조건
 			    OR 
 			    	A.JOBTYPE_NO IN (
 			        SELECT F.JOBTYPE_NO
 			        FROM RESUME_JOB_TYPE F
-			        WHERE F.RESUME_NO = 41)
+			        WHERE F.RESUME_NO = 181)
 			    
 			        
 		        ----- 여기까진 1:다 이후로는 다:다) -- 	    
-			        
-			    -- 7.희망지역 조건
-		        OR
-		        A.RECRUITMENT_NO IN (
-		            SELECT DISTINCT D.RECRUITMENT_NO
-		            FROM WORKCOND_ADDRESS C
-		            JOIN WORKCOND_ADDRESS D
-		            ON C.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
-		            WHERE C.RESUME_NO = 41)
+			    
 		            
 			    -- 8.업직종 조건    
 		        OR A.EMPLOYER_NO IN (
@@ -853,11 +859,11 @@ SELECT DISTINCT
 		            FROM RESUME_WORKTYPE H
 		            JOIN BUSINESS_WORKTYPE G
 		            ON H.WORKTYPE_NO = G.WORKTYPE_NO
-		            WHERE H.RESUME_NO = 41
+		            WHERE H.RESUME_NO = 181
 		        )      
 		            
 			)
-		   ORDER BY RECRUITMENT_NO DESC;  
+		   ORDER BY RECRUITMENT_NO DESC;
 		   
 		  
 		  

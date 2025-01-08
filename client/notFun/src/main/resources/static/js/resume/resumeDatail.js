@@ -6,8 +6,8 @@ let resumeJobTypeListData = {};
 let resumeWorkTypeData = {};
 
 // 경력 변환
-const formatCareer = (totalCareer) => {
-  if (!totalCareer || totalCareer <= 0) return "신입";
+const formatCareer = (totalCareer, career) => {
+  if (career == 0) return "신입";
   const totalMonths = Math.floor(totalCareer / 30);
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
@@ -79,8 +79,7 @@ const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWor
   const gradeName = resume.gradeName; // 서버에서 가져온 학력 정보
   document.getElementById("gradeName").innerHTML = `학력 : ${gradeName}`;
   
-
-  if (resume.totalCareer > 0) {
+  if (careerInfo.length > 0) {
     // 경력 토글 부분 생성
     const careerSection = document.getElementById("career-section");
     const careerToggle = `
@@ -92,7 +91,7 @@ const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWor
     careerSection.insertAdjacentHTML("afterbegin", careerToggle); // 기존 구조 유지하며 추가
 
     // 경력 표시
-    const content = `경력 : ${formatCareer(resume.totalCareer)}`;
+    const content = `경력 : ${formatCareer(resume.totalCareer, careerInfo.length)}`;
     document.getElementById("content").innerHTML = content;
 
     // careerInfo 배열을 반복하여 테이블에 데이터 추가
