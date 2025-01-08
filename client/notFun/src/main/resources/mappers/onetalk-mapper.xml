@@ -50,7 +50,7 @@ SELECT COUNT(*) FROM "ONETALK"
 WHERE ONETALK_DEL_FL = 'N'
 </select>
 
-<!-- 댓글 조회 ( 비동기 ? )  -->
+<!-- 한줄톡톡 조회 ( 비동기 ? )  -->
 <select id="select" resultType="OneTalk">
 SELECT 
     LEVEL,

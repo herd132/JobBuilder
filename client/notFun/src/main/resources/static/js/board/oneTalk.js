@@ -40,10 +40,10 @@ const selectoneTalkList = () => {
           const oneTalkWriter = document.createElement("p");
           // 닉네임
           const nickname = document.createElement("span");
-          if(oneTalkList.workerNickname != null) {
-            nickname.innerText = oneTalkList.workerNickname;
+          if(oneTalk.workerNickname != null) {
+            nickname.innerText = oneTalk.workerNickname;
           } else {
-            nickname.innerText = oneTalkList.businessName;
+            nickname.innerText = oneTalk.businessName;
           }
 
           // 날짜(작성일)
@@ -125,7 +125,7 @@ const selectoneTalkList = () => {
       } // for 끝
     });
 };
-selectoneTalkList();
+//selectoneTalkList();
 // -----------------------------------------------------------------------
 
 /* ***** 댓글 등록(ajax) ***** */
