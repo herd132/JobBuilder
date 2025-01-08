@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.session.RowBounds;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
@@ -119,6 +120,12 @@ public interface MyPageEmployerMapper {
 	
 	/* ********** 내가 쓴 글 페이지 관련 ********** */
 	
+	/** 내가 쓴 글 목록 불러오기
+	 * @param memberNo
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Board> viewMyBoard(int memberNo, RowBounds rowBounds);
 	
 	
 	/* ********** 사업장 추가 페이지 관련 ********** */
@@ -292,6 +299,14 @@ public interface MyPageEmployerMapper {
 	 * @return
 	 */
 	List<CareerInfo> getCareerInfoList(int resumeNo);
+
+	/** 무한스크롤 테스트용 공고에 제출된 이력서 조회
+	 * @param memberNo
+	 * @return
+	 */
+	List<RecruitmentResume> viewResumesList(int memberNo, RowBounds rowBounds);
+
+
 
 
 	

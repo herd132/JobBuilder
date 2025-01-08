@@ -6,63 +6,77 @@ const newEl = (tag, attr, cls) => {
   return el; // 생성된 요소 반환
 };
 
+let currentPage = 1;
+let isLoading = false;
+let hasMoreData = true;
+
 const viewResumesWhite = document.querySelector(".viewResumes-white");
 const modal = document.getElementById("modal");
 const modalDetails = document.querySelector(".modal-details");
 const closeBtn = document.querySelector(".close-btn");
 
-const viewResumes = async () => {
-  viewResumesWhite.innerHTML = "";
+const fetchResumes = async () => {
+  if (isLoading || !hasMoreData) return;
+  isLoading = true;
 
-  const resp = await fetch(`/myPageEmp/viewResumes/${memberNo}`);
-  const result = await resp.json();
+  try {
+    const resp = await fetch(`/myPageEmp/viewResumes3/${memberNo}?cp=${currentPage}`);
+    const result = await resp.json();
 
-  console.log(result);
+    if (result.length > 0) {
+      result.forEach(data => {
+        const resumeDiv = newEl("div", {}, ["resume-item"]);
 
-  // 받아온 데이터 정렬
-  const sortedData = Object.entries(result).sort((a, b) => {
+        // 첫 번째 줄
+        const firstLine = newEl("p", {}, ["line"]);
+        firstLine.innerText = `공고제목: ${data.recruitmentTitle || "미제공"} / 지점: ${data.businessNickname || "미제공"} / 근무기간: ${data.periodName || "미제공"} / 근무지역: ${data.workcondAddressTypeInfo || "미제공"}`;
+        resumeDiv.appendChild(firstLine);
 
-    // 먼저 employerNo로 비교
-    if (a[1].employerNo !== b[1].employerNo) return a[1].employerNo - b[1].employerNo;
-      
-    // employerNo가 같으면 recruitmentNo로 비교
-    return a[1].recruitmentNo - b[1].recruitmentNo;
-    
-  });
-  
-  // 정렬된 데이터를 다시 객체로 변환
-  const sortedDataObject = Object.fromEntries(sortedData);
-  
-  console.log(sortedDataObject); // 정렬된 결과 출력
+        // 두 번째 줄
+        const secondLine = newEl("p", {}, ["line"]);
+        secondLine.innerText = `이력서제목: ${data.resumeTitle || "미제공"} / 희망 근무기간: ${data.hopePeriodName || "미제공"} / 경력 여부 : ${data.careerFl}`;
+        resumeDiv.appendChild(secondLine);
 
-  for (let key in sortedDataObject) {
-    const data = sortedDataObject[key];
+        // 상세 보기 버튼 추가
+        const detailBtn = newEl("button", {}, ["detail-btn"]);
+        detailBtn.innerText = "상세보기";
+        detailBtn.onclick = () => showModal(data.recruitmentNo, data.resumeNo);
+        resumeDiv.appendChild(detailBtn);
 
-    if (data.businessDelFl === 'N' && data.recruitmentDelFl === 'N' && data.resumeDelFl === 'N' && data.resumeHideFl === 'N'){
+        viewResumesWhite.appendChild(resumeDiv);
+      });
 
-      const resumeDiv = newEl("div", {}, ["resume-item"]);
-  
-      // 첫 번째 줄
-      const firstLine = newEl("p", {}, ["line"]);
-      firstLine.innerText = `공고제목: ${data.recruitmentTitle || "미제공"} / 지점: ${data.businessNickname || "미제공"} / 근무기간: ${data.periodName || "미제공"} / 근무지역: ${data.workcondAddressTypeInfo || "미제공"}`;
-      resumeDiv.appendChild(firstLine);
-  
-      // 두 번째 줄
-      const secondLine = newEl("p", {}, ["line"]);
-      secondLine.innerText = `이력서제목: ${data.resumeTitle || "미제공"} / 희망 근무기간: ${data.hopePeriodName || "미제공"} / 경력 여부 : ${data.careerFl}`;
-      resumeDiv.appendChild(secondLine);
-  
-      // 상세 보기 버튼 추가
-      const detailBtn = newEl("button", {}, ["detail-btn"]);
-      detailBtn.innerText = "상세보기";
-      detailBtn.onclick = () => showModal(data.recruitmentNo, data.resumeNo);
-      resumeDiv.appendChild(detailBtn);
-  
-      viewResumesWhite.appendChild(resumeDiv);
+      currentPage++;
+    } else {
+      hasMoreData = false;
+      console.log("더 이상 로드할 데이터가 없습니다.");
     }
+  } catch (err) {
+    console.error("데이터를 가져오는 중 오류가 발생했습니다: ", err);
+  } finally {
+    isLoading = false;
   }
 };
 
+// 스크롤 이벤트 감지
+const onScroll = () => {
+  const scrollPosition = window.scrollY + window.innerHeight;  // 현재 스크롤 위치
+  const pageHeight = document.documentElement.scrollHeight;  // 전체 페이지 높이
+
+  // 페이지 하단에 가까워졌을 때 추가 데이터를 요청
+  if (scrollPosition >= pageHeight - 5) {  // 5px 여유를 두고 하단 감지
+    fetchResumes();
+  }
+};
+
+// 페이지 초기화
+const init = () => {
+  fetchResumes();  // 첫 페이지 로드
+  window.addEventListener("scroll", onScroll);
+};
+
+
+// 모달창 관련
 const showModal = async (recruitmentNo, resumeNo) => {
   modal.style.display = "flex"; // 모달 보이기 (flex로 변경)
   modalDetails.innerHTML = "";
@@ -99,7 +113,7 @@ const showModal = async (recruitmentNo, resumeNo) => {
     <p><strong>공고명 :</strong> ${result.recruitmentTitle}</p>
     <p><strong>지점명 :</strong> ${result.businessNickname || "미제공"}</p>
     <p><strong>사업장 전화번호 :</strong> ${formatPhoneNumber(result.businessTel)}</p>
-    <p><strong>업직종 :</strong> ${result.worktypeList.map(item => item.worktypeCategory).join(", ") || "미제공"}</p>
+    <p><strong>업직종 :</strong> ${result.worktypeList ? result.worktypeList.map(item => item.worktypeCategory).join(", ") : "미제공"}</p>
     <p><strong>고용형태 :</strong> ${result.jobtypeName || "미제공"}</p>
     <p><strong>급여형태 :</strong> ${result.salaryName || "미제공"}</p>
     <p><strong>급여액 :</strong> ${formatSalary(result.salaryMount)}</p>
@@ -120,13 +134,13 @@ const showModal = async (recruitmentNo, resumeNo) => {
     <p><strong>알바생 전화번호 :</strong> ${formatPhoneNumber(result.memberTel)}</p>
     <p><strong>학력 :</strong> ${result.workerGradeName || "미제공"}</p>
     <p><strong>이메일 :</strong> ${result.memberEmail || "미제공"}</p>
-    <p><strong>희망 고용형태 :</strong> ${result.resumeJobtypeList.join(", ") || "미제공"}</p>
+    <p><strong>희망 고용형태 :</strong> ${result.resumeJobtypeList ? result.resumeJobtypeList.join(", ") : "미제공"}</p>
     <p><strong>희망 급여형태 :</strong> ${result.hopeSalaryName || "미제공"}</p>
     <p><strong>희망 급여액 :</strong> ${formatSalary(result.hopeSalaryAmount)}</p>
     <p><strong>희망 근무기간 :</strong> ${result.hopePeriodName || "미제공"}</p>
     <p><strong>희망 근무요일 및 시간</strong> ${formatWorkingHours(result.hopeDaysTimeList)}</p>
-    <p><strong>희망 근무지역 :</strong> ${result.hopeAddressList.length ? result.hopeAddressList.join(", ") : "미제공"}</p>
-    <p><strong>희망 업직종 :</strong> ${result.hopeWorkTypeList.map(item => item.workTypeCategory).join(", ") || "미제공"}</p>
+    <p><strong>희망 근무지역 :</strong> ${result.hopeAddressList && result.hopeAddressList.length > 0 ? result.hopeAddressList.map(item => item.workcondAddressTypeInfo).join(", ") : "미제공"}</p>
+    <p><strong>희망 업직종 :</strong> ${result.hopeWorkTypeList ? result.hopeWorkTypeList.map(item => item.workTypeCategory).join(", ") : "미제공"}</p>
     <p><strong>이력서 내용 :</strong> ${result.resumeContent || "미제공"}</p>
   `;
   modalDetails.appendChild(workerSection);
@@ -165,11 +179,10 @@ document.addEventListener("keydown", (event) => {
 
 // 어두운 배경 클릭 시 모달 닫기
 modal.addEventListener("click", (event) => {
-  // 모달 창 내부 클릭을 막기 위한 조건
   if (event.target === modal) {
     closeModal();
   }
 });
 
-
-viewResumes();
+// 데이터 불러오기
+init();

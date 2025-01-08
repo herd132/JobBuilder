@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
@@ -190,7 +191,19 @@ public class MyPageEmployerController {
 	 */
 	@GetMapping("myWrite")
 	public String MyPageEmpMyWrite() {
-		return "myPageEmployer/myWrite";
+		return "myPageEmployer/myBoard";
+	}
+	
+	/** 내가 쓴 글 목록 불러오기
+	 * @param loginEmployer
+	 * @param cp
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("viewMyBoard")
+	public List<Board> viewMyBoard(@SessionAttribute("loginEmployer") Employer loginEmployer,
+						@RequestParam(value="cp",required = false, defaultValue = "1") int cp) {
+		return service.viewMyBoard(loginEmployer.getMemberNo(), cp);
 	}
 	
 	/** 사업장 추가 페이지 이동(get)
@@ -372,26 +385,37 @@ public class MyPageEmployerController {
 		return "myPageEmployer/promoteBusiness";
 	}
 	
-	/** 제출된 이력서 보기 페이지 이동(get) 아직 작성 안함
+	/** 제출된 이력서 보기 페이지 이동(get) (렌더링은 이하 비동기)
 	 * @return myPageEmployer/viewRecruitments.html
 	 * @author JWJ
 	 */
 	@GetMapping("viewResumes")
-	public String MyPageEmpViewResumes(@SessionAttribute("loginEmployer") Employer loginEmployer,
-							Model model) {
-//		Map<Integer, List<ResumeWJ>> recruitmentResumeList = service.getRecruitmentResumeList(loginEmployer);
+	public String MyPageEmpViewResumes(@SessionAttribute("loginEmployer") Employer loginEmployer) {
 		
 		return "myPageEmployer/viewResumes";
 	}
 	
-	/** 공고에 제출된 이력서 조회
+	/** 공고에 제출된 이력서 조회(폐기/ 무한스크롤 사용할 때 쓸수 없음)
 	 * @param memberNo
 	 * @return
 	 */
 	@ResponseBody
 	@GetMapping("viewResumes/{memberNo:[0-9]+}")
 	public Map<List<Integer>, RecruitmentResume> viewResumes(@PathVariable("memberNo") int memberNo){
+		
 		return service.viewResumes(memberNo);
+	}
+	
+	/** 무한스크롤 테스트용 공고에 제출된 이력서 조회
+	 * @param memberNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("viewResumes3/{memberNo:[0-9]+}")
+	public List<RecruitmentResume> viewResumesList(@PathVariable("memberNo") int memberNo,
+						@RequestParam(value="cp",required = false, defaultValue = "1") int cp){
+		
+		return service.viewResumesList(memberNo, cp);
 	}
 	
 	/** 해당 공고에 제출된 이력서 보기

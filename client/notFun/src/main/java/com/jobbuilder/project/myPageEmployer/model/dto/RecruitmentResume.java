@@ -39,6 +39,7 @@ public class RecruitmentResume {
 	private String timeName;						// 근무시간
 	private String workcondAddressTypeInfo;			// 근무지역 (*)
 	
+	private String recruitReadFl;					// 읽음 여부(Y/N)
 	
 	private int resumeNo;							// 이력서 번호
 	private int workerNo;							// 알바생 번호
@@ -59,6 +60,7 @@ public class RecruitmentResume {
 	private List<ResumeWorkType> hopeWorkTypeList;	// 희망 업직종 리스트
 	private String resumeContent;					// 이력서 내용
 	private List<CareerInfo> careerInfoList;		// 경력사항
+
 }
 
 
