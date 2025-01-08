@@ -33,10 +33,27 @@ public interface ResumeListMapper {
 	List<ResumeWorkType> resumeWorkType(int resumeNo);						// 근무직종 배열
 	List<String> resumeJobTypeList(int resumeNo);							// 근무형태 배열
 	List<ResumeDaysTime> resumeDaysTime(int resumeNo);						// 근무일시 배열
+	List<String> workcondAddressTypeInfo(int resumeNo);						// 희망지역 배열
+	
+	// 근로자 유효성 검사
+	Map<String, Object> getResumecheck(Map<String, Object> params);
 
+	// 고용주 유효성 검사
+	Map<String, Object> getEmployercheck(Map<String, Object> params);
 	
 	// 업데이트 자기소개 예제
 	int updateResumeContent(Map<String, Object> requestBody);
 
 	
+
+	
+	
+	int getRecommendationsCount(int resumeNo);
+
+	
+
+	
+
+	
+
 }

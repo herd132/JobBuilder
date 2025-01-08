@@ -4,6 +4,7 @@ let recommendationsData= {};
 let resumeDaysTimeData = {};
 let resumeJobTypeListData = {};
 let resumeWorkTypeData = {};
+let workcondAddressTypeInfoData = {};
 
 // 경력 변환
 const formatCareer = (totalCareer) => {
@@ -68,7 +69,7 @@ const formatSalary = (salaryNo, salaryAmount, salaryName = "") => {
 
 
 // UI 업데이트 함수
-const updateUI = ( resume,recommendations,resumeDaysTime,resumeJobTypeList,resumeWorkType ) => {
+const updateUI = ( resume,recommendations,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo ) => {
 
 // 부모 요소 선택
 const recruitmentBody = document.getElementById('recruitmentbody');
@@ -111,21 +112,36 @@ if (!recommendations || !Array.isArray(recommendations) || recommendations.lengt
   });
 }
 
+const writetime = resume.modificationDate ? resume.modificationDate : resume.registrationDate;
+document.getElementById("writetime").innerHTML = `${formatTime(writetime)}`;  
+
+// 근무지역 배열
+const workcondAddressTypeList = document.getElementById("workcondAddressTypeInfo");
+workcondAddressTypeInfo.forEach((item, index) => {
+    const span = document.createElement("span");
+    span.textContent = item; // 텍스트 내용 설정
+    if (index < workcondAddressTypeInfo.length - 1) {
+        span.textContent += ", "; }
+    workcondAddressTypeList.appendChild(span);
+});
+
 // 근무직종 배열
 const workTypeList = document.getElementById("resumeWorkType");
-resumeWorkType.forEach((item) => {
+resumeWorkType.forEach((item, index) => {
     const span = document.createElement("span");
     span.textContent = item.workTypeCategory; // 텍스트 내용 설정
-    span.classList.add("subitem"); // CSS 클래스 추가
+    if (index < resumeWorkType.length - 1) {
+      span.textContent += ", ";}
     workTypeList.appendChild(span);
 });
 
 // 근무형태 배열
 const JobTypeList = document.getElementById("resumeJobTypeList");
-resumeJobTypeList.forEach((item) => {
+resumeJobTypeList.forEach((item, index) => {
     const span = document.createElement("span");
     span.textContent = item; // 텍스트 내용 설정
-    span.classList.add("subitem"); // CSS 클래스 추가
+    if (index < resumeJobTypeList.length - 1) {
+      span.textContent += ", ";}
     JobTypeList.appendChild(span);
 });
 
@@ -135,19 +151,21 @@ document.getElementById("periodName").innerHTML = `${periodName}`;
 
 // 근무요일 배열
 const dayList = document.getElementById("dayList");
-resumeDaysTime.forEach((item) => {
+resumeDaysTime.forEach((item, index) => {
     const span = document.createElement("span");
     span.textContent = item.daysName;
-    span.classList.add("subitem");
+    if (index < resumeDaysTime.length - 1) {
+      span.textContent += ", ";}
     dayList.appendChild(span);
 });
 
 // 근무시간 배열
 const timeList = document.getElementById("timeList");
-resumeDaysTime.forEach((item) => {
+resumeDaysTime.forEach((item, index) => {
     const span = document.createElement("span");
     span.textContent = item.timeName;
-    span.classList.add("subitem");
+    if (index < resumeDaysTime.length - 1) {
+      span.textContent += ", ";}
     timeList.appendChild(span);
 });
 
@@ -170,7 +188,7 @@ fetch("/resume/resumeRecommenda", {
     console.log("서버에서 받은 데이터:", data);
 
     // 데이터 분해
-    const { resume,recommendations,resumeDaysTime,resumeJobTypeList,resumeWorkType } = data;
+    const { resume,recommendations,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo } = data;
 
     // 전역함수에 넣기
     resumeData = resume;
@@ -178,12 +196,68 @@ fetch("/resume/resumeRecommenda", {
     resumeDaysTimeData = resumeDaysTime;
     resumeJobTypeListData = resumeJobTypeList;
     resumeWorkTypeData = resumeWorkType;
+    workcondAddressTypeInfoData = workcondAddressTypeInfo;
 
     // UI 업데이트 호출
-    updateUI( resume,recommendations,resumeDaysTime,resumeJobTypeList,resumeWorkType );
+    updateUI( resume,recommendations,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo );
   })
   .catch((error) => {
     console.error("요청 오류:", error);
   });
 
 
+
+  let currentPage = 1; // 현재 페이지 번호 (기본값 1)
+const limit = 10; // 한 페이지에 표시할 데이터 수
+
+function fetchRecommendations(cp = 1) {
+    const resumeNo = getResumeNoFromUrl(); // URL에서 resumeNo 추출
+
+    fetch("/resume/resumeRecommenda", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ resumeNo, cp, limit }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+            renderRecommendations(data.recommendations); // 데이터 렌더링
+            renderPagination(data.totalPages, cp); // 페이지네이션 렌더링
+        })
+        .catch((error) => console.error("Error:", error));
+}
+
+function renderRecommendations(recommendations) {
+    const container = document.getElementById("recommendationList");
+    container.innerHTML = ""; // 기존 데이터 초기화
+
+    recommendations.forEach((item) => {
+        const div = document.createElement("div");
+        div.textContent = `공고 제목: ${item.title}, 공고 ID: ${item.id}`;
+        container.appendChild(div);
+    });
+}
+
+function renderPagination(totalPages, currentPage) {
+    const paginationContainer = document.getElementById("pagination");
+    paginationContainer.innerHTML = ""; // 기존 페이지네이션 초기화
+
+    for (let i = 1; i <= totalPages; i++) {
+        const button = document.createElement("button");
+        button.textContent = i;
+        button.disabled = i === currentPage; // 현재 페이지 비활성화
+        button.addEventListener("click", () => fetchRecommendations(i));
+        paginationContainer.appendChild(button);
+    }
+}
+
+function getResumeNoFromUrl() {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get("resumeNo");
+}
+
+// 초기 로드 시 첫 페이지 데이터 가져오기
+window.onload = () => {
+    fetchRecommendations(currentPage);
+};

@@ -4,6 +4,7 @@ let careerInfoData = {};
 let resumeDaysTimeData = {};
 let resumeJobTypeListData = {};
 let resumeWorkTypeData = {};
+let workcondAddressTypeInfoData = {};
 
 // 경력 변환
 const formatCareer = (totalCareer, career) => {
@@ -46,7 +47,7 @@ const formatSalary = (salaryNo, salaryAmount, salaryName = "") => {
 
 
 // UI 업데이트 함수
-const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType ) => {
+const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo ) => {
 
   const writetime = resume.modificationDate ? resume.modificationDate : resume.registrationDate;
   document.getElementById("writetime").innerHTML = `${formatTime(writetime)}`;  
@@ -130,6 +131,15 @@ const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWor
     `;
 }
 
+// 근무지역 배열
+const workcondAddressTypeList = document.getElementById("workcondAddressTypeInfo");
+workcondAddressTypeInfo.forEach((item) => {
+    const span = document.createElement("span");
+    span.textContent = item; // 텍스트 내용 설정
+    span.classList.add("subitem"); // CSS 클래스 추가
+    workcondAddressTypeList.appendChild(span);
+});
+
 // 근무직종 배열
 const workTypeList = document.getElementById("resumeWorkType");
 resumeWorkType.forEach((item) => {
@@ -193,7 +203,7 @@ fetch("/resume/resumeDetaila", {
     console.log("서버에서 받은 데이터:", data);
 
     // 데이터 분해
-    const { resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType } = data;
+    const { resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo } = data;
 
     // 전역함수에 넣기
     resumeData = resume;
@@ -201,9 +211,10 @@ fetch("/resume/resumeDetaila", {
     resumeDaysTimeData = resumeDaysTime;
     resumeJobTypeListData = resumeJobTypeList;
     resumeWorkTypeData = resumeWorkType;
+    workcondAddressTypeInfoData = workcondAddressTypeInfo;
 
     // UI 업데이트 호출
-    updateUI( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType );
+    updateUI( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo );
   })
   .catch((error) => {
     console.error("요청 오류:", error);
