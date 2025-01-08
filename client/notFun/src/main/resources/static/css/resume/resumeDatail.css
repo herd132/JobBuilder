@@ -223,3 +223,9 @@ h3 {
     border-radius: 5px;
 	resize: none;
 }
+
+.writetime {
+  color: #2c3e509c;
+  margin-top: 1rem;
+}
+

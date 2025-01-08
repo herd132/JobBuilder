@@ -418,7 +418,8 @@
 
 	<update id="updateResumeContent" parameterType="map">
     UPDATE RESUME
-    SET RESUME_CONTENT = #{resumeContent}
+    SET RESUME_CONTENT = #{resumeContent},
+    MODIFICATION_DATE = SYSDATE
     WHERE RESUME_NO = #{resumeNo}
 </update>
 

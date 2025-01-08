@@ -20,8 +20,10 @@
         <!-- 흰색배경영역(안쪽)  -->
         <div class="resume-background-white">
             <button class="cancel-btn" type="button" onclick="window.history.back()"> 목록으로 </button>
+            
             <form action="/resume/writeResume" method="post" id="writeResumeForm">
-
+                
+                <div class="writetime">최종 편집 : <span id="writetime"></span></div>
                 <div class="edit">
                     <h2 id="resumeTitle"></h2>
                 </div>

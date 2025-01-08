@@ -47,6 +47,9 @@ const formatSalary = (salaryNo, salaryAmount, salaryName = "") => {
 // UI 업데이트 함수
 const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType ) => {
 
+  const writetime = resume.modificationDate ? resume.modificationDate : resume.registrationDate;
+  document.getElementById("writetime").innerHTML = `${formatTime(writetime)}`;  
+
   const resumeTitle = resume.resumeTitle; // 서버에서 가져온 제목
   document.getElementById("resumeTitle").innerHTML = `제목 : ${resumeTitle}`;
 
