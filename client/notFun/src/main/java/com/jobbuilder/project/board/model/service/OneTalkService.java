@@ -14,6 +14,7 @@ public interface OneTalkService {
 	int insert(OneTalk oneTalk);		// 삽입
 	int delete(int oneTalkNoBoard);		// 수정
 	int update(OneTalk oneTalk);		// 삭제
+	List<OneTalk> select();				// 비동기 한줄톡톡 조회
 	
 
 

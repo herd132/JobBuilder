@@ -20,7 +20,7 @@ public class OneTalk {
 	private String oneTalkContent;
 	private String oneTalkDelFl;
 	private String oneTalkWriteDate;
-	private int parentoneTalkNo;
+	private int parentOneTalkNo;
 	private int boardNo;
 	private int memberNo;
 	// 댓글 조회시 회원 프로필, 닉네임
@@ -29,5 +29,5 @@ public class OneTalk {
 	
 	// 테이블 조인
 	private String workerNickname;
-	private String busiNessName;
+	private String businessName;
 }

@@ -10,75 +10,62 @@
 
 <body>
 
-  <h1> 한줄톡톡 </h1>
 
+  </div>
+  <div id="onetalkArea">
+    <!-- 댓글 목록 -->
+    <div class="onetalk-list-area">
+      <ul id="oneTalkList">
 
-  <!-- 댓글 작성 부분 -->
-  <div class="onetalk-write-area">
-    <textarea id="onetalkContentBoard"></textarea>
-    <button id="addonetalk">
-      댓글<br>
-      등록
-    </button>
+        <!-- 대댓글(자식)인 경우 child-onetalk 클래스 추가 -->
+        <li class="onetalk-row" th:each="oneTalk : ${oneTalkList}"
+          th:classappend="${oneTalk.parentOneTalkNo} != 0 ? child-onetalk" th:object="${oneTalk}">
+
+          <th:block th:if="*{oneTalkDelFl} == 'Y'">
+            삭제된 댓글 입니다
+          </th:block>
+
+          <p class="onetalk-content" th:text="*{oneTalkContent}">댓글 내용</p>
+
+          <th:block th:if="*{oneTalkDelFl} == 'N'">
+            <p class="onetalk-writer">
+              <th:block th:if="*{workerNickname != null}">
+                <span th:text="*{workerNickname}">닉네임</span>
+              </th:block>
+              <th:block th:if="*{businessName != null }">
+                <span th:text="*{businessName}">고용주닉네임</span>
+              </th:block>
+              <span class="onetalk-date" th:text="*{oneTalkWriteDate}">작성일</span>
+            </p>
+
+            <th:block th:if="${session.loginWorker != null or session.loginEmployer != null}">
+              <!-- 버튼 영역 --></button>
+              <div class="onetalk-btn-area">
+                <button th:onclick="|showInsertonetalk(*{oneTalkNo}, this)|">답글</button>
+
+                <!-- 로그인 회원(근로자)과 댓글 작성자가 같은 경우 -->
+                <th:block th:if="${session.loginWorker != null and session.loginWorker?.memberNo == oneTalk.memberNo}">
+                  <button th:onclick="|showUpdateonetalk(*{oneTalkNo}, this)|">수정</button>
+                  <button th:onclick="|deleteonetalk(*{oneTalkNo})|">삭제 </button>
+                </th:block>
+                <!-- 로그인 회원 (고용주) 가 댓글 작성자가 같은 경우-->
+                <th:block
+                  th:if="${session.loginEmployer != null and session.loginEmployer?.memberNo == oneTalk.memberNo}">
+                  <button th:onclick="|showUpdateonetalk(*{oneTalkNo}, this)|">수정</button>
+                  <button th:onclick="|deleteonetalk(*{oneTalkNo})|">삭제 </button>
+                </th:block>
+            </th:block>
+
+    </div>
+    </th:block>
+
+    </li>
+
+    </ul>
   </div>
 
-  <th:block th:if="${#lists.isEmpty(onetalkList)}">
-    <tr>
-      <th colspan="6">게시글이 존재하지 않습니다.</th>
-    </tr>
-  </th:block>
-
-  <!-- 게시글이 존재할 때 -->
-<<<<<<< HEAD
-  <th:block th:unless="${#lists.isEmpty(onetalkList)}">
-    <!-- iterStat : Varstatus 같은 역할 반복변수-->
-    <tr th:each="onetalk, iterStat : ${onetalkList}" th:object="${onetalk}">
-      
-    </tr>
-  </th:block>
-=======
-  <table class="list-table">
-    <th:block th:unless="${#lists.isEmpty(oneTalkList)}">
-      <!-- iterStat : Varstatus 같은 역할 반복변수-->
-      <tr th:each="oneTalk, iterStat : ${oneTalkList}" th:object="${oneTalk}">
-        <td th:text="*{boardNo}">게시글 번호</td>
-
-        <td>
-          <!-- 썸네일 추가 예정 -->
-
-          <!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
 
 
-          <!-- 검색 X ( 전체가 보여지고있는상태 )  자리마련안되어있는 CP는 쿼리스트링에 들어감-->
-          <a th:unless="${param.key}"
-            th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
-            th:text="*{boardTitle}" class="text-title">게시글 제목</a>
-
-          <!-- 검색 O -->
-          <a th:if="${param.key}"
-            th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
-            th:text="*{boardTitle}" class="text-title">게시글 제목</a>
-
-          <th:block th:text="|[*{commentCount}]|">댓글 수</th:block>
-        </td>
-        <th:block th:if="${board?.workerNickname == null}">
-          <td class="board-writer" th:text="*{businessName}">작성자 닉네임</td>
-        </th:block>
-        <th:block th:if="${board?.workerNickname != null}">
-          <td class="board-writer" th:text="*{workerNickname}">작성자 닉네임</td>
-        </th:block>
-        <!-- 작성일 -->
-        <td th:text="*{boardWriteDate}">2023-10-26</td>
->>>>>>> eb77e3de18def775a1ef6431f947ccfbdc67c81f
-
-        <!-- 조회수 -->
-        <td th:text="*{boardReadCount}">0</td>
-      </tr>
-    </th:block>
-  </table>
-
-
-  
 </body>
 
 </html>

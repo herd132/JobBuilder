@@ -38,7 +38,7 @@ WHERE
         FROM "COMMENT_BOARD" SUB
         WHERE SUB.PARENT_COMMENT_NO = C.ONETALK_NO
         AND SUB.COMMENT_DEL_FL_BOARD = 'N'
-    )
+    ) 
 START WITH C.PARENT_ONETALK_NO IS NULL
 CONNECT BY PRIOR C.ONETALK_NO = C.PARENT_ONETALK_NO
 ORDER SIBLINGS BY C.ONETALK_NO
@@ -50,4 +50,74 @@ SELECT COUNT(*) FROM "ONETALK"
 WHERE ONETALK_DEL_FL = 'N'
 </select>
 
+<!-- 댓글 조회 ( 비동기 ? )  -->
+<select id="select" resultType="OneTalk">
+SELECT 
+    LEVEL,
+    C.ONETALK_NO,
+    C.ONETALK_CONTENT,
+    C.ONETALK_WRITE_DATE,
+    C.MEMBER_NO,
+    C.MEMBER_NAME,
+    C.PARENT_ONETALK_NO,
+    C.ONETALK_DEL_FL,
+    C.WORKER_NICKNAME,
+    C.BUSINESS_NAME
+FROM (
+    SELECT 
+        O.ONETALK_NO,
+        O.ONETALK_CONTENT,
+        TO_CHAR(O.ONETALK_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') AS ONETALK_WRITE_DATE,
+        O.MEMBER_NO,
+        M.MEMBER_NAME,
+        O.PARENT_ONETALK_NO,
+        O.ONETALK_DEL_FL,
+        W.WORKER_NICKNAME,
+        E.BUSINESS_NAME
+    FROM "ONETALK" O
+    LEFT JOIN "MEMBER" M ON O.MEMBER_NO = M.MEMBER_NO
+    LEFT JOIN "WORKER" W ON O.MEMBER_NO = W.MEMBER_NO
+    LEFT JOIN "EMPLOYER" E ON O.MEMBER_NO = E.MEMBER_NO
+) C
+WHERE 
+    C.ONETALK_DEL_FL = 'N'
+    OR 0 != (
+        SELECT COUNT(*) 
+        FROM "COMMENT_BOARD" SUB
+        WHERE SUB.PARENT_COMMENT_NO = C.ONETALK_NO
+        AND SUB.COMMENT_DEL_FL_BOARD = 'N'
+    ) 
+START WITH C.PARENT_ONETALK_NO IS NULL
+CONNECT BY PRIOR C.ONETALK_NO = C.PARENT_ONETALK_NO
+ORDER SIBLINGS BY C.ONETALK_NO
+
+</select>
+<!--  댓글 / 자식 댓글 등록  -->
+<insert id="insert">
+INSERT INTO "ONETALK"	                  
+		VALUES( SEQ_ONETALK_NO.NEXTVAL, #{oneTalkContent},
+			  DEFAULT, DEFAULT, 			  
+			  <!-- 자식 댓글 -->
+			  <if test="parentOneTalkNo != 0">
+			  	#{parentOneTalkNo}
+			  </if>			  
+			  <!-- 부모 댓글 -->
+			  <if test="parentOneTalkNo == 0">
+			  	NULL
+			  </if>
+			  , #{memberNo}
+		)
+</insert>
+<update id="delete">
+		UPDATE "ONETALK" SET
+		ONETALK_DEL_FL = 'Y'
+		WHERE ONETALK_NO = #{oneTalkNo}
+	</update>
+		
+	<!-- 댓글 수정 -->
+	<update id="update">
+		UPDATE "ONETALK" SET
+		ONETALK_CONTENT = #{oneTalkContent}
+		WHERE ONETALK_NO = #{oneTalkNo}
+	</update>
 </mapper>

@@ -1,4 +1,5 @@
 /* ***** 댓글 목록 조회(ajax) ***** */
+
 const selectoneTalkList = () => {
   // [GET]
   // fetch(주소?쿼리스트링)
@@ -9,19 +10,19 @@ const selectoneTalkList = () => {
   // response.json()
   // - 응답 받은 JSON 데이터 -> JS 객체로 변환
 
-  fetch("/oneTalk") // GET 방식 요청
+  fetch("/oneTalk/select") // GET 방식 요청
     .then((response) => response.json())
     .then((oneTalkList) => {
       // 화면에 존재하는 기존 댓글 목록 삭제 후
       // 조회된 oneTalkList를 이용해서 새로운 댓글 목록 출력
-      console.log(oneTalkList);
+      // console.log(oneTalkList); // 잘 나옴
       // ul태그(댓글 목록 감싸는 요소)
       const ul = document.querySelector("#oneTalkList");
       ul.innerHTML = ""; // 기존 댓글 목록 삭제
 
       /* ******* 조회된 oneTalkList를 이용해 댓글 출력 ******* */
       for (let oneTalk of oneTalkList) {
-        console.log(oneTalk.memberNo);
+        //console.log(oneTalk.memberNo);
 
         // 행(li) 생성 + 클래스 추가
         const oneTalkRow = document.createElement("li");
@@ -32,19 +33,23 @@ const selectoneTalkList = () => {
           oneTalkRow.classList.add("child-oneTalk");
 
         // 만약 삭제된 댓글이지만 자식 댓글이 존재하는 경우
-        if (oneTalk.oneTalkDelFlBoard == "Y")
+        if (oneTalk.oneTalkDelFl == "Y")
           oneTalkRow.innerText = "삭제된 댓글 입니다";
         else {
           // 삭제되지 않은 댓글
           const oneTalkWriter = document.createElement("p");
           // 닉네임
           const nickname = document.createElement("span");
-          nickname.innerText = oneTalk.memberName;
+          if(oneTalkList.workerNickname != null) {
+            nickname.innerText = oneTalkList.workerNickname;
+          } else {
+            nickname.innerText = oneTalkList.businessName;
+          }
 
           // 날짜(작성일)
           const oneTalkDate = document.createElement("span");
           oneTalkDate.classList.add("oneTalk-date");
-          oneTalkDate.innerText = oneTalk.oneTalkWriteDateBoard;
+          oneTalkDate.innerText = oneTalk.oneTalkWriteDate;
 
           // 작성자 영역(oneTalkWriter)에 프로필, 닉네임, 날짜 추가
           oneTalkWriter.append(nickname, oneTalkDate);
@@ -57,7 +62,7 @@ const selectoneTalkList = () => {
           // 댓글 내용
           const content = document.createElement("p");
           content.classList.add("oneTalk-content");
-          content.innerText = oneTalk.oneTalkContentBoard;
+          content.innerText = oneTalk.oneTalkContent;
 
           oneTalkRow.append(content); // 행에 내용 추가
 
@@ -74,7 +79,7 @@ const selectoneTalkList = () => {
           // 답글 버튼에 onclick 이벤트 리스너 추가
           childoneTalkBtn.setAttribute(
             "onclick",
-            `showInsertoneTalk(${oneTalk.oneTalkNoBoard}, this)`
+            `showInsertoneTalk(${oneTalk.oneTalkNo}, this)`
           );
 
           // 버튼 영역에 답글 추가
@@ -94,7 +99,7 @@ const selectoneTalkList = () => {
             // 수정 버튼에 onclick 이벤트 리스너 추가
             updateBtn.setAttribute(
               "onclick",
-              `showUpdateoneTalk(${oneTalk.oneTalkNoBoard}, this)`
+              `showUpdateoneTalk(${oneTalk.oneTalkNo}, this)`
             );
 
             // 삭제 버튼
@@ -104,7 +109,7 @@ const selectoneTalkList = () => {
             // 삭제 버튼에 onclick 이벤트 리스너 추가
             deleteBtn.setAttribute(
               "onclick",
-              `deleteoneTalk(${oneTalk.oneTalkNoBoard})`
+              `deleteoneTalk(${oneTalk.oneTalkNo})`
             );
 
             // 버튼 영역에 수정, 삭제 버튼 추가
@@ -121,16 +126,16 @@ const selectoneTalkList = () => {
     });
 };
 selectoneTalkList();
-
 // -----------------------------------------------------------------------
 
 /* ***** 댓글 등록(ajax) ***** */
 
 const addContent = document.querySelector("#addoneTalk"); // button
-const oneTalkContentBoard = document.querySelector("#oneTalkContentBoard"); // textarea
+const oneTalkContent = document.querySelector("#oneTalkContent"); // textarea
 
 // 댓글 등록 버튼 클릭 시
 addContent.addEventListener("click", (e) => {
+
   // 로그인이 되어있지 않은 경우
   if (loginWorkerNo == null && loginEmployerNo == null) {
     alert("로그인 후 이용해 주세요");
@@ -138,14 +143,13 @@ addContent.addEventListener("click", (e) => {
   }
 
   // 댓글 내용이 작성되지 않은 경우
-  if (oneTalkContentBoard.value.trim().length == 0) {
+  if (oneTalkContent.value.trim().length == 0) {
     alert("내용 작성 후 등록 버튼을 클릭해 주세요");
-    oneTalkContentBoard.focus();
+    oneTalkContent.focus();
     return;
   }
   const data = {
-    oneTalkContentBoard: oneTalkContentBoard.value,
-    boardNo: boardNo,
+    oneTalkContent: oneTalkContent.value,
     memberNo: loginMemberNo, // 또는 Session 회원 번호 이용도 가능
   };
   if (loginWorkerNo != null) {
@@ -165,7 +169,7 @@ addContent.addEventListener("click", (e) => {
     .then((result) => {
       if (result > 0) {
         alert("댓글이 등록 되었습니다");
-        oneTalkContentBoard.value = ""; // 작성한 댓글 내용 지우기
+        oneTalkContent.value = ""; // 작성한 댓글 내용 지우기
         selectoneTalkList(); // 댓글 목록을 다시 조회해서 화면에 출력
       } else {
         alert("댓글 등록 실패");
@@ -178,7 +182,7 @@ addContent.addEventListener("click", (e) => {
  * @param {*} parentoneTalkNo
  * @param {*} btn
  */
-const showInsertoneTalk = (parentoneTalkNo, btn) => {
+const showInsertoneTalk = (parentOneTalkNo, btn) => {
   // ** 답글 작성 textarea가 한 개만 열릴 수 있도록 만들기 **
   const temp = document.getElementsByClassName("oneTalkInsertContent");
 
@@ -213,7 +217,7 @@ const showInsertoneTalk = (parentoneTalkNo, btn) => {
   insertBtn.innerText = "등록";
   insertBtn.setAttribute(
     "onclick",
-    "insertChildoneTalk(" + parentoneTalkNo + ", this)"
+    "insertChildoneTalk(" + parentOneTalkNo + ", this)"
   );
 
   const cancelBtn = document.createElement("button");
@@ -241,10 +245,10 @@ const insertCancel = (cancelBtn) => {
 };
 
 /** 답글 (자식 댓글) 등록
- * @param {*} parentoneTalkNo : 부모 댓글 번호
+ * @param {*} parentOneTalkNo : 부모 댓글 번호
  * @param {*} btn  :  클릭된 등록 버튼
  */
-const insertChildoneTalk = (parentoneTalkNo, btn) => {
+const insertChildoneTalk = (parentOneTalkNo, btn) => {
   // 답글 내용이 작성된 textarea
   const textarea = btn.parentElement.previousElementSibling;
 
@@ -257,10 +261,9 @@ const insertChildoneTalk = (parentoneTalkNo, btn) => {
   
   // ajax를 이용해 댓글 등록 요청
   const data = {
-    oneTalkContentBoard: textarea.value,
-    boardNo: boardNo,
+    oneTalkContent: textarea.value,    
     memberNo: loginMemberNo, // 또는 Session 회원 번호 이용도 가능
-    parentoneTalkNo: parentoneTalkNo, // 부모 댓글 번호
+    parentOneTalkNo: parentOneTalkNo, // 부모 댓글 번호
   };
 
   if(loginEmployerNo != null){
@@ -291,16 +294,16 @@ const insertChildoneTalk = (parentoneTalkNo, btn) => {
 // --------------------------------------------------
 
 /** 댓글 삭제
- * @param {*} oneTalkNoBoard
+ * @param {*} oneTalkNo
  */
-const deleteoneTalk = (oneTalkNoBoard) => {
+const deleteoneTalk = (oneTalkNo) => {
   // 취소 선택 시
   if (!confirm("삭제 하시겠습니까?")) return;
 
   fetch("/oneTalk", {
     method: "DELETE",
     headers: { "Content-Type": "application/json" },
-    body: oneTalkNoBoard,
+    body: oneTalkNo,
   })
     .then((resp) => resp.text())
     .then((result) => {
@@ -323,7 +326,7 @@ let beforeoneTalkRow;
  * @param {*} oneTalkNo
  * @param {*} btn
  */
-const showUpdateoneTalk = (oneTalkNoBoard, btn) => {
+const showUpdateoneTalk = (oneTalkNo, btn) => {
   /* 댓글 수정 화면이 1개만 열릴 수 있게 하기 */
   const temp = document.querySelector(".update-textarea");
 
@@ -337,7 +340,7 @@ const showUpdateoneTalk = (oneTalkNoBoard, btn) => {
       // 취소
       return;
     }
-  }
+  };
 
   // -------------------------------------------
 
@@ -371,7 +374,7 @@ const showUpdateoneTalk = (oneTalkNoBoard, btn) => {
   // 8. 수정 버튼 생성
   const updateBtn = document.createElement("button");
   updateBtn.innerText = "수정";
-  updateBtn.setAttribute("onclick", `updateoneTalk(${oneTalkNoBoard}, this)`);
+  updateBtn.setAttribute("onclick", `updateoneTalk(${oneTalkNo}, this)`);
 
   // 9. 취소 버튼 생성
   const cancelBtn = document.createElement("button");
@@ -403,7 +406,7 @@ const updateCancel = (btn) => {
  * @param {*} oneTalkNo : 수정할 댓글 번호
  * @param {*} btn       : 클릭된 수정 버튼
  */
-const updateoneTalk = (oneTalkNoBoard, btn) => {
+const updateoneTalk = (oneTalkNo, btn) => {
   // 수정된 내용이 작성된 textarea 얻어오기
   const textarea = btn.parentElement.previousElementSibling;
 
@@ -416,8 +419,8 @@ const updateoneTalk = (oneTalkNoBoard, btn) => {
 
   // 댓글 수정 (ajax)
   const data = {
-    oneTalkNoBoard: oneTalkNoBoard,
-    oneTalkContentBoard: textarea.value,
+    oneTalkNo: oneTalkNo,
+    oneTalkContent: textarea.value,
   };
 
   fetch("/oneTalk", {

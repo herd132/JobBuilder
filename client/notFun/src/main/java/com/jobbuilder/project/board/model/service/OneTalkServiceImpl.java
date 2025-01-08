@@ -36,35 +36,42 @@ public class OneTalkServiceImpl implements OneTalkService {
 		int offset = (cp - 1 ) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
-		List<OneTalk> onetalkList = mapper.selectOneTalkList(rowBounds);
+		List<OneTalk> oneTalkList = mapper.selectOneTalkList(rowBounds);
 		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묵음
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("pagination", pagination);
-		map.put("onetalkList", onetalkList);
-		log.debug("로그디버그" + onetalkList);
+		map.put("oneTalkList", oneTalkList);
+		
 		// 5. 결과 반환		
 		
 		return map;
 	}
 
+	// 한줄톡톡 내용 조회
+	@Override
+	public List<OneTalk> select() {
+		// TODO Auto-generated method stub
+		return mapper.select();
+	}
+	
 	@Override
 	public int insert(OneTalk oneTalk) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.insert(oneTalk);
 	}
 
 	@Override
-	public int delete(int oneTalkNoBoard) {
+	public int delete(int oneTalkNo) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.delete(oneTalkNo);
 	}
 
 	@Override
 	public int update(OneTalk oneTalk) {
 		// TODO Auto-generated method stub
-		return 0;
+		return mapper.update(oneTalk);
 	}
 	
 

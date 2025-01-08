@@ -20,7 +20,7 @@
 	column="BOARD_NO"
 	javaType="java.util.ArrayList"
 	ofType="CommentBoard"/>
-		
+	
 </resultMap>
 
 
