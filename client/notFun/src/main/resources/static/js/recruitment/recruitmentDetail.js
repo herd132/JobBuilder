@@ -278,30 +278,51 @@ function openModal(data) {
 const recommendSelect = document.querySelector(".recommend-select");
 const recommendModal = document.querySelector(".recommend-modal");
 const recommendModalOutside = document.querySelector(".recommend-modal-outside");
+const modalClose = document.querySelector(".modal-close");
 let popupOpenType = false;
 
 if (recommendSelect !== null ) {
   recommendSelect.addEventListener("click", () => {
 
     recommendModal.classList.add('active');
-    recommendModalOutside.style.height = document.body.offsetHeight;
+    recommendModalOutside.style.height = document.body.offsetHeight + 'px';
     recommendModalOutside.style.display = 'block';
   });
 
   recommendModal.addEventListener("mouseenter", () => {
-    popupOpenType = true;
+    document.body.style.cssText = `
+    position:fixed;
+    top: -${window.scrollY}px;
+    overflow-y: scroll;
+    width: 100%;
+    `;
   });
   
   recommendModal.addEventListener("mouseleave", () => {
-    popupOpenType = false;
+    document.body.style.cssText = '';
+    window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
   });
+
+  modalClose.addEventListener("click", () => {
+    recommendModal.classList.remove('active');
+    recommendModalOutside.style.display = 'none';
+  })
+
+  recommendModal.addEventListener('mousewheel', function(e) {
+   
+  }, {passive: false});
 }
 
+const createRecommendResumeList = () => {
+  const resumeGrid = document.querySelector(".resume-grid");
 
-window.addEventListener('mousewheel', function(e) {
-  
-	if(popupOpenType) {
-    e.preventDefault();
-    return false;
-  } 
-}, {passive: false});
+  resumeGrid.innerHTML += '';
+
+  fetch("/recommend/resume", {
+    method: "PUT",
+    // headers: {
+    //     "Content-Type": "multipart/form-data"
+    //   },
+    body: formData,
+  })
+}
