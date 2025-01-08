@@ -64,5 +64,7 @@ public class Resume {
 	private int age;
 	private String gradeName;
 	private String jobtypeName;
+	private String periodName;
+	private String salaryName;
     
 }

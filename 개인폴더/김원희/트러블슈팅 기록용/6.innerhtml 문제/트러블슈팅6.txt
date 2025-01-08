@@ -1,0 +1,20 @@
+문제 : 경력 정보 동적 생성 중 innerHTML 사용으로 기존 HTML 구조가 삭제되어 이후 요소 참조 시 오류 발생.
+
+문제 원인 : innerHTML 사용 시, career-section 내부의 모든 기존 요소가 삭제되고 새 HTML로 교체되면서 
+              기존 요소(id="content", id="career-tbody")가 DOM에서 사라짐.
+
+원인 정리 : innerHTML은 요소 내부의 콘텐츠를 모두 초기화하고 새로운 내용을 삽입함.
+	이후 삭제된 요소를 다시 참조하려 하면 null 오류 발생
+
+방법 : 1. insertAdjacentHTML 사용:
+
+	기존 HTML 구조를 유지하면서 필요한 부분만 추가.
+	career-toggle-exp를 동적으로 추가.
+        
+         2. innerHTML 전체 재구성:
+           삭제된 요소를 포함하여 career-section 전체를 재구성. 
+해결 : insertAdjacentHTML을 사용하여 <div class="career-toggle-exp">만 추가하도록 수정.
+        (방법 2는 불필요한 요소까지 추가해서 코드가 길어져서 가독성이 떨어짐)
+
+
+

@@ -1,6 +1,7 @@
 package com.jobbuilder.project.resume.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -8,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
 import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 import com.jobbuilder.project.resume.model.mapper.ResumeListMapper;
 
@@ -67,5 +69,16 @@ public class ResumeListServiceImpl implements ResumeListService {
     public List<String> resumeJobTypeList(int resumeNo) {
     	return mapper.resumeJobTypeList(resumeNo);
     }
+    
+    @Override
+    public List<ResumeDaysTime> resumeDaysTime(int resumeNo) {
+       	return mapper.resumeDaysTime(resumeNo);
+    }
+    
+	@Override
+	public int updateResumeContent(Map<String, Object> requestBody) {
+	    return mapper.updateResumeContent(requestBody);
+	}
+    
     
 }

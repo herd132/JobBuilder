@@ -1,315 +1,216 @@
-/* 전체 페이지 스타일 */
-main {
-	font-family: 'Noto Sans KR', sans-serif;
-	color: #333;
-	line-height: 1.6;
-	max-width: 800px;
-	margin: 0 auto;
-	padding: 20px;
-
+.resume-background-gray {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 2rem 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  background-color: #f0f0f0;
 }
 
-/* 기본 정보 테이블 */
+/* 흰색 배경 영역 */
+.resume-background-white {
+  width: 45%;
+  padding: 2rem;
+  background-color: white;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  text-align: left;
+}
+
+/* 테이블 */
 table {
-	width: 100%;
-	border-collapse: collapse;
-	margin-bottom: 30px;
-	background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 30px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 table th,
 table td {
-	padding: 15px;
-	text-align: left;
-	border-bottom: 1px solid #eee;
+  padding: 15px;
+  text-align: left;
+  border-bottom: 1px solid #eee;
 }
 
 /* 폼 섹션 스타일 */
 .form-section {
-	background-color: white;
-	padding: 30px;
-	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* 섹션 제목 */
-h2 {
-	color: #2c3e50;
-	border-bottom: 2px solid #eee;
-	padding-bottom: 10px;
-	margin: 30px 0 20px;
-}
-
+/* 제목 스타일 */
 h3 {
-	color: #2c3e50;
-	border-bottom: 2px solid #eee;
-	padding-bottom: 10px;
-	margin: 20px 0;
+  color: #2c3e50;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin: 30px 0 20px;
 }
 
-.inputTitle {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-}
-
-/* 선택 입력 필드 */
-select {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	background-color: white;
-}
-
-/* 경력사항 */
-.career-container {
-	border-radius: 8px;
-	margin-bottom: 1px;
-}
-
-.career-toggle-newbie {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: 2px solid #F0BB78;
-	border-radius: 25px;
-	width: 150px;
-	overflow: hidden;
-}
-
+/* 경력 구분 토글 */
+.career-toggle-newbie,
 .career-toggle-exp {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	border: 2px solid #F0BB78;
-	border-radius: 25px;
-	width: 150px;
-	overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #F0BB78;
+  border-radius: 25px;
+  width: 150px;
+  overflow: hidden;
 }
 
-.career-toggle-newbie .newbie {
-	flex: 1;
-	text-align: center;
-	padding: 10px;
-	font-size: 16px;
-	font-weight: bold;
-	background-color: #F0BB78;
-	color: white;
-	border-right: 1px solid #F0BB78;
-}
-
-.career-toggle-newbie .exp {
-	flex: 1;
-	text-align: center;
-	padding: 10px;
-	font-size: 16px;
-	font-weight: bold;
-	color: #555;
-}
-
-.career-toggle-exp .newbie {
-	flex: 1;
-	text-align: center;
-	padding: 10px;
-	font-size: 16px;
-	font-weight: bold;
-	color: #555;
-	border-right: 1px solid #F0BB78;
-}
-
+.career-toggle-newbie .newbie,
 .career-toggle-exp .exp {
-	flex: 1;
-	text-align: center;
-	padding: 10px;
-	font-size: 16px;
-	font-weight: bold;
-	background-color: #F0BB78;
-	color: white;
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  background-color: #F0BB78;
+  color: white;
+  border-right: 1px solid #F0BB78;
 }
 
-/* 경력구분 텍스트 스타일 */
-.career-container span {
-	font-size: 17px;
-	color: #555;
-	font-weight: bold;
+.career-toggle-newbie .exp,
+.career-toggle-exp .newbie {
+  flex: 1;
+  text-align: center;
+  padding: 10px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #555;
 }
 
-button.newbie,
-button.exp {
-	flex: 1;
-	padding: 10px;
-	border: none;
-	background-color: transparent;
-	cursor: pointer;
-	font-size: 17px;
-	color: #555;
-	transition: all 0.3s ease;
-	margin-right: 0px;
+/* 프로필 정보 */
+.profile-container {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+  width: 100%;
+  gap: 20px;
 }
 
-button.newbie {
-	border-radius: 20px 0 0 20px;
+.profile-photo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.212);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.637);
 }
 
-button.exp {
-	border-radius: 0 20px 20px 0;
+.profile-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
-/* 버튼이 선택되었을 때의 활성화 스타일 */
-button.newbie.active,
-button.exp.active {
-	background-color: #F0BB78;
-	color: white;
+.profile-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: calc(100% - 140px);
+  gap: 10px;
 }
 
-.exp-append {
-	background-color: #543A14;
-	color: white;
-	margin-top: 10px;
+.name-age {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  display: flex;
+  gap: 10px;
 }
 
-.input-container {
-	margin-top: 20px;
-	padding: 20px;
-	background-color: white;
-	border-radius: 8px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+.contact-info {
+  font-size: 14px;
+  color: #555;
+  display: grid;
+  grid-template-columns: 1.5fr 2.5fr;
+  gap: 15px 5rem;
 }
 
-.input-container label {
-	display: block;
-	margin-bottom: 15px;
+.contact-info div {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
-.input-container input[type="text"],
-.input-container input[type="date"],
-.input-container textarea {
-	width: 100%;
-	padding: 8px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
-	margin-top: 5px;
+.contact-info span:first-child {
+  font-weight: bold;
+  color: #777;
 }
 
-.input-container textarea {
-	height: 100px;
-	resize: none;
+.contact-info .phone,
+.contact-info .tel,
+.contact-info .email,
+.contact-info .address {
+  font-weight: normal;
+  color: #000;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
-
-/* 업직종 선택 */
-#selectCategoryUl {
-	padding: 10px;
-	background-color: #fff;
-	border-radius: 4px;
-	list-style: none;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
+.contact-info .email {
+  word-break: break-all;
 }
 
-.category-section {
-	margin: 10px 0 20px 0;
+/* 버튼 스타일 */
+.cancel-btn {
+  padding: 0.8rem;
+  background-color: #543a14;
+  color: white;
+  border: none;
+  text-align: center;
 }
 
-.workType {
-	padding: 8px 12px;
-	margin: 5px;
-	border: 2px solid #F0BB78;
-	background-color: #fff;
-	border-radius: 4px;
-	display: inline-block;
+.cancel-btn:hover {
+  transform: scale(1.1);
+  cursor: pointer;
 }
 
-.workType:hover {
-	background-color: #F0BB78;
-	color: #fff;
+.item {
+  display: flex; /* 가로로 정렬 */
+  align-items: center; /* 텍스트 가운데 정렬 */
+  gap: 10px; /* 근무형태 텍스트와 아이템 간 간격 */
 }
 
-.select-category {
-	background-color: #e1f5fe;
-	padding: 5px 10px;
-	border-radius: 15px;
-	margin-right: 5px;
-	display: inline-block;
+.subitem-container {
+  display: flex; /* 자식 요소들을 가로로 나열 */
+  gap: 10px; /* 각 자식 요소 간 간격 */
 }
 
-.subcategory-delete {
-	color: #ff5252;
-	cursor: pointer;
+.subitem {
+  background-color: #F0BB78; /* 배경색 */
+  border-radius: 20px; /* 둥근 모서리 */
+  color: white; /* 텍스트 색상 */
+  padding: 5px 10px; /* 내부 여백 */
+  display: inline-block; /* 인라인 블록으로 설정 */
+  text-align: center; /* 텍스트 가운데 정렬 */
+  white-space: nowrap; /* 줄바꿈 방지 */
 }
 
-#subWorkType {
-	list-style: none;
-	display: flex;
-	flex-wrap: wrap;
-	gap: 10px;
+.edit{
+  display: flex;
+  color: #2c3e50;
+  border-bottom: 2px solid #eee;
+  padding-bottom: 10px;
+  margin: 30px 0 20px;
 }
 
-#subWorkType li {
-	background-color: #F0BB78;
-	border-radius: 20px;
-	color: white;
-	padding: 10px;
-}
-
-#subWorkType li:hover {
-	background-color: #543A14;
-}
-
-.jobTypeSection {
-	margin-bottom: 50px;
-}
-
-/* 근무형태 체크박스 */
-
-.jobTypeSection label, 
-.jobTypeSection input {
-	cursor: pointer;
-}
-
-input[type="checkbox"] {
-	margin-right: 8px;
-}
-
-/* 근무일시 */
-#select-container {
-	display: flex;
-	gap: 10px;
-	align-items: center;
-	flex-wrap: wrap;
-}
-
-#select-container select {
-	flex: 1;
-	min-width: 200px;
-}
-
-.delete-btn {
-	padding: 8px 16px;
-	background-color: #ff5252;
-	color: white;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-}
-
-/* 급여 섹션 */
-div[name="workPay"] {
-	display: flex;
-	gap: 10px;
-	align-items: center;
-}
-
-input[type="number"] {
-	width: 150px;
-	padding: 8px;
-	border: 1px solid #ddd;
-	border-radius: 4px;
+.edit-btn{
+  padding: 0.5rem;
+  background-color: #543a14;
+  color: white;
+  border: none;
+  text-align: center;
+  margin-left: 1.5rem;
+  cursor: pointer;
 }
 
 .selfInfo {
@@ -323,160 +224,8 @@ input[type="number"] {
 	resize: none;
 }
 
-.char-counter {
-    margin-top: 5px;
-    font-size: 14px;
-    color: #555;
-    text-align: right;
+.writetime {
+  color: #2c3e509c;
+  margin-top: 1rem;
 }
 
-.btn-section {
-	display: flex;
-	gap: 30px;
-}
-
-/* 제출 버튼 */
-.submit-btn,
-.cancel-btn {
-	width: 100%;
-	padding: 15px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 20px;
-	margin-top: 30px;
-	font-weight: bold;
-}
-
-.submit-btn {
-	background-color: #543A14;
-	color: #fff;
-}
-
-.cancel-btn {
-	border: 2px solid #543A14;
-	color: #543A14;
-}
-
-.submit-btn:hover {
-	background-color: #333;
-}
-
-
-.daysTimeSection {
-	display: flex;
-	align-items: center;
-	gap: 10px;
-}
-
-.delete-btn {
-	margin-left: 10px;
-}
-
-.addSelectBtn {
-	padding: 8px 16px;
-	margin-top: 20px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	background-color: #543A14;
-	color: white;
-
-}
-
-select[name="salaryNo"] {
-	width: 50%;
-}
-
-input[name="salAmount"] {
-	width: 50%;
-}
-
-.info-section {
-	background-color: white;
-	padding: 30px;
-	border-radius: 8px;
-	box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-	display: flex;
-	justify-content: flex-start;
-	align-items: center;
-	gap: 20px; /* 컨테이너 내부 간격 */
-}
-
-.profile-container {
-	display: flex;
-	flex-direction: row;
-	align-items: flex-start;
-	width: 100%; /* 전체 영역 활용 */
-	gap: 20px;
-}
-
-.profile-photo {
-	width: 120px;
-	height: 120px;
-	border-radius: 50%;
-	overflow: hidden;
-	flex-shrink: 0;
-	border: 1px solid rgba(0, 0, 0, 0.212); /* 두꺼운 검은색 테두리 */
-	box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.637); /* 얇은 두 번째 테두리 효과 */
-}
-
-.profile-photo img {
-	width: 100%;
-	height: 100%;
-	object-fit: cover;
-}
-
-.profile-info {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	width: calc(100% - 140px); /* 사진 공간을 제외한 너비 */
-	gap: 10px;
-}
-
-.name{
-	margin-bottom: 1.5rem;
-}
-
-.name-age {
-	font-size: 18px;
-	font-weight: bold;
-	color: #333;
-	display: flex;
-	gap: 10px;
-}
-
-.contact-info {
-	font-size: 14px;
-	color: #555;
-	display: grid;
-	grid-template-columns: 1.5fr 2.5fr; /* 첫 번째 열을 작게, 두 번째 열을 넓게 */
-	gap: 15px 5rem; /* 행 간격 15px, 열 간격 40px */
-}
-
-.contact-info div {
-	display: flex;
-	align-items: center;
-	gap: 10px; /* 항목명과 값 간 간격 */
-}
-
-.contact-info span:first-child {
-	font-weight: bold;
-	color: #777;
-}
-
-.contact-info .phone,
-.contact-info .tel,
-.contact-info .email,
-.contact-info .address {
-	font-weight: normal;
-	color: #000;
-	white-space: nowrap; /* 줄바꿈 방지 */
-	overflow: hidden; /* 넘치는 텍스트 숨김 */
-	text-overflow: ellipsis; /* 넘치는 텍스트에 '...' 표시 */
-}
-
-.contact-info .email {
-	word-break: break-all; /* 이메일만 줄바꿈 가능하도록 설정 */
-}
