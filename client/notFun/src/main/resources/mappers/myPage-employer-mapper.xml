@@ -333,10 +333,10 @@
 		WHERE RECRUITMENT_NO = ${recruitmentNo}
 	</select>
 	
-	<!-- 공고목록에서 공고, 이력서 정보 얻어오기 -->
+	<!-- 공고목록에서 공고, 이력서 정보 얻어오기 (목록용) -->
 	<select id="getResume">
 		SELECT rr.RECRUITMENT_NO,
-			r1.RECRUITMENT_TITLE,
+			r1.RECRUITMENT_TITLE, r1.EMPLOYER_NO, 
 			e.BUSINESS_NICKNAME,
 			wp1.PERIOD_NAME,
 			wat.WORKCOND_ADDRESS_TYPE_INFO,
@@ -352,6 +352,108 @@
 		LEFT JOIN WORKCOND_PERIOD wp2 ON (r2.PERIOD_NO = wp2.PERIOD_NO)
 		WHERE rr.RECRUITMENT_NO = ${recruitmentNo}
 			AND rr.RESUME_NO = ${resumeNo}
+	</select>
+	
+	<!-- 공고목록에서 경력 있는 지 여부 확인 -->
+	<select id="trueCareer">
+		SELECT COUNT(*)
+		FROM RESUME_CAREER
+		WHERE RESUME_NO = ${resumeNo}
+	</select>
+	
+	<!-- 해당 공고에 제출된 이력서 보기 (모달 내 상세보기용) -->
+	<select id="viewRecruitResume">
+		SELECT rr.RECRUITMENT_NO,
+			r1.EMPLOYER_NO,	r1.RECRUITMENT_TITLE,  
+			e.BUSINESS_NICKNAME, e.BUSINESS_TEL,
+			j1.JOBTYPE_NAME,
+			s1.SALARY_NAME,
+			r1.SALARY_MOUNT,
+			wp1.PERIOD_NAME,
+			g1.GRADE_NAME,
+			wd1.DAYS_NAME,
+			wt1.TIME_NAME,
+			wat.WORKCOND_ADDRESS_TYPE_INFO,
+			rr.RESUME_NO, r2.WORKER_NO,
+			w.WORKER_MBTI, w.WORKER_ADDRESS,
+			m2.MEMBER_TEL, m2.MEMBER_EMAIL, 
+			r2.RESUME_TITLE,
+			s2.SALARY_NAME AS "HOPE_SALARY_NAME",
+			r2.SALARY_AMOUNT AS "HOPE_SALARY_AMOUNT",
+			wp2.PERIOD_NAME AS "HOPE_PERIOD_NAME",
+			g2.GRADE_NAME,
+			r2.RESUME_CONTENT 
+		FROM RECRUITMENT_RESUME rr
+		LEFT JOIN RECRUITMENT r1 ON(rr.RECRUITMENT_NO = r1.RECRUITMENT_NO)
+		LEFT JOIN EMPLOYER e ON(r1.EMPLOYER_NO = e.EMPLOYER_NO)
+		LEFT JOIN JOBTYPE j1 ON(r1.JOBTYPE_NO = j1.JOBTYPE_NO)
+		LEFT JOIN SALARY s1 ON(r1.SALARY_NO = s1.SALARY_NO)
+		LEFT JOIN WORKCOND_PERIOD wp1 ON (r1.PERIOD_NO = wp1.PERIOD_NO)
+		LEFT JOIN GRADE g1 ON (r1.GRADE_NO = g1.GRADE_NO)
+		LEFT JOIN WORKCOND_DAYS wd1 ON(r1.DAYS_NO = wd1.DAYS_NO) 
+		LEFT JOIN WORKCOND_TIME wt1 ON(r1.TIME_NO = wt1.TIME_NO)
+		LEFT JOIN WORKCOND_ADDRESS_TYPE wat ON (r1.WORKCOND_ADDRESS_TYPE_NO = wat.WORKCOND_ADDRESS_TYPE_NO)
+		LEFT JOIN RESUME r2 ON(rr.RESUME_NO = r2.RESUME_NO)
+		LEFT JOIN WORKER w ON(r2.WORKER_NO = w.WORKER_NO)
+		LEFT JOIN "MEMBER" m2 ON(w.MEMBER_NO = m2.MEMBER_NO)
+		LEFT JOIN SALARY s2 ON(r2.SALARY_NO = s2.SALARY_NO)
+		LEFT JOIN WORKCOND_PERIOD wp2 ON (r2.PERIOD_NO = wp2.PERIOD_NO)
+		LEFT JOIN GRADE g2 ON(r2.GRADE_NO = g2.GRADE_NO) 
+		WHERE rr.RECRUITMENT_NO = ${recruitmentNo}
+			AND rr.RESUME_NO = ${resumeNo}
+	</select>
+	
+	<!-- 사업장의 업직종 리스트 얻어오기 -->
+	<select id="getRecruitmentWorktypeList">
+		SELECT bw.BUSINESS_WORKTYPE_NO,  ew.WORKTYPE_CATEGORY 
+		FROM BUSINESS_WORKTYPE bw
+		LEFT JOIN EMPLOYER_WORKTYPE ew ON (bw.WORKTYPE_NO = ew.WORKTYPE_NO)
+		LEFT JOIN EMPLOYER e ON(bw.EMPLOYER_NO = e.EMPLOYER_NO)
+		LEFT JOIN RECRUITMENT r ON (e.EMPLOYER_NO = r.EMPLOYER_NO)
+		WHERE RECRUITMENT_NO = ${recruitmentNo}
+	</select>
+	
+	<!-- 알바생의 희망 고용형태 리스트 얻어오기 -->
+	<select id="getResumeJobtypeList">
+		SELECT j.JOBTYPE_NAME 
+		FROM RESUME_JOB_TYPE rjt
+		LEFT JOIN JOBTYPE j ON (rjt.JOBTYPE_NO = j.JOBTYPE_NO)
+		WHERE RESUME_NO = ${resumeNo}
+	</select>
+	
+	<!-- 알바생의 희망 요일시간 리스트 얻어오기 -->
+	<select id="getHopeDaysTimeList">
+		SELECT rd.RESUME_NO, wd.DAYS_NAME, wt.TIME_NAME 
+		FROM RESUME_DAYSTIME rd 
+		LEFT JOIN WORKCOND_DAYS wd ON (rd.DAYS_NO = wd.DAYS_NO)
+		LEFT JOIN WORKCOND_TIME wt ON (rd.TIME_NO = wt.TIME_NO)
+		WHERE RESUME_NO = ${resumeNo}
+	</select>
+	
+	<!-- 알바생의 희망 근무지역 리스트 얻어오기 -->
+	<select id="getHopeAddressList">
+		SELECT wat.WORKCOND_ADDRESS_TYPE_INFO 
+		FROM RESUME_ADDRESS ra 
+		LEFT JOIN WORKCOND_ADDRESS_TYPE wat ON (ra.WORKCOND_ADDRESS_TYPE_NO = wat.WORKCOND_ADDRESS_TYPE_NO)
+		WHERE RESUME_NO = ${resumeNo}
+	</select>
+	
+	<!-- 알바생의 희망 업직종 리스트 얻어오기 -->
+	<select id="getHopeWorkTypeList">
+		SELECT ew.WORKTYPE_CATEGORY 
+		FROM RESUME_WORKTYPE rw 
+		LEFT JOIN EMPLOYER_WORKTYPE ew ON (rw.WORKTYPE_NO = ew.WORKTYPE_NO)
+		WHERE RESUME_NO = ${resumeNo}
+	</select>
+	
+	<!-- 알바의 경력사항 리스트 얻어오기 -->
+	<select id="getCareerInfoList">
+		SELECT rc.CAREER_NO, ci.COMPANY_NAME,
+			TO_CHAR(START_DATE, 'YYYY/MM/DD') AS START_DATE,
+			TO_CHAR(END_DATE, 'YYYY/MM/DD') AS END_DATE
+		FROM RESUME_CAREER rc
+		LEFT JOIN CAREER_INFO ci ON (rc.CAREER_NO = ci.CAREER_NO)
+		WHERE RESUME_NO = ${resumeNo}
 	</select>
 
 

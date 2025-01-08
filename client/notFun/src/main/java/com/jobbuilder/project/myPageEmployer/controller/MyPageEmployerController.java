@@ -394,6 +394,23 @@ public class MyPageEmployerController {
 		return service.viewResumes(memberNo);
 	}
 	
+	/** 해당 공고에 제출된 이력서 보기
+	 * @param recuritmentNo
+	 * @param resumeNo
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("viewRecruitResume")
+	public ResponseEntity<RecruitmentResume> viewRecruitResume(@RequestParam("recruitmentNo") int recruitmentNo,
+									@RequestParam("resumeNo") int resumeNo){
+		
+		RecruitmentResume recruitResume = service.viewRecruitResume(recruitmentNo, resumeNo);
+		
+		if(recruitResume == null) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(recruitResume);
+	}
+	
 	/** 회원 탈퇴 페이지 이동(get) 아직 작성 안함
 	 * @return myPageEmployer/secession.html
 	 * @author JWJ
