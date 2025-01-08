@@ -319,10 +319,5 @@ const createRecommendResumeList = () => {
   resumeGrid.innerHTML += '';
 
   fetch("/recommend/resume", {
-    method: "PUT",
-    // headers: {
-    //     "Content-Type": "multipart/form-data"
-    //   },
-    body: formData,
   })
 }
