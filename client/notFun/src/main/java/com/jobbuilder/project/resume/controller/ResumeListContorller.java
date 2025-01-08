@@ -73,6 +73,7 @@ public class ResumeListContorller {
 	    return response;
 	}
 
+
 	
 	// 이력서리스트 삭제/수정 버튼 패치요청
 

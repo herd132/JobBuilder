@@ -10,6 +10,23 @@ let daysTimeList = []; // 요일시간배열
 let addressList = [];
 
 
+
+function toggleInput() {
+  var selectElement = document.querySelector('select[name="salaryNo"]');
+  var inputElement = document.getElementsByName('salAmount')[0]; // 배열의 첫 번째 요소 접근
+  var selectedValue = selectElement.value;
+  
+  // "추후협의(시급)" 또는 "추후협의(월급)"이 선택되면 input 비활성화
+  if (selectedValue == "3" || selectedValue == "4") {
+    inputElement.disabled = true;
+  } else {
+    inputElement.disabled = false;
+  }
+}
+
+toggleInput();
+
+
 function showInputs(isExperienced) {
   // inputContainer 안의 모든 폼 요소들에 대해 disabled 속성 설정
   const newbieButton = document.querySelector(".newbie");
@@ -236,6 +253,7 @@ function expappend() {
   <label>
     담당업무:
     <textarea class="career-description" placeholder="담당업무를 입력하세요"></textarea>
+    <div class="exp-char-counter">0 / 500자</div>
   </label>
 `;
 
@@ -326,9 +344,20 @@ function addSelect() {
 
 // 자기소개 textarea와 글자 수 표시 영역 선택
 const textarea = document.querySelector(".selfInfo");
+const expTextArea = document.querySelector(".career-description");
+
 const charCounter = document.querySelector(".char-counter");
+const expCharCounter = document.querySelector(".exp-char-counter");
 
 // 텍스트 입력 시 글자 수 업데이트
+expTextArea.addEventListener("input", () => {
+  const currentLength = expTextArea.value.length; // 현재 입력된 글자 수
+  const maxLength = expTextArea.getAttribute("maxlength"); // 최대 글자 수
+
+  // 글자 수 표시 업데이트
+  expCharCounter.textContent = `${currentLength} / ${maxLength}자`;
+});
+
 textarea.addEventListener("input", () => {
   const currentLength = textarea.value.length; // 현재 입력된 글자 수
   const maxLength = textarea.getAttribute("maxlength"); // 최대 글자 수
@@ -337,15 +366,29 @@ textarea.addEventListener("input", () => {
   charCounter.textContent = `${currentLength} / ${maxLength}자`;
 });
 
+const inputTitle = document.querySelector(".inputTitle");
+
 writeResumeForm.addEventListener("submit", (e) => {
   e.preventDefault();
+
+    // -------------- 자기소개 필수로 변경---------------
+    if(textarea.value.trim().length == 0){
+      alert("자기소개를 입력해 주세요");
+      return;
+    }
+
+  // -------------- 제목 입력 필수로 변경 --------------
+  if(inputTitle.value.trim().length == 0){
+    alert("제목을 입력 해주세요");
+    return;
+  }
 
   // -------------- 근무형태 관련 ------------
   const partTime = document.getElementById("partTime");
   const fullTime = document.getElementById("fullTime");
 	const contractor = document.getElementById("contractor")
   if (!partTime.checked && !fullTime.checked && !contractor.checked) {
-    alert("근무 형태를 선택 해 주세요");
+    alert("근무 형태를 선택해 주세요");
     return;
   }
 
@@ -486,6 +529,7 @@ writeResumeForm.addEventListener("submit", (e) => {
     endDate.value = "";
     careerDescription.value = "";
   }
+
 
   writeResumeForm.submit();
 });

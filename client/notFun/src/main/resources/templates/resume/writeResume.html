@@ -67,7 +67,7 @@
 					<div class="input-container" style="display: none;">
 						<label>
 							회사명:
-							<input type="text" class="company-name" placeholder="회사명을 입력하세요" disabled>
+							<input type="text" class="company-name" placeholder="회사명을 입력하세요" maxlength="100" disabled>
 						</label>
 						<label>
 							근무기간:
@@ -76,7 +76,8 @@
 						</label>
 						<label>
 							담당업무:
-							<textarea class="career-description" placeholder="담당업무를 입력하세요" disabled></textarea>
+							<textarea class="career-description" maxlength="500" placeholder="담당업무를 입력하세요" disabled></textarea>
+							<div class="exp-char-counter">0 / 500자</div>
 						</label>
 					</div>
 
@@ -190,7 +191,7 @@
 
 				<h3>급여</h3>
 				<div name="workPay">
-					<select name="salaryNo">
+					<select name="salaryNo" onchange="toggleInput()">
 						<option value="1">시급</option>
 						<option value="2">월급</option>
 						<option value="3" selected>추후협의(시급)</option>

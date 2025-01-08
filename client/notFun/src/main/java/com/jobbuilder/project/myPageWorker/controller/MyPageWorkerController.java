@@ -86,7 +86,6 @@ public class MyPageWorkerController {
 	    
 	    // 페이지와 크기를 고려하여 해당 페이지에 맞는 데이터 조회
 	    List<Board> titles = service.writeView(memberNo, cp);
-	    log.debug("titles : " + titles);
 
 	    return titles;  // List<Board> 반환
 	}
