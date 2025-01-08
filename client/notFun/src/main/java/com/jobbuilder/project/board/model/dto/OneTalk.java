@@ -1,7 +1,5 @@
 package com.jobbuilder.project.board.model.dto;
 
-import java.util.List;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,13 +15,23 @@ import lombok.ToString;
 @ToString
 public class OneTalk {
 	// 임시
-	private int oneTalkNo;
-	private String oneTalkContent;
-	private String oneTalkWriteDate;
-	private String oneTalkDelFl;
+<<<<<<< HEAD
+	private int onetalkNo;
+	private String onetalkContent;
+	private String onetalkWriteDate;
+	private String onetalkDelFl;
 	private int boardNo;
 	private int memberNo;
+	private int parentonetalkNo;
+=======
+	private int oneTalkNo;
+	private String oneTalkContent;
+	private String oneTalkDelFl;
+	private String oneTalkWriteDate;
 	private int parentoneTalkNo;
+	private int boardNo;
+	private int memberNo;
+>>>>>>> eb77e3de18def775a1ef6431f947ccfbdc67c81f
 	
 	// 댓글 조회시 회원 프로필, 닉네임
 	private String memberName;

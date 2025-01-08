@@ -39,14 +39,15 @@ public class OneTalkController {
 				Model model ) {
 			
 			Map<String, Object> map = null;
-			map = service.selectOneTalkList(cp); 
 			
+			map = service.selectOneTalkList(cp); 			
 			
 			model.addAttribute("pagination", map.get("pagination"));
-			model.addAttribute("oneTalkList" , map.get("oneTalkList"));
-			
-			return "board/oneTalk";
+			model.addAttribute("onetalkList" , map.get("onetalkList"));
+			log.debug("원톡컨트롤러디버그" + map.get("oneTalkList"));
+			return "board/oneTalkMain";
 		}
+		
 		// 한줄톡 등록
 		@PostMapping("")	
 		@ResponseBody
