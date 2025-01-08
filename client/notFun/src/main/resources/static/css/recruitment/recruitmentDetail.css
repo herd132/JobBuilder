@@ -330,10 +330,13 @@
 }
 
 .resume-grid {
+  padding-left: 14px;
+  padding-right: 6px;
   margin: 1.5rem 0;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px;
+  overflow-y: auto;
 }
 
 .resume-card {
@@ -524,7 +527,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 800px;
+  width: 1000px;
   height: 700px;
   max-height: 900px;
   background: white;
@@ -534,11 +537,10 @@
   flex-direction: column;
   z-index: 1000;
   border: 2px solid var(--primary-orange);
-  overflow-y: auto;
 }
 
 .recommend-modal.active {
-  padding: 1rem;
+  padding: 0.7rem;
   display: flex;
 }
 
@@ -562,6 +564,38 @@
   cursor: pointer;
 }
 
-.recommend-modal::-webkit-scrollbar {
-  width: 0px;
+.resume-grid::-webkit-scrollbar {
+  width: 8px;
+}
+
+.resume-grid::-webkit-scrollbar-track {
+  background-color: rgba(128, 128, 128, 0);
+}
+
+.resume-grid::-webkit-scrollbar-thumb {
+  background: var(--secondary-orange);
+  border-radius: 10px;
+}
+
+.loadingBox .circle {
+  position:fixed; 
+  left:50%; 
+  top:50%; 
+  transform:translate(-50%, -50%); 
+  width:40px; 
+  height:40px; 
+  border:10px solid #fff; 
+  border-top:10px solid red; 
+  border-radius:50em;
+  animation-name:spinCircle;
+  animation-duration:.8s;
+  animation-iteration-count:infinite;
+}
+@keyframes spinCircle {
+  from {
+      transform:translate(-50%, -50%) rotate(0);
+  }
+  to {
+      transform:translate(-50%, -50%) rotate(360deg);
+  }
 }

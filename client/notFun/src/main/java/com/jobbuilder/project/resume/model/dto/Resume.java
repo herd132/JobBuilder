@@ -38,6 +38,7 @@ public class Resume {
 	private List<ResumePeriod> resumePeriodList; // 희망근무기간List
 	private List<ResumeDaysTime> resumeDaysTimeList; // 희망근무요일시간List
 	
+	private String carrerStr;
 
     private int workcondAddressNo; // 해소테이블 주소구분번호
     private String workcondAddressTypeNo;  // 희망주소코드 0100 등
