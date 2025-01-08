@@ -48,7 +48,7 @@ header {
   position: relative;
 }
 
-.user-menu {
+.user-menu, .nav-mypagemenu {
   width: 120px;
   display: flex;
   flex-direction: row;
@@ -57,13 +57,13 @@ header {
   display: inline-block;
 }
 
-.user-menu a {
+.user-menu a, .nav-mypagemenu a{
   color: black;
   font-weight: bold;
   text-decoration: none;
 }
 
-.user-menu a:hover {
+.user-menu a:hover, .nav-mypagemenu a:hover{
   color: var(--primary-orange);
   transition: 0.1s;
 }

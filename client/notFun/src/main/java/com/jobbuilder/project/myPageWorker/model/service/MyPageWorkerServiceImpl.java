@@ -3,14 +3,17 @@ package com.jobbuilder.project.myPageWorker.model.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.common.util.Utility;
 import com.jobbuilder.project.myPageWorker.model.mapper.MyPageWorkerMapper;
 import com.jobbuilder.project.worker.model.dto.Worker;
@@ -155,5 +158,17 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService {
 
 		return result;
 	}
+
+	// 작성 글 제목 불러오기
+	@Override
+	public List<Board> writeView(int memberNo,int cp) {
+		
+		int limit = 14;
+		int offset = (cp - 1) * limit;
+		RowBounds rowBounds =  new RowBounds(offset, limit);
+		
+		return mapper.writeView(memberNo, rowBounds);
+	}
+
 
 }

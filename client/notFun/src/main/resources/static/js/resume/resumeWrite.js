@@ -343,7 +343,8 @@ writeResumeForm.addEventListener("submit", (e) => {
   // -------------- 근무형태 관련 ------------
   const partTime = document.getElementById("partTime");
   const fullTime = document.getElementById("fullTime");
-  if (!partTime.checked && !fullTime.checked) {
+	const contractor = document.getElementById("contractor")
+  if (!partTime.checked && !fullTime.checked && !contractor.checked) {
     alert("근무 형태를 선택 해 주세요");
     return;
   }

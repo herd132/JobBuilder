@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>내가 작성한 글</title>
+
+  <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
+  <th:block th:replace="~{common/common}"></th:block>
+
+  <link rel="stylesheet" href="/css/myPageWorker/boardWrite.css">
+</head>
+
+<body>
+  <!-- 로고 및 검색바 로그인 -->
+  <th:block th:replace="~{common/myPageWorker-header}"></th:block>
+
+  <div>
+    <div class="member-info-container">
+      <div class="header">
+        <h2 class="title">내가 작성한 글 목록</h2>
+      </div>
+
+      <div class="board-container-background">
+        <div class="board-container">
+          <div class="list-wrapper">
+            <table class="list-table">
+              <thead>
+                <tr>
+                  <th>글번호</th>
+                  <th>제목</th>
+                  <th>작성일</th>
+                  <th>조회수</th>
+                </tr>
+              </thead>
+              <tbody class="boardList"></tbody> <!-- 데이터를 추가할 body-->
+            </table>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+  <th:block th:replace="~{common/main-footer}"></th:block>
+
+  <script src="/js/myPageWorker/writeBoard.js"></script>
+</body>
+
+</html>

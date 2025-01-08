@@ -1,9 +1,12 @@
 package com.jobbuilder.project.myPageWorker.model.mapper;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 @Mapper
@@ -46,6 +49,13 @@ public interface MyPageWorkerMapper {
 	int updateInfoWorker(Worker loginWorker);
 	
 	int updateInfoMember(Worker loginWOrker);
+
+
+	/** 작성 글 제목 불러오기
+	 * @param memberNo
+	 * @return
+	 */
+	List<Board> writeView(int memberNo, RowBounds rowBounds);
 
 
 
