@@ -279,17 +279,89 @@ const recommendSelect = document.querySelector(".recommend-select");
 const recommendModal = document.querySelector(".recommend-modal");
 const recommendModalOutside = document.querySelector(".recommend-modal-outside");
 const modalClose = document.querySelector(".modal-close");
-let popupOpenType = false;
+const resumeGrid = document.querySelector(".resume-grid");
+let windowScoll = false;
 
+// 추천 이력서 모달창 생성
+const createRecommendResumeList = () => {
+  let path = window.location.pathname;
+  path = path.substring(path.lastIndexOf('/') + 1, path.length);
+
+
+  fetch("/recommend/resume?recruitmentNo="+ path)
+  .then(resp => resp.json())
+  .then(resumeList => {
+    
+    resumeGrid.innerHTML = '';
+
+    console.log
+    
+    resumeList.map(resume => {
+      const profileImg = resume.profileImg !== undefined ? resume.profileImg : '/images/avatar.png';
+      let carrer = resume.carrerStr.split("^^^")[0] == "-&&&1개월 미만" ? 
+                    '등록된 경력이 없습니다.' : resume.carrerStr.split("^^^");
+      let str = "";
+      if( Array.isArray(carrer)) {
+        carrer.map((c, index) => {
+          let arr = c.split("&&&");
+          str += arr[0];
+          str += arr[1] !== '' ? `(${arr[1]})<br>` : '(경력 기간 미입력)';
+        });
+      } else {
+        str = carrer;
+      }
+      resumeGrid.innerHTML += `
+      <div class="resume-card">
+        <div class="resume-header">
+          <img src="${profileImg}" alt="Profile image" class="profile-image">
+          <div class="basic-info">
+            <div class="name">${resume.resumeTitle !== undefined ? resume.resumeTitle : "이력서 제목 미입력"}</div>
+            <div class="age">${resume.memberName} ${resume.age} (${resume.workerBirthDate})</div>
+          </div>
+        </div>
+        <div class="contact-info">
+          <div class="info-item">
+            <span class="info-label">연락처</span>
+            <span>${resume.memberTel}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">이메일</span>
+            <span>${resume.memberEmail}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">지역</span>
+            <span>${resume.memberAddress}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">MBTI</span>
+            <span>${resume.workerMbti}</span>
+          </div>
+        </div>
+        <div class="career-info">
+          <div class="career-title">주요 경력</div>
+          <div class="career-detail">
+            ${str}
+          </div>
+        </div>
+        <a class="view-button">이력서 보기</a>
+      </div>
+    `
+    });
+  })
+}
+
+// 모달창 관련 이벤트 및 변수들
 if (recommendSelect !== null ) {
   recommendSelect.addEventListener("click", () => {
 
+    createRecommendResumeList();
     recommendModal.classList.add('active');
     recommendModalOutside.style.height = document.body.offsetHeight + 'px';
     recommendModalOutside.style.display = 'block';
   });
 
   recommendModal.addEventListener("mouseenter", () => {
+    windowScoll = document.documentElement.scrollTop;
     document.body.style.cssText = `
     position:fixed;
     top: -${window.scrollY}px;
@@ -300,29 +372,17 @@ if (recommendSelect !== null ) {
   
   recommendModal.addEventListener("mouseleave", () => {
     document.body.style.cssText = '';
-    window.scrollTo(0, parseInt(scrollY || '0', 10) * -1);
+    window.scrollTo(0, windowScoll);
   });
 
   modalClose.addEventListener("click", () => {
     recommendModal.classList.remove('active');
     recommendModalOutside.style.display = 'none';
-  })
-
-  recommendModal.addEventListener('mousewheel', function(e) {
-   
-  }, {passive: false});
-}
-
-const createRecommendResumeList = () => {
-  const resumeGrid = document.querySelector(".resume-grid");
-
-  resumeGrid.innerHTML += '';
-
-  fetch("/recommend/resume", {
-    method: "PUT",
-    // headers: {
-    //     "Content-Type": "multipart/form-data"
-    //   },
-    body: formData,
+    resumeGrid.innerHTML = `
+      <div class="loadingBox">
+          <div class="dim"></div>
+          <div class="circle"></div>
+      </div>
+    `;
   })
 }

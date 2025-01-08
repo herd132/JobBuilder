@@ -22,6 +22,7 @@ import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
 import com.jobbuilder.project.recruitment.model.serivce.RecruitmentService;
 import com.jobbuilder.project.resume.model.dto.Resume;
+import com.jobbuilder.project.resume.model.service.RecommendService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 import lombok.RequiredArgsConstructor;
@@ -36,6 +37,8 @@ public class RecruitmentController {
 
 	/* ********** 필드 ********** */
 	private final RecruitmentService service;
+	
+	private final RecommendService recommendService;
 	
 	/* ********** 메서드 ********** */
 
@@ -168,6 +171,7 @@ public class RecruitmentController {
 						Model model, RedirectAttributes ra) {
 		
 		Recruitment recruitment = service.selectOne(recruitmentNo);
+		int recommendNum = recommendService.getRecommendCount(recruitment);
 		
 		log.debug("recruitment : " + recruitment);
 
@@ -175,6 +179,7 @@ public class RecruitmentController {
 		model.addAttribute("businessWorktypeList", recruitment.getBusinessWorktypeList());
 		model.addAttribute("preferredList", recruitment.getPreferredList());
 		model.addAttribute("supportList", recruitment.getSupportList());
+		model.addAttribute("recommendNum", recommendNum);
 		
 		return "recruitment/recruitmentDetail";
 	}
