@@ -27,9 +27,7 @@ public class OneTalkServiceImpl implements OneTalkService {
 	@Override
 	public Map<String, Object> selectOneTalkList(int cp) {
 		int listCount = mapper.getListCount();
-		
-		log.debug("listcount : " + listCount);
-		if(listCount < (cp * 10)) cp = 1;
+		String ex = "";
 		
 		Pagination pagination = new Pagination(cp, listCount);
 				
@@ -38,8 +36,8 @@ public class OneTalkServiceImpl implements OneTalkService {
 		int offset = (cp - 1 ) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 
-		List<OneTalk> oneTalkList = mapper.selectOneTalkList("" ,rowBounds);
-		log.debug("onetalklist" + oneTalkList.size());
+		List<OneTalk> oneTalkList = mapper.selectOneTalkList(ex ,rowBounds);
+		
 		
 		// 4. 목록 조회 결과 + Pagination 객체를 Map으로 묵음
 		Map<String, Object> map = new HashMap<>();
@@ -47,7 +45,6 @@ public class OneTalkServiceImpl implements OneTalkService {
 		map.put("pagination", pagination);
 		map.put("oneTalkList", oneTalkList);
 		
-		log.debug("서비스임플원톡리스트" + oneTalkList.size());
 		// 5. 결과 반환		
 		
 		return map;

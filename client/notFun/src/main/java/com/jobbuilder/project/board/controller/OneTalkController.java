@@ -45,7 +45,7 @@ public class OneTalkController {
 						
 			model.addAttribute("pagination", map.get("pagination"));
 			model.addAttribute("oneTalkList" , map.get("oneTalkList"));
-			log.debug("onetalklist"+ map.get("oneTalkList"));
+			
 			return "board/oneTalkMain";
 		}
 		
