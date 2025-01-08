@@ -74,6 +74,7 @@ public class ResumeListContorller {
 	    @PostMapping("/updateResumeStatus")
 	    public ResponseEntity<Map<String, Object>> updateResumeStatus(@RequestBody Resume resume) {
 	        Map<String, Object> response = new HashMap<>();
+	        log.debug("resume : " + resume);
 	        try {
 	            int result = service.updateResumeStatus(resume);
 	            response.put("success", result > 0);
