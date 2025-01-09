@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
-import com.jobbuilder.project.recruitment.model.dto.Recruitment;
+import com.jobbuilder.project.refined.model.dto.Refined;
 import com.jobbuilder.project.refined.model.service.RefinedService;
-import com.jobbuilder.project.resume.model.dto.Resume;
 import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
 import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 
@@ -36,18 +35,19 @@ public class RefinedContoller {
 		return "refined/refinedList";
 	}
 	
-	/*
-	@PostMapping("/resumeRecommenda")
+	
+	@PostMapping("/lista")
 	@ResponseBody
 	public Map<String, Object> getRecommendations(@RequestBody Map<String, Object> requestBody) {
 		int recruitmentNo = Integer.parseInt(requestBody.get("recruitmentNo").toString());
-
-		// 추천 공고 리스트 조회
-		List<Recruitment> recommendations = service.getRecommendations(recruitmentNo);
-
+		
 		Map<String, Object> response = new HashMap<>();
+		
+		// 공고 리스트 조회
+		List<Refined> recruitment = service.getRecruitmentList(recruitmentNo);
 
-		List<ResumeWorkType> resumeWorkType = service.resumeWorkType(recruitmentNo);
+		// 배열로 구성된 상세 정보에 필요한 객체들 조회
+		/*List<ResumeWorkType> resumeWorkType = service.resumeWorkType(recruitmentNo);
 		List<String> resumeJobTypeList = service.resumeJobTypeList(recruitmentNo);
 		List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(recruitmentNo);
 		List<String> workcondAddressTypeInfo = service.workcondAddressTypeInfo(recruitmentNo);
@@ -56,12 +56,12 @@ public class RefinedContoller {
 		response.put("resumeJobTypeList", resumeJobTypeList);
 		response.put("resumeDaysTime", resumeDaysTime);
 		response.put("workcondAddressTypeInfo", workcondAddressTypeInfo);
-		response.put("recruitment", recruitment);
-		response.put("recommendations", recommendations);
+		*/response.put("recruitment", recruitment);
+
 
 		return response;
 	}
-	*/
+	
 	
 	
 	

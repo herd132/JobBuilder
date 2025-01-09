@@ -62,26 +62,35 @@ const formatSalary = (salaryNo, salaryAmount, salaryName = "") => {
     return "급여 정보 없음";
   }
 };
-
+/*
 // 기존 Fetch 요청 영역
 // ----------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   let currentPage = parseInt(urlParams.get("cp")) || 1; // 기본값 1
 
-
+  // `resumeNo`가 없는 경우 URL을 업데이트
+  if (!urlParams.has("resumeNo")) {
+    window.history.replaceState(
+      {},
+      "",
+      `${window.location.pathname}?resumeNo=${resumeNo}&cp=${currentPage}`
+    );
+  }
+*/
+const recruitmentNo = 16;
   // Fetch 요청 제거 후 데이터를 받아오는 로직 수정
-  fetch("/resume/resumeRecommenda", {
+  fetch("/refined/lista", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ }),
+    body: JSON.stringify({ recruitmentNo: recruitmentNo }),
   })
     .then((response) => response.json())
     .then((data) => {
       console.log("서버에서 받은 데이터:", data);
-
+/*
       const {
         resume,
         recommendations,
@@ -90,11 +99,11 @@ document.addEventListener("DOMContentLoaded", () => {
         resumeWorkType,
         workcondAddressTypeInfo,
       } = data;
-
+*/
       // 전역 변수에 데이터 저장
-      resumeData = resume;
-      recommendationsData = recommendations;
-
+      //resumeData = resume;
+      
+/*
       // 페이지네이션 처리 및 데이터 로드
       const itemsPerPage = 5; // 한 페이지당 항목 수
       const paginatedData = recommendations.slice(
@@ -111,14 +120,19 @@ document.addEventListener("DOMContentLoaded", () => {
         resumeWorkType,
         workcondAddressTypeInfo
       );
-
+*/
       // 페이지네이션 로직 호출
-      createPagination(recommendations, document.getElementById("pagination"));
+      //createPagination(recommendations, document.getElementById("pagination"));
     })
+
+ 
     .catch((error) => {
       console.error("요청 오류:", error);
     });
-});
+
+// });
+
+/*
 
 // 기존 UI 업데이트 함수 영역
 // ----------------------------------------
@@ -260,6 +274,7 @@ const updateUI = (
   }
 };
 
+
 // 페이지네이션 로직
 const createPagination = (data, paginationContainer) => {
   if (!recommendationsData || !Array.isArray(recommendationsData) || recommendationsData.length === 0) {
@@ -270,6 +285,7 @@ const createPagination = (data, paginationContainer) => {
   const pagesPerGroup = 10; // 페이지 그룹당 페이지 수
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const urlParams = new URLSearchParams(window.location.search);
+  const resumeNo = urlParams.get("resumeNo");
   let currentPage = parseInt(urlParams.get("cp")) || 1;
 
   // 현재 그룹 계산
@@ -283,7 +299,7 @@ const createPagination = (data, paginationContainer) => {
   const createLink = (text, targetPage, isCurrent = false) => {
     const link = document.createElement("a");
     link.textContent = text;
-    link.href = `?&cp=${targetPage}`;
+    link.href = `?resumeNo=${resumeNo}&cp=${targetPage}`;
     link.className = "pagination-link"; // 공통 클래스 추가
 
     if (isCurrent) {
@@ -293,7 +309,7 @@ const createPagination = (data, paginationContainer) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = targetPage;
-      window.history.pushState({}, "", `?&cp=${currentPage}`);
+      window.history.pushState({}, "", `?resumeNo=${resumeNo}&cp=${currentPage}`);
       const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
       updateUI(resumeData, paginatedData, [], [], [], []);
       createPagination(data, paginationContainer); // 갱신
@@ -329,3 +345,4 @@ const createPagination = (data, paginationContainer) => {
 };
 
 
+*/
