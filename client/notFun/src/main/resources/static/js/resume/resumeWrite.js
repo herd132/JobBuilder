@@ -7,7 +7,7 @@ let careerType = "newbie"; // 초기값 신입
 let workTypeList = []; // 업직종저장배열(5개까지)
 let careerInfoList = []; // 경력사항배열
 let daysTimeList = []; // 요일시간배열
-let addressList = [];
+let addressList = []; 
 
 
 
@@ -322,7 +322,6 @@ function addSelect() {
     workPartSelect.appendChild(optionTag);
   });
 
-  
   // 삭제 버튼 추가
   const deleteBtn = document.createElement("button");
   deleteBtn.innerText = "삭제";
@@ -417,6 +416,11 @@ writeResumeForm.addEventListener("submit", (e) => {
         // endDate 제외(아직 근무중인 경우)
         return;
       }
+
+      if (endDateList[i].value.trim() !== "" && startDateList[i].value.trim() > endDateList[i].value.trim()) {
+        alert("입사일과 퇴사일을 올바르게 작성 해주세요");
+        return;
+    }
 
       let careerInfoObj = {}; // 빈 js 객체 생성
 
