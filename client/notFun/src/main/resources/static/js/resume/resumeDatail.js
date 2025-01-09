@@ -201,12 +201,12 @@ const selectDetailAddress = async (workcondAddressTypeNo) => {
   }
 };
 
-
-
 const addSubAddressCategory = (liSubAddressName) => {
   const selectAddressCategory = document.querySelectorAll(".select-address");
 
-  const selectAddressCategoryUl = document.querySelector("#selectAddressCategoryUl");
+  const selectAddressCategoryUl = document.querySelector(
+    "#selectAddressCategoryUl"
+  );
   if (!selectAddressCategoryUl) {
     console.error("#selectAddressCategoryUl element not found");
     return; // 에러 발생 시 함수 종료
@@ -517,10 +517,16 @@ categoryBtn.addEventListener("click", async (e) => {
     const data = await response.json(); // JSON 데이터를 받음
     const majorCategoryList = data.majorCategoryList;
     const majorAddressList = data.majorAddressList;
-    
-    
-    // 희망근무 조건의 innerHTML 업데이트
-    document.getElementById("category-section").innerHTML = `
+
+    document.getElementById("categoryArea").innerHTML = `
+                <form action="/resume/updateCategory" method="post" id="updateCategoryForm">
+                    <div class="edit">
+                        <h2>희망근무 조건</h2>
+                        <button class="edit-btn" type="submit" id="updateCategoryBtn">저장</button>
+                        <button class="edit-btn" type="button" id="updateCategoryCancelBtn">취소</button>
+                    </div>
+            
+            
             <h3>업직종(최대 5개 선택 가능)</h3>
             <div>
             <ul id="selectCategoryUl"> </ul>
@@ -627,25 +633,139 @@ categoryBtn.addEventListener("click", async (e) => {
 
                     <input type="number" name="salAmount" min="0">원
                 </div>
+                </form>
         `;
 
-        // selectElement, inputElement, selectedValue 재정의 후 이벤트 바인딩
+    // selectElement, inputElement, selectedValue 재정의 후 이벤트 바인딩
     var selectElement = document.querySelector('select[name="salaryNo"]');
-    var inputElement = document.getElementsByName('salAmount')[0]; // 배열의 첫 번째 요소 접근
+    
 
     // selectElement가 존재하는지 확인한 후 이벤트 리스너 추가
     if (selectElement) {
-      selectElement.addEventListener('change', toggleInput);
+      selectElement.addEventListener("change", toggleInput);
     }
 
     // toggleInput 호출하여 초기 상태 반영
     toggleInput();
   }
+
+  const updateCategoryCancelBtn = document.getElementById(
+    "updateCategoryCancelBtn"
+  );
+  const updateCategoryForm = document.querySelector("#updateCategoryForm");
+
+  // 제출 이벤트
+  if (updateCategoryForm) {
+    updateCategoryForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      if (confirm("저장하시겠습니까?")) {
+        let workTypeList = []; // 업직종저장배열(5개까지)
+        let daysTimeList = []; // 요일시간배열
+        let addressList = []; // 희망근무지역배열(5개까지)
+        // 근무 형태 관련
+        const partTime = document.getElementById("partTime");
+        const fullTime = document.getElementById("fullTime");
+        const contractor = document.getElementById("contractor");
+        if (!partTime.checked && !fullTime.checked && !contractor.checked) {
+          alert("근무 형태를 선택해 주세요");
+          return;
+        }
+
+        // -------------- 근무일시 관련 --------------
+        const daysNoList = document.querySelectorAll(".daysNo");
+        const timeNoList = document.querySelectorAll(".timeNo");
+
+        daysTimeList = []; // 초기화
+
+        for (let i = 0; i < daysNoList.length; i++) {
+          let daysTimeObj = {}; // 빈 js 객체 생성
+
+          daysTimeObj.daysTimeNo = i; // 순서식별용 가데이터
+          daysTimeObj.daysNo = daysNoList[i].value;
+          daysTimeObj.timeNo = timeNoList[i].value;
+
+          for (let j = 0; j < daysTimeList.length; j++) {
+            if (
+              daysTimeObj.daysNo === daysTimeList[j].daysNo &&
+              daysTimeObj.timeNo === daysTimeList[j].timeNo
+            ) {
+              alert("근무 일시가 중복되었습니다. 다른 값을 선택해주세요.");
+              return; // 중복이 있을 경우 함수 종료
+            }
+          }
+
+          daysTimeList.push(daysTimeObj);
+        }
+
+        const hiddenInput3 = document.createElement("input");
+        hiddenInput3.type = "hidden";
+        hiddenInput3.name = "daysTimeList";
+        hiddenInput3.value = JSON.stringify(daysTimeList);
+
+        updateCategoryForm.appendChild(hiddenInput3);
+
+        // -------------- 업직종 관련 --------------
+        workTypeList = []; // 초기화
+
+        for (let element of selectCategoryUl.children) {
+          workTypeList.push(element.firstChild.attributes.worktypeno.value);
+        }
+
+        if (workTypeList.length == 0) {
+          alert("희망 직종을 선택 해주세요");
+          hiddenInput3.remove();
+          return;
+        }
+
+        const hiddenInput = document.createElement("input");
+        hiddenInput.type = "hidden";
+        hiddenInput.name = "workTypeList";
+        hiddenInput.value = workTypeList;
+
+        updateCategoryForm.appendChild(hiddenInput);
+
+        // ----------------- 희망근무지역 관련 ----------------
+        addressList = []; // 초기화
+
+        for (let element of selectAddressCategoryUl.children) {
+          addressList.push(
+            element.firstChild.attributes.workcondaddresstypeno.value
+          );
+        }
+
+        if (addressList.length == 0) {
+          alert("희망 근무지를 선택 해주세요");
+          hiddenInput.remove();
+          hiddenInput3.remove();
+          return;
+        }
+
+        const hiddenInput4 = document.createElement("input");
+        hiddenInput4.type = "hidden";
+        hiddenInput4.name = "addressList";
+        hiddenInput4.value = addressList;
+
+        updateCategoryForm.appendChild(hiddenInput4);
+      }
+
+      updateCategoryForm.submit();
+    });
+  }
+
+  // 취소 버튼 클릭 이벤트
+  if (updateCategoryCancelBtn) {
+    updateCategoryCancelBtn.addEventListener("click", () => {
+      if (confirm("취소하시겠습니까?")) {
+        location.reload(true);
+      }
+    });
+  }
 });
 
 function toggleInput() {
   var selectElement = document.querySelector('select[name="salaryNo"]');
-  var inputElement = document.getElementsByName('salAmount')[0];
+  var inputElement = document.getElementsByName("salAmount")[0];
   var selectedValue = selectElement.value;
 
   if (!selectElement || !inputElement || !selectedValue) {
@@ -659,7 +779,7 @@ function toggleInput() {
   } else {
     inputElement.disabled = false;
   }
-};
+}
 
 document.addEventListener("click", (event) => {
   // 수정 버튼 클릭 이벤트
@@ -686,8 +806,6 @@ document.addEventListener("click", (event) => {
   // 저장 버튼 클릭 이벤트
   if (event.target.id === "saveBtn") {
     if (confirm("저장하시겠습니까?")) {
-      const updatedContent = document.getElementById("updateContent").value;
-
       // 서버로 업데이트 요청
       fetch("/resume/updateContent", {
         // 서버 엔드포인트 URL

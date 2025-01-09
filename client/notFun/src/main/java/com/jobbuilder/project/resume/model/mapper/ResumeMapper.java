@@ -57,4 +57,10 @@ public interface ResumeMapper {
 
 	int insertResumeAddress(Map<String, Object> map);
 
+	/** 이력서 업데이트
+	 * @param resume
+	 * @return
+	 */
+	int updateCategory(Resume resume);
+
 }

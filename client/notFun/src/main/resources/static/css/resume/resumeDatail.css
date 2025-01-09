@@ -374,7 +374,7 @@ input[type="number"] {
 
 /* 제출 버튼 */
 .submit-btn,
-.cancel-btn {
+.updateCategoryCancelBtn {
 	width: 100%;
 	padding: 15px;
 	border: none;
@@ -390,7 +390,7 @@ input[type="number"] {
 	color: #fff;
 }
 
-.cancel-btn {
+.updateCategoryCancelBtn {
 	border: 2px solid #543A14;
 	color: #543A14;
 }
