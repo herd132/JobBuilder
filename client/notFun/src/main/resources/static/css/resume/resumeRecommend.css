@@ -224,3 +224,81 @@
 #recruitmentSearch button:hover {
   background-color: #0056b3;
 }
+
+/* 전체 섹션 스타일 */
+.form-section {
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 10px 20px;
+  max-width: 900px;
+  background-color: #fff;
+  margin: 20px auto;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* 경력 정보 스타일 */
+.header-info {
+  display: flex;
+  justify-content: flex-end; /* 최종 수정일 오른쪽 정렬 */
+  margin-bottom: 10px;
+}
+
+.header-info .last-updated {
+  font-size: 0.9em;
+  color: #777;
+}
+
+/* 세부 정보 스타일 */
+.details {
+  margin-top: 1rem;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3열 배치 */
+  gap: 10px 8rem; /* 항목 간격 */
+  
+}
+
+.detail-item {
+  display: flex;
+  align-items: center; /* 텍스트 수직 정렬 */
+}
+
+
+.detail-item2 {
+  margin-top: 0.7rem;
+  display: flex;
+  align-items: center; /* 텍스트 수직 정렬 */
+  margin-bottom: 1rem;
+}
+
+.detail-item2 .label {
+  font-weight: bold;
+  color: #333;
+  margin-right: 5px; /* 라벨과 내용 간 여백 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.detail-item2 .content {
+  font-size: 0.9em;
+  color: #555;
+  overflow: hidden; /* 내용이 너무 길 경우 잘리도록 설정 */
+  text-overflow: ellipsis;
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+
+.detail-item .label {
+  font-weight: bold;
+  color: #333;
+  margin-right: 5px; /* 라벨과 내용 간 여백 */
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.detail-item .content {
+  font-size: 0.9em;
+  color: #555;
+  overflow: hidden; /* 내용이 너무 길 경우 잘리도록 설정 */
+  text-overflow: ellipsis;
+  white-space: nowrap; /* 줄바꿈 방지 */
+}
+

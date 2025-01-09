@@ -18,6 +18,7 @@ const initializePage = async () => {
       return;
     }
 
+    console.log("서버에서 받은 데이터:", data);
     globalResumeList = data.resumeList || [];
     resumeCount = globalResumeList.length; // 이력서 개수 동기화
     updateUI(); // 데이터가 없는 경우에도 UI 초기화
@@ -120,7 +121,7 @@ const updateResumeStatus = async (resumeNo, updateType, value, index) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ resumeNo, updateType, value }),
     });
-
+    
     const result = await response.json();
     if (result.success) {
       alert("상태가 성공적으로 업데이트되었습니다.");

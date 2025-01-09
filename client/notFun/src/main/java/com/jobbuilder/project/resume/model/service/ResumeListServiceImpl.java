@@ -1,5 +1,7 @@
 package com.jobbuilder.project.resume.model.service;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -72,6 +74,27 @@ public class ResumeListServiceImpl implements ResumeListService {
     public List<ResumeDaysTime> resumeDaysTime(int resumeNo) {			// 근무일시 배열
        	return mapper.resumeDaysTime(resumeNo);
     }
+    @Override
+    public List<String> workcondAddressTypeInfo(int resumeNo) {			// 희망지역 배열
+       	return mapper.workcondAddressTypeInfo(resumeNo);
+    }
+    
+    // 근로자 유효성 검사
+    @Override
+    public Map<String, Object> getResumecheck(int resumeNo, int workerNo) {
+        Map<String, Object> params = Map.of("resumeNo", resumeNo, "workerNo", workerNo);
+        return mapper.getResumecheck(params); 
+    }
+
+    // 고용주 유효성 검사
+	@Override
+	public Map<String, Object> getEmployercheck(int resumeNo, int employerNo) {
+	     Map<String, Object> params = Map.of("resumeNo", resumeNo, "employerNo", employerNo);
+	     return mapper.getEmployercheck(params); 
+	}
+
+
+
     
     
     // 자기소개 수정 예제

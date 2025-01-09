@@ -20,55 +20,52 @@
 
   <div class="recruitmentList-gray">
     <main class="recruitmentList-white">
-      <h2>맞춤 알바 추천 목록</h2>
+      <h2>맞춤 공고 목록</h2>
+      
+      
+      <section class="form-section">
 
-      <div class="edit">
-        <h2>희망근무 조건</h2>
-    </div>
-    <section class="form-section">
-        <h3>
-            <div class="item">
-                근무직종 :
-                <div class="subitem-container" id="resumeWorkType"></div>
-            </div>
-        </h3>
+        <!-- 경력 정보 -->
+        <div class="header-info">
+          <div class="last-updated">최종 수정일: <span id="writetime"></span></div>
+        </div>
+      
+        <!-- 세부 정보 -->
+        <div class="details">
+          <div class="detail-item">
+            <span class="label">근무지역:</span>
+            <span class="content" id="workcondAddressTypeInfo"></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">근무형태:</span>
+            <span class="content" id="resumeJobTypeList"></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">근무기간:</span>
+            <span class="content" id="periodName"></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">근무요일:</span>
+            <span class="content" id="dayList"></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">근무시간:</span>
+            <span class="content" id="timeList"></span>
+          </div>
+          <div class="detail-item">
+            <span class="label">희망급여:</span>
+            <span class="content" id="salary">)</span>
+          </div>
+        </div>
 
-        <h3>
-            <div class="item">
-                근무형태 :
-                <div class="subitem-container" id="resumeJobTypeList"></div>
-            </div>
-        </h3>
-
-        <h3>
-            <div class="item">
-                근무기간 :
-                <span class="subitem" id="periodName"></span>
-            </div>
-        </h3>
-
-        <h3>
-            <div class="item">
-                근무요일 :
-                <div class="subitem-container" id="dayList"></span>
-                </div>
-        </h3>
-
-        <h3>
-            <div class="item">
-                근무시간 :
-                <div class="subitem-container" id="timeList"></div>
-            </div>
-        </h3>
-
-        <h3>
-            <div class="item">
-                희망급여 :
-                <span class="subitem" id="salary"></span>
-            </div>
-        </h3>
-
-    </section>
+          <div class="detail-item2">
+            <span class="label">근무직종:</span>
+            <span class="content" id="resumeWorkType"></span>
+          </div>
+       
+      
+      </section>
+      
 
       <div class="list-wrapper">
         <table class="list-table">
@@ -133,7 +130,13 @@
     </main>
   </div>
 
+  <div id="recommendationList">
+    <!-- 추천 공고 리스트가 렌더링됩니다 -->
+</div>
 
+<div id="pagination">
+    <!-- 페이지네이션 버튼이 렌더링됩니다 -->
+</div>
 
   <script th:inline="javascript">
     const resumeNo = /*[[${resumeNo}]]*/1;

@@ -5,18 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>잘못된 접근</title>
     <script>
+const lastAccessTimeKey = 'lastAccessTime'; // 접근 시간 키
+const currentTime = Date.now(); // 현재 시간 (밀리초)
 
-let navigateCount = sessionStorage.getItem("navigateCount") || 0; // 이동 횟수를 세션 스토리지에서 확인
+const lastAccessTime = sessionStorage.getItem(lastAccessTimeKey);
 
-if (navigateCount == 0) {
+if (!lastAccessTime) {
+    // 첫 번째 접근: 잘못된 접근 처리
     alert("잘못된 접근 방식입니다."); // 경고창 표시
-    sessionStorage.setItem("navigateCount", ++navigateCount); // 이동 횟수 증가
+    sessionStorage.setItem(lastAccessTimeKey, currentTime); // 현재 시간을 저장
     history.back(); // 이전 페이지로 이동
-} else if (navigateCount == 1) {
-    sessionStorage.removeItem("navigateCount"); // 초기화
-    window.location.href = "/"; // 메인 페이지 URL로 이동
-}
+} else {
+    const timeDifference = currentTime - parseInt(lastAccessTime, 10); // 밀리초 차이 계산
 
+    if (timeDifference < 2000) {
+        // 마지막 접근 이후 2초 이내에 다시 접근한 경우 메인 페이지로 리다이렉트
+        sessionStorage.removeItem(lastAccessTimeKey); // 초기화
+        alert("잘못된 접근이 연속되어 메인페이지로 이동합니다.");
+        window.location.href = "/"; // 메인 페이지로 이동
+    } else {
+        // 2초 이상 경과한 경우 상태를 업데이트
+        sessionStorage.setItem(lastAccessTimeKey, currentTime); // 현재 시간으로 갱신
+        alert("잘못된 접근 방식입니다.");
+        history.back();
+    }
+}
 
     </script>
 </head>

@@ -4,10 +4,11 @@ let careerInfoData = {};
 let resumeDaysTimeData = {};
 let resumeJobTypeListData = {};
 let resumeWorkTypeData = {};
+let workcondAddressTypeInfoData = {};
 
 // 경력 변환
-const formatCareer = (totalCareer) => {
-  if (!totalCareer || totalCareer <= 0) return "신입";
+const formatCareer = (totalCareer, career) => {
+  if (career == 0) return "신입";
   const totalMonths = Math.floor(totalCareer / 30);
   const years = Math.floor(totalMonths / 12);
   const months = totalMonths % 12;
@@ -46,7 +47,7 @@ const formatSalary = (salaryNo, salaryAmount, salaryName = "") => {
 
 
 // UI 업데이트 함수
-const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType ) => {
+const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo ) => {
 
   const writetime = resume.modificationDate ? resume.modificationDate : resume.registrationDate;
   document.getElementById("writetime").innerHTML = `${formatTime(writetime)}`;  
@@ -79,8 +80,7 @@ const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWor
   const gradeName = resume.gradeName; // 서버에서 가져온 학력 정보
   document.getElementById("gradeName").innerHTML = `학력 : ${gradeName}`;
   
-
-  if (resume.totalCareer > 0) {
+  if (careerInfo.length > 0) {
     // 경력 토글 부분 생성
     const careerSection = document.getElementById("career-section");
     const careerToggle = `
@@ -92,7 +92,7 @@ const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWor
     careerSection.insertAdjacentHTML("afterbegin", careerToggle); // 기존 구조 유지하며 추가
 
     // 경력 표시
-    const content = `경력 : ${formatCareer(resume.totalCareer)}`;
+    const content = `경력 : ${formatCareer(resume.totalCareer, careerInfo.length)}`;
     document.getElementById("content").innerHTML = content;
 
     // careerInfo 배열을 반복하여 테이블에 데이터 추가
@@ -130,6 +130,15 @@ const updateUI = ( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWor
         <h3>경력 : 신입</h3>
     `;
 }
+
+// 근무지역 배열
+const workcondAddressTypeList = document.getElementById("workcondAddressTypeInfo");
+workcondAddressTypeInfo.forEach((item) => {
+    const span = document.createElement("span");
+    span.textContent = item; // 텍스트 내용 설정
+    span.classList.add("subitem"); // CSS 클래스 추가
+    workcondAddressTypeList.appendChild(span);
+});
 
 // 근무직종 배열
 const workTypeList = document.getElementById("resumeWorkType");
@@ -194,7 +203,7 @@ fetch("/resume/resumeDetaila", {
     console.log("서버에서 받은 데이터:", data);
 
     // 데이터 분해
-    const { resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType } = data;
+    const { resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo } = data;
 
     // 전역함수에 넣기
     resumeData = resume;
@@ -202,9 +211,10 @@ fetch("/resume/resumeDetaila", {
     resumeDaysTimeData = resumeDaysTime;
     resumeJobTypeListData = resumeJobTypeList;
     resumeWorkTypeData = resumeWorkType;
+    workcondAddressTypeInfoData = workcondAddressTypeInfo;
 
     // UI 업데이트 호출
-    updateUI( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType );
+    updateUI( resume, careerInfo,resumeDaysTime,resumeJobTypeList,resumeWorkType,workcondAddressTypeInfo );
   })
   .catch((error) => {
     console.error("요청 오류:", error);
