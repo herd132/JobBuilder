@@ -6,19 +6,26 @@ const boardContainer = document.querySelector(".board-container");
 
 // 비동기 함수로 글 목록을 불러오는 함수
 const fetchRequest = async () => {
+
   if (isLoading || !hasMoreData) return; // 로딩 중이거나 더 이상 데이터가 없으면 종료
   isLoading = true; // 로딩 시작
+
   try {
     // 페이지 번호를 쿼리 파라미터로 전달하여 데이터를 요청
     const resp = await fetch(`/myPageEmp/viewMyBoard?cp=${currentPage}`);
     const boardTitles = await resp.json(); // JSON 형식의 데이터 받기
 
-    if (boardTitles.length > 0) {
-      // 받은 데이터로 테이블을 업데이트
+    if (boardTitles.length > 0) {   // 받은 데이터로 테이블을 업데이트
       makeBoardList(boardTitles);
       currentPage++; // 페이지 번호 증가
+
     } else {
       hasMoreData = false; // 더 이상 로드할 데이터가 없으면 `hasMoreData`를 false로 설정
+
+      if (currentPage === 1) {  // 첫 번째 페이지 로딩 시 데이터가 없는 경우
+        showNoDataMessage();
+      }
+
       console.log("더 이상 로드할 데이터가 없습니다.");
     }
   } catch (err) {
@@ -26,6 +33,22 @@ const fetchRequest = async () => {
   } finally {
     isLoading = false; // 로딩 상태를 false로 설정
   }
+};
+
+const showNoDataMessage = () => {
+  const tbody = document.querySelector(".boardList");
+  const noDataRow = document.createElement("tr");
+  const noDataCell = document.createElement("td");
+
+    // 하나의 셀을 합쳐서 메시지를 표시하도록 colspan 사용
+  noDataCell.colSpan = 4; // 4는 테이블의 열 수 (글번호, 제목, 작성일, 조회수)
+  noDataCell.textContent = "작성한 글이 없습니다."; // 메시지 텍스트
+  noDataRow.classList.add("no-data-message");
+
+  noDataCell.style.fontSize = "40px"
+
+  noDataRow.appendChild(noDataCell);
+  tbody.appendChild(noDataRow);
 };
 
 function onScroll() {
@@ -66,6 +89,11 @@ function makeBoardList(boardTitles) {
     // 제목
     const titleCell = document.createElement("td");
     titleCell.textContent = board.boardTitle; // boardTitle
+
+    titleCell.style.cursor = "pointer"; // 마우스 커서 스타일을 포인터로 변경
+    titleCell.addEventListener("click", () => {
+      window.location.href = `http://localhost/board/${board.boardCode}/${board.boardNo}`;
+    });
 
     // 작성일 (String 형식 날짜 처리)
     const dateCell = document.createElement("td");

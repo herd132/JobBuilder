@@ -71,9 +71,9 @@ confirmByBusinessRegistrationNumberBtn.addEventListener('click', async () => {
 
     // "메인 페이지로 돌아가기" 버튼 동적 생성
     const goBackBtn = newEl('button', {}, ['go-back-btn', 'btn', 'btn-primary']);
-    goBackBtn.innerText = "메인 페이지로 돌아가기";
+    goBackBtn.innerText = "로그인 페이지로 돌아가기";
     goBackBtn.addEventListener("click", () => {
-      window.location.href = "http://localhost/"; // 메인 페이지로 리다이렉트
+      window.location.href = "http://localhost/multiLogin"; // 로그인 페이지로 리다이렉트
     });
 
     findEmailContainer.appendChild(goBackBtn);
@@ -135,9 +135,9 @@ confirmByMemberTelBtn.addEventListener('click', async () => {
 
     // "메인 페이지로 돌아가기" 버튼 동적 생성
     const goBackBtn = newEl('button', {}, ['go-back-btn', 'btn', 'btn-primary']);
-    goBackBtn.innerText = "메인 페이지로 돌아가기";
+    goBackBtn.innerText = "로그인 페이지로 돌아가기";
     goBackBtn.addEventListener("click", () => {
-      window.location.href = "http://localhost/"; // 메인 페이지로 리다이렉트
+      window.location.href = "http://localhost/multiLogin"; // 로그인 페이지로 리다이렉트
     });
 
     findEmailContainer.appendChild(goBackBtn);

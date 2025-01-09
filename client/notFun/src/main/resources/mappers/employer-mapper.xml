@@ -47,6 +47,14 @@
 			AND AUTHORITY_NO = 1
 	</select>
 	
+	<!-- 고용주 비밀번호 새로 설정 -->
+	<update id="changePw">
+		UPDATE "MEMBER"
+		SET MEMBER_PW = #{memberPw}
+		WHERE MEMBER_EMAIL = #{memberEmail}
+	</update>
+	
+	
 <!-- 고용주 회원가입 -->
 	<!-- 이메일 중복검사(고용주만 검색) -->
 	<select id="checkEmail">

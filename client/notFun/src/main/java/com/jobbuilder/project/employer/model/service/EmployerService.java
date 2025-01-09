@@ -34,6 +34,12 @@ public interface EmployerService {
 	 * @return
 	 */
 	String checkNameEmail(Map<String, Object> map);
+	
+	/** 고용주 비밀번호 새로 설정
+	 * @param map (memberEmail, memberPw)
+	 * @return
+	 */
+	String changePw(Map<String, String> map);
 
 	/* ********** 고용주 회원가입 관련 ********** */
 	
@@ -59,12 +65,6 @@ public interface EmployerService {
 	 * @author JWJ
 	 */
 	int signUp(Employer inputEmployer, String[] businessAddress, String optionalAgree);
-
-
-
-
-
-
 
 
 
