@@ -54,7 +54,6 @@ public class OneTalkController {
 		@ResponseBody
 		public Map<String, Object> select(
 		    @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
-		    
 		    return service.selectOneTalkList(cp);
 		}
 		

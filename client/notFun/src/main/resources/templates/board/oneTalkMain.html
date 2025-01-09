@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="/css/board/oneTalkMain.css">
+    <link rel="stylesheet" href="/css/board/oneTalk.css">
 </head>
 
 <body>
@@ -15,16 +16,22 @@
 
     <h1> 한줄톡톡 </h1>
 
-    <th:block th:if="${session.loginWorker != null} or ${session.loginEmployer != null}">
-    </th:block>
     <!-- 내용 -->
     <th:block th:object="${oneTalkList}">
         <div class="board-content">
-            <textarea id="oneTalkContent" name="oneTalkContent"></textarea>
+            <span> 닉네임 : </span>
+            <th:block th:if="${session.loginEmployer != null}">
+                <th:block th:text="${session.loginEmployer?.businessName}" > 고용주 닉네임 </th:block>
+            </th:block>
+            <th:block th:if="${session.loginWorker != null}">
+                <th:block th:text="${session.loginWorker?.workerNickname}" > 알바생 닉네임 </th:block>
+            </th:block>
+            <br><br>
+            <textarea id="oneTalkContent" name="oneTalkContent" maxlength="200"></textarea>
             <button id="addoneTalk">글쓰기</button>
         </div>
     </th:block>
-
+    
     <section class="board-list">
 
         <th:block th:replace="~{board/oneTalk}"></th:block>
@@ -86,7 +93,8 @@
     <script th:inline="javascript">
         const loginWorkerNo = /*[[${session.loginWorker?.memberNo}]]*/ "로그인 근로자 번호";
         const loginEmployerNo = /*[[${session.loginEmployer?.memberNo}]]*/ "로그인 사업주 번호"
-    </script>
+        const parentOneTalkNo = "부모 댓글 번호";
+   </script>
 </body>
 
 </html>
