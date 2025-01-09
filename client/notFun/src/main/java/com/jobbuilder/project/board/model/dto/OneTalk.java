@@ -29,5 +29,6 @@ public class OneTalk {
 	
 	// 테이블 조인
 	private String workerNickname;
+	private String businessNickname;
 	private String businessName;
 }

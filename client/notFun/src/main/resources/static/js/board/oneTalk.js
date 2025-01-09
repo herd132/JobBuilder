@@ -40,10 +40,10 @@ const selectoneTalkList = () => {
           const oneTalkWriter = document.createElement("p");
           // 닉네임
           const nickname = document.createElement("span");
-          if(oneTalkList.workerNickname != null) {
-            nickname.innerText = oneTalkList.workerNickname;
+          if (oneTalk.workerNickname != null) {
+            nickname.innerText = oneTalk.workerNickname;
           } else {
-            nickname.innerText = oneTalkList.businessName;
+            nickname.innerText = oneTalk.businessNickname;
           }
 
           // 날짜(작성일)
@@ -125,7 +125,7 @@ const selectoneTalkList = () => {
       } // for 끝
     });
 };
-selectoneTalkList();
+// selectoneTalkList(); //
 // -----------------------------------------------------------------------
 
 /* ***** 댓글 등록(ajax) ***** */
@@ -155,11 +155,11 @@ addContent.addEventListener("click", (e) => {
   if (loginWorkerNo != null) {
     // ajax를 이용해 댓글 등록 요청
     data.memberNo = loginWorkerNo;
-    
+
   } else {
     data.memberNo = loginEmployerNo;
   }
-  
+
   fetch("/oneTalk", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -258,18 +258,18 @@ const insertChildoneTalk = (parentOneTalkNo, btn) => {
     textarea.focus();
     return;
   }
-  
+
   // ajax를 이용해 댓글 등록 요청
   const data = {
-    oneTalkContent: textarea.value,    
+    oneTalkContent: textarea.value,
     memberNo: loginMemberNo, // 또는 Session 회원 번호 이용도 가능
     parentOneTalkNo: parentOneTalkNo, // 부모 댓글 번호
   };
 
-  if(loginEmployerNo != null){
+  if (loginEmployerNo != null) {
     data.memberNo = loginEmployerNo;
   };
-  if(loginWorkerNo != null) {
+  if (loginWorkerNo != null) {
     data.memberNo = loginWorkerNo;
   };
 

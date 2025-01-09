@@ -12,7 +12,7 @@ public interface OneTalkMapper {
 	
 	int getListCount(); // 글 수 조회
 
-	List<OneTalk> selectOneTalkList(RowBounds rowBounds);
+	List<OneTalk> selectOneTalkList(String ex, RowBounds rowBounds2);
 
 	// 비동기 조회, 삽입, 수정, 삭제
 	List<OneTalk> select();

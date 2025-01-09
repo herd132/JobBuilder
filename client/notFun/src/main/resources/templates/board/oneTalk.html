@@ -15,46 +15,15 @@
   <div id="onetalkArea">
     <!-- 댓글 목록 -->
     <div class="onetalk-list-area">
+
+      <th:block th:if="${#lists.isEmpty(oneTalkList)}">
+        <tr>
+          <th colspan="6">게시글이 존재하지 않습니다.</th>
+        </tr>
+      </th:block>
       <ul id="oneTalkList">
 
-        <!-- 대댓글(자식)인 경우 child-onetalk 클래스 추가 -->
-        <li class="onetalk-row" th:each="oneTalk : ${oneTalkList}"
-          th:classappend="${oneTalk.parentOneTalkNo} != 0 ? child-onetalk" th:object="${oneTalk}">
-
-          <th:block th:if="*{oneTalkDelFl} == 'Y'">
-            삭제된 댓글 입니다
-          </th:block>
-
-          <p class="onetalk-content" th:text="*{oneTalkContent}">댓글 내용</p>
-
-          <th:block th:if="*{oneTalkDelFl} == 'N'">
-            <p class="onetalk-writer">
-              <th:block th:if="*{workerNickname != null}">
-                <span th:text="*{workerNickname}">닉네임</span>
-              </th:block>
-              <th:block th:if="*{businessName != null }">
-                <span th:text="*{businessName}">고용주닉네임</span>
-              </th:block>
-              <span class="onetalk-date" th:text="*{oneTalkWriteDate}">작성일</span>
-            </p>
-
-            <th:block th:if="${session.loginWorker != null or session.loginEmployer != null}">
-              <!-- 버튼 영역 --></button>
-              <div class="onetalk-btn-area">
-                <button th:onclick="|showInsertonetalk(*{oneTalkNo}, this)|">답글</button>
-
-                <!-- 로그인 회원(근로자)과 댓글 작성자가 같은 경우 -->
-                <th:block th:if="${session.loginWorker != null and session.loginWorker?.memberNo == oneTalk.memberNo}">
-                  <button th:onclick="|showUpdateonetalk(*{oneTalkNo}, this)|">수정</button>
-                  <button th:onclick="|deleteonetalk(*{oneTalkNo})|">삭제 </button>
-                </th:block>
-                <!-- 로그인 회원 (고용주) 가 댓글 작성자가 같은 경우-->
-                <th:block
-                  th:if="${session.loginEmployer != null and session.loginEmployer?.memberNo == oneTalk.memberNo}">
-                  <button th:onclick="|showUpdateonetalk(*{oneTalkNo}, this)|">수정</button>
-                  <button th:onclick="|deleteonetalk(*{oneTalkNo})|">삭제 </button>
-                </th:block>
-            </th:block>
+        
 
     </div>
     </th:block>

@@ -45,17 +45,14 @@ public class OneTalkController {
 						
 			model.addAttribute("pagination", map.get("pagination"));
 			model.addAttribute("oneTalkList" , map.get("oneTalkList"));
-			log.debug("onetalklist"+ map.get("oneTalkList"));
+			
 			return "board/oneTalkMain";
 		}
 		
 		
 		@GetMapping("select")
 		@ResponseBody
-		public List<OneTalk> select() {
-			log.debug("여기로들어오나");
-			// HttpMessageConverter가
-			// List -> JSON(문자열)로 변환해서 응답 -> JS
+		public List<OneTalk> select() {			
 			return service.select();
 		}
 		
