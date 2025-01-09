@@ -77,7 +77,7 @@
           </table>
         </div>
 
-        <div class="worktype-jobtype-preferred-support-area" style="solid red;">
+        <div class="worktype-jobtype-preferred-support-area" style="border: solid red;">
           <table>
             <tr>
               <th>업직종</th>
@@ -187,29 +187,14 @@
               <button id="updateRecruitmentBtn">수정</button>
               <button id="deleteRecruitmentBtn">삭제</button>
             </div>
-            <th:block th:if="${param.stat}">
-              <button id="goToMyRecruitmentListBtn">목록으로</button>
-            </th:block>
-            <th:block th:unless="${param.stat}">
-              <button id="goToRecruitmentListBtn">목록으로</button>
-            </th:block>
-          </th:block>
-
-          <th:block th:if="${recruitment.memberNo != session.loginEmployer?.memberNo}">
-            <button id="goToRecruitmentListBtn">목록으로</button>
           </th:block>
         </th:block>
 
         <th:block th:if="${session.loginWorker}" th:object="${session.loginWorker}">
           <button id="submitResumeBtn" th:attr="onclick='selectResumeBtn(' + ${session.loginWorker.workerNo} + ')'">
             이력서 제출</button>
-          <button id="goToRecruitmentListBtn">목록으로</button>
         </th:block>
-
-        <th:block th:if="${session.loginEmployer} == null and ${session.loginWorker} == null">
-          <button id="goToRecruitmentListBtn">목록으로</button>
-        </th:block>
-
+        <button id="goToRecruitmentListBtn" type="button" onclick="window.history.back()"> 목록으로 </button>
       </div>
     </main>
   </div>

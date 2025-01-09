@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jobbuilder.project.refined.model.mapper.RefinedMapper">
+
+
+	<resultMap id="refinedResultMap" type="Refined">
+	    <result property="resumeNo" column="RESUME_NO"/>
+	    <result property="resumeTitle" column="RESUME_TITLE"/>
+	    <result property="resumeContent" column="RESUME_CONTENT"/>
+	    <result property="workerNo" column="WORKER_NO"/>
+	    <result property="gradeNo" column="GRADE_NO"/>
+	    <result property="periodNo" column="PERIOD_NO"/>
+	    <result property="salaryNo" column="SALARY_NO"/>
+	    <result property="salaryAmount" column="SALARY_AMOUNT"/>
+	    <result property="workcondAddressNo" column="WORKCOND_ADDRESS_NO"/>
+	    <result property="registrationDate" column="REGISTRATION_DATE"/>
+	    <result property="modificationDate" column="MODIFICATION_DATE"/>
+	    <result property="resumeDelFl" column="RESUME_DEL_FL"/>
+	    <result property="resumeHideFl" column="RESUME_HIDE_FL"/>
+	    <result property="workcondAddressTypeNo" column="WORKCOND_ADDRESS_TYPE_NO"/>
+	    <result property="workcondAddressTypeInfo" column="WORKCOND_ADDRESS_TYPE_INFO"/>
+	    <result property="totalCareer" column="TOTAL_CAREER"/>
+	    <result property="jobtypeName" column="JOBTYPE_NAME"/>
+	</resultMap>
+
+
+
+
+
+
+
+
+</mapper>

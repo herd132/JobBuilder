@@ -69,14 +69,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   let currentPage = parseInt(urlParams.get("cp")) || 1; // 기본값 1
 
-  // `resumeNo`가 없는 경우 URL을 업데이트
-  if (!urlParams.has("resumeNo")) {
-    window.history.replaceState(
-      {},
-      "",
-      `${window.location.pathname}?resumeNo=${resumeNo}&cp=${currentPage}`
-    );
-  }
 
   // Fetch 요청 제거 후 데이터를 받아오는 로직 수정
   fetch("/resume/resumeRecommenda", {
@@ -84,7 +76,7 @@ document.addEventListener("DOMContentLoaded", () => {
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ resumeNo: resumeNo }),
+    body: JSON.stringify({ }),
   })
     .then((response) => response.json())
     .then((data) => {
@@ -278,7 +270,6 @@ const createPagination = (data, paginationContainer) => {
   const pagesPerGroup = 10; // 페이지 그룹당 페이지 수
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const urlParams = new URLSearchParams(window.location.search);
-  const resumeNo = urlParams.get("resumeNo");
   let currentPage = parseInt(urlParams.get("cp")) || 1;
 
   // 현재 그룹 계산
@@ -292,7 +283,7 @@ const createPagination = (data, paginationContainer) => {
   const createLink = (text, targetPage, isCurrent = false) => {
     const link = document.createElement("a");
     link.textContent = text;
-    link.href = `?resumeNo=${resumeNo}&cp=${targetPage}`;
+    link.href = `?&cp=${targetPage}`;
     link.className = "pagination-link"; // 공통 클래스 추가
 
     if (isCurrent) {
@@ -302,7 +293,7 @@ const createPagination = (data, paginationContainer) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = targetPage;
-      window.history.pushState({}, "", `?resumeNo=${resumeNo}&cp=${currentPage}`);
+      window.history.pushState({}, "", `?&cp=${currentPage}`);
       const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
       updateUI(resumeData, paginatedData, [], [], [], []);
       createPagination(data, paginationContainer); // 갱신

@@ -210,4 +210,17 @@ public class ResumeListContorller {
 		return response;
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
