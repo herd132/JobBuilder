@@ -156,7 +156,6 @@ public class RecruitmentController {
 		model.addAttribute("recruitmentList", map.get("recruitmentList"));
 		
 		log.debug("paginationRecruitment : " + map.get("paginationRecruitment"));
-		log.debug("recruitmentList : " + map.get("recruitmentList"));
 		
 		return "recruitment/recruitmentList";
 	}

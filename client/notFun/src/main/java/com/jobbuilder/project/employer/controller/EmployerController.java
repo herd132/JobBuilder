@@ -100,7 +100,23 @@ public class EmployerController {
 		return "employer/employerFindPw";
 	}
 	
-
+	/** 고용주가 가입한 (이름, 이메일) 조회
+	 * @param map(memberName, memberEmail)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("checkNameEmail")
+	public ResponseEntity<String> checkNameEmail(@RequestBody Map<String, Object> map) {
+		
+		log.debug("map :" + map);
+		
+		String result = service.checkNameEmail(map);
+		
+		if(result == null) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(result);
+		
+	}
 	
 	/** 고용주 로그인(post)
 	 * @param loginEmployer

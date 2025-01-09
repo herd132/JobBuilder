@@ -49,7 +49,7 @@ public class WookjaeEmailSerivceImpl implements WookjaeEmailService{
 			MimeMessageHelper helper =  new MimeMessageHelper(mimeMessage, true, "UTF-8");
 			
 			helper.setTo(email);
-			helper.setSubject("[jobBuilder] 회원가입 인증번호 입니다");
+			helper.setSubject("[jobBuilder] 인증번호 입니다");
 			helper.setText(loadHtml(authKey, htmlName), true);
 			helper.addInline("logo", new ClassPathResource("static/images/logo.png"));
 			

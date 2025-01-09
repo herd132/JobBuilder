@@ -41,12 +41,13 @@ function addZero(number) {
 }
 
 // 인증번호 받기 버튼 클릭 시
-sendAuthKeyBtn.addEventListener("click", () => {
+sendAuthKeyBtn.addEventListener("click", async () => {
 
   const inputName = memberNameInput.value;
 
   if(inputName.trim().length === 0){
     alert("가입자를 입력해주세요");
+    memberNameInput.focus();
     return;
   }
 
@@ -54,6 +55,7 @@ sendAuthKeyBtn.addEventListener("click", () => {
   
   if(inputEmail.trim().length === 0){
     alert("이메일을 입력해주세요");
+    memberEmailInput.focus();
     return;
   }
 
@@ -67,13 +69,27 @@ sendAuthKeyBtn.addEventListener("click", () => {
   
   console.log("간단한 유효성 검사 통과");
 
+  const resp = await fetch("/employer/checkNameEmail", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body : JSON.stringify({
+      memberName : inputName,
+      memberEmail : inputEmail
+    })
+  })
+
+  if(resp.status === 204){
+    alert("가입한 고용주가 없습니다");
+    return;
+  }
+
   authKeyMessage.innerText = "";
   min = initMin;
   sec = initSec;
   clearInterval(authTimer);
   
   // AUTH_KEY TABLE에 인증번호 DATA 생성
-  fetch("/emailEmp/signUp", {
+  fetch("/emailEmp/findPw", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: inputEmail
