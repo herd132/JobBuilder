@@ -22,16 +22,6 @@ if(goToMyRecruitmentListBtn != null){
 }
 
 
-// 공고 전체페이지에서 상세 공고 페이지 들어온 경우, 공고전체목록으로 돌아가기
-const goToRecruitmentListBtn = document.querySelector("#goToRecruitmentListBtn");
-
-if(goToRecruitmentListBtn != null){
-  goToRecruitmentListBtn.addEventListener("click", () => {
-  
-    // 요청주소 : /recruitment/detail/10?cp=1  -> /recruitment/list?cp=1
-   location.href = "/recruitment/list" + location.search;
-  })
-}
 
 // 공고작성한 고용주와와 로그인한 고용주가 일치하는 경우(수정, 삭제)
 const updateRecruitmentBtn = document.querySelector("#updateRecruitmentBtn");
