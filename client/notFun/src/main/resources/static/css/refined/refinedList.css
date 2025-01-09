@@ -280,3 +280,171 @@
   border-radius: 4px;
   padding: 5px 10px;
 }
+
+
+
+
+
+
+
+
+
+/* 바깥 뼈대 스타일 */
+#main-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* 대분류 버튼 스타일 */
+.category-btn {
+  font-size: 18px;
+  padding: 10px 20px;
+  margin: 5px;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+.category-btn.active {
+  background-color: #f0f0f0;
+  border-color: #000;
+}
+
+/* 첫 줄: 카운트 */
+#count-row {
+  margin: 10px 0;
+  font-size: 16px;
+}
+
+/* 필터 줄 */
+#filter-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+#subcategories-container, #minorcategories-container {
+  width: 48%;
+  border: 1px solid #ddd;
+  padding: 10px;
+  overflow-y: auto;
+  height: 150px;
+}
+
+#subcategories-list, #minorcategories-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+/* 세 번째 줄: 선택된 소분류 */
+#selected-minorcategories {
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ddd;
+  min-height: 50px;
+}
+
+#selected-list li {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+/* 초기화 버튼 */
+#reset-btn {
+  display: block;
+  margin: 10px auto;
+  padding: 10px 20px;
+  background-color: #f00;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+
+.count-badge {
+  font-size: 12px;
+  color: #fff;
+  background-color: #f00;
+  border-radius: 50%;
+  padding: 2px 5px;
+  display: none; /* 숫자가 0일 때 숨김 */
+}
+
+/* 세 번째 줄 선택된 요소 */
+#selected-list li {
+  display: inline-block;
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #f0f0f0;
+  border: 1px solid #ddd;
+  cursor: pointer;
+}
+
+/* 대분류 스타일 */
+.category-btn {
+  font-size: 16px;
+  padding: 8px 15px;
+  margin: 5px;
+  cursor: pointer;
+}
+.category-btn.active {
+  background-color: #f0f0f0;
+  border: 1px solid #000;
+}
+
+/* 중분류/소분류 리스트 스타일 */
+#subcategories-list li,
+#minorcategories-list li {
+  margin: 5px;
+  padding: 5px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  display: inline-block;
+}
+#subcategories-list li.active,
+#minorcategories-list li.active {
+  background-color: #d0e7ff;
+}
+
+/* 선택된 소분류 */
+#selected-list li {
+  margin: 5px;
+  padding: 5px 10px;
+  display: inline-block;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.count-badge {
+  font-size: 12px;
+  color: #fff;
+  background-color: #f00;
+  border-radius: 50%;
+  padding: 2px 5px;
+  display: none; /* 기본값 숨김 */
+  
+}
+
+/* 활성화 상태 스타일 */
+.category-btn.active .count-badge {
+  display: inline-block;
+}
+
+#selected-list li {
+  margin: 5px;
+  padding: 5px 10px;
+  display: inline-block;
+  background-color: #f0f0f0;
+  cursor: pointer;
+}
+
+.category-count {
+  font-size: 14px;
+  color: red;
+  margin-left: 5px;
+  display: none; /* 초기 상태는 숨김 */
+  visibility:hidden;
+}

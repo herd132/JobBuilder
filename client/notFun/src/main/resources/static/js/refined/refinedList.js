@@ -1,3 +1,281 @@
+// Mock data
+const mockSubcategories = {
+  1: ["중분류1-1", "중분류1-2"],
+  2: ["중분류2-1", "중분류2-2"],
+  3: ["중분류3-1", "중분류3-2"],
+  4: ["중분류4-1", "중분류4-2"],
+};
+
+const mockMinorCategories = {
+  "중분류1-1": ["소분류1-1-1", "소분류1-1-2"],
+  "중분류1-2": ["소분류1-2-1", "소분류1-2-2" , "소분류1-2-3" , "소분류1-2-4" , "소분류1-2-5"],
+  "중분류2-1": ["소분류2-1-1", "소분류2-1-2" , "소분류2-1-3" , "소분류2-1-4" , "소분류2-1-5" , 
+                "소분류2-1-6" , "소분류2-1-7" , "소분류2-1-8" , "소분류2-1-9"],
+  "중분류2-2": ["소분류2-2-1", "소분류2-2-2" , "소분류2-2-3" , "소분류2-2-4" , "소분류2-2-5"]
+};
+
+// 상태 변수
+let selectedMinorCategories = {};
+let currentCategory = null; // 현재 선택된 대분류
+let server = []; // 서버 상태 시뮬레이션
+let serverLogIndex = 1; // 로그 인덱스
+let isInitialState = "N"; // 초기 상태 (Y: 초기 상태, N: 일반 상태)
+
+// 서버 상태를 동적으로 업데이트
+function serverUpdate() {
+  if (isInitialState === "Y") return; // 초기 상태일 경우 실행하지 않음
+
+  server.push([...Object.keys(selectedMinorCategories)]);
+  console.log(`${serverLogIndex}:`, [...server[serverLogIndex - 1]]); // 서버 상태 출력
+  serverLogIndex++;
+  isInitialState = "N"; // 일반 상태로 전환
+}
+
+// 서버를 초기 상태로 리셋
+function serverUpdate2() {
+  if (isInitialState === "Y") return; // 이미 초기 상태면 실행하지 않음
+
+  const initialData = ["초기값"];
+  server.push(initialData);
+  console.log(`${serverLogIndex}:`, initialData); // 초기값 출력
+  serverLogIndex++;
+  isInitialState = "Y"; // 초기 상태로 설정
+}
+
+// UI 카운트를 동적으로 업데이트
+function updateCount() {
+  const count = Object.keys(selectedMinorCategories).length;
+  document.getElementById("selection-count").textContent = `${count}/10`;
+  const elements = document.getElementsByClassName("count-badge");
+  Array.from(elements).forEach((element) => {
+    element.textContent = `${count}`; // count 값을 업데이트
+
+    if (count > 0) {
+      element.style.visibility = "visible"; // 1 이상일 때 보이게
+    } else {
+      element.style.visibility = "hidden"; // 0일 때 숨기기
+    }
+  });
+
+  
+  // 선택된 항목이 없으면 서버를 초기화
+  if (count === 0) {
+    serverUpdate2();
+  } else {
+    isInitialState = "N"; // 항목이 존재하면 일반 상태로 설정
+  }
+}
+
+// 특정 소분류 항목의 활성/비활성 상태를 토글
+function toggleActiveState(parentList, minorCategory, active) {
+  parentList.querySelectorAll("li").forEach((li) => {
+    if (minorCategory) {
+      if (li.dataset.id === minorCategory) {
+        li.classList.toggle("active", active);
+      }
+    } else {
+      // 모든 항목 비활성화
+      li.classList.remove("active");
+    }
+  });
+}
+
+// 특정 항목을 활성화
+function toggleActive(element, parentId) {
+  document.getElementById(parentId).querySelectorAll("li").forEach((el) => {
+    el.classList.remove("active");
+  });
+  element.classList.add("active");
+}
+
+// 대분류 변경
+function changeMainCategory(categoryId) {
+  // 대분류 변경 시 초기화
+  selectedMinorCategories = {};
+  updateSelectedList();
+  currentCategory = categoryId;
+
+  // UI 업데이트
+  renderSubcategories(categoryId);
+  renderMinorCategories(categoryId);
+
+  // 초기 상태에서 서버 초기화
+  serverUpdate2();
+}
+
+// 중분류 렌더링
+function renderSubcategories(categoryId) {
+  const subcategoriesList = document.getElementById("subcategories-list");
+  subcategoriesList.innerHTML = "";
+
+  (mockSubcategories[categoryId] || []).forEach((subcategory) => {
+    const li = document.createElement("li");
+    li.textContent = subcategory;
+    li.dataset.id = subcategory;
+
+    li.addEventListener("click", () => {
+      toggleActive(li, "subcategories-list");
+      hideAllMinorCategories();
+      showMinorCategories(subcategory);
+    });
+
+    subcategoriesList.appendChild(li);
+  });
+}
+
+// 소분류 렌더링
+function renderMinorCategories(categoryId) {
+  const minorcategoriesList = document.getElementById("minorcategories-list");
+  minorcategoriesList.innerHTML = "";
+
+  (mockSubcategories[categoryId] || []).forEach((subcategory) => {
+    (mockMinorCategories[subcategory] || []).forEach((minorCategory) => {
+      const li = document.createElement("li");
+      li.textContent = minorCategory;
+      li.dataset.id = minorCategory;
+      li.dataset.parent = subcategory;
+
+      // 이미 선택된 항목이면 활성 상태 유지
+      if (selectedMinorCategories[minorCategory]) {
+        li.classList.add("active");
+      }
+
+      li.addEventListener("click", () => toggleMinorCategory(minorCategory, li));
+      minorcategoriesList.appendChild(li);
+      li.style.display = "none"; // 기본적으로 숨김 상태
+    });
+  });
+}
+
+// 소분류 선택/해제 처리
+function toggleMinorCategory(minorCategory, li) {
+  if (selectedMinorCategories[minorCategory]) {
+    // 선택 해제
+    delete selectedMinorCategories[minorCategory];
+    li.classList.remove("active");
+  } else if (Object.keys(selectedMinorCategories).length < 10) {
+    // 선택 추가
+    selectedMinorCategories[minorCategory] = true;
+    li.classList.add("active");
+  } else {
+    // 10개 초과 시 경고 메시지 출력
+    alert("선택은 10개까지만 가능합니다.");
+    return; // 추가하지 않음
+  }
+
+  // UI와 서버 업데이트
+  updateSelectedList();
+  serverUpdate();
+}
+
+// 세 번째 줄(선택된 항목) 업데이트
+function updateSelectedList() {
+  const selectedList = document.getElementById("selected-list");
+  selectedList.innerHTML = "";
+
+  Object.keys(selectedMinorCategories).forEach((minorCategory) => {
+    const li = document.createElement("li");
+    li.textContent = `${minorCategory} X`;
+    li.dataset.id = minorCategory;
+
+    li.addEventListener("click", () => {
+      delete selectedMinorCategories[minorCategory];
+      toggleActiveState(
+        document.getElementById("minorcategories-list"),
+        minorCategory,
+        false
+      );
+      updateSelectedList();
+      serverUpdate();
+    });
+
+    selectedList.appendChild(li);
+  });
+
+  updateCount();
+}
+
+// 필터 초기화
+function resetFilters() {
+  // 상태 및 UI 초기화
+  selectedMinorCategories = {};
+  updateSelectedList();
+  toggleActiveState(document.getElementById("minorcategories-list"), null, false);
+  renderSubcategories(currentCategory);
+  hideAllMinorCategories();
+
+  // 서버 초기화
+  serverUpdate2();
+}
+
+// 오른쪽 패널의 모든 소분류 숨기기
+function hideAllMinorCategories() {
+  const minorcategoriesList = document.getElementById("minorcategories-list");
+  minorcategoriesList.querySelectorAll("li").forEach((li) => {
+    li.style.display = "none";
+  });
+}
+
+// 특정 중분류에 해당하는 소분류 표시
+function showMinorCategories(subcategory) {
+  const minorcategoriesList = document.getElementById("minorcategories-list");
+  minorcategoriesList.querySelectorAll(`[data-parent="${subcategory}"]`).forEach((li) => {
+    li.style.display = "block";
+  });
+}
+
+// UI 초기화
+function init() {
+  currentCategory = 1;
+  renderSubcategories(currentCategory);
+  renderMinorCategories(currentCategory);
+
+  document.querySelectorAll(".category-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".category-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      changeMainCategory(btn.getAttribute("data-category"));
+    });
+  });
+
+  document.getElementById("reset-btn").addEventListener("click", resetFilters);
+}
+
+// 페이지 로드 시 초기화 실행
+init();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 // 전역 변수 및 유틸리티 함수 영역
 // ----------------------------------------
 let resumeData = {};
