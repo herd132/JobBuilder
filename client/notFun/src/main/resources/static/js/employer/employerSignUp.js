@@ -251,7 +251,6 @@ sendAuthKeyBtn.addEventListener("click", () => {
     authKeyMessage.innerText = `${addZero(min)}:${addZero(sec)}`;
 
     if (min == 0 && sec == 0) {
-      // checkObj.authKey 추가(false)해야 함
       clearInterval(authTimer);
       authKeyMessage.classList.add('error');
       authKeyMessage.classList.remove('confirm');

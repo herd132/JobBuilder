@@ -1,9 +1,13 @@
 package com.jobbuilder.project.employer.controller;
 
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +22,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import oracle.jdbc.proxy.annotation.Post;
 
 @Controller
 @RequestMapping("employer")
@@ -56,6 +61,46 @@ public class EmployerController {
 	public String EmployerFindEmail () {
 		return "employer/employerFindEmail";
 	}
+	
+	/** 고용주 이메일 찾기(사업자 번호로)
+	 * @param map(memberName, businessRegistrationNumber)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("findEmailByBusinessRegistrationNumber")
+	public ResponseEntity<String> findEmailByBusinessRegistrationNumber(@RequestBody Map<String, Object> map) {
+
+		String result = service.findEmailByBusinessRegistrationNumber(map);
+		
+		if(result == null) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(result);
+	}
+	
+	/** 고용주 이메일 찾기(전화번호로)
+	 * @param map(memberName, memberTel)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("findEmailByPhoneNumber")
+	public ResponseEntity<String> findEmailByPhoneNumber(@RequestBody Map<String, Object> map){
+		
+		String result = service.findEmailByPhoneNumber(map);
+		
+		if(result == null) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(result);
+	}
+	
+	/** 고용주 비밀번호 찾기 페이지 이동(get)
+	 * @return
+	 */
+	@GetMapping("employerFindPw")
+	public String EmployerFindPw () {
+		return "employer/employerFindPw";
+	}
+	
+
 	
 	/** 고용주 로그인(post)
 	 * @param loginEmployer
