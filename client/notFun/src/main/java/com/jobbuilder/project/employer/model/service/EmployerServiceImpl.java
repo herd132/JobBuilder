@@ -39,6 +39,11 @@ public class EmployerServiceImpl implements EmployerService {
 		return mapper.checkEmail(memberEmail);
 	}
 	
+	@Override	// 전화번호 중복검사(비동기) 
+	public int checkTel(String employerTel) {
+		return mapper.checkTel(employerTel);
+	}
+	
 	@Override	// 고용주 회원가입
 	public int signUp(Employer inputEmployer, String[] businessAddress, String optionalAgree) {
 				
@@ -56,8 +61,8 @@ public class EmployerServiceImpl implements EmployerService {
 		
 		// businessRegistrationNumber 재가공(1234567890 -> 123-45-67890)
 		String brNo = inputEmployer.getBusinessRegistrationNumber().substring(0, 3) + "-" +
-						inputEmployer.getBusinessRegistrationNumber().substring(4, 6) + "-" +
-						inputEmployer.getBusinessRegistrationNumber().substring(7);
+						inputEmployer.getBusinessRegistrationNumber().substring(3, 5) + "-" +
+						inputEmployer.getBusinessRegistrationNumber().substring(5);
 		inputEmployer.setBusinessRegistrationNumber(brNo);
 		
 		log.debug("inputEmployer : " + inputEmployer);

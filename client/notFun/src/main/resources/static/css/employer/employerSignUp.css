@@ -1,0 +1,188 @@
+/* 전체 배경 */
+.employSignUp-background-gray {
+  background-color: #f8f9fa;
+  padding: 2rem;
+
+}
+
+.employSignUp-background-white{
+  width: 1000px;
+  padding: 2rem;
+  margin: 0 auto;
+}
+
+
+/* 제목 스타일 */
+h3 {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+/* 필수 입력 표시 */
+.accent {
+  color: #ff4d4f;
+  margin-right: 4px;
+}
+
+/* 폼 컨테이너 */
+.form-contioner {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* 필드셋 스타일 */
+fieldset {
+  border: none;
+  margin-bottom: 2rem;
+  padding: 0;
+}
+
+legend {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+}
+
+/* 약관 동의 영역 */
+.agree-container {
+  background-color: #f8f9fa;
+  padding: 1.5rem;
+  border-radius: 4px;
+  margin-bottom: 1rem;
+}
+
+.all-agree {
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 1rem;
+  margin-bottom: 1rem;
+}
+
+.essential-agree div,
+.optionaal-agree div {
+  margin-bottom: 0.5rem;
+}
+
+/* 사업자 확인 영역 - 강조 */
+.business-registration-number-area {
+  background-color: #f0f7ff;
+  padding: 2rem;
+  border-radius: 8px;
+  border: 2px solid #1890ff;
+}
+
+/* 입력 영역 공통 스타일 */
+.business-registration-number-area > div,
+.employer-email-area,
+.employer-certification-number-area,
+.password-area,
+.password-confirm-area,
+.phonenumber-area,
+.companyname-area,
+.business-address-area {
+  margin-bottom: 1.5rem;
+}
+
+/* 입력 필드 스타일 */
+input[type="text"],
+input[type="password"] {
+  width: 50%;
+  padding: 0.8rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+
+/* 버튼 스타일 */
+button {
+  background-color: #1890ff;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+button:hover {
+  background-color: #40a9ff;
+}
+
+/* 인풋+버튼 한줄 배치 */
+.input-button-row {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.input-button-row input {
+  flex: 0.6;
+}
+
+.input-button-row button {
+  white-space: nowrap;
+}
+
+/* 주소 입력 영역 */
+.business-address-area input {
+  margin-bottom: 0.5rem;
+}
+
+/* 안내 메시지 */
+[id$="Message"] {
+  color: #666;
+  font-size: 0.9rem;
+  margin-top: 0.5rem;
+  display: block;
+}
+
+/* 최종 버튼 영역 */
+form > div:last-child {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+form > div:last-child button {
+  min-width: 120px;
+}
+
+form > div:last-child button:last-child {
+  background-color: #666;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .employSignUp-background-gray {
+    padding: 1rem;
+  }
+  
+  .form-contioner {
+    padding: 1rem;
+  }
+  
+  .input-button-row {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .input-button-row button {
+    width: 100%;
+  }
+}
+
+
+.error {
+  color: #ff4d4f;
+  font-size: 1rem;
+}
+
+.confirm {
+  color: #52c41a;
+  font-size: 1rem;
+}
