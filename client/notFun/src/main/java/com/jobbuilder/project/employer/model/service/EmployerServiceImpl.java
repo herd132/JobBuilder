@@ -1,5 +1,7 @@
 package com.jobbuilder.project.employer.model.service;
 
+import java.util.Map;
+
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,6 +34,20 @@ public class EmployerServiceImpl implements EmployerService {
 		
 		return loginEmployer;
 	}
+	
+	
+	/* ********** 고용주 이메일/비밀번호 찾기 ********** */
+	
+	@Override	// 고용주 이메일 찾기(사업자 번호로)
+	public String findEmailByBusinessRegistrationNumber(Map<String, Object> map) {
+		return mapper.findEmailByBusinessRegistrationNumber(map);
+	}
+	
+	@Override	// 고용주 이메일 찾기(전화번호로)
+	public String findEmailByPhoneNumber(Map<String, Object> map) {
+		return mapper.findEmailByPhoneNumber(map);
+	}
+	
 	
 	/* ********** 회원가입 관련 ********** */
 	@Override	// 이메일 중복검사(비동기)

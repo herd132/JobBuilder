@@ -1,5 +1,7 @@
 package com.jobbuilder.project.employer.model.mapper;
 
+import java.util.Map;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.jobbuilder.project.employer.model.dto.Employer;
@@ -9,6 +11,22 @@ public interface EmployerMapper {
 
 	/* ********** 로그인 ********** */
 	Employer login(String memberEmail);		// email 일치한 employer 얻어오기
+	
+	
+	
+	
+	/* ********** 고용주 이메일/비밀번호 찾기 ********** */
+	/** 고용주 이메일 찾기(사업자 번호로)
+	 * @param map (memberName, businessRegistrationNumber)
+	 * @return
+	 */
+	String findEmailByBusinessRegistrationNumber(Map<String, Object> map);
+	
+	/** 고용주 이메일 찾기(전화번호로)
+	 * @param map(memberName, memberTel)
+	 * @return
+	 */
+	String findEmailByPhoneNumber(Map<String, Object> map);
 
 
 	/* ********** 회원가입 ********** */
@@ -34,6 +52,14 @@ public interface EmployerMapper {
 	 * @author JWJ
 	 */
 	int signUpEmployer(Employer inputEmployer);
+
+
+
+
+
+
+
+
 
 
 
