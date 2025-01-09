@@ -1,41 +1,89 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-</head>
-<body>
-  <h3>사업장 홍보페이지입니다.</h3>
+<h3>사업장 홍보페이지입니다.</h3>
 
-  <h1> ex - 잡코리아 </h1>
-  <table>
+<h1> ex - 잡코리아 </h1>
+<table>
+  <th:block th:object="${recruitment}">
     <tr>
       <th>대표자명 :</th>
-      <td></td>
+      <td th:text="*{memberName}"> 대표자명</td>
       <th>설립일 : </th>
-      <td></td>
+      <td th:text="*{설립일}"></td>
     </tr>
     <tr>
-      <th>직원수 : </th>
-      <td></td>
+      <th>본사 전화번호 : </th>
+      <td th:text="*{businessTel}"></td>
       <th>사업내용 : </th>
-      <td></td>
+      <td th:text="*{businessWorktype}"></td>
     </tr>
     <tr>
-      <th>업종 : </th>
-      <td></td>
-      <th>사업장 연락처 : </th>
-      <td></td>
+      <th> 기업 소개 및 비전</th>
+
+      <td th:text="*{businessContent}" colspan="3">
+        기업 소개글
+      </td>
     </tr>
-  </table>
+  </th:block>
+</table>
 
-  <table>
-    <tr>본점</tr>
-    <tr>총 사업체가 홀수일 경우 본점은 위에 100%width로, 나머지는 2개의 사업체가 width를 50%로 해서 전개개</tr>
-    <tr>짝수일 경우, 본점도 나머지 사업체와 마찬가지로 한 tr에 2개의 사업체 이미지를 삽입</tr>
-  </table>
 
-  
-</body>
-</html>
+<!-- 보유한 사업체들 나열 -->
+<table>
+  <tr>본점</tr>
+  <tr>총 사업체가 홀수일 경우 본점은 위에 100%width로, 나머지는 width를 50%로 해서 전개</tr>  
+</table>
+
+
+
+
+<!-- 이 사업주가 가지고잇는 공고들 조회 ( 전체 공고에서 memberNo가 일치하는 공고들만 조회하면 될듯 ?)-->
+<table class="list-table">
+
+  <thead>
+    <tr>
+      <th>공고 번호</th>
+      <th>공고 제목</th>
+      <th>지점명</th>
+      <th>작성일</th>
+      <th>마감일</th>
+      <th>구인완료여부</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <th:block th:if="${#lists.isEmpty(recruitmentList)}">
+      <tr>
+        <th colspan="5">작성한 공고글이 없습니다</th>
+      </tr>
+    </th:block>
+
+    <th:block th:unless="${#lists.isEmpty(recruitmentList)}">
+      <tr th:each="recruitment, iterStat : ${recruitmentList}" th:object="${recruitment}">
+        <td th:text="${iterStat.count}"></td>
+        <td>
+          <!-- 검색 안한 경우-->
+          <a th:unless="${param.key}" th:text="*{recruitmentTitle}"
+            th:href="@{/recruitment/detail/{recruitmentNo} (recruitmentNo=*{recruitmentNo}, cp=${paginationRecruitment.currentPage}, stat=myPageEmp)}"
+          />
+
+          <!-- 검색 한 경우-->
+          <a th:if="${param.key}" th:text="*{recruitmentTitle}"
+          th:href="@{/recruitment/detail/{recruitmentNo} (recruitmentNo=*{recruitmentNo}, cp=${paginationRecruitment.currentPage}, key=${param.key}, query=${param.query}, stat=myPageEmp)}"
+          />
+        </td>
+        <td th:text="*{businessNickname}"></td>
+        <td th:text="*{writeDate}"></td>
+        <td th:text="*{recruitmentDeadline}"></td>
+        <td>
+          
+          <span th:text="*{recruitCompleteFl}" th:id="|completeFl*{recruitmentNo}|"></span>
+          <button class="change-recruit-complete" th:recruitmentNo="*{recruitmentNo}"
+            th:onclick="changeRecruitComplete(this.getAttribute('recruitmentNo'))">
+            변경
+          </button>
+        </td>
+      </tr>
+    </th:block>
+  </tbody>
+
+</table>
+</div>
