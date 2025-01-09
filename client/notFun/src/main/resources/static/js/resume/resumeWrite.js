@@ -322,6 +322,7 @@ function addSelect() {
     workPartSelect.appendChild(optionTag);
   });
 
+  
   // 삭제 버튼 추가
   const deleteBtn = document.createElement("button");
   deleteBtn.innerText = "삭제";
