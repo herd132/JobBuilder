@@ -28,6 +28,15 @@
 			AND AUTHORITY_NO = 1
 	</select>
 	
+	<!-- 전화번호 중복검사(고용주만 검색)  -->
+	<select id="checkTel">
+		SELECT COUNT(*)
+		FROM "MEMBER"
+		WHERE MEMBER_DEL_FL = 'N'
+			AND MEMBER_TEL = #{memberTel}
+			AND AUTHORITY_NO = 1
+	</select>
+	
 	<!-- MEMBER TABLE 에 기본정보 삽입 -->
 	<insert id="signUpMember">
 		INSERT INTO "MEMBER"
@@ -40,12 +49,13 @@
 		SELECT MEMBER_NO
 		FROM "MEMBER"
 		WHERE MEMBER_EMAIL = #{memberEmail}
+			AND AUTHORITY_NO = 1
 	</select>
 	
 	<!-- EMPLOYER TABLE 에 추가정보 삽입 -->
 	<insert id="signUpEmployer">
 		INSERT INTO "EMPLOYER"
 		VALUES(SEQ_EMPLOYER_NO.NEXTVAL, #{businessRegistrationNumber}, #{businessName}, #{businessAddress},
-			DEFAULT, ${memberNo}, #{optionalAgreeFl}, DEFAULT, NULL)
+			${memberNo}, #{optionalAgreeFl}, DEFAULT, NULL, DEFAULT)
 	</insert>
 </mapper>

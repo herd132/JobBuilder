@@ -49,6 +49,14 @@ public class EmployerController {
 		return "employer/employerLogin";
 	}
 	
+	/** 고용주 이메일 찾기 페이지 이동(get)
+	 * @return
+	 */
+	@GetMapping("employerFindEmail")
+	public String EmployerFindEmail () {
+		return "employer/employerFindEmail";
+	}
+	
 	/** 고용주 로그인(post)
 	 * @param loginEmployer
 	 * @return
@@ -106,6 +114,16 @@ public class EmployerController {
 	@GetMapping("checkEmail")
 	public int checkEmail(@RequestParam("memberEmail") String memberEmail) {
 		return service.checkEmail(memberEmail);
+	}
+	
+	/** 전화번호 중복검사(비동기) 
+	 * @param employerTel
+	 * @return
+	 */
+	@ResponseBody
+	@GetMapping("checkTel")
+	public int chekcTel(@RequestParam("memberTel") String employerTel) {
+		return service.checkTel(employerTel);
 	}
 	
 	/** 고용주 회원가입(post)

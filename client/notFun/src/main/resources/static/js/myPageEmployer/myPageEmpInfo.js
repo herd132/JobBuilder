@@ -142,10 +142,4 @@ document.addEventListener('DOMContentLoaded', function() {
       });
   }
 
-  // 모달 외부 영역 클릭시 닫기
-  modalContainer.addEventListener('click', (e) => {
-      if (e.target === modalContainer) {
-          modalContainer.classList.add('hidden');
-      }
-  });
 });

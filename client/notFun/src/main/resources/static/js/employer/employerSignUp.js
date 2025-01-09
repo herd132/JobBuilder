@@ -365,7 +365,7 @@ memberPw.addEventListener("input", e => {
   }
 
   pwMessage.innerText = "유효한 비밀번호 형식입니다";
-  pwMessage.classList.add("confrim");
+  pwMessage.classList.add("confirm");
   pwMessage.classList.remove("error");
   checkObj.memberPw = true;
   
@@ -415,21 +415,44 @@ memberTel.addEventListener("input", e => {
     return;
   }
 
-  telMessage.innerText = "유효한 전화번호 형식입니다.";
-  telMessage.classList.add("confirm");
-  telMessage.classList.remove("error");
+  // 전화번호 중복성 검사
+  fetch("/employer/checkTel?memberTel=" + inputTel)
+  .then(resp => resp.text())
+  .then(count => {
 
-  checkObj.memberTel = true;
+    if (count > 0){
+      telMessage.innerText = "이미 사용중인 전화번호 입니다.";
+      telMessage.classList.add("error");
+      telMessage.classList.remove("confirm");
+      return;
+    }
+
+    telMessage.innerText = "유효한 전화번호 형식입니다.";
+    telMessage.classList.add("confirm");
+    telMessage.classList.remove("error");
+  
+    checkObj.memberTel = true;
+  })
+  .catch(err => console.log(err));
+
 })
 
 /* ********** 회사명/점포명 부분 ********** */
 const businessName = document.querySelector("#businessName");
+const businessNameMessage = document.querySelector("#businessNameMessage");
+
 businessName.addEventListener("input", e => {
 
   checkObj.businessName = false;
   const inputBusinessName = e.target.value;
+  businessNameMessage.innerText = "";
 
-  if(inputBusinessName.trim().length === 0) return;
+  if(inputBusinessName.trim().length === 0) {
+    businessNameMessage.innerText = "공백없이 회사명을 입력해주세요";
+    businessNameMessage.classList.remove("confirm", "error");
+    businessName.value = "";
+    return;
+  }
 
   checkObj.businessName = true;
 })

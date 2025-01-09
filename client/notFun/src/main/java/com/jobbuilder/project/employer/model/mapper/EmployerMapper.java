@@ -13,6 +13,7 @@ public interface EmployerMapper {
 
 	/* ********** 회원가입 ********** */
 	int checkEmail(String memberEmail);		// 이메일 중복검사(비동기)
+	int checkTel(String employerTel);		// 전화번호 중복검사(비동기) 
 	
 
 	/** 고용주 회원가입 (MEMBER TABLE)
@@ -33,6 +34,8 @@ public interface EmployerMapper {
 	 * @author JWJ
 	 */
 	int signUpEmployer(Employer inputEmployer);
+
+
 
 
 

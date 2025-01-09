@@ -5,7 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>사업주 회원가입페이지 입니다</title>
+
   <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/employer/employerSignUp.css">
 </head>
 
 <body>
@@ -15,7 +17,7 @@
   <div class="employSignUp-background-gray">
 
     <!-- 내용작성 부분-->
-    <div class="employSignUp-background-gray">
+    <div class="employSignUp-background-white">
       <h3>기업 회원 가입</h3>
 
       <section class="form-contioner">
@@ -39,12 +41,12 @@
                 <div>
                   <input type="checkbox" id="essentialService" class="checkAll">
                   <label for="essentialService">(필수) 서비스 이용약관 동의</label>
-                  <button class="fa-solid fa-angle-right"></button>
+                  <button type="button" class="fa-solid fa-angle-right"></button>
                 </div>
                 <div>
                   <input type="checkbox" id="essentialPersonalInfo" class="checkAll">
                   <label for="essentialPersonalInfo">(필수) 개인정보 수집 및 이용 동의</label>
-                  <button class="fa-solid fa-angle-right"></button>
+                  <button type="button" class="fa-solid fa-angle-right"></button>
                 </div>
               </div>
   
@@ -52,7 +54,7 @@
                 <div>
                   <input type="checkbox" id="optionalNotice" class="checkAll" name="optionalAgree">
                   <label for="optionalNotice">(선택) 공고추천, 멤버십혜택 알림</label>
-                  <button class="fa-solid fa-angle-right"></button>
+                  <button type="button" class="fa-solid fa-angle-right"></button>
                 </div>
               </div>
 
@@ -101,7 +103,7 @@
           <div class="email-certification-container">
             <div class="employer-email-area">
               <div><span class="accent">*</span> 이메일</div>
-              <div>
+              <div class="input-button-row">
                 <input type="text" name="memberEmail" id="memberEmail"
                   placeholder="ex) asdf1234@kh.or.kr" autocomplete="off">
                 <button type="button" id="sendAuthKeyBtn"> 인증번호 받기</button>
@@ -113,7 +115,7 @@
   
             <div class="employer-certification-number-area">
               <div><span class="accent">*</span> 인증번호</div>
-              <div>
+              <div class="input-button-row">
                 <input type="text" name="authKey" id="authKey" maxlength="6"
                   placeholder="인증번호 6자리 입력" autocomplete="off">
                 <button type="button" id="checkAuthKeyBtn"> 인증하기</button>
@@ -162,6 +164,9 @@
               <div><span class="accent">*</span> 회사명/점포명</div>
               <div>
                 <input type="text" name="businessName" id="businessName">
+              </div>
+              <div>
+                <span id="businessNameMessage">회사명을 입력해주세요</span>
               </div>
             </div>
           </div>

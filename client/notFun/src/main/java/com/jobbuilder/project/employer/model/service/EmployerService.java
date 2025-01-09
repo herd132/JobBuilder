@@ -20,6 +20,12 @@ public interface EmployerService {
 	 */
 	int checkEmail(String memberEmail);
 	
+	/** 전화번호 중복검사(비동기) 
+	 * @param employerTel
+	 * @return
+	 */
+	int checkTel(String employerTel);
+	
 	/** 회원가입
 	 * @param inputEmployer(memberEmail, memberPw, memberName, memberTel,
 	 * 						businessRegistrationNumber, businessName)
@@ -29,8 +35,6 @@ public interface EmployerService {
 	 * @author JWJ
 	 */
 	int signUp(Employer inputEmployer, String[] businessAddress, String optionalAgree);
-
-
 
 
 

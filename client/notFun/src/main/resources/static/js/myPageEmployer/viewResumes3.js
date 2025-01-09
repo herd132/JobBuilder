@@ -177,12 +177,7 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
-// 어두운 배경 클릭 시 모달 닫기
-modal.addEventListener("click", (event) => {
-  if (event.target === modal) {
-    closeModal();
-  }
-});
+
 
 // 데이터 불러오기
 init();
