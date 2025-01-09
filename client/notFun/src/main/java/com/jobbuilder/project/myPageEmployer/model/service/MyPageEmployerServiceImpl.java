@@ -171,7 +171,7 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	
 	@Override	// 내가 쓴 글 목록 불러오기
 	public List<Board> viewMyBoard(int memberNo, int cp) {
-		int limit = 14;
+		int limit = 12;
 		int offset = (cp - 1) * limit;
 		RowBounds rowBounds =  new RowBounds(offset, limit);
 		
