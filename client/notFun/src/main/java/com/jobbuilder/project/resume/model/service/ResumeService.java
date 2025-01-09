@@ -44,6 +44,17 @@ public interface ResumeService {
 	 */
 	int writeResume(Resume resume, List<String> workTypeList, List<String> addressList, List<Integer> jobTypeNoList, List<CareerInfo> careerInfoList, List<ResumeDaysTime> daysTimeList);
 
+	/** 희망근무 조건 업데이트
+	 * @param resume
+	 * @param workTypeList
+	 * @param addressList
+	 * @param jobTypeNoList
+	 * @param daysTimeListJson
+	 * @return
+	 */
+	int updateCategory(Resume resume, List<String> workTypeList, List<String> addressList, List<Integer> jobTypeNoList,
+			String daysTimeListJson);
+
 
 
 

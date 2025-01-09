@@ -7,15 +7,13 @@ let careerType = "newbie"; // 초기값 신입
 let workTypeList = []; // 업직종저장배열(5개까지)
 let careerInfoList = []; // 경력사항배열
 let daysTimeList = []; // 요일시간배열
-let addressList = []; 
-
-
+let addressList = []; // 희망근무지역배열(5개까지)
 
 function toggleInput() {
   var selectElement = document.querySelector('select[name="salaryNo"]');
-  var inputElement = document.getElementsByName('salAmount')[0]; // 배열의 첫 번째 요소 접근
+  var inputElement = document.getElementsByName("salAmount")[0]; // 배열의 첫 번째 요소 접근
   var selectedValue = selectElement.value;
-  
+
   // "추후협의(시급)" 또는 "추후협의(월급)"이 선택되면 input 비활성화
   if (selectedValue == "3" || selectedValue == "4") {
     inputElement.disabled = true;
@@ -25,7 +23,6 @@ function toggleInput() {
 }
 
 toggleInput();
-
 
 function showInputs(isExperienced) {
   // inputContainer 안의 모든 폼 요소들에 대해 disabled 속성 설정
@@ -184,7 +181,9 @@ const selectDetailAddress = async (workcondAddressTypeNo) => {
   }
 };
 
-const selectAddressCategoryUl = document.querySelector("#selectAddressCategoryUl");
+const selectAddressCategoryUl = document.querySelector(
+  "#selectAddressCategoryUl"
+);
 
 const addSubAddressCategory = (liSubAddressName) => {
   const selectAddressCategory = document.querySelectorAll(".select-address");
@@ -371,14 +370,14 @@ const inputTitle = document.querySelector(".inputTitle");
 writeResumeForm.addEventListener("submit", (e) => {
   e.preventDefault();
 
-    // -------------- 자기소개 필수로 변경---------------
-    if(textarea.value.trim().length == 0){
-      alert("자기소개를 입력해 주세요");
-      return;
-    }
+  // -------------- 자기소개 필수로 변경---------------
+  if (textarea.value.trim().length == 0) {
+    alert("자기소개를 입력해 주세요");
+    return;
+  }
 
   // -------------- 제목 입력 필수로 변경 --------------
-  if(inputTitle.value.trim().length == 0){
+  if (inputTitle.value.trim().length == 0) {
     alert("제목을 입력 해주세요");
     return;
   }
@@ -386,7 +385,7 @@ writeResumeForm.addEventListener("submit", (e) => {
   // -------------- 근무형태 관련 ------------
   const partTime = document.getElementById("partTime");
   const fullTime = document.getElementById("fullTime");
-	const contractor = document.getElementById("contractor")
+  const contractor = document.getElementById("contractor");
   if (!partTime.checked && !fullTime.checked && !contractor.checked) {
     alert("근무 형태를 선택해 주세요");
     return;
@@ -417,10 +416,13 @@ writeResumeForm.addEventListener("submit", (e) => {
         return;
       }
 
-      if (endDateList[i].value.trim() !== "" && startDateList[i].value.trim() > endDateList[i].value.trim()) {
+      if (
+        endDateList[i].value.trim() !== "" &&
+        startDateList[i].value.trim() > endDateList[i].value.trim()
+      ) {
         alert("입사일과 퇴사일을 올바르게 작성 해주세요");
         return;
-    }
+      }
 
       let careerInfoObj = {}; // 빈 js 객체 생성
 
@@ -485,10 +487,10 @@ writeResumeForm.addEventListener("submit", (e) => {
 
   if (workTypeList.length == 0) {
     alert("희망 직종을 선택 해주세요");
-		hiddenInput3.remove();
-		if(hiddenInput2) {
-			hiddenInput2.remove();
-		}
+    hiddenInput3.remove();
+    if (hiddenInput2) {
+      hiddenInput2.remove();
+    }
     return;
   }
 
@@ -499,24 +501,24 @@ writeResumeForm.addEventListener("submit", (e) => {
 
   writeResumeForm.appendChild(hiddenInput);
 
-	// ----------------- 희망근무지역 관련 ----------------
-	addressList = []; // 초기화
+  // ----------------- 희망근무지역 관련 ----------------
+  addressList = []; // 초기화
 
-	for (let element of selectAddressCategoryUl.children){
-		addressList.push(element.firstChild.attributes.workcondaddresstypeno.value)
-	}
+  for (let element of selectAddressCategoryUl.children) {
+    addressList.push(element.firstChild.attributes.workcondaddresstypeno.value);
+  }
 
-	if (addressList.length == 0) {
+  if (addressList.length == 0) {
     alert("희망 근무지를 선택 해주세요");
-		hiddenInput.remove();
-		hiddenInput3.remove();
-		if(hiddenInput2) {
-			hiddenInput2.remove();
-		}
+    hiddenInput.remove();
+    hiddenInput3.remove();
+    if (hiddenInput2) {
+      hiddenInput2.remove();
+    }
     return;
   }
 
-	const hiddenInput4 = document.createElement("input");
+  const hiddenInput4 = document.createElement("input");
   hiddenInput4.type = "hidden";
   hiddenInput4.name = "addressList";
   hiddenInput4.value = addressList;
@@ -534,7 +536,6 @@ writeResumeForm.addEventListener("submit", (e) => {
     endDate.value = "";
     careerDescription.value = "";
   }
-
 
   writeResumeForm.submit();
 });

@@ -140,4 +140,18 @@ public class ResumeServiceImpl implements ResumeService {
 		return mapper.selectSubAddress(workcondAddressTypeNo.substring(0, 2));
 	}
 
+	// 이력서 수정
+	@Override
+	public int updateCategory(Resume resume, List<String> workTypeList, List<String> addressList,
+			List<Integer> jobTypeNoList, String daysTimeListJson) {
+		
+		int result = mapper.updateCategory(resume);
+		log.debug("result : " + result);
+		if (result == 0) {
+			throw new RuntimeException("RESUME 삽입 중 예외 발생");
+		}
+		
+		return 0;
+	}
+
 }

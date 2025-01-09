@@ -43,29 +43,29 @@ public class ResumeController {
 
 	@ResponseBody
 	@PostMapping("selectCategory")
-	 public Map<String, Object> selectCategory(Model model) {
-	    List<Map<String, String>> majorCategoryList = service.selectMajorCategory();
-	    List<Map<String, String>> majorAddressList = service.selectAddressList();
+	public Map<String, Object> selectCategory(Model model) {
+		List<Map<String, String>> majorCategoryList = service.selectMajorCategory();
+		List<Map<String, String>> majorAddressList = service.selectAddressList();
 
-	    Map<String, Object> response = new HashMap<>();
-	    response.put("majorCategoryList", majorCategoryList);
-	    response.put("majorAddressList", majorAddressList);
+		Map<String, Object> response = new HashMap<>();
+		response.put("majorCategoryList", majorCategoryList);
+		response.put("majorAddressList", majorAddressList);
 
-	    return response;  // JSON 형태로 반환
-    }
-	
+		return response; // JSON 형태로 반환
+	}
+
 	@GetMapping("writeResume")
 	public String writeResume(@SessionAttribute("loginWorker") Worker loginWorker, Model model) {
 
 		String year = loginWorker.getWorkerBirthDate().substring(0, 4);
 		model.addAttribute("year", year);
-		
+
 		List<Map<String, String>> majorCategoryList = service.selectMajorCategory();
 		model.addAttribute("majorCategoryList", majorCategoryList);
-		
-		List<Map<String,String>> majorAddressList = service.selectAddressList();
+
+		List<Map<String, String>> majorAddressList = service.selectAddressList();
 		model.addAttribute("majorAddressList", majorAddressList);
-		
+
 		return "resume/writeResume";
 	}
 
@@ -81,106 +81,158 @@ public class ResumeController {
 		return service.selectsubCategoryList(workTypeNo);
 	}
 
-	/** 주소 소분류 불러오기(사업장 추가페이지 내)
+	/**
+	 * 주소 소분류 불러오기(사업장 추가페이지 내)
+	 * 
 	 * @param workcondAddressTypeNo
 	 * @return
 	 */
 	@ResponseBody
 	@GetMapping("selectSubAddress/{workcondAddressTypeNo}")
-	private List<Map<String, String>> subAddressList(@PathVariable("workcondAddressTypeNo") String workcondAddressTypeNo){
+	private List<Map<String, String>> subAddressList(
+			@PathVariable("workcondAddressTypeNo") String workcondAddressTypeNo) {
 		return service.selectSubAddress(workcondAddressTypeNo);
 	}
-	
-	
-	/** 이력서 작성 제출
+
+	/**
+	 * 이력서 작성 제출
+	 * 
 	 * @param loginWorker
-	 * @param gradeNo 학력구분
-	 * @param periodNo 기간구분
-	 * @param salaryNo 급여형태
-	 * @param salaryAmount 희망급여
-	 * @param workTypeList 희망업종List
+	 * @param gradeNo            학력구분
+	 * @param periodNo           기간구분
+	 * @param salaryNo           급여형태
+	 * @param salaryAmount       희망급여
+	 * @param workTypeList       희망업종List
 	 * @param careerInfoListJson 경력사항List JSON
-	 * @param jobTypeNo 근로형태 list(알바/정규직)
-	 * @param daysTimeListJson 희망요일시간List JSON
-	 * @param 
+	 * @param jobTypeNo          근로형태 list(알바/정규직)
+	 * @param daysTimeListJson   희망요일시간List JSON
+	 * @param
 	 * @return
 	 * @throws JsonMappingException
 	 * @throws JsonProcessingException
 	 */
 	@PostMapping("writeResume")
-	public String writeResume(@SessionAttribute("loginWorker") Worker loginWorker, 
-			@RequestParam(value = "salAmount", defaultValue = "0") int salAmount, 
+	public String writeResume(@SessionAttribute("loginWorker") Worker loginWorker,
+			@RequestParam(value = "salAmount", defaultValue = "0") int salAmount,
 			// int형은 null을 가질 수 없어 value값을 정해주거나 Integer 로 받아야 한다
-			Resume resume,
-			@RequestParam("workTypeList") List<String> workTypeList, // 업직종고유번호 list,
+			Resume resume, @RequestParam("workTypeList") List<String> workTypeList, // 업직종고유번호 list,
 			@RequestParam("addressList") List<String> addressList, // 희망 근무지역 list
 			@RequestParam("jobTypeNo") List<Integer> jobTypeNoList, // 근무형태 list
-			@RequestParam(value ="careerInfoList", required = false) String careerInfoListJson, // 경력사항 JSON
+			@RequestParam(value = "careerInfoList", required = false) String careerInfoListJson, // 경력사항 JSON
 			@RequestParam("daysTimeList") String daysTimeListJson, // 요일날짜 JSON
-			RedirectAttributes ra
-		) throws JsonMappingException, JsonProcessingException {
+			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException {
 
 		log.debug("resume {}", resume); // gradeNo, periodNo, salaryNo, salaryAmount
 		log.debug("희망업종 workTypeList {}", workTypeList);
 		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
-		log.debug("희망급여 salAmount {} ", salAmount);		
+		log.debug("희망급여 salAmount {} ", salAmount);
 		log.debug("careerInfoListJson {}", careerInfoListJson);
 		log.debug("희망 근무지 addressList {}", addressList);
 		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson);
 
 		List<CareerInfo> careerInfoList = null;
-		if(careerInfoListJson != null) {
+		if (careerInfoListJson != null) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			careerInfoList = objectMapper.readValue(careerInfoListJson,
-					new TypeReference<List<CareerInfo>>() {
+			careerInfoList = objectMapper.readValue(careerInfoListJson, new TypeReference<List<CareerInfo>>() {
 			});
-			
+
 			// 데이터 확인
 			for (CareerInfo info : careerInfoList) {
 				log.debug("경력사항 info {}", info);
 			}
-			
+
 		}
-	
-		
+
 		log.debug("daysTimeListJson {}", daysTimeListJson);
 
 		List<ResumeDaysTime> daysTimeList = null;
-		if(daysTimeListJson != null) {
+		if (daysTimeListJson != null) {
 			ObjectMapper objectMapper = new ObjectMapper();
-			daysTimeList = objectMapper.readValue(daysTimeListJson,
-					new TypeReference<List<ResumeDaysTime>>() {
+			daysTimeList = objectMapper.readValue(daysTimeListJson, new TypeReference<List<ResumeDaysTime>>() {
 			});
-			
+
 			// 데이터 확인
 			for (ResumeDaysTime daysTime : daysTimeList) {
 				log.debug("근무요일시간 daysTime {}", daysTime);
 			}
 		}
-		
-		
-		//-------------------------
-		
+
+		// -------------------------
+
 		// resume에 근로자번호 세팅
 		resume.setWorkerNo(loginWorker.getWorkerNo());
-		
-		if(salAmount != 0) { // 희망급여가 있다면
+
+		if (salAmount != 0) { // 희망급여가 있다면
 			resume.setSalaryAmount(salAmount); // resume 객체에 세팅
-			
+
 		}
-		
-		int result = service.writeResume(resume, workTypeList, addressList, jobTypeNoList, careerInfoList, daysTimeList);
-		
+
+		int result = service.writeResume(resume, workTypeList, addressList, jobTypeNoList, careerInfoList,
+				daysTimeList);
+
 		String message = null;
-		if(result > 0) {
+		if (result > 0) {
 			message = "이력서 작성 완료";
 		} else {
 			message = "이력서 작성 실패";
 		}
-		
+
 		ra.addFlashAttribute(message);
-		
+
 		return "redirect:/myPageWorkee/myPageWorkerInfo";
+	}
+
+	@PostMapping("updateCategory")
+	public String updateCategory(@SessionAttribute("loginWorker") Worker loginWorker,
+			@RequestParam(value = "salAmount", defaultValue = "0") int salAmount,
+			Resume resume,
+			@RequestParam("workTypeList") List<String> workTypeList, // 업직종고유번호 list,
+			@RequestParam("addressList") List<String> addressList, // 희망 근무지역 list
+			@RequestParam("jobTypeNo") List<Integer> jobTypeNoList, // 근무형태 list) {
+			@RequestParam("daysTimeList") String daysTimeListJson, // 요일날짜 JSON
+			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException {
+
+		log.debug("resume : " + resume);
+		log.debug("희망업종 workTypeList {}", workTypeList);
+		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
+		log.debug("희망 근무지 addressList {}", addressList);
+		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson);
+
+		List<ResumeDaysTime> daysTimeList = null;
+		if (daysTimeListJson != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			daysTimeList = objectMapper.readValue(daysTimeListJson, new TypeReference<List<ResumeDaysTime>>() {
+			});
+
+			// 데이터 확인
+			for (ResumeDaysTime daysTime : daysTimeList) {
+				log.debug("근무요일시간 daysTime {}", daysTime);
+			}
+		}
+
+		// -------------------------
+
+		// resume에 근로자번호 세팅
+		resume.setWorkerNo(loginWorker.getWorkerNo());
+		
+		if (salAmount != 0) { // 희망급여가 있다면
+			resume.setSalaryAmount(salAmount); // resume 객체에 세팅
+
+		}
+		
+		int result = service.updateCategory(resume, workTypeList, addressList, jobTypeNoList,daysTimeListJson);
+		
+		String message = null;
+		if (result > 0) {
+			message = "이력서 업데이트 완료";
+		} else {
+			message = "이력서 업데이트 실패";
+		}
+
+		ra.addFlashAttribute(message);
+
+		return "띠용";
+
 	}
 
 }

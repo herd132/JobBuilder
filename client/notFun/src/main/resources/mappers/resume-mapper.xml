@@ -64,6 +64,18 @@
 		#{salaryNo},
 		#{salaryAmount})
 	</insert>
+	
+	<update id="updateCategory">
+	UPDATE RESUME
+    SET
+        PERIOD_NO = #{periodNo},
+        <!-- 급여형태 -->
+        SALARY_NO = #{salaryNo},
+        <!-- 희망급여 -->
+        SALARY_AMOUNT = #{salaryAmount},
+        MODIFICATION_DATE = SYSDATE
+    WHERE RESUME_NO = #{resumeNo}
+	</update>
 
 
 	<!-- 2. 이력서 관련 RESUME_PERIOD 삽입 -->
