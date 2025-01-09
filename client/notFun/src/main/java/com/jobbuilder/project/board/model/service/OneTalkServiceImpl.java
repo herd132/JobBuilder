@@ -53,7 +53,6 @@ public class OneTalkServiceImpl implements OneTalkService {
 	// 한줄톡톡 내용 조회
 	@Override
 	public List<OneTalk> select() {
-		// TODO Auto-generated method stub
 		return mapper.select();
 	}
 	

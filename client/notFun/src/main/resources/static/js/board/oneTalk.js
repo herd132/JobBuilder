@@ -1,131 +1,146 @@
 /* ***** 댓글 목록 조회(ajax) ***** */
 
-const selectoneTalkList = () => {
-  // [GET]
-  // fetch(주소?쿼리스트링)
+/* 전역 변수로 현재 페이지 번호 관리 */
+let currentPage = 1;
 
-  // [POST, PUT, DELETE]
-  // fetch(주소, {method : "", header : {}, body : ""})
+/* ***** 댓글 목록 조회(ajax) ***** */
+const selectoneTalkList = (cp = 1) => {
+  currentPage = cp;
 
-  // response.json()
-  // - 응답 받은 JSON 데이터 -> JS 객체로 변환
-
-  fetch("/oneTalk/select") // GET 방식 요청
+  fetch(`/oneTalk/select?cp=${cp}`)
     .then((response) => response.json())
-    .then((oneTalkList) => {
-      // 화면에 존재하는 기존 댓글 목록 삭제 후
-      // 조회된 oneTalkList를 이용해서 새로운 댓글 목록 출력
-      // console.log(oneTalkList); // 잘 나옴
-      // ul태그(댓글 목록 감싸는 요소)
+    .then((map) => {
       const ul = document.querySelector("#oneTalkList");
-      ul.innerHTML = ""; // 기존 댓글 목록 삭제
+      ul.innerHTML = "";
 
-      /* ******* 조회된 oneTalkList를 이용해 댓글 출력 ******* */
+      const oneTalkList = map.oneTalkList;
+      const pagination = map.pagination;
+
+      // 댓글 목록 처리
       for (let oneTalk of oneTalkList) {
-        //console.log(oneTalk.memberNo);
-
-        // 행(li) 생성 + 클래스 추가
         const oneTalkRow = document.createElement("li");
         oneTalkRow.classList.add("oneTalk-row");
 
-        // 대댓글(자식 댓글)인 경우 "child-oneTalk" 클래스 추가
         if (oneTalk.parentoneTalkNo != 0)
           oneTalkRow.classList.add("child-oneTalk");
 
-        // 만약 삭제된 댓글이지만 자식 댓글이 존재하는 경우
         if (oneTalk.oneTalkDelFl == "Y")
-          oneTalkRow.innerText = "삭제된 댓글 입니다";
+          oneTalkRow.innerText = "삭제된 글 입니다";
         else {
-          // 삭제되지 않은 댓글
+          // ... (기존 댓글 렌더링 코드는 동일하게 유지)
           const oneTalkWriter = document.createElement("p");
-          // 닉네임
           const nickname = document.createElement("span");
           if (oneTalk.workerNickname != null) {
             nickname.innerText = oneTalk.workerNickname;
           } else {
-            nickname.innerText = oneTalk.businessNickname;
+            nickname.innerText = oneTalk.businessName;
           }
 
-          // 날짜(작성일)
           const oneTalkDate = document.createElement("span");
           oneTalkDate.classList.add("oneTalk-date");
           oneTalkDate.innerText = oneTalk.oneTalkWriteDate;
 
-          // 작성자 영역(oneTalkWriter)에 프로필, 닉네임, 날짜 추가
           oneTalkWriter.append(nickname, oneTalkDate);
-
-          // 댓글 행에 작성자 영역 추가
           oneTalkRow.append(oneTalkWriter);
 
-          // ----------------------------------------------------
-
-          // 댓글 내용
           const content = document.createElement("p");
           content.classList.add("oneTalk-content");
           content.innerText = oneTalk.oneTalkContent;
 
-          oneTalkRow.append(content); // 행에 내용 추가
+          oneTalkRow.append(content);
 
-          // ----------------------------------------------------
-
-          // 버튼 영역
+          // 버튼 영역 생성 (기존과 동일)
           const oneTalkBtnArea = document.createElement("div");
           oneTalkBtnArea.classList.add("oneTalk-btn-area");
 
-          // 답글 버튼
           const childoneTalkBtn = document.createElement("button");
           childoneTalkBtn.innerText = "답글";
-
-          // 답글 버튼에 onclick 이벤트 리스너 추가
           childoneTalkBtn.setAttribute(
             "onclick",
             `showInsertoneTalk(${oneTalk.oneTalkNo}, this)`
           );
 
-          // 버튼 영역에 답글 추가
           oneTalkBtnArea.append(childoneTalkBtn);
-
-          // 로그인한 회원 번호가 댓글 작성자 번호와 같을 때
-          // 댓글 수정/삭제 버튼 출력
 
           if (
             (loginWorkerNo != null && loginWorkerNo == oneTalk.memberNo) ||
             (loginEmployerNo != null && loginEmployerNo == oneTalk.memberNo)
           ) {
-            // 수정 버튼
             const updateBtn = document.createElement("button");
             updateBtn.innerText = "수정";
-
-            // 수정 버튼에 onclick 이벤트 리스너 추가
             updateBtn.setAttribute(
               "onclick",
               `showUpdateoneTalk(${oneTalk.oneTalkNo}, this)`
             );
 
-            // 삭제 버튼
             const deleteBtn = document.createElement("button");
             deleteBtn.innerText = "삭제";
-
-            // 삭제 버튼에 onclick 이벤트 리스너 추가
             deleteBtn.setAttribute(
               "onclick",
               `deleteoneTalk(${oneTalk.oneTalkNo})`
             );
 
-            // 버튼 영역에 수정, 삭제 버튼 추가
             oneTalkBtnArea.append(updateBtn, deleteBtn);
           }
 
-          // 행에 버튼 영역 추가
           oneTalkRow.append(oneTalkBtnArea);
-        } // else 끝
+        }
 
-        // 댓글 목록(ul)에 행(li) 추가
         ul.append(oneTalkRow);
-      } // for 끝
+      }
+
+      // 페이지네이션 렌더링
+      updatePagination(pagination);
     });
 };
-// selectoneTalkList(); //
+
+// 페이지네이션 UI 업데이트 함수
+const updatePagination = (pagination) => {
+  const paginationArea = document.querySelector(".pagination");
+  if (!paginationArea) return;
+
+  paginationArea.innerHTML = "";
+
+  // 처음 페이지로 이동
+  const firstPage = document.createElement("li");
+  firstPage.classList.add("arrow-item");
+  firstPage.innerHTML = `<a onclick="selectoneTalkList(1)" class="arrow-icon">&#8249;&#8249;</a>`;
+  paginationArea.append(firstPage);
+
+  // 이전 목록으로 이동
+  const prevPage = document.createElement("li");
+  prevPage.classList.add("arrow-item");
+  prevPage.innerHTML = `<a onclick="selectoneTalkList(${pagination.prevPage})" class="arrow-icon">&#8249;</a>`;
+  paginationArea.append(prevPage);
+
+  // 페이지 번호 생성
+  for (let i = pagination.startPage; i <= pagination.endPage; i++) {
+    const pageNum = document.createElement("li");
+    if (i === pagination.currentPage) {
+      pageNum.innerHTML = `<a class="current">${i}</a>`;
+    } else {
+      pageNum.innerHTML = `<a onclick="selectoneTalkList(${i})">${i}</a>`;
+    }
+    paginationArea.append(pageNum);
+  }
+
+  // 다음 목록으로 이동
+  const nextPage = document.createElement("li");
+  nextPage.classList.add("arrow-item");
+  nextPage.innerHTML = `<a onclick="selectoneTalkList(${pagination.nextPage})" class="arrow-icon">&#8250;</a>`;
+  paginationArea.append(nextPage);
+
+  // 마지막 페이지로 이동
+  const maxPage = document.createElement("li");
+  maxPage.classList.add("arrow-item");
+  maxPage.innerHTML = `<a onclick="selectoneTalkList(${pagination.maxPage})" class="arrow-icon">&#8250;&#8250;</a>`;
+  paginationArea.append(maxPage);
+};
+
+// 페이지 로드 시 첫 페이지 조회
+selectoneTalkList();
+
+
 // -----------------------------------------------------------------------
 
 /* ***** 댓글 등록(ajax) ***** */
