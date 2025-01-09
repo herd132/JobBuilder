@@ -60,7 +60,7 @@
 				        SELECT 
 				            LISTAGG(D.WORKCOND_ADDRESS_TYPE_INFO, ', ') WITHIN GROUP (ORDER BY D.WORKCOND_ADDRESS_TYPE_NO)
 				        FROM 
-				            WORKCOND_ADDRESS B
+				            RESUME_ADDRESS B
 				        JOIN 
 				            WORKCOND_ADDRESS_TYPE D
 				        ON 

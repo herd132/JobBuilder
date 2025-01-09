@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
@@ -48,6 +49,8 @@ public interface ResumeListMapper {
 	
 	
 	int getRecommendationsCount(int resumeNo);
+
+	Map<String, Object> selectResumeList(int resumeNo, RowBounds rowBounds);
 
 	
 
