@@ -15,13 +15,12 @@ const selectoneTalkList = (cp = 1) => {
 
       const oneTalkList = map.oneTalkList;
       const pagination = map.pagination;
-
       // 댓글 목록 처리
       for (let oneTalk of oneTalkList) {
         const oneTalkRow = document.createElement("li");
         oneTalkRow.classList.add("oneTalk-row");
 
-        if (oneTalk.parentoneTalkNo != 0)
+        if (oneTalk.parentOneTalkNo != 0)
           oneTalkRow.classList.add("child-oneTalk");
 
         if (oneTalk.oneTalkDelFl == "Y")
@@ -54,6 +53,7 @@ const selectoneTalkList = (cp = 1) => {
           oneTalkBtnArea.classList.add("oneTalk-btn-area");
 
           const childoneTalkBtn = document.createElement("button");
+          childoneTalkBtn.classList.add("createBtn")
           childoneTalkBtn.innerText = "답글";
           childoneTalkBtn.setAttribute(
             "onclick",
@@ -67,6 +67,7 @@ const selectoneTalkList = (cp = 1) => {
             (loginEmployerNo != null && loginEmployerNo == oneTalk.memberNo)
           ) {
             const updateBtn = document.createElement("button");
+            updateBtn.classList.add("updateBtn")
             updateBtn.innerText = "수정";
             updateBtn.setAttribute(
               "onclick",
@@ -74,6 +75,7 @@ const selectoneTalkList = (cp = 1) => {
             );
 
             const deleteBtn = document.createElement("button");
+            deleteBtn.classList.add("deleteBtn");
             deleteBtn.innerText = "삭제";
             deleteBtn.setAttribute(
               "onclick",
@@ -229,6 +231,7 @@ const showInsertoneTalk = (parentOneTalkNo, btn) => {
   oneTalkBtnArea.classList.add("oneTalk-btn-area");
 
   const insertBtn = document.createElement("button");
+  insertBtn.classList.add("createBtn");
   insertBtn.innerText = "등록";
   insertBtn.setAttribute(
     "onclick",
@@ -236,6 +239,7 @@ const showInsertoneTalk = (parentOneTalkNo, btn) => {
   );
 
   const cancelBtn = document.createElement("button");
+  cancelBtn.classList.add("deleteBtn");
   cancelBtn.innerText = "취소";
   cancelBtn.setAttribute("onclick", "insertCancel(this)");
 
@@ -388,11 +392,13 @@ const showUpdateoneTalk = (oneTalkNo, btn) => {
 
   // 8. 수정 버튼 생성
   const updateBtn = document.createElement("button");
+  updateBtn.classList.add("updateBtn");
   updateBtn.innerText = "수정";
   updateBtn.setAttribute("onclick", `updateoneTalk(${oneTalkNo}, this)`);
 
   // 9. 취소 버튼 생성
   const cancelBtn = document.createElement("button");
+  cancelBtn.classList.add("deleteBtn");
   cancelBtn.innerText = "취소";
   cancelBtn.setAttribute("onclick", "updateCancel(this)");
 

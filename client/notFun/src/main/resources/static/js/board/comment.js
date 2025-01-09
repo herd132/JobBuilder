@@ -281,6 +281,19 @@ const insertChildComment = (parentCommentNo, btn) => {
   })
     .then((response) => response.text())
     .then((result) => {
+
+      if (loginWorkerNo == null && loginEmployerNo == null) {
+        alert("로그인 후 이용해 주세요");
+        return; // early return;
+      }
+    
+      // 댓글 내용이 작성되지 않은 경우
+      if (commentContentBoard.value.trim().length == 0) {
+        alert("내용 작성 후 등록 버튼을 클릭해 주세요");
+        commentContentBoard.focus();
+        return;
+      }
+      
       if (result > 0) {
         alert("답글이 등록 되었습니다");
         selectCommentList(); // 댓글 목록을 다시 조회해서 화면에 출력
