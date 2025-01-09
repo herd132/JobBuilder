@@ -52,8 +52,10 @@ public class OneTalkController {
 		
 		@GetMapping("select")
 		@ResponseBody
-		public List<OneTalk> select() {			
-			return service.select();
+		public Map<String, Object> select(
+		    @RequestParam(value = "cp", required = false, defaultValue = "1") int cp) {
+		    
+		    return service.selectOneTalkList(cp);
 		}
 		
 		// 한줄톡 등록
