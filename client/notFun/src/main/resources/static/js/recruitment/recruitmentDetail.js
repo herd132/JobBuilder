@@ -385,21 +385,4 @@ if (recommendSelect !== null ) {
       </div>
     `;
   })
-
-  // 스크롤 이벤트 핸들러
-  const handleScroll = () => {
-    const { scrollTop, scrollHeight, clientHeight } = selfBox;
-    if (scrollTop + clientHeight >= scrollHeight - 5) {
-      // fetchPhotoList();
-    }
-  };
-
-  // 초기화
-  const init = () => {
-    fetchPhotoList(); // 첫 페이지 로드
-    selfBox.addEventListener("scroll", handleScroll); // 스크롤 이벤트 등록
-  };
-
-  // 함수 호출
-  init();
 }
