@@ -650,7 +650,6 @@ document.addEventListener("DOMContentLoaded", () => {
           {
             storeId: "store-5b5cb483-ddb0-4a3b-a99f-eb4f7b4f4568",
             channelKey: "channel-key-9babdf46-a539-436f-a27c-2be22501c94c",
-            paymentId: `payment-${crypto.randomUUID()}`,
             currency: "CURRENCY_KRW",
             pay_method: "card",
             amount: sumResult, // 최종 결제 금액
