@@ -23,48 +23,51 @@
       <h2>맞춤 공고 목록</h2>
       
       
-      <section class="form-section">
-
-        <!-- 경력 정보 -->
-        <div class="header-info">
-          <div class="last-updated">최종 수정일: <span id="writetime"></span></div>
+      <div id="main-container">
+        <!-- 대분류 -->
+        <div id="category-container">
+          <button class="category-btn" data-category="1">대분류1 <span name="category-count" class="count-badge"></span></button>
+          <button class="category-btn" data-category="2">대분류2 <span name="category-count" class="count-badge"></span></button>
+          <button class="category-btn" data-category="3">대분류3 <span name="category-count" class="count-badge"></span></button>
+          <button class="category-btn" data-category="4">대분류4 <span name="category-count" class="count-badge"></span></button>
         </div>
       
-        <!-- 세부 정보 -->
-        <div class="details">
-          <div class="detail-item">
-            <span class="label">근무지역:</span>
-            <span class="content" id="workcondAddressTypeInfo"></span>
+        
+
+
+        <!-- 내부 뼈대 -->
+        <div id="content-container">
+          <!-- 첫 번째 줄: 카운트 -->
+          <div id="count-row">
+            <span id="selection-count">0/10</span>
           </div>
-          <div class="detail-item">
-            <span class="label">근무형태:</span>
-            <span class="content" id="resumeJobTypeList"></span>
+      
+          <!-- 두 번째 줄: 중분류/소분류 -->
+          <div id="filter-row">
+            <div id="subcategories-container">
+              <ul id="subcategories-list"></ul>
+            </div>
+            <div id="minorcategories-container">
+              <ul id="minorcategories-list"></ul>
+            </div>
           </div>
-          <div class="detail-item">
-            <span class="label">근무기간:</span>
-            <span class="content" id="periodName"></span>
+      
+          <!-- 세 번째 줄: 선택된 소분류 -->
+          <div id="selected-minorcategories">
+            <ul id="selected-list"></ul>
           </div>
-          <div class="detail-item">
-            <span class="label">근무요일:</span>
-            <span class="content" id="dayList"></span>
-          </div>
-          <div class="detail-item">
-            <span class="label">근무시간:</span>
-            <span class="content" id="timeList"></span>
-          </div>
-          <div class="detail-item">
-            <span class="label">희망급여:</span>
-            <span class="content" id="salary">)</span>
+      
+          <!-- 초기화 및 임시 제출 버튼 -->
+          <div id="action-buttons">
+            <button id="reset-btn">초기화</button>
           </div>
         </div>
-
-          <div class="detail-item2">
-            <span class="label">근무직종:</span>
-            <span class="content" id="resumeWorkType"></span>
-          </div>
-       
+      </div>
       
-      </section>
+      
+      
+      
+      
       
 
       <div class="list-wrapper">

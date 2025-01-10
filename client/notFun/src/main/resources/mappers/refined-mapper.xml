@@ -23,7 +23,10 @@
 	    <result property="jobtypeName" column="JOBTYPE_NAME"/>
 	</resultMap>
 
-
+	<select id="getRecruitmentList" parameterType="Refined" resultMap="refinedResultMap">
+	    SELECT * 
+	    FROM RECRUITMENT
+	</select>
 
 
 
