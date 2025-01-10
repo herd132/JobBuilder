@@ -1,14 +1,13 @@
 package com.jobbuilder.project.refined.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.jobbuilder.project.refined.model.dto.Refined;
 import com.jobbuilder.project.refined.model.mapper.RefinedMapper;
-import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
-import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +24,12 @@ public class RefinedServiceImpl implements RefinedService {
 	public List<Refined> getRecruitmentList(int recruitmentNo) {
 		return mapper.getRecruitmentList(recruitmentNo);
 	}
+	
+	@Override
+	public List<Refined> getRecruitmentListb(int recruitmentNo) {
+		return mapper.getRecruitmentListb(recruitmentNo);
+	}
+	
 	
 	/*
 	@Override
