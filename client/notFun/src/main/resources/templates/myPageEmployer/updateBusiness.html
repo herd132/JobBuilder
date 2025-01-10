@@ -54,6 +54,13 @@
             <span>변경할 사업장 별칭 : </span>
             <input type="text" name="businessNickname" id="businessNickname" th:value="*{businessNickname}">
           </div>
+
+          <h4> 사업장 소개말 </h4>
+          <div class="business-introduce">
+            <textarea type="text" name="businessIntroduce" maxlength="2000" id="businessIntroduce"
+              placeholder="ex) 저희 분점은 ~~입니다.">
+              </textarea>
+          </div>
   
           <h4 th:text="|기존 사업장 주소 : ${address}, ${detailAddress}|"></h4>
           <div class="business-address-area">

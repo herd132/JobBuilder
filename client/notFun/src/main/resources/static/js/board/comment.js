@@ -287,12 +287,7 @@ const insertChildComment = (parentCommentNo, btn) => {
         return; // early return;
       }
     
-      // 댓글 내용이 작성되지 않은 경우
-      if (commentContentBoard.value.trim().length == 0) {
-        alert("내용 작성 후 등록 버튼을 클릭해 주세요");
-        commentContentBoard.focus();
-        return;
-      }
+      
       
       if (result > 0) {
         alert("답글이 등록 되었습니다");

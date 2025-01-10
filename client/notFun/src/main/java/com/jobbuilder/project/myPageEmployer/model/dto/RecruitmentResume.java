@@ -2,6 +2,7 @@ package com.jobbuilder.project.myPageEmployer.model.dto;
 
 import java.util.List;
 
+import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.ResumeAddress;
@@ -59,8 +60,9 @@ public class RecruitmentResume {
 	private List<ResumeAddress> hopeAddressList;	// 희망 근무지역 리스트
 	private List<ResumeWorkType> hopeWorkTypeList;	// 희망 업직종 리스트
 	private String resumeContent;					// 이력서 내용
+	
 	private List<CareerInfo> careerInfoList;		// 경력사항
-
+	private List<BusinessImg> businessImgList;		// 사업장 이미지(최대 5개)
 }
 
 
