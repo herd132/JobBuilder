@@ -24,6 +24,6 @@ public interface RecommendService {
 	 * @param loginEmployer
 	 * @return
 	 */
-	int getRecommendCount(Recruitment recruitment);
+	Integer getRecommendCount(Recruitment recruitment);
 
 }

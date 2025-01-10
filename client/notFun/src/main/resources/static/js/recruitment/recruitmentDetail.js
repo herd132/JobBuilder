@@ -1,20 +1,20 @@
 console.log("recruitmentDetail.js 와 연결됨");
 
 const newEl = (tag, attr, cls) => {
-	const el = document.createElement(tag); // 요소 생성
-	for (let key in attr) {
-		el.setAttribute(key, attr[key]); // 요소에 속성 추가
-		if (key == "value") el.innerText = attr[key];
-	}
-	for (let className of cls) el.classList.add(className); // 요소에 클래스명 추가
+  const el = document.createElement(tag); // 요소 생성
+  for (let key in attr) {
+    el.setAttribute(key, attr[key]); // 요소에 속성 추가
+    if (key == "value") el.innerText = attr[key];
+  }
+  for (let className of cls) el.classList.add(className); // 요소에 클래스명 추가
 
-	return el; // 생성된 요소 반환
+  return el; // 생성된 요소 반환
 };
 
 // 마이 페이지에서 상세 공고 페이지 들어온 경우, 마이페이지로 돌아가기
 const goToMyRecruitmentListBtn = document.querySelector("#goToMyRecruitmentListBtn");
 
-if(goToMyRecruitmentListBtn != null){
+if (goToMyRecruitmentListBtn != null) {
   goToMyRecruitmentListBtn.addEventListener("click", () => {
     const urlParams = new URLSearchParams(location.search);
     location.href = "/myPageEmp/recruitmentList?cp=" + urlParams.get("cp");
@@ -27,13 +27,13 @@ if(goToMyRecruitmentListBtn != null){
 const updateRecruitmentBtn = document.querySelector("#updateRecruitmentBtn");
 const deleteRecruitmentBtn = document.querySelector("#deleteRecruitmentBtn");
 
-if(updateRecruitmentBtn != null){
+if (updateRecruitmentBtn != null) {
   updateRecruitmentBtn.addEventListener("click", () => {
     location.href = location.pathname.replace("detail", "update") + location.search;
   })
 }
 
-if(deleteRecruitmentBtn != null){
+if (deleteRecruitmentBtn != null) {
   deleteRecruitmentBtn.addEventListener("click", () => {
 
     if (!confirm("삭제 하시겠습니까?")) {
@@ -52,15 +52,15 @@ const modalArea = document.querySelector(".modal-area");            // 실제 �
 
 // 모달창 닫기 - ESC 키 
 document.addEventListener('keydown', (e) => {
-  if(e.key === 'Escape' && !modalContainer.classList.contains('hidden')) {
-      modalContainer.classList.add('hidden');
+  if (e.key === 'Escape' && !modalContainer.classList.contains('hidden')) {
+    modalContainer.classList.add('hidden');
   }
 });
 
 // 모달창 닫기 - 외부 영역 클릭 시
 modalContainer.addEventListener('click', (e) => {
   if (e.target === modalContainer) {
-      modalContainer.classList.add('hidden');
+    modalContainer.classList.add('hidden');
   }
 });
 
@@ -73,7 +73,7 @@ const selectResumeBtn = async (workerNo) => {
   console.log(typeof workerNo);
   const resp = await fetch("/recruitment/selectResume?workerNo=" + workerNo);
 
-  if(resp.status === 204){
+  if (resp.status === 204) {
     console.log("작성된 이력서가 없습니다");
     return;
   }
@@ -96,31 +96,31 @@ function openModal(data) {
 
   // 이력서 리스트를 담을 div
   const resumeListContainer = newEl('div', {}, ['resume-list']);
-  
+
   data.forEach(resume => {
     // 각 이력서 항목 생성
     const resumeItem = newEl('div', {}, ['resume-item']);
-    
+
     // 라디오 버튼 생성
     const radioInputId = 'resume_' + resume.resumeNo;
     const radioInput = newEl('input', { 'type': 'radio', 'name': 'resumeNo', 'value': resume.resumeNo, 'id': radioInputId }, []);
     const resumeTitle = newEl('span', { 'value': resume.resumeTitle || '제목 없음' }, ['resume-title']);
-    
+
     // 라디오 버튼과 제목을 감싸는 label
     const label = newEl('label', { 'for': radioInputId }, ['resume-label']);
     label.appendChild(radioInput);
     label.appendChild(resumeTitle);
 
     resumeItem.appendChild(label);
-    
+
     // 경력 여부 표시
     const careerStatus = newEl('div', {}, ['career-status']);
     if (resume.resumeCareerInfoList.length === 0) {
-        careerStatus.innerText = '신입';
+      careerStatus.innerText = '신입';
     } else {
-        careerStatus.innerText = '경력자';
+      careerStatus.innerText = '경력자';
     }
-    
+
     resumeItem.appendChild(careerStatus);
 
     // 직무 유형(Job Type) 제목 및 목록 추가
@@ -148,7 +148,7 @@ function openModal(data) {
 
     resumeItem.appendChild(workTypeTitle);
     resumeItem.appendChild(workTypeList);
-    
+
     // 근무 기간(Period) 제목 및 목록 추가
     const periodTitle = newEl('div', { 'value': '근무 기간:' }, ['section-title']);
     const periodList = newEl('div', {}, ['period-list']);
@@ -165,13 +165,13 @@ function openModal(data) {
     // 근무 시간대(Days & Time) 제목 및 목록 추가
     const daysTimeTitle = newEl('div', { 'value': '근무 시간대:' }, ['section-title']);
     const daysTimeList = newEl('div', {}, ['days-time-list']);
-    
+
     resume.resumeDaysTimeList.forEach(daysTime => {
       const daysTimeItem = newEl('div', {}, ['days-time-item']);
       daysTimeItem.innerText = `${daysTime.daysName} - ${daysTime.timeName}`;
       daysTimeList.appendChild(daysTimeItem);
     });
-    
+
     resumeItem.appendChild(daysTimeTitle);
     resumeItem.appendChild(daysTimeList);
 
@@ -185,17 +185,17 @@ function openModal(data) {
   modalArea.appendChild(confirmBtn);
 
   // "돌아가기" 버튼 추가
-  const goBackBtn = newEl('button', { 'value': '돌아가기'}, ['goBack-btn']);
+  const goBackBtn = newEl('button', { 'value': '돌아가기' }, ['goBack-btn']);
   modalArea.appendChild(goBackBtn);
 
   goBackBtn.addEventListener("click", () => {
     modalContainer.classList.add('hidden');
   })
-  
+
   // 모달 띄우기
   const modalContainer = document.querySelector('.modal-container');
   modalContainer.classList.remove('hidden');
-  
+
   // 확인 버튼 클릭 시 처리
   confirmBtn.addEventListener('click', async () => {
 
@@ -208,26 +208,26 @@ function openModal(data) {
       console.log(`선택한 이력서 번호: ${selectedResumeNo}`);
       // 선택한 이력서 번호로 추가 작업 가능
 
-      if(!confirm("선택한 이력서로 제출하시겠습니까?")){
+      if (!confirm("선택한 이력서로 제출하시겠습니까?")) {
         return;
       }
-      
+
       // 무결성 검사
       const url = location.pathname.replace("detail", "confirm") + `?resumeNo=${selectedResumeNo}`
       const resp = await fetch(url);
 
-      if(resp.status === 204){
+      if (resp.status === 204) {
         alert("동일한 공고에 이미 제출한 이력서입니다");
         return;
       }
 
       // PFK 테이블에 집어넣는 요청
       location.href = location.pathname.replace("detail", "submit") + `?resumeNo=${selectedResumeNo}`;
-      
+
     } else {
       alert('이력서를 선택해주세요.');
     }
-    
+
   });
 }
 /* 상세 공고 에서 띄울 사항
@@ -277,30 +277,45 @@ const createRecommendResumeList = () => {
   let path = window.location.pathname;
   path = path.substring(path.lastIndexOf('/') + 1, path.length);
 
+  recommendModal.classList.add('active');
+  recommendModalOutside.style.height = document.body.offsetHeight + 'px';
+  recommendModalOutside.style.display = 'block';
 
-  fetch("/recommend/resume?recruitmentNo="+ path)
-  .then(resp => resp.json())
-  .then(resumeList => {
-    
-    resumeGrid.innerHTML = '';
+  fetch("/recommend/resume?recruitmentNo=" + path)
+    .then(resp => resp.json())
+    .then(resumeList => {
 
-    console.log
-    
-    resumeList.map(resume => {
-      const profileImg = resume.profileImg !== undefined ? resume.profileImg : '/images/avatar.png';
-      let carrer = resume.carrerStr.split("^^^")[0] == "-&&&1개월 미만" ? 
-                    '등록된 경력이 없습니다.' : resume.carrerStr.split("^^^");
-      let str = "";
-      if( Array.isArray(carrer)) {
-        carrer.map((c, index) => {
-          let arr = c.split("&&&");
-          str += arr[0];
-          str += arr[1] !== '' ? `(${arr[1]})<br>` : '(경력 기간 미입력)';
-        });
-      } else {
-        str = carrer;
+      if (resumeList.length == 0) {
+        alert("조회되는 이력서가 없습니다.");
+        recommendModal.classList.remove('active');
+        recommendModalOutside.style.display = 'none';
+        resumeGrid.innerHTML = `
+        <div class="loadingBox">
+            <div class="dim"></div>
+            <div class="circle"></div>
+        </div>
+      `;
       }
-      resumeGrid.innerHTML += `
+
+      resumeGrid.innerHTML = '';
+
+
+      resumeList.map(resume => {
+
+        const profileImg = resume.profileImg !== undefined ? resume.profileImg : '/images/avatar.png';
+        let carrer = resume.carrerStr.split("^^^")[0] == "-&&&근무중(1개월 미만)" ?
+          '등록된 경력이 없습니다.' : resume.carrerStr.split("^^^");
+        let str = "";
+        if (Array.isArray(carrer)) {
+          carrer.map((c, index) => {
+            let arr = c.split("&&&");
+            str += arr[0];
+            str += arr[1] !== '' ? `(${arr[1]})<br>` : '(경력 기간 미입력)';
+          });
+        } else {
+          str = carrer;
+        }
+        resumeGrid.innerHTML += `
       <div class="resume-card">
         <div class="resume-header">
           <img src="${profileImg}" alt="Profile image" class="profile-image">
@@ -331,23 +346,25 @@ const createRecommendResumeList = () => {
           <div class="career-title">주요 경력</div>
           <div class="career-detail">
             ${str}
+          </div><br>
+          <div class="career-title">희망 업직종</div>
+          <div class="career-detail">
+            ${resume.workCategory}
           </div>
         </div>
         <a class="view-button" href="/resume/resumeDetail?resumeNo=${resume.resumeNo}">이력서 보기</a>
       </div>
     `
-    });
-  })
+
+      });
+    })
 }
 
 // 모달창 관련 이벤트 및 변수들
-if (recommendSelect !== null ) {
+if (recommendSelect !== null) {
   recommendSelect.addEventListener("click", () => {
 
     createRecommendResumeList();
-    recommendModal.classList.add('active');
-    recommendModalOutside.style.height = document.body.offsetHeight + 'px';
-    recommendModalOutside.style.display = 'block';
   });
 
   recommendModal.addEventListener("mouseenter", () => {
@@ -359,7 +376,7 @@ if (recommendSelect !== null ) {
     width: 100%;
     `;
   });
-  
+
   recommendModal.addEventListener("mouseleave", () => {
     document.body.style.cssText = '';
     window.scrollTo(0, windowScoll);
@@ -378,38 +395,70 @@ if (recommendSelect !== null ) {
 }
 
 
-var map = new naver.maps.Map("map", {
-  center: new naver.maps.LatLng(37.5112, 127.0981), // 잠실 롯데월드를 중심으로 하는 지도
-  zoom: 15,
-});
 
+// 지도 api 작성
+let coordinateX;
+let coordinateY;
+let map;
 
+document.addEventListener("DOMContentLoaded", () => {
+  const mapElement = document.querySelector("#map");
+  const chatNo = mapElement?.getAttribute("chat-no");
 
-const xCoordi = document.querySelector("#xCoordi");     // lng 경도
-const yCoordi = document.querySelector("#yCoordi");     // lat 위도
-
-naver.maps.Service.geocode({ query: '올림픽로35길 130' }, function(status, response) {
-  if (status === naver.maps.Service.Status.ERROR) {
-    return alert('Something wrong!');
+  if (!chatNo) {
+    console.error("chat-no 속성을 찾을 수 없습니다.");
+    return;
   }
 
-  // 성공 시의 response 처리
-  var result = response.v2, 
-  items = result.addresses;
+  const address = chatNo.split("^^^");
 
-  console.log(items);
+  naver.maps.Service.geocode({ query: address[1] }, function (status, response) {
+    if (status === naver.maps.Service.Status.ERROR) {
+      return alert("Something wrong!");
+    }
 
-  xCoordi.innerHTML = items[0].x;
-  yCoordi.innerHTML = items[0].y;
-  setMarkers(items[0].y, items[0].x);
+    var result = response.v2,
+      items = result.addresses;
+
+    coordinateX = items[0].x;
+    coordinateY = items[0].y;
+
+    // 지도 초기화 및 마커 생성
+    workplace(coordinateY, coordinateX);
+    setTimeout(() => {
+      addressMarkers(coordinateY, coordinateX);
+      // toiletMarkers('37.7087662', '126.7817724');
+    }, 100); // 약간의 딜레이 추가
+  });
 });
 
-// 다중마커 예제
-function setMarkers(lat, lng) {
-  var marker = new naver.maps.Marker({
-    position: new naver.maps.LatLng(lat, lng),
-    map: map
+// 지도 초기화
+function workplace(Y, X) {
+  map = new naver.maps.Map("map", {
+    center: new naver.maps.LatLng(Y, X),
+    zoom: 16,
   });
 }
 
-setMarkers(37.5112, 127.0981);
+function addressMarkers(Y, X) {
+  new naver.maps.Marker({
+    position: new naver.maps.LatLng(Y, X),
+    map: map,
+    icon: {
+      url: '/images/address.png',
+      scale: 0.5, // 50% 크기로 축소
+    }
+  });
+}
+
+// 화장실 마커 함수
+function toiletMarkers(Y, X) {
+  new naver.maps.Marker({
+    position: new naver.maps.LatLng(Y, X),
+    map: map,
+    icon: {
+      url: '/images/toilet.png',
+      scale: 0.5, // 50% 크기로 축소
+    }
+  });
+}

@@ -36,7 +36,7 @@ public class RecommendServiceImpl implements RecommendService{
 
 	// 상세 조회 시 추천 이력서 수 조회 카운트
 	@Override
-	public int getRecommendCount(Recruitment recruitment) {
+	public Integer getRecommendCount(Recruitment recruitment) {
 		
 		return mapper.getRecommendCount(recruitment);
 	}
