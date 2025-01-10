@@ -6,44 +6,56 @@
 	<!-- 대분류 리스트 얻어오기 -->
 	<select id="selectMajorCategory">
 		SELECT SUBSTR(WORKTYPE_NO, 1, 2) AS "workTypeNo",
-		SUBSTR(WORKTYPE_CATEGORY, 1, INSTR(WORKTYPE_CATEGORY, '전체')-2) AS "majorCategoryName"
+		SUBSTR(WORKTYPE_CATEGORY, 1, INSTR(WORKTYPE_CATEGORY, '전체')-2) AS
+		"majorCategoryName"
 		FROM EMPLOYER_WORKTYPE
 		WHERE WORKTYPE_NO LIKE '__00'
 	</select>
 
 	<!-- workType 가 일치한 소분류 업직종 불러오기 -->
 	<select id="selectsubCategoryList">
-		SELECT WORKTYPE_NO AS "workTypeNo", WORKTYPE_CATEGORY AS "worktypeCategory"
+		SELECT WORKTYPE_NO AS "workTypeNo", WORKTYPE_CATEGORY
+		AS "worktypeCategory"
 		FROM EMPLOYER_WORKTYPE
-		WHERE WORKTYPE_NO LIKE #{workTypeNo}||'__'
+		WHERE WORKTYPE_NO LIKE
+		#{workTypeNo}||'__'
 		AND WORKTYPE_NO NOT LIKE '__00'
 	</select>
-	
+
 	<!-- 주소 대분류 불러오기 -->
 	<select id="selectAddressList">
-		SELECT WORKCOND_ADDRESS_TYPE_NO AS "workcondAddressTypeNo",
-			WORKCOND_ADDRESS_TYPE_INFO AS "workcondAddressTypeInfo"
+		SELECT WORKCOND_ADDRESS_TYPE_NO AS
+		"workcondAddressTypeNo",
+		WORKCOND_ADDRESS_TYPE_INFO AS
+		"workcondAddressTypeInfo"
 		FROM WORKCOND_ADDRESS_TYPE
-		WHERE WORKCOND_ADDRESS_TYPE_NO LIKE '__00'
+		WHERE
+		WORKCOND_ADDRESS_TYPE_NO LIKE '__00'
 	</select>
-	
+
 	<!-- 주소 소분류 불러오기 -->
 	<select id="selectSubAddress">
-		SELECT WORKCOND_ADDRESS_TYPE_NO AS "workcondAddressTypeNo",
-			WORKCOND_ADDRESS_TYPE_INFO AS "workcondAddressTypeInfo"
+		SELECT WORKCOND_ADDRESS_TYPE_NO AS
+		"workcondAddressTypeNo",
+		WORKCOND_ADDRESS_TYPE_INFO AS
+		"workcondAddressTypeInfo"
 		FROM WORKCOND_ADDRESS_TYPE
-		WHERE WORKCOND_ADDRESS_TYPE_NO LIKE #{workcondAddressTypeNo}||'__'
-			AND WORKCOND_ADDRESS_TYPE_NO NOT LIKE '__00'
+		WHERE
+		WORKCOND_ADDRESS_TYPE_NO LIKE #{workcondAddressTypeNo}||'__'
+		AND
+		WORKCOND_ADDRESS_TYPE_NO NOT LIKE '__00'
 	</select>
-	
+
 
 	<!-- <insert id="writeResume"> INSERT INTO RESUME (RESUME_NO, WORKER_NO, 
 		GRADE_NO, WORK_DATE_NO, PAY_TYPE, INPUT_PAY) VALUES (SEQ_RESUME_NO.NEXTVAL, 
 		#{workerNo}, #{gradeNo}, #{workDateNo}, #{payType}, #{inputPay}) </insert> -->
 
 	<!-- 1. 이력서 기본 작성 -->
-	<insert id="insertResume" useGeneratedKeys="true" parameterType="Resume">
-		<selectKey order="BEFORE" resultType="_int" keyProperty="resumeNo">
+	<insert id="insertResume" useGeneratedKeys="true"
+		parameterType="Resume">
+		<selectKey order="BEFORE" resultType="_int"
+			keyProperty="resumeNo">
 			SELECT SEQ_RESUME_NO.NEXTVAL FROM DUAL
 		</selectKey>
 		INSERT INTO RESUME (
@@ -64,86 +76,145 @@
 		#{salaryNo},
 		#{salaryAmount})
 	</insert>
-	
+
 	<update id="updateCategory">
-	UPDATE RESUME
-    SET
-        PERIOD_NO = #{periodNo},
-        <!-- 급여형태 -->
-        SALARY_NO = #{salaryNo},
-        <!-- 희망급여 -->
-        SALARY_AMOUNT = #{salaryAmount},
-        MODIFICATION_DATE = SYSDATE
-    WHERE RESUME_NO = #{resumeNo}
+		UPDATE RESUME
+		SET
+		PERIOD_NO = #{periodNo},
+		<!-- 급여형태 -->
+		SALARY_NO = #{salaryNo},
+		<!-- 희망급여 -->
+		SALARY_AMOUNT = #{salaryAmount},
+		MODIFICATION_DATE = SYSDATE
+		WHERE
+		RESUME_NO = #{resumeNo}
 	</update>
+
 
 
 	<!-- 2. 이력서 관련 RESUME_PERIOD 삽입 -->
 	<insert id="insertResumePeriod">
-		INSERT INTO RESUME_PERIOD VALUES(#{resumeNo}, #{periodNo})
+		INSERT INTO RESUME_PERIOD VALUES(#{resumeNo},
+		#{periodNo})
 	</insert>
+
+	<!-- 2. 이력서 관련 RESUME_PERIOD 수정 -->
+	<update id="updateCategoryperiod">
+		UPDATE RESUME_PERIOD
+		SET
+		PERIOD_NO = #{periodNo}
+		WHERE
+		RESUME_NO = #{resumeNo}
+	</update>
 
 	<!-- 3. 이력서 관련 RESUME_WORKTYPE 삽입 -->
 	<insert id="insertResumeWorkType" parameterType="map">
 		INSERT INTO RESUME_WORKTYPE (RESUME_NO, WORKTYPE_NO)
 		SELECT * FROM (
-        <foreach collection="workTypeList" item="workTypeNo" separator="UNION ALL">
-            SELECT #{resumeNo}, #{workTypeNo} FROM DUAL
-        </foreach>
-    	)
+		<foreach collection="workTypeList" item="workTypeNo"
+			separator="UNION ALL">
+			SELECT #{resumeNo}, #{workTypeNo} FROM DUAL
+		</foreach>
+		)
 	</insert>
-	
+
+	<!-- 3. 이력서 관련 RESUME_WORKTYPE 수정 -->
+	<update id="updateCategoryWorkType" parameterType="map">
+		<foreach collection="workTypeList" item="workTypeNo"
+			separator=" ">
+			UPDATE RESUME_WORKTYPE
+			SET WORKTYPE_NO = #{workTypeNo}
+			WHERE
+			RESUME_NO = #{resumeNo}
+		</foreach>
+	</update>
+
 	<!-- 이력서 관련 RESUME_ADDRESS 삽입 -->
 	<insert id="insertResumeAddress" parameterType="map">
 		INSERT INTO RESUME_ADDRESS (RESUME_NO, WORKCOND_ADDRESS_TYPE_NO)
 		SELECT * FROM (
-        <foreach collection="addressList" item="workcondAddressTypeNo" separator="UNION ALL">
-            SELECT #{resumeNo}, #{workcondAddressTypeNo} FROM DUAL
-        </foreach>
-    	)
+		<foreach collection="addressList" item="workcondAddressTypeNo"
+			separator="UNION ALL">
+			SELECT #{resumeNo}, #{workcondAddressTypeNo} FROM DUAL
+		</foreach>
+		)
 	</insert>
-	
+
+	<!-- 이력서 관련 RESUME_ADDRESS 수정 -->
+	<update id="updateCategoryAddress" parameterType="map">
+		<foreach collection="addressList" item="workcondAddressTypeNo"
+			separator=" ">
+			UPDATE RESUME_ADDRESS
+			SET WORKCOND_ADDRESS_TYPE_NO =
+			#{workcondAddressTypeNo}
+			WHERE RESUME_NO = #{resumeNo}
+		</foreach>
+	</update>
+
 
 	<!-- 4. 이력서 관련 RESUME_JOB_TYPE 삽입 -->
 	<insert id="insertResumeJobType" parameterType="map">
 		INSERT INTO RESUME_JOB_TYPE (RESUME_NO, JOBTYPE_NO)
-	    SELECT * FROM (
-	        <foreach collection="jobTypeNoList" item="jobTypeNo" separator="UNION ALL">
-	            SELECT #{resumeNo}, #{jobTypeNo} FROM DUAL
-	        </foreach>
-	    )
+		SELECT * FROM (
+		<foreach collection="jobTypeNoList" item="jobTypeNo"
+			separator="UNION ALL">
+			SELECT #{resumeNo}, #{jobTypeNo} FROM DUAL
+		</foreach>
+		)
 	</insert>
+
+	<update id="updateCategoryJobType" parameterType="map">
+  <foreach collection="jobTypeNoList" item="jobTypeNo">
+    DELETE FROM RESUME_JOB_TYPE
+    WHERE RESUME_NO = #{resumeNo}
+    AND JOBTYPE_NO = #{jobTypeNo}
+  </foreach>
+</update>
 
 
 	<!-- 5. 이력서 관련 RESUME_DAYSTIME 삽입 -->
 	<insert id="insertResumeDaysTime">
 		INSERT INTO RESUME_DAYSTIME (RESUME_NO, DAYS_NO, TIME_NO)
-	    SELECT * FROM (
-	        <foreach collection="list" item="item" separator="UNION ALL">
-	            SELECT #{item.resumeNo}, #{item.daysNo}, #{item.timeNo} FROM DUAL
-	        </foreach>
-	    )
+		SELECT * FROM
+		(
+		<foreach collection="list" item="item" separator="UNION ALL">
+			SELECT
+			#{item.resumeNo}, #{item.daysNo}, #{item.timeNo} FROM DUAL
+		</foreach>
+		)
 	</insert>
+
+	<!-- RESUME_DAYSTIME 수정 -->
+	<update id="updateCategoryDaysTime" parameterType="map">
+		<foreach collection="list" item="item" separator=" ">
+			UPDATE RESUME_DAYSTIME
+			SET DAYS_NO = #{item.daysNo}, TIME_NO = #{item.timeNo}
+			WHERE RESUME_NO = #{item.resumeNo}
+		</foreach>
+	</update>
 
 
 	<!-- 6-1. 이력서 관련 CAREER_INFO 삽입 -->
-	<insert id="insertCareerInfo"  parameterType="CareerInfo" useGeneratedKeys="true">
-		<selectKey order="BEFORE" resultType="_int" keyProperty="careerNo">
+	<insert id="insertCareerInfo" parameterType="CareerInfo"
+		useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int"
+			keyProperty="careerNo">
 			SELECT SEQ_CAREER_INFO_NO.NEXTVAL FROM DUAL
 		</selectKey>
 		INSERT INTO CAREER_INFO VALUES (
-		#{careerNo}, 
-		#{companyName}, 
-		TO_DATE(#{startDate}, 'yyyy-MM-dd'), 
-		TO_DATE(#{endDate}, 'yyyy-MM-dd'), 
+		#{careerNo},
+		#{companyName},
+		TO_DATE(#{startDate}, 'yyyy-MM-dd'),
+		TO_DATE(#{endDate}, 'yyyy-MM-dd'),
 		#{careerDescription},
 		#{workerNo}
 		)
 	</insert>
 
-	<!-- 6-2. 이력서 관련 RESUME_CAREER 삽입-->
+	<!-- 6-2. 이력서 관련 RESUME_CAREER 삽입 -->
 	<insert id="insertResumeCareer" parameterType="map">
-		INSERT INTO RESUME_CAREER VALUES (#{resumeNo}, #{careerNo})
+		INSERT INTO
+		RESUME_CAREER VALUES (#{resumeNo}, #{careerNo})
 	</insert>
 
 
