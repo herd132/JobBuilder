@@ -48,6 +48,24 @@ public class EmployerServiceImpl implements EmployerService {
 		return mapper.findEmailByPhoneNumber(map);
 	}
 	
+	@Override	// 고용주가 가입한 (이름, 이메일) 조회
+	public String checkNameEmail(Map<String, Object> map) {
+		return mapper.checkNameEmail(map);
+	}
+	
+	@Override	// 고용주 비밀번호 새로 설정
+	public String changePw(Map<String, String> map) {
+		String encPw = bcrypt.encode((String) map.get("memberPw"));
+		
+		map.put("memberPw", encPw);
+		
+		log.debug("서비스단 map : " + map);
+		
+		int result = mapper.changePw(map);
+		
+		if(result > 0) return "변경성공";
+		else return null;
+	}
 	
 	/* ********** 회원가입 관련 ********** */
 	@Override	// 이메일 중복검사(비동기)

@@ -27,6 +27,18 @@ public interface EmployerMapper {
 	 * @return
 	 */
 	String findEmailByPhoneNumber(Map<String, Object> map);
+	
+	/** 고용주가 가입한 (이름, 이메일) 조회
+	 * @param map (memberName, memberEmail)
+	 * @return
+	 */
+	String checkNameEmail(Map<String, Object> map);
+	
+	/** 고용주 비밀번호 새로 설정
+	 * @param map (memberEmail, encPw)
+	 * @return
+	 */
+	int changePw(Map<String, String> map);
 
 
 	/* ********** 회원가입 ********** */
@@ -52,19 +64,6 @@ public interface EmployerMapper {
 	 * @author JWJ
 	 */
 	int signUpEmployer(Employer inputEmployer);
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

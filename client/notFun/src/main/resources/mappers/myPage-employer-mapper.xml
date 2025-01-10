@@ -198,7 +198,7 @@
 <!-- 내가 쓴 글 페이지 관련 -->
 	<!-- 내가 쓴 글 목록 불러오기 -->
 	<select id="viewMyBoard">
-		SELECT BOARD_NO, BOARD_TITLE, BOARD_WRITE_DATE, BOARD_READ_COUNT
+		SELECT BOARD_NO, BOARD_TITLE, BOARD_WRITE_DATE, BOARD_READ_COUNT, BOARD_CODE
 		FROM "BOARD"
 		WHERE MEMBER_NO = #{memberNo}
 			AND BOARD_DEL_FL = 'N'

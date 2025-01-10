@@ -1,21 +1,53 @@
 console.log("employerFindPw.js 와 연결됨");
 
+const newEl = (tag, attr, cls) => {
+  const el = document.createElement(tag); // 요소 생성
+  for (let key in attr) el.setAttribute(key, attr[key]); // 요소에 속성 추가
+  for (let className of cls) el.classList.add(className); // 요소에 클래스명 추가
+
+  return el; // 생성된 요소 반환
+};
+
+const findPasswordContainer = document.querySelector(".find-password-container");
+
 // 찾기방식 선택 버튼(사업자 등록번호, 전화번호)
 const businessRegistrationNumberBtn = document.querySelector('.businessRegistrationNumber-btn');
 const memberTelBtn = document.querySelector('.memberTel-btn');
 
+// 사업자 등록번호로 찾기 버튼 클릭 시
+businessRegistrationNumberBtn.addEventListener('click', function() {
+  businessRegistrationNumberArea.style.display = 'block';
+  memberTelArea.style.display = 'none';
+  confirmByBusinessRegistrationNumberBtn.style.display = 'block';
+  confirmByMemberTelBtn.style.display = 'none';
+});
+
+// 전화번호로 찾기 버튼 클릭 시
+memberTelBtn.addEventListener('click', function() {
+  memberTelArea.style.display = 'block';
+  businessRegistrationNumberArea.style.display = 'none';
+  confirmByMemberTelBtn.style.display = 'block';
+  confirmByBusinessRegistrationNumberBtn.style.display = 'none';
+});
+
 // 공통 영역 input (가입자명, 가입한 이메일)
 const memberNameInput = document.getElementById('memberName');
 const memberEmailInput = document.getElementById('memberEmail');
+const authKeyInput = document.querySelector("#authKey");
 
 // 이메일 인증 관련 버튼 (인증번호 받기, 인증하기)
 const sendAuthKeyBtn = document.getElementById('sendAuthKeyBtn');
-const confirmAuthKeyBtn = document.getElementById('confirmAuthKeyBtn');
+const checkAuthKeyBtn = document.getElementById('checkAuthKeyBtn');
 const authKeyMessage = document.querySelector("#authKeyMessage");
 
 // 선택 영역(사업자 등록번호, 전화번호)
 const businessRegistrationNumberArea = document.querySelector('.businessRegistrationNumber-area');
 const memberTelArea = document.querySelector('.memberTel-area');
+
+const businessRegistrationFirstNoInput = document.querySelector("#firstNo");
+const businessRegistrationSecondNoInput = document.querySelector("#secondNo");
+const businessRegistrationThirdNoInput = document.querySelector("#thirdNo");
+const memberTelInput = document.querySelector("#memberTel");
 
 // 확인 버튼(사업자 등록번호, 전화번호)
 const confirmByBusinessRegistrationNumberBtn = document.getElementById('confirmBybusinessRegistrationNumberBtn');
@@ -41,12 +73,13 @@ function addZero(number) {
 }
 
 // 인증번호 받기 버튼 클릭 시
-sendAuthKeyBtn.addEventListener("click", () => {
+sendAuthKeyBtn.addEventListener("click", async () => {
 
   const inputName = memberNameInput.value;
 
   if(inputName.trim().length === 0){
     alert("가입자를 입력해주세요");
+    memberNameInput.focus();
     return;
   }
 
@@ -54,6 +87,7 @@ sendAuthKeyBtn.addEventListener("click", () => {
   
   if(inputEmail.trim().length === 0){
     alert("이메일을 입력해주세요");
+    memberEmailInput.focus();
     return;
   }
 
@@ -65,7 +99,19 @@ sendAuthKeyBtn.addEventListener("click", () => {
     return;
   }
   
-  console.log("간단한 유효성 검사 통과");
+  const resp = await fetch("/employer/checkNameEmail", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body : JSON.stringify({
+      memberName : inputName,
+      memberEmail : inputEmail
+    })
+  })
+
+  if(resp.status === 204){
+    alert("가입한 고용주가 없습니다");
+    return;
+  }
 
   authKeyMessage.innerText = "";
   min = initMin;
@@ -73,7 +119,7 @@ sendAuthKeyBtn.addEventListener("click", () => {
   clearInterval(authTimer);
   
   // AUTH_KEY TABLE에 인증번호 DATA 생성
-  fetch("/emailEmp/signUp", {
+  fetch("/emailEmp/findPw", {
     method: "POST",
     headers: {"Content-Type": "application/json"},
     body: inputEmail
@@ -108,21 +154,203 @@ sendAuthKeyBtn.addEventListener("click", () => {
   }, 1000);
 })
 
+checkAuthKeyBtn.addEventListener("click", () => {
 
+  if (min == 0 && sec == 0) {
+    alert("인증번호 입력 제한시간을 초과하였습니다.");
+    return;
+  }
 
+  if (authKeyInput.value.length < 6) {
+    alert("인증번호 6자리를 입력해주세요.");
+    return;
+  }
 
-// 사업자 등록번호로 찾기 버튼 클릭 시
-businessRegistrationNumberBtn.addEventListener('click', function() {
-  businessRegistrationNumberArea.style.display = 'block';
-  memberTelArea.style.display = 'none';
-  confirmByBusinessRegistrationNumberBtn.style.display = 'block';
-  confirmByMemberTelBtn.style.display = 'none';
-});
+  const obj = {
+    "email": memberEmailInput.value,
+    "authKey": authKeyInput.value
+  };
 
-// 전화번호로 찾기 버튼 클릭 시
-memberTelBtn.addEventListener('click', function() {
-  memberTelArea.style.display = 'block';
-  businessRegistrationNumberArea.style.display = 'none';
-  confirmByMemberTelBtn.style.display = 'block';
-  confirmByBusinessRegistrationNumberBtn.style.display = 'none';
-});
+  fetch("/emailEmp/checkAuthKey", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj)
+  })
+  .then(resp => resp.text())
+  .then(result => {
+    if (result == 0) {
+      alert("인증번호가 일치하지 않습니다. 정확한 인증번호를 입력하세요");
+      return;
+    }
+  
+    clearInterval(authTimer);
+    authKeyMessage.innerText = "인증되었습니다";
+    authKeyMessage.classList.add("confirm");
+    authKeyMessage.classList.remove("error");
+
+    memberNameInput.readOnly = true;
+    memberEmailInput.readOnly = true;
+    authKeyInput.readOnly = true;
+
+    businessRegistrationFirstNoInput.disabled = false;
+    businessRegistrationSecondNoInput.disabled = false;
+    businessRegistrationThirdNoInput.disabled = false;
+    memberTel.disabled = false;
+  });
+})
+
+// 사업자등록번호로 확인 버튼 클릭 시
+confirmByBusinessRegistrationNumberBtn.addEventListener("click", async () => {
+
+  const firstNo = businessRegistrationFirstNoInput.value;
+  const secondNo = businessRegistrationSecondNoInput.value;
+  const thirdNo = businessRegistrationThirdNoInput.value;
+
+  if(firstNo.length == 0 || secondNo.length == 0 || thirdNo.length == 0){
+    alert("빈칸을 모두 채워주세요");
+    return;
+  }
+
+  const businessRegistrationNumber = `${firstNo}-${secondNo}-${thirdNo}`;
+
+  const resp = await fetch('/employer/findEmailByBusinessRegistrationNumber', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      memberName: memberNameInput.value,
+      businessRegistrationNumber: businessRegistrationNumber,
+    })
+  })
+
+  if(resp.status === 204){
+    alert("가입자명과 매칭되는 사업자 등록번호가 아닙니다.");
+    return;
+  }
+
+  const findEmail = await resp.text();
+
+  findPasswordContainer.innerHTML = `
+    <div class="success-message">사업자 등록번호를 통해 찾은 이메일은 다음과 같습니다.</div>
+    <div class="result">${findEmail}</div>
+    <div>
+      <span>새 비밀번호 입력 : </span>
+      <input type="password" name="newPw" id="newPw">
+    </div>
+    <div>
+      <span>새 비밀번호 확인 : </span>
+      <input type="password" name="newPwConfirm" id="newPwConfirm">
+    </div>
+  `;
+
+  const changePwBtn = newEl('button', {}, ['change-pw-btn', 'btn-info']);
+  changePwBtn.innerText = "비밀번호 변경";
+  changePwBtn.addEventListener("click", async () => {
+
+    const newPw = document.querySelector("#newPw");
+    const newPwConfirm = document.querySelector("#newPwConfirm");
+
+    if(newPw != null && newPwConfirm != null){
+      
+      if(newPw.value === newPwConfirm.value){
+
+        const resp = await fetch('/employer/changePw', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            memberEmail: findEmail,
+            memberPw: newPw.value
+          })
+        });
+
+        if(resp.status === 204){
+          alert("변경에 실패했습니다");
+          return;
+        }
+
+        alert("비밀번호 변경에 성공했습니다. 다시 로그인해 주세요");
+        location.href = "/multiLogin";
+
+      } else{
+        alert("비밀번호가 일치하지 않습니다");
+      }
+    }
+  });
+
+  findPasswordContainer.appendChild(changePwBtn);
+})
+
+// 전화번호로 확인 버튼 클릭 시
+confirmByMemberTelBtn.addEventListener("click", async () => {
+
+  const memberTel = memberTelInput.value;
+
+  if(memberTel.length == 0){
+    alert("전화번호를 입력해주세요");
+    return;
+  }
+
+  const resp = await fetch('/employer/findEmailByPhoneNumber', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      memberName: memberNameInput.value,
+      memberTel: memberTel,
+    })
+  })
+
+  if(resp.status === 204){
+    alert("가입자명과 매칭되는 전화번호가 아닙니다.");
+    return;
+  }
+
+  const findEmail = await resp.text();
+
+  findPasswordContainer.innerHTML = `
+    <div class="success-message">전화번호를 통해 찾은 이메일은 다음과 같습니다.</div>
+    <div class="result">${findEmail}</div>
+    <div>
+      <span>새 비밀번호 입력 : </span>
+      <input type="password" name="newPw" id="newPw">
+    </div>
+    <div>
+      <span>새 비밀번호 확인 : </span>
+      <input type="password" name="newPwConfirm" id="newPwConfirm">
+    </div>
+  `;
+
+  const changePwBtn = newEl('button', {}, ['change-pw-btn', 'btn-info']);
+  changePwBtn.innerText = "비밀번호 변경";
+  changePwBtn.addEventListener("click", async () => {
+
+    const newPw = document.querySelector("#newPw");
+    const newPwConfirm = document.querySelector("#newPwConfirm");
+
+    if(newPw != null && newPwConfirm != null){
+      
+      if(newPw.value === newPwConfirm.value){
+
+        const resp = await fetch('/employer/changePw', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            memberEmail: findEmail,
+            memberPw: newPw.value
+          })
+        });
+
+        if(resp.status === 204){
+          alert("변경에 실패했습니다");
+          return;
+        }
+
+        alert("비밀번호 변경에 성공했습니다. 다시 로그인해 주세요");
+        location.href = "/multiLogin";
+
+      } else{
+        alert("비밀번호가 일치하지 않습니다");
+      }
+    }
+  });
+
+  findPasswordContainer.appendChild(changePwBtn);
+})

@@ -100,7 +100,37 @@ public class EmployerController {
 		return "employer/employerFindPw";
 	}
 	
-
+	/** 고용주가 가입한 (이름, 이메일) 조회
+	 * @param map(memberName, memberEmail)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("checkNameEmail")
+	public ResponseEntity<String> checkNameEmail(@RequestBody Map<String, Object> map) {
+		
+		String result = service.checkNameEmail(map);
+		
+		if(result == null) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(result);
+	}
+	
+	/** 고용주 비밀번호 새로 설정
+	 * @param map(memberEmail, memberPw)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("changePw")
+	public ResponseEntity<String> changePw (@RequestBody Map<String, String> map) {
+		
+		log.debug("컨트롤러 단 map : " + map);
+		
+		String result = service.changePw(map);
+		
+		if(result == null) return ResponseEntity.noContent().build();
+		
+		return ResponseEntity.ok(result);
+	}
 	
 	/** 고용주 로그인(post)
 	 * @param loginEmployer

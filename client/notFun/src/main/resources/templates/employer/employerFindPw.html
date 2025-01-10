@@ -6,9 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>이메일 찾기 페이지입니다.</title>
 
-  <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
   <th:block th:replace="~{common/common}"></th:block>
-
+  <link rel="stylesheet" href="/css/employer/employerFindPw.css">
 </head>
 
 <body>
@@ -46,7 +45,7 @@
             <div class="input-button-row">
               <span>인증번호 : </span>
               <input type="text" name="authKey" id="authKey" placeholder="인증번호 6자리를 입력해주세요" maxlength="6" required>
-              <button id="confirmAuthKeyBtn">인증하기</button>
+              <button id="checkAuthKeyBtn">인증하기</button>
             </div>
             
             <div>

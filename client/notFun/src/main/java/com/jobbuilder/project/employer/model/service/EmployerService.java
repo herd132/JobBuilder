@@ -28,6 +28,18 @@ public interface EmployerService {
 	 * @return
 	 */
 	String findEmailByPhoneNumber(Map<String, Object> map);
+	
+	/** 고용주가 가입한 (이름, 이메일) 조회
+	 * @param map (memberName, memberEmail)
+	 * @return
+	 */
+	String checkNameEmail(Map<String, Object> map);
+	
+	/** 고용주 비밀번호 새로 설정
+	 * @param map (memberEmail, memberPw)
+	 * @return
+	 */
+	String changePw(Map<String, String> map);
 
 	/* ********** 고용주 회원가입 관련 ********** */
 	
@@ -53,10 +65,6 @@ public interface EmployerService {
 	 * @author JWJ
 	 */
 	int signUp(Employer inputEmployer, String[] businessAddress, String optionalAgree);
-
-
-
-
 
 
 

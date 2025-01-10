@@ -38,6 +38,20 @@ public class WookjaeEmailController {
 		return 0;
 	}
 	
+	/** 고용주가 비밀번호 찾기 시 이메일 보내기
+	 * @param email
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("findPw")
+	private int findPwEmp(@RequestBody String email) {
+		String authKey = service.sendEmail("findPwEmp", email);
+		
+		if(authKey != null) return 1;
+		return 0;
+	}
+	
+	
 	/** 인증번호 확인
 	 * @param map(email, authKey)
 	 * @return
