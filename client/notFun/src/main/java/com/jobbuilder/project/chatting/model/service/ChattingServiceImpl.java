@@ -1,5 +1,8 @@
 package com.jobbuilder.project.chatting.model.service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
@@ -8,10 +11,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.socket.TextMessage;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jobbuilder.project.chatting.model.dto.ChattingRoom;
 import com.jobbuilder.project.chatting.model.dto.Message;
 import com.jobbuilder.project.chatting.model.mapper.ChattingMapper;
+import com.jobbuilder.project.websocket.handler.ChatWebSocketHandler;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,7 +64,7 @@ public class ChattingServiceImpl implements ChattingService{
 	
 	// 채팅 방 유무 확인
 	@Override
-	public Map<String, Integer> checkChattingRoomNo(Map<String, Integer> map) {
+	public int checkChattingRoomNo(Map<String, Integer> map) {
 		
 		int[] counselorNoArr = mapper.getRandomCounselorNo();
 		
@@ -68,10 +74,11 @@ public class ChattingServiceImpl implements ChattingService{
 		map.put("targetNo", counselorNo);
 		
 		int chattingRoomNo = mapper.checkChattingRoomNo(map);
+		map.put("chattingRoomNo", chattingRoomNo);
 		
-		if( chattingRoomNo != 0) map.put("chattingRoomNo", chattingRoomNo);
-		
-		return map;
+		if( chattingRoomNo == 0) return 0;
+			
+		return chattingRoomNo;
 	}
 	
 	// 채팅 방 생성
@@ -80,12 +87,34 @@ public class ChattingServiceImpl implements ChattingService{
 		
 		int result = mapper.createChattingRoom(map);
 		
-    	
     	if(result > 0) {
-    		return result;
+    		
+    		Message message = new Message();
+    		ObjectMapper objectMapper = new ObjectMapper();
+    		
+    		message.setSenderNo(map.get("loginMemberNo"));
+    		message.setTargetNo(map.get("targetNo"));
+    		message.setMessageContent("새로운 채팅방이 생성되었습니다.");
+    		
+    		mapper.insertMessage(message);
+    		
+    		return (int)map.get("chattingRoomNo");
     	}
     	
         return 0;
+	}
+	
+	// 상담종료
+	@Override
+	public int counselingEnd(Map<String, Object> map) {
+		return mapper.counselingEnd(map);
+	}
+	
+	// 메세지 가져오기
+	@Override 
+	public List<Map<String, String>> chatBotMessgeList(int authority) {
+		// TODO Auto-generated method stub
+		return mapper.chatBotMessgeList(authority);
 	}
  
 }

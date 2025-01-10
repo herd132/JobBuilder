@@ -37,12 +37,24 @@ public interface ChattingService {
 	 * @param map
 	 * @return
 	 */
-	Map<String, Integer> checkChattingRoomNo(Map<String, Integer> map);
+	int checkChattingRoomNo(Map<String, Integer> map);
 
 	/** 유무 체크 후 없을 시 생성
 	 * @param map
 	 * @return
 	 */
 	int createChattingRoom(Map<String, Integer> map);
+
+	/** 상담 종료
+	 * @param map
+	 * @return
+	 */
+	int counselingEnd(Map<String, Object> map);
+
+	/** 챗봇 메세지 가져오기
+	 * @param authority
+	 * @return
+	 */
+	List<Map<String, String>> chatBotMessgeList(int authority);
 
 }

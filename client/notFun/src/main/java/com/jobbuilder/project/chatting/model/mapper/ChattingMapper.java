@@ -26,9 +26,17 @@ public interface ChattingMapper {
 	// 상담원 번호 얻기
 	int[] getRandomCounselorNo();
 
+	// 채팅방 유무
 	int checkChattingRoomNo(Map<String, Integer> map);
 
+	// 채팅방 생성
 	int createChattingRoom(Map<String, Integer> map);
+
+	// 상담종료
+	int counselingEnd(Map<String, Object> map);
+
+	// 챗봇 메세지 가져오기
+	List<Map<String, String>> chatBotMessgeList(int authority);
 
 
 }

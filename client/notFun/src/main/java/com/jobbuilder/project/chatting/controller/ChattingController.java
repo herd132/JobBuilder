@@ -101,7 +101,6 @@ public class ChattingController {
     public Map<String, Integer> chattingEnter( HttpServletRequest request) {
      
         Map<String, Integer> map = new HashMap<>();
-        Map<String, Integer> resultMap = new HashMap<>();
     	HttpSession session = request.getSession();
     	int memberNo = 0; 
         
@@ -111,15 +110,17 @@ public class ChattingController {
         map.put("loginMemberNo", memberNo);
         
         // 채팅방번호 체크 서비스 호출 및 반환(기존 생성된 방이 있는지)
-        resultMap = service.checkChattingRoomNo(map);
-        
+        int chattingRoomNo = service.checkChattingRoomNo(map);
+
+    	log.debug("chattingRoomNo : " + chattingRoomNo);
         // 반환받은 채팅방번호가 0(없다)이라면 생성하기
-        if(resultMap == null) {
-        	int chattingRoomNo = service.createChattingRoom(map);
-        	resultMap.put("chattingRoomNo", chattingRoomNo);
+        if(chattingRoomNo == 0) {
+        	log.debug("map : " + map);
+        	chattingRoomNo = service.createChattingRoom(map);
+        	map.put("chattingRoomNo", chattingRoomNo);
         }
         
-        return resultMap;
+        return map;
     }
     
     // 상담 종료
@@ -127,10 +128,20 @@ public class ChattingController {
     @ResponseBody
     public int counselingEnd(@RequestBody Map<String, Object> map) {
     	
-    	log.debug("map" + map);
+    	return service.counselingEnd(map);
+    }
+    
+    @GetMapping("chatBotMessgeList")
+    @ResponseBody
+    public List<Map<String, String>> chatBotMessgeList(HttpServletRequest request) {
+
+    	HttpSession session = request.getSession();
+    	int authority = 0; 
+        
+    	if (session.getAttribute("loginWorker") != null) authority = session.getAttribute("loginWorker") != null ? 2 : 0 ;
+    	if (session.getAttribute("loginEmployer") != null) authority = session.getAttribute("loginEmployer") != null ? 3 : 0;
     	
-    	return 2;
+    	return service.chatBotMessgeList(authority);
     }
  
-
 }

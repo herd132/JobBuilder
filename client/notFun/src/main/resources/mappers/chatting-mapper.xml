@@ -141,5 +141,17 @@
 		INSERT INTO CHATTING_ROOM
 		VALUES(#{chattingRoomNo}, DEFAULT, DEFAULT,#{loginMemberNo}, #{targetNo})
 	</insert>
+	
+	<!-- 상담종료 -->
+	<update id="counselingEnd">
+		UPDATE CHATTING_ROOM SET
+		CHATTING_ROOM_END_FL = 'Y'
+		WHERE CHATTING_ROOM_NO = #{chattingRoomNo}
+	</update>
+	
+	<select id="chatBotMessgeList">
+		SELECT QUICK_QUESTIONS "quickQuestions", QUICK_ANSWER "quickAnswer" FROM MESSAGE_MACRO WHERE MEMBER_AUTHORITY = #{authority}
+	</select>
+	
 
 </mapper>

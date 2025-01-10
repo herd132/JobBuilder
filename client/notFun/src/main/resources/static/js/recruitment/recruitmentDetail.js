@@ -333,7 +333,7 @@ const createRecommendResumeList = () => {
             ${str}
           </div>
         </div>
-        <a class="view-button">이력서 보기</a>
+        <a class="view-button" href="/resume/resumeDetail?resumeNo=${resume.resumeNo}">이력서 보기</a>
       </div>
     `
     });
@@ -376,3 +376,40 @@ if (recommendSelect !== null ) {
     `;
   })
 }
+
+
+var map = new naver.maps.Map("map", {
+  center: new naver.maps.LatLng(37.5112, 127.0981), // 잠실 롯데월드를 중심으로 하는 지도
+  zoom: 15,
+});
+
+
+
+const xCoordi = document.querySelector("#xCoordi");     // lng 경도
+const yCoordi = document.querySelector("#yCoordi");     // lat 위도
+
+naver.maps.Service.geocode({ query: '올림픽로35길 130' }, function(status, response) {
+  if (status === naver.maps.Service.Status.ERROR) {
+    return alert('Something wrong!');
+  }
+
+  // 성공 시의 response 처리
+  var result = response.v2, 
+  items = result.addresses;
+
+  console.log(items);
+
+  xCoordi.innerHTML = items[0].x;
+  yCoordi.innerHTML = items[0].y;
+  setMarkers(items[0].y, items[0].x);
+});
+
+// 다중마커 예제
+function setMarkers(lat, lng) {
+  var marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(lat, lng),
+    map: map
+  });
+}
+
+setMarkers(37.5112, 127.0981);
