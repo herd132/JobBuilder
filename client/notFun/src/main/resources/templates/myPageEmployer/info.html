@@ -40,6 +40,21 @@
     </div>
   </div>
 
+  <!-- 비밀번호 확인 모달 -->
+  <div class="password-modal-container hidden">
+    <div class="password-modal-area">
+      <div class="btn-area">
+        <button class="confirm-btn">확인</button>
+        <span class="close-modal" style="cursor: pointer;">&times;</span>
+      </div>
+      <div class="password-input-area">
+        <h4>비밀번호를 입력해주세요</h4>
+        <input type="password" id="memberPw">
+        <span id="wrongPwMessage"></span>
+      </div>
+    </div>
+  </div>
+  
   <div class="mypageEmpInfo-gray">
     <main class="myPageEmpInfo-white">
 
@@ -48,10 +63,6 @@
         <div class="business-registration-number-area">
           <span> 사업자 등록번호 : </span>
           <span th:text="*{businessRegistrationNumber}"></span>
-        </div>
-        <div class="membership-level-area">
-          <span>멤버십 등급 :</span>
-          <span th:text="*{membershipName}"></span>
         </div>
         <div class="member-name-area">
           <span>대표자명 :</span>
@@ -63,7 +74,7 @@
         </div>
 
         <div>
-          <button id="updataInfoBtn" onclick="updataInfo()">기본정보 수정</button>
+          <button id="updataInfoBtn" onclick="openPasswordModal()">기본정보 수정</button>
         </div>
       </section>
 
@@ -120,6 +131,9 @@
 
   <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
   <script src="/js/myPageEmployer/myPageEmpInfo.js"></script>
+  <script th:inline="javascript">
+    const memberEmail = /*[[${session.loginEmployer.memberEmail}]]*/'abc@ac.kr';
+  </script>
 </body>
 
 </html>

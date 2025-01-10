@@ -27,6 +27,11 @@ function execDaumPostcode() {
   }).open();
 }
 
+// 내 정보보기 페이지로 이동
+const backMyInfo = () => {
+  location.href = "/myPageEmp/info";
+}
+
 
 // 요소 생성 + 속성 추가 + 클래스 추가 함수
 const newEl = (tag, attr, cls) => {
@@ -222,12 +227,94 @@ for (let i = 0; i < inputImageList.length; i++) {
 
 }
 
+
+// 지점명 부분(본점은 변경 불가)
+const businessNicknameInput = document.querySelector("#businessNickname");
+if(businessNicknameInput.value === '본점'){
+  businessNicknameInput.readOnly = true;
+}
+
+// 제출 시
 const updateBusinessForm = document.querySelector("#updateBusinessForm");
 
-updateBusinessForm.addEventListener("submit", (e) => {
+updateBusinessForm.addEventListener("submit", async (e) => {
 
-  // 사진 외 부분에 추가적인 로직 구현해야함
+  e.preventDefault();
 
+  /* 사진 외 부분 */ 
+  // 사업장 주소 입력 부분
+  if (postcode.value.trim().length == 0){
+    alert("우편번호를 입력해주세요");
+    postcode.focus();
+    return;
+  }
+
+  if (detailAddress.value.trim().length == 0){
+    alert("사업장 세부주소를 입력해주세요");
+    detailAddress.focus();
+    return;
+  }
+
+
+
+
+  // 사업장 별칭 중복성 검사
+  const respNickname = await fetch("/myPageEmp/checkBusinessNickname", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({businessNickname : businessNickname.value, memberNo: memberNo})
+  })
+  
+  const countNickname = await respNickname.text();
+
+  if(countNickname > 1) {
+    alert("일치하는 지점명이 있습니다. 지점명을 바꿔주세요");
+    checkObj.businessNickname = false;
+    businessNickname.focus();
+    return;
+  }
+
+  // 사업장 전화번호 부분
+  const businessTelInput = document.querySelector("#businessTel");
+
+  // 사업장 전화번호 미입력시
+  if (businessTelInput.value.length === 0) {
+    alert("사업장 전화번호를 입력해주세요");
+    businessTelInput.focus();
+    return;
+  }
+
+  // 사업장 전화번호 정규식 검사
+  const regExp = /^(0\d{1,2})\d{3,4}\d{4}$/;
+  if (!regExp.test(businessTelInput.value)) {
+    alert("전화번호는 '01012345678' 형식으로 입력해주세요.");
+    businessTelInput.focus();
+    return;
+  }
+
+  // 사업장 전화번호 중복검사
+  const respBusinessTel = await fetch("/myPageEmp/checkBusinessTel", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ businessTel: businessTelInput.value, memberNo: memberNo }),
+  });
+
+  const countBusinessTel = await respBusinessTel.text();
+  if (countBusinessTel > 1) {
+    console.log(countBusinessTel, typeof countBusinessTel);  // 왜 2가 뜨지...??
+    alert("일치하는 전화번호가 있습니다. 전화번호를 바꿔주세요");
+    businessTelInput.focus();
+    return;
+  }
+
+  // 업직종 부분
+  const worktypeList = document.querySelectorAll(".select-category");
+  if (worktypeList.length === 0) {
+    alert("업직종을 선택해주세요");
+    return;
+  }
+
+  
 
 
   // 사진 부분
@@ -243,4 +330,6 @@ updateBusinessForm.addEventListener("submit", (e) => {
 	input.type = "hidden";
 
 	updateBusinessForm.append(input); // 자식으로 input 추가
+
+  e.target.submit();
 })

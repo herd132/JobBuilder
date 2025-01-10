@@ -27,6 +27,7 @@ function execDaumPostcode() {
   }).open();
 }
 
+
 /* ********** 이미지 영역 ********** */
 /* 선택된 이미지 미리보기 관련 요소 모두 얻어오기 */
 
@@ -116,84 +117,9 @@ for (let i = 0; i < inputImageList.length; i++) {
     inputImageList[i].value = ""; // 선택된 파일 삭제
     lastValidFiles[i]       = null; // 백업 파일 삭제
   })
-} // for end
+} // 이미지 영역 끝
 
-/* GPT 작성문 작성자가 뻘짓하면 날라감/ 일단은 선생님 버전으로 할 예정
-document.addEventListener("DOMContentLoaded", function () {
-  const addBusinessImgBtn = document.getElementById("addBusinessImgBtn");
-  const addBusinessContainer = document.getElementById("addBusinessContainer");
-  const businessImgs = addBusinessContainer.querySelectorAll(".businessImg");
-  let currentIndex = 0;
 
-  // 초기에 모든 이미지 컨테이너 숨기기
-  businessImgs.forEach((img) => {
-    img.style.display = "none";
-  });
-
-  addBusinessImgBtn.addEventListener("click", function () {
-    if (currentIndex < businessImgs.length) {
-      // 다음 이미지 컨테이너 보이기
-      businessImgs[currentIndex].style.display = "inline-block";
-      currentIndex++;
-
-      // 최대 개수에 도달하면 버튼 비활성화
-      if (currentIndex >= businessImgs.length) {
-        addBusinessImgBtn.disabled = true;
-        addBusinessImgBtn.style.opacity = "0.5";
-      }
-    }
-  });
-
-  // 삭제 버튼 클릭 이벤트 처리
-  addBusinessContainer.addEventListener("click", function (e) {
-    if (e.target.classList.contains("delete-image")) {
-      const imgContainer = e.target.closest(".businessImg");
-      const input = imgContainer.querySelector(".inputImage");
-      const preview = imgContainer.querySelector("img");
-
-      // 이미지 미리보기와 입력값 초기화
-      preview.src = "";
-      input.value = "";
-
-      // 컨테이너를 숨기고 마지막으로 이동
-      imgContainer.style.display = "none";
-      addBusinessContainer.appendChild(imgContainer);
-
-      // 현재 인덱스 감소 및 버튼 활성화
-      currentIndex--;
-      addBusinessImgBtn.disabled = false;
-      addBusinessImgBtn.style.opacity = "1";
-    }
-  });
-
-  // 이미지 미리보기 처리
-  addBusinessContainer.addEventListener("change", function (e) {
-    if (e.target.classList.contains("inputImage")) {
-      const file = e.target.files[0];
-      const preview = e.target.previousElementSibling.querySelector("img");
-  
-      // 파일이 선택되지 않았거나 크기가 10MB를 초과하는 경우
-      if (file) {
-        const fileSizeInMB = file.size / (1024 * 1024); // 파일 크기를 MB로 변환
-  
-        // 10MB 초과시
-        if (fileSizeInMB > 10) {
-          alert("파일 크기는 10MB 이하만 업로드 가능합니다.");
-          // 입력 필드를 초기화하여 업로드된 파일을 취소
-          e.target.value = ""; // 선택된 파일 초기화
-          preview.src = ""; // 미리보기 이미지 초기화
-        } else {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            preview.src = e.target.result;
-          };
-          reader.readAsDataURL(file);
-        }
-      }
-    }
-  });
-});
-*/
 
 // 사업장등록 유효성 검사 객체
 const checkObj = {
@@ -213,7 +139,8 @@ const newEl = (tag, attr, cls) => {
 };
 
 /* ********** 사업장 별칭 부분 ********** */
-const businessNickname = document.querySelector("#businessNickname");
+const businessNickname = document.querySelector("#businessNickname");   // input 태그
+
 businessNickname.addEventListener("input", (e) => {
   checkObj.businessNickname = false;
   const inputBusinessNickname = e.target.value;
@@ -225,11 +152,11 @@ businessNickname.addEventListener("input", (e) => {
 
 /* ********** 사업장주소 부분 ********** */
 // checkObj.postcode, detailAddress 는 등록하기 클릭 시에 입력되었는지만 확인
-const postcode = document.querySelector("#postcode"); // input 태그
-const address = document.querySelector("#address"); // input 태그
-const detailAddress = document.querySelector("#detailAddress"); // input 태그
+const postcode = document.querySelector("#postcode");                 // input 태그
+const address = document.querySelector("#address");                   // input 태그
+const detailAddress = document.querySelector("#detailAddress");       // input 태그
 const searchAddressBtn = document.querySelector("#searchAddressBtn"); // button 태그
-const addressResetBtn = document.querySelector("#addressResetBtn"); // button 태그
+const addressResetBtn = document.querySelector("#addressResetBtn");   // button 태그
 
 searchAddressBtn.addEventListener("click", execDaumPostcode);
 addressResetBtn.addEventListener("click", () => {
@@ -312,13 +239,66 @@ const addSubCategory = (liSubWorkTypeName) => {
 };
 
 /* ********** 등록하기 버튼 클릭 시 ********** */
-document.querySelector("#addBusinessForm").addEventListener("submit", (e) => {
+document.querySelector("#addBusinessForm").addEventListener("submit", async (e) => {
+
+  e.preventDefault();
+
   // 사업장 주소 부분에 대한 처리
   checkObj.postcode = false;
   checkObj.detailAddress = false;
 
   if (postcode.value.trim().length > 0) checkObj.postcode = true;
   if (detailAddress.value.trim().length > 0) checkObj.detailAddress = true;
+
+
+  // 사업장 별칭 중복검사
+  const respNickname = await fetch("/myPageEmp/checkBusinessNickname", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({businessNickname : businessNickname.value, memberNo: memberNo})
+  })
+  
+  const countNickname = await respNickname.text();
+
+  if(countNickname > 0) {
+    alert("일치하는 지점명이 있습니다. 지점명을 바꿔주세요");
+    checkObj.businessNickname = false;
+    businessNickname.focus();
+    return;
+  }
+
+  // 사업장 전화번호 부분
+  const businessTelInput = document.querySelector("#businessTel");
+
+  // 사업장 전화번호 필수입력
+  if(businessTelInput.value.length == 0){
+    alert("사업장 전화번호를 입력해주세요");
+    businessTelInput.focus();
+    return;
+  }
+
+  // 사업정 전화번호 정규식 검사
+  const regExp = /^(0\d{1,2})\d{3,4}\d{4}$/;
+  if (!regExp.test(businessTelInput.value)) {
+    alert("전화번호는 '01012345678' 형식으로 입력해주세요.");
+    businessTelInput.focus();
+    return;
+  }
+
+  // 사업장 전화번호 중복검사
+  const respBusinessTel = await fetch("/myPageEmp/checkBusinessTel", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({businessTel : businessTelInput.value, memberNo: memberNo})
+  })
+
+  const countBusinessTel = await respBusinessTel.text();
+
+  if(countBusinessTel > 1) {
+    alert("일치하는 전화번호가 있습니다. 전화번호를 바꿔주세요");
+    businessTelInput.focus();
+    return;
+  }
 
   // 업직종 부분에 대한 처리
   checkObj.worktypeList = false;
@@ -346,14 +326,96 @@ document.querySelector("#addBusinessForm").addEventListener("submit", (e) => {
       }
 
       alert(str);
-      e.preventDefault();
       if (key != "worktypeList") document.getElementById(key).focus();
       return;
     }
   }
+  
+  // 폼 제출 (유효성 검사 후에)
+  e.target.submit();
 });
 
 /* ********** 돌아가기 버튼 클릭 시 ********** */
 const goBackInfo = () => {
   location.href = "/myPageEmp/info";
 };
+
+
+
+
+/* GPT 작성문 작성자가 뻘짓하면 날라감/ 일단은 선생님 버전으로 할 예정
+document.addEventListener("DOMContentLoaded", function () {
+  const addBusinessImgBtn = document.getElementById("addBusinessImgBtn");
+  const addBusinessContainer = document.getElementById("addBusinessContainer");
+  const businessImgs = addBusinessContainer.querySelectorAll(".businessImg");
+  let currentIndex = 0;
+
+  // 초기에 모든 이미지 컨테이너 숨기기
+  businessImgs.forEach((img) => {
+    img.style.display = "none";
+  });
+
+  addBusinessImgBtn.addEventListener("click", function () {
+    if (currentIndex < businessImgs.length) {
+      // 다음 이미지 컨테이너 보이기
+      businessImgs[currentIndex].style.display = "inline-block";
+      currentIndex++;
+
+      // 최대 개수에 도달하면 버튼 비활성화
+      if (currentIndex >= businessImgs.length) {
+        addBusinessImgBtn.disabled = true;
+        addBusinessImgBtn.style.opacity = "0.5";
+      }
+    }
+  });
+
+  // 삭제 버튼 클릭 이벤트 처리
+  addBusinessContainer.addEventListener("click", function (e) {
+    if (e.target.classList.contains("delete-image")) {
+      const imgContainer = e.target.closest(".businessImg");
+      const input = imgContainer.querySelector(".inputImage");
+      const preview = imgContainer.querySelector("img");
+
+      // 이미지 미리보기와 입력값 초기화
+      preview.src = "";
+      input.value = "";
+
+      // 컨테이너를 숨기고 마지막으로 이동
+      imgContainer.style.display = "none";
+      addBusinessContainer.appendChild(imgContainer);
+
+      // 현재 인덱스 감소 및 버튼 활성화
+      currentIndex--;
+      addBusinessImgBtn.disabled = false;
+      addBusinessImgBtn.style.opacity = "1";
+    }
+  });
+
+  // 이미지 미리보기 처리
+  addBusinessContainer.addEventListener("change", function (e) {
+    if (e.target.classList.contains("inputImage")) {
+      const file = e.target.files[0];
+      const preview = e.target.previousElementSibling.querySelector("img");
+  
+      // 파일이 선택되지 않았거나 크기가 10MB를 초과하는 경우
+      if (file) {
+        const fileSizeInMB = file.size / (1024 * 1024); // 파일 크기를 MB로 변환
+  
+        // 10MB 초과시
+        if (fileSizeInMB > 10) {
+          alert("파일 크기는 10MB 이하만 업로드 가능합니다.");
+          // 입력 필드를 초기화하여 업로드된 파일을 취소
+          e.target.value = ""; // 선택된 파일 초기화
+          preview.src = ""; // 미리보기 이미지 초기화
+        } else {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    }
+  });
+});
+*/

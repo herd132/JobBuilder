@@ -97,6 +97,18 @@ public interface MyPageEmployerService {
 	 * @author JWJ
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
+	
+	/** 사업장 지점명 중복검사
+	 * @param bodyMap(businessNickname, memberNo)
+	 * @return
+	 */
+	int checkBusinessNickname(Map<String, String> bodyMap);
+	
+	/** 사업장 전화번호 중복검사
+	 * @param bodyMap(businessTel, memberNo)
+	 * @return
+	 */
+	int checkBusinessTel(Map<String, String> bodyMap);
 
 	/** 사업장 추가
 	 * @param loginEmployer(memberNo, businessRegistrationNumber, businessName, membershipLevel, optionalAgreeFl)
@@ -182,6 +194,10 @@ public interface MyPageEmployerService {
 	 * @return
 	 */
 	RecruitmentResume viewRecruitResume(int recruitmentNo, int resumeNo);
+
+
+
+
 
 
 

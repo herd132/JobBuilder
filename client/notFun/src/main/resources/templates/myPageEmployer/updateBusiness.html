@@ -19,12 +19,12 @@
 <body>
   <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
 
-  <div>
+  <!-- <div>
     <span th:text="${business}"></span> <br>
     <span th:text="${postcode}"></span>
     <span th:text="${address}"></span>
     <span th:text="${detailAddress}"></span>
-  </div>
+  </div> -->
 
   <div class="updateBusiness-gray">
     <main class="updateBusiness-white">
@@ -53,6 +53,8 @@
           <div class="business-nickname">
             <span>변경할 사업장 별칭 : </span>
             <input type="text" name="businessNickname" id="businessNickname" th:value="*{businessNickname}">
+            <br>
+            <span style="font-size: 0.7em;">* 본점은 변경할 수 없습니다.</span>
           </div>
   
           <h4 th:text="|기존 사업장 주소 : ${address}, ${detailAddress}|"></h4>
@@ -92,7 +94,7 @@
           </div>
           <div class="business-worktype-area">
             <div>
-              <ul style="background-color: yellow;">
+              <ul>
                 <th:block th:each="category : ${majorCategoryList}">
                   <li th:text="${category.majorCategoryName}" class="workType"
                     th:workTypeNo="${category.workTypeNo}"
@@ -155,7 +157,7 @@
           </div>
 
           <div class="recruitment-btn-area">
-            <button type="button">돌아가기</button>
+            <button type="button" onclick="backMyInfo()">돌아가기</button>
             <button>제출하기</button>
           </div>
         </form>
@@ -175,6 +177,8 @@
 
   <script th:inline="javascript">
 
+    const memberNo = /*[[${session.loginEmployer.memberNo}]]*/0;
+    
     const imageList = /*[[${business.businessImgList}]]*/[];
     const previewList = document.querySelectorAll('img.preview'); // img 태그 중 preview
     const orderList = [];  // 기존에 존재하던 이미지의 순서(order)를 기록할 배열

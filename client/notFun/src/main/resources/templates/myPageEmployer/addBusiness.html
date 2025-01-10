@@ -33,10 +33,6 @@
           <span>회사명 : </span>
           <span th:text="*{businessName}"></span>
         </div>
-        <div class="membership-level-area">
-          <span>멤버십 등급 :</span>
-          <span th:text="*{membershipName}"></span>
-        </div>
         <div class="member-name-area">
           <span>대표자명 :</span>
           <span th:text="*{memberName}"></span>
@@ -78,13 +74,13 @@
           <h4>업직종(최대 5개 선택 가능)</h4>
           <div>
             <h5>선택한 업직종</h5>
-            <ul id="selectCategoryUl" style="border: 1px solid black;">
+            <ul id="selectCategoryUl">
 
             </ul>
           </div>
           <div>
             <div>
-              <ul style="background-color: yellow;">
+              <ul>
                 <th:block th:each="category : ${majorCategoryList}">
                   <li th:text="${category.majorCategoryName}" class="workType"
                     th:workTypeNo="${category.workTypeNo}"
@@ -164,6 +160,9 @@
   <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
   <script src="/js/myPageEmployer/addBusiness.js"></script>
+  <script th:inline="javascript">
+    const memberNo = /*[[${session.loginEmployer.memberNo}]]*/0;
+  </script>
 </body>
 
 </html>
