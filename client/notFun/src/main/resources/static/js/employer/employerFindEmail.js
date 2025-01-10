@@ -73,7 +73,7 @@ confirmByBusinessRegistrationNumberBtn.addEventListener('click', async () => {
     const goBackBtn = newEl('button', {}, ['go-back-btn', 'btn', 'btn-primary']);
     goBackBtn.innerText = "로그인 페이지로 돌아가기";
     goBackBtn.addEventListener("click", () => {
-      window.location.href = "http://localhost/multiLogin"; // 로그인 페이지로 리다이렉트
+      window.location.href = "/multiLogin";         // http://localhost 제외
     });
 
     findEmailContainer.appendChild(goBackBtn);
@@ -92,14 +92,14 @@ confirmByBusinessRegistrationNumberBtn.addEventListener('click', async () => {
   const loginBtn = newEl('button', {}, ['login-btn', 'btn', 'btn-success']);
   loginBtn.innerText = "로그인";
   loginBtn.addEventListener("click", () => {
-    window.location.href = "http://localhost/multiLogin"; // 로그인 페이지로 리다이렉트
+    window.location.href = "/multiLogin";           // http://localhost 제외
   });
 
   // "비밀번호 찾기" 버튼 동적 생성
   const findPwBtn = newEl('button', {}, ['find-pw-btn', 'btn', 'btn-info']);
   findPwBtn.innerText = "비밀번호 찾기";
   findPwBtn.addEventListener("click", () => {
-    window.location.href = "http://localhost/employer/employerFindPw"; // 비밀번호 찾기 페이지로 리다이렉트
+    window.location.href = "/employer/employerFindPw"; // http://localhost 제외
   });
 
   // 생성된 버튼들을 화면에 추가
@@ -137,7 +137,7 @@ confirmByMemberTelBtn.addEventListener('click', async () => {
     const goBackBtn = newEl('button', {}, ['go-back-btn', 'btn', 'btn-primary']);
     goBackBtn.innerText = "로그인 페이지로 돌아가기";
     goBackBtn.addEventListener("click", () => {
-      window.location.href = "http://localhost/multiLogin"; // 로그인 페이지로 리다이렉트
+      window.location.href = "/multiLogin";           // http://localhost 제외
     });
 
     findEmailContainer.appendChild(goBackBtn);
@@ -157,14 +157,14 @@ confirmByMemberTelBtn.addEventListener('click', async () => {
   const loginBtn = newEl('button', {}, ['login-btn', 'btn', 'btn-success']);
   loginBtn.innerText = "로그인";
   loginBtn.addEventListener("click", () => {
-    window.location.href = "http://localhost/multiLogin"; // 로그인 페이지로 리다이렉트
+    window.location.href = "/multiLogin";             // http://localhost 제외
   });
 
   // "비밀번호 찾기" 버튼 동적 생성
   const findPwBtn = newEl('button', {}, ['find-pw-btn', 'btn', 'btn-info']);
   findPwBtn.innerText = "비밀번호 찾기";
   findPwBtn.addEventListener("click", () => {
-    window.location.href = "http://localhost/employer/employerFindPw"; // 비밀번호 찾기 페이지로 리다이렉트
+    window.location.href = "/employer/employerFindPw";  // http://localhost 제외
   });
 
   // 생성된 버튼들을 화면에 추가

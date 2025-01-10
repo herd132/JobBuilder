@@ -143,6 +143,18 @@ public interface MyPageEmployerMapper {
 	 */
 	List<Map<String, String>> selectsubCategoryList(String workTypeNo);
 	
+	/** 사업장 지점명 중복검사
+	 * @param bodyMap (businessNickname, memberNo)
+	 * @return
+	 */
+	int checkBusinessNickname(Map<String, String> bodyMap);
+	
+	/** 사업장 전화번호 중복검사
+	 * @param bodyMap(businessTel, memberNo)
+	 * @return
+	 */
+	int checkBusinessTel(Map<String, String> bodyMap);
+	
 	/** 사업장 추가(업직종 제외)
 	 * @param addBusiness (businessRegistrationNumber, businessName, businessAddress, membershipLevel,
 	 * 						memberNo, optionalAgreeFl, businessNickname, businessTel)
@@ -155,6 +167,7 @@ public interface MyPageEmployerMapper {
 	 * @return
 	 */
 	String getWorktypeNo(String category);
+	
 
 	/** M:N 해소테이블(BUSINESS_WORKTYPE)에 데이터 삽입
 	 * @param map(employerNo, worktypeNo)
@@ -306,22 +319,13 @@ public interface MyPageEmployerMapper {
 	 */
 	List<RecruitmentResume> viewResumesList(int memberNo, RowBounds rowBounds);
 
-
-
+	
 
 	
 	
 	/* ********** 회원 탈퇴 페이지 관련 ********** */
 	
 	
-
-
-
-
-
-
-
-
 
 
 

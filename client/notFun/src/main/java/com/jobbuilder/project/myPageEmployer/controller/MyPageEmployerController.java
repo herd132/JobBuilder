@@ -229,6 +229,27 @@ public class MyPageEmployerController {
 		return service.selectsubCategoryList(workTypeNo);
 	}
 	
+	/** 사업장 지점명 중복검사
+	 * @param badyMap(businessNickname, memberNo)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("checkBusinessNickname")
+	public int CheckBusinessNickname(@RequestBody Map<String, String> bodyMap) {
+		log.debug("bodyMap : " + bodyMap);
+		return service.checkBusinessNickname(bodyMap);
+	}
+	
+	/** 사업장 전화번호 중복검사
+	 * @param bodyMap(businessTel, memberNo)
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("checkBusinessTel")
+	public int CheckBusinessTel(@RequestBody Map<String, String> bodyMap) {
+		return service.checkBusinessTel(bodyMap);
+	}
+	
 	/** 사업장 추가(post)
 	 * @param loginEmployer(memberNo, businessRegistrationNumber, businessName, membershipLevel, optionalAgreeFl)
 	 * @param addEmployer(businessNickname, businessTel)

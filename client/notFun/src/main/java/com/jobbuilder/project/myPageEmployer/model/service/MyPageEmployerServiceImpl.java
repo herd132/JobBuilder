@@ -190,6 +190,16 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		return mapper.selectsubCategoryList(workTypeNo);
 	}
 	
+	@Override	// 사업장 지점명 중복검사
+	public int checkBusinessNickname(Map<String, String> bodyMap) {
+		return mapper.checkBusinessNickname(bodyMap);
+	}
+	
+	@Override	// 사업장 전화번호 중복검사
+	public int checkBusinessTel(Map<String, String> bodyMap) {
+		return mapper.checkBusinessTel(bodyMap);
+	}
+	
 	@Override	// 사업장 추가
 	public int addBusiness(Employer loginEmployer, Employer addBusiness, List<String> subCategory,
 			String[] businessAddress, List<MultipartFile> images) throws Exception {

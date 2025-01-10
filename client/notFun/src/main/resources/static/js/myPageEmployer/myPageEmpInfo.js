@@ -12,6 +12,68 @@ const updataInfo = () => {
   location.href= "/myPageEmp/updateInfo";
 }
 
+// 비밀번호 확인 모달 관련 요소
+const passwordModalContainer = document.querySelector(".password-modal-container");
+const passwordInput = document.querySelector("#memberPw");
+const wrongPwMessage = document.querySelector("#wrongPwMessage");
+const confirmBtn = document.querySelector(".confirm-btn");
+const closeModalBtn = document.querySelector(".close-modal");
+
+// 모달 열기
+const openPasswordModal = () => {
+  passwordModalContainer.classList.remove("hidden");
+};
+
+// 모달 닫기
+const closePasswordModal = () => {
+  passwordModalContainer.classList.add("hidden");
+  wrongPwMessage.innerText = ''; // 에러 메시지 초기화
+  passwordInput.value = ''; // 입력 초기화
+};
+
+// 비밀번호 확인
+const confirmPassword = async () => {
+  const obj = {
+    "memberEmail": memberEmail, // 세션에서 이메일 가져오기
+    "memberPw": passwordInput.value
+  };
+
+  const resp = await fetch("/myPageEmp/checkPw", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(obj)
+  });
+
+  if (resp.status === 204) {
+    wrongPwMessage.innerText = "일치하지 않는 비밀번호 입니다.";
+    return;
+  }
+
+  if (resp.status === 200) {
+    const employer = await resp.json();
+    console.log("비밀번호 일치:", employer);
+    closePasswordModal(); // 모달 닫기
+    window.location.href = "/myPageEmp/updateInfo"; // 비밀번호 일치 시 이동
+  }
+};
+
+// 버튼 클릭 이벤트
+confirmBtn.addEventListener("click", confirmPassword);
+closeModalBtn.addEventListener("click", closePasswordModal);
+
+// Enter 키로 비밀번호 확인
+document.addEventListener("keyup", (event) => {
+  if (event.key === 'Enter') {
+    confirmPassword();
+  }
+});
+
+// 비밀번호 입력 시 에러 메시지 초기화
+passwordInput.addEventListener("input", () => {
+  wrongPwMessage.innerText = "";
+});
+
+
 const updateBusinessBtn = document.querySelector(".update-business-btn");
 const deleteBusinessBtn = document.querySelector(".delete-business-btn");
 const modalContainer = document.querySelector(".modal-container");
