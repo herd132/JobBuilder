@@ -113,7 +113,7 @@ public class EditBoardController {
 						     RedirectAttributes ra) {
 		
 		
-		
+		log.debug("들어오나 여기로?");
 		// 수정 화면에 출력할 기존의 제목/내용/이미지 조회
 		// -> 게시글 상세 조회
 		Map<String, Integer> map = new HashMap<>();
@@ -129,6 +129,7 @@ public class EditBoardController {
 		if (loginEmployer != null) {
 			map.put("memberNo", loginEmployer.getMemberNo());
 		}
+		
 		board = boardService.selectOne(map);
 		
 		String message = null;
@@ -156,13 +157,10 @@ public class EditBoardController {
 							path = String.format("redirect:/board/%d/%d", boardCode, boardNo);						
 							ra.addFlashAttribute("message", message); 
 			}
-		}		
-		
-	    else {
-	    		 
+			}	
+	  
 			path = "board/boardUpdate";   //   templates/board/boardUpdate.html 로 forward 
 			model.addAttribute("board", board);
-		}
 		
 		return path;
 	}

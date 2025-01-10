@@ -87,15 +87,12 @@
 
                 <th:block th:if="${#lists.size(board.imageList) > start}">
 
-                    <h5>업로드 이미지</h5>
+                    <h5>업로드한 이미지</h5>
                     <th:block th:each="i : ${#numbers.sequence(start, #lists.size(board.imageList) - 1)}">
                         <div class="img-box">
                             <div class="boardImg">
 
-                                <img th:src="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|">
-
-                                <a th:href="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|"
-                                    th:download="${board.imageList[i].boardImgOriginalName}">다운로드</a>
+                                <img th:src="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|">                                
                             </div>
                         </div>
                     </th:block>

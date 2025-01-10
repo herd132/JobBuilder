@@ -51,6 +51,13 @@
             <input type="text" name="businessNickname" id="businessNickname" placeholder="ex) 본점, 서울 구로점">
           </div>
 
+          <h4> 사업장 소개말 </h4>
+          <div class="business-introduce">
+            <textarea type="text" name="businessIntroduce" maxlength="2000" id="businessIntroduce"
+              placeholder="ex) 저희 분점은 ~~입니다.">
+              </textarea>
+          </div>
+
           <h4>사업장 주소</h4>
           <div class="business-address-area">
             <div>
@@ -82,15 +89,12 @@
             <div>
               <ul>
                 <th:block th:each="category : ${majorCategoryList}">
-                  <li th:text="${category.majorCategoryName}" class="workType"
-                    th:workTypeNo="${category.workTypeNo}"
-                    th:onclick="subCategory(this.getAttribute('workTypeNo'))"
-                    style="cursor: pointer;"
-                  />
+                  <li th:text="${category.majorCategoryName}" class="workType" th:workTypeNo="${category.workTypeNo}"
+                    th:onclick="subCategory(this.getAttribute('workTypeNo'))" style="cursor: pointer;" />
                 </th:block>
               </ul>
             </div>
-            
+
             <div>
               <ul id="subWorkType">
 

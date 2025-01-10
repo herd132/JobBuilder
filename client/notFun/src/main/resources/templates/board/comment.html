@@ -1,7 +1,15 @@
 <div id="commentArea">
+
+	<!-- 댓글 작성 부분 -->
+	<div class="comment-write-area">
+		<textarea id="commentContentBoard"></textarea>
+		<button id="addComment">댓글 <br> 등록
+		</button>
+	</div>
 	<!-- 댓글 목록 -->
 	<div class="comment-list-area">
 		<ul id="commentList">
+
 
 			<!-- 대댓글(자식)인 경우 child-comment 클래스 추가 -->
 			<li class="comment-row" th:each="comment : ${board.commentList}"
@@ -47,13 +55,6 @@
 		</ul>
 	</div>
 
-	<!-- 댓글 작성 부분 -->
-	<div class="comment-write-area">
-		<textarea id="commentContentBoard"></textarea>
-		<button id="addComment">
-			댓글<br>
-			등록
-		</button>
-	</div>
+
 
 </div>

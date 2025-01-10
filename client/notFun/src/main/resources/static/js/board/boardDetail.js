@@ -12,6 +12,7 @@ if(updateBtn != null) { // 수정 버튼 존재 시
       location.href = location.pathname.replace('board', 'editBoard')
                       + "/update"
                       + location.search;
+                      
   });
 
 }

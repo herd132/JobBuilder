@@ -8,7 +8,7 @@
 
 /* 댓글 2번째마다 색입히는구문 */
 #oneTalkList li:nth-of-type(2n) {
-	background-color: orange;
+	background-color: #F0BB78;
 }
 
 .oneTalk-write-area > textarea{

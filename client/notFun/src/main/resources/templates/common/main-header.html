@@ -99,15 +99,20 @@
               </th:block>
             </th:block>
             <th:block th:if="${session.loginWorker == null}">
-              <th:block th:if="${boardType.boardCode != 2 }">
+              <th:block>
                 <a th:text="${boardType.boardName}"
                   th:href="@{/board/{boardCode}(boardCode=${boardType.boardCode})}">게시판이름</a>
               </th:block>
             </th:block>
           </th:block>
+          <th:block th:if="${session.loginEmployer == null} and ${session.loginWorker == null}">
+            <th:block th:if="${boardType.boardCode == 3} or ${boardType.boardCode == 2}">
+                <a th:text="${boardType.boardName}"
+                  th:href="@{/board/{boardCode}(boardCode=${boardType.boardCode})}">게시판이름</a>
+              </th:block>
+          </th:block>
         </th:block>
-        <a href="/oneTalk/main"> 한줄톡 </a>
-        <a href="/workReview"> 알바후기 </a>
+        <a href="/oneTalk/main"> 한줄톡 </a>        
       </div>
     </div>
   </nav>
