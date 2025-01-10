@@ -9,12 +9,10 @@ body {
 /* 헤더 스타일 */
 h1 {
   width: 800px;
+  margin: auto;
   color: #ff6b00;
-  text-align: center;
   padding: 20px 0;
   font-size: 2rem;
-  margin-bottom: 30px;
-  margin-left: 30px;
 }
 
 

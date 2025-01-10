@@ -202,7 +202,11 @@ addContent.addEventListener("click", (e) => {
 const showInsertoneTalk = (parentOneTalkNo, btn) => {
   // ** 답글 작성 textarea가 한 개만 열릴 수 있도록 만들기 **
   const temp = document.getElementsByClassName("oneTalkInsertContent");
-
+  // 로그인이 되어있지 않은 경우
+  if (loginWorkerNo == null && loginEmployerNo == null) {
+    alert("로그인 후 이용해 주세요");
+    return; // early return;
+  }
   if (temp.length > 0) {
     // 답글 작성 textara가 이미 화면에 존재하는 경우
 
@@ -269,6 +273,11 @@ const insertCancel = (cancelBtn) => {
  */
 const insertChildoneTalk = (parentOneTalkNo, btn) => {
   // 답글 내용이 작성된 textarea
+  // 로그인이 되어있지 않은 경우
+  if (loginWorkerNo == null && loginEmployerNo == null) {
+    alert("로그인 후 이용해 주세요");
+    return; // early return;
+  }
   const textarea = btn.parentElement.previousElementSibling;
 
   // 유효성 검사
@@ -300,6 +309,13 @@ const insertChildoneTalk = (parentOneTalkNo, btn) => {
   })
     .then((response) => response.text())
     .then((result) => {
+
+      // 로그인이 되어있지 않은 경우
+    if (loginWorkerNo == null && loginEmployerNo == null) {
+    alert("로그인 후 이용해 주세요");
+    return; // early return;
+    }
+      
       if (result > 0) {
         alert("답글이 등록 되었습니다");
         selectoneTalkList(); // 댓글 목록을 다시 조회해서 화면에 출력
