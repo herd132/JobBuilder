@@ -6,6 +6,7 @@ let endfl = 'N';
 const messageInput = document.getElementById("messageInput");
 const counseling = document.querySelector(".counseling");
 const complete = document.querySelector(".complete");
+let counselerName = document.querySelector(".welcome-message p").innerText.substr(0, document.querySelector(".welcome-message p").innerText.indexOf(' '));
 
 // 채팅방 전체에 이벤트 추가
 function roomListAddEvent() {
@@ -46,7 +47,7 @@ function selectRoomList(){
 
 	fetch("/chat/roomList")
 	.then(resp => resp.json())
-	.then(roomList => {
+	.then(roomList => { 
 
 		// 채팅방 목록 출력 영역 선택
 		const chatUsers = document.querySelector("#chatUsers");
@@ -141,17 +142,27 @@ function selectChattingFn() {
 		.then(messageList => {
 
 			const container = document.getElementById('messageContainer');
-
 			container.innerHTML = ""; // 이전 내용 지우기
 
 			container.innerHTML = messageList.map(msg => `
-					<div class="message ${msg.loginMemberNo === loginMemberNo ? 'sent' : 'received'}">
+					<div class="message ${msg.senderNo === loginMemberNo ? 'sent' : 'received'}">
 							<div>${msg.messageContent}</div>
 							<div class="timestamp">${msg.sendTime}</div>
 					</div>
 			`).join('');
 
 			container.scrollTop = container.scrollHeight;
+
+			if(endfl != 'Y') {
+				var obj = {
+					"senderNo": loginMemberNo,
+					"targetNo": selectTargetNo,
+					"chattingRoomNo": selectChattingNo,
+					"messageContent": `안녕하세요 ${counselerName} 상담가입니다. 무엇을 도와드릴까요`,
+				};
+				
+				chattingSock.send(JSON.stringify(obj));
+			}
 
 		})
 		.catch(err => console.log(err));
@@ -193,7 +204,6 @@ const sendMessage = () => {
 chattingSock.onmessage = function (e) {
 	// 메소드를 통해 전달받은 객체값을 JSON객체로 변환해서 obj 변수에 저장.
 	const msg = JSON.parse(e.data);
-	console.log(msg);
 
 	// 현재 채팅방을 보고있는 경우
 	if (selectChattingNo == msg.chattingRoomNo) {
@@ -222,13 +232,29 @@ document.querySelector(".end-btn").addEventListener("click",  () => {
 
 	chattingSock.send(JSON.stringify(end));
 
+	var obj = {
+		"senderNo": loginMemberNo,
+		"targetNo": selectTargetNo,
+		"chattingRoomNo": selectChattingNo,
+	};
+
 	fetch("/chat/counselingEnd", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(obj)
 	}).then(resp => resp.text())
 	.then(result => {
-		console.log(result)
+		if(result > 0	) {
+			selectRoomList();
+		
+			const container = document.getElementById('messageContainer');
+			container.innerHTML = `
+				<div class="welcome-message">
+						<p>${counselerName} 상담가님,</p>
+						<p>상담을 완료 했습니다..</p>
+				</div>
+			`;
+		}
 	});
 
 	roomListAddEvent();

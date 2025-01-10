@@ -24,12 +24,14 @@ import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 import jakarta.servlet.http.HttpSession;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Getter
 public class ChatWebSocketHandler extends TextWebSocketHandler{
 	
 	private final ChattingService service;
@@ -89,7 +91,7 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 		
 		if(result > 0) {
 			
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd hh:mm");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy.MM.dd");
 			msg.setSendTime(sdf.format(new Date()));
 			
 			// 필드에 있는 sessions에는 접속중인 모든 회원의 세션 정보가 담겨있음

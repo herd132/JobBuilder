@@ -102,10 +102,12 @@ public class ResumeListContorller {
 		  return "resume/resumeDetail"; 								// 정상 리턴 경로
 		}
 		
+		// 01.10 신동국 수정함 공고쪽 로직이랑 달라서 mapper 파일도 건드렸습니다. getEployeerNo에서 getMemberNo으로 수정
+		// mapper.xml에서 당황하지 마시길
 	    // 고용주 유효성 검사
 	    Employer loginEmployer = (Employer) session.getAttribute("loginEmployer");
 	    if (loginEmployer != null) {
-	        Map<String, Object> result = service.getEmployercheck(resumeNo, loginEmployer.getEmployerNo());
+	        Map<String, Object> result = service.getEmployercheck(resumeNo, loginEmployer.getMemberNo());
 	        if (result == null) return "error/error"; 
 	        model.addAttribute("resumeNo", result.get("RESUME_NO"));
 	        return "resume/resumeDetail";

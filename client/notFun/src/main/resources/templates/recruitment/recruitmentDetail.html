@@ -158,7 +158,12 @@
 
       <h3>근무지역</h3>
       <div>
-
+        <div id="map" style="width: 100%; height: 500px; border: 1px solid black;" th:chat-no="${recruitment.businessAddress}"></div>
+        <div>
+          <h3>올림픽로35길 130의 좌표</h3>
+          <p>경도(X 좌표) : <span id="xCoordi"></span></p>
+          <p>위도(Y 좌표) : <span id="yCoordi"></span></p>
+        </div>
       </div>
 
       <h3>상세 요강</h3>
@@ -212,11 +217,30 @@
   <div class="recommend-modal-outside"></div>
 
 
+  <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xppqitiq8t"></script>
+  <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xppqitiq8t&submodules=geocoder"></script>e=no">
+
   <script src="/js/recruitment/recruitmentDetail.js"></script>
 
 
   <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
   <th:block th:replace="~{common/main-footer}"></th:block>
+
+  <div id="map" style="width:100%; height:800px;"></div>
+
+    <script>
+
+        var map = new naver.maps.Map('map', {
+            center: new naver.maps.LatLng(37.5112, 127.0981), // 잠실 롯데월드를 중심으로 하는 지도
+            zoom: 15
+        });
+
+        var marker = new naver.maps.Marker({
+            position: new naver.maps.LatLng(37.5112, 127.0981),
+            map: map
+        });
+
+    </script>
 </body>
 
 </html>
