@@ -1,3 +1,8 @@
+let recruitmentData = [];
+
+
+
+
 // Mock data
 const mockSubcategories = {
   1: ["중분류1-1", "중분류1-2"],
@@ -296,7 +301,7 @@ const changeServer = () => {
         } = data;
   
         // 전역 변수에 데이터 저장
-        recruitmentData =[];
+      
         recruitmentData = recruitment;
         
   
@@ -316,7 +321,7 @@ const changeServer = () => {
           resumeWorkType,
           workcondAddressTypeInfo
           */
-          
+          recruitmentData,
           paginatedData,
         );
         // 페이지네이션 로직 호출
@@ -329,7 +334,7 @@ const changeServer = () => {
       });
   
    });
-  
+
   };
   changeServer();
 
@@ -360,7 +365,7 @@ let resumeWorkTypeData = {};
 let workcondAddressTypeInfoData = {};
 
 */
-let recruitmentData = [];
+
 
 // 경력 변환
 const formatCareer = (totalCareer) => {
@@ -499,10 +504,6 @@ const recruitmentNo = 16;
 };
 
 
-
-
-
-console.log
 
 
 
