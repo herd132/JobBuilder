@@ -89,7 +89,7 @@
                 <div id="categoryArea">
                     <div class="edit">
                         <h2>희망근무 조건</h2>
-                        <button class="category-btn" type="button" id="categoryBtn"> Edit </button>
+                        <button class="category-btn" type="button" id="categoryBtn" th:if="${session.loginWorker}"> Edit </button>
                     </div>
                 </div>
                 <section class="form-section" name="category-section" id="category-section">
@@ -146,7 +146,7 @@
                 <div id="selfArea">
                     <div class="edit">
                         <h2>자기소개</h2>
-                        <button class="edit-btn" type="button" id="selfBtn"> Edit </button>
+                        <button th:if="${session.loginWorker}" class="edit-btn" type="button" id="selfBtn"> Edit </button>
                     </div>
                     <section class="form-section">
                         <div id="resumeContent" style="white-space: pre-wrap;"></div>

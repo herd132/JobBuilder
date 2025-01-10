@@ -15,6 +15,6 @@ public interface RecommendMapper {
 	List<Map<String, Object>> revommendResumeList(Map<String, Integer> map);
 
 	// 추천 이력수 수 카운트
-	int getRecommendCount(Recruitment recruitment);
+	Integer getRecommendCount(Recruitment recruitment);
 
 }
