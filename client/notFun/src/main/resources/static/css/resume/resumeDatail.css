@@ -195,7 +195,7 @@ h3 {
   white-space: nowrap; /* 줄바꿈 방지 */
 }
 
-.edit{
+.edit, .edit-title{
   display: flex;
   color: #2c3e50;
   border-bottom: 2px solid #eee;
@@ -203,7 +203,7 @@ h3 {
   margin: 30px 0 20px;
 }
 
-.edit-btn, .category-btn{
+.edit-btn, .category-btn, .title-btn, .grade-btn{
   padding: 0.5rem;
   background-color: #543a14;
   color: white;
@@ -372,34 +372,6 @@ input[type="number"] {
 	gap: 30px;
 }
 
-/* 제출 버튼 */
-.submit-btn,
-.updateCategoryCancelBtn {
-	width: 100%;
-	padding: 15px;
-	border: none;
-	border-radius: 4px;
-	cursor: pointer;
-	font-size: 20px;
-	margin-top: 30px;
-	font-weight: bold;
-}
-
-.submit-btn {
-	background-color: #543A14;
-	color: #fff;
-}
-
-.updateCategoryCancelBtn {
-	border: 2px solid #543A14;
-	color: #543A14;
-}
-
-.submit-btn:hover {
-	background-color: #333;
-}
-
-
 .daysTimeSection {
 	display: flex;
 	align-items: center;
@@ -429,6 +401,8 @@ input[name="salAmount"] {
 	width: 50%;
 }
 
+
+
 /* 반응형 디자인 */
 @media (max-width: 768px) {
 	body {
@@ -446,4 +420,104 @@ input[name="salAmount"] {
 	#select-container select {
 		width: 100%;
 	}
+}
+
+
+/* 경력사항 */
+.career-container {
+	border-radius: 8px;
+	margin-bottom: 20px;
+}
+
+.career-container button {
+	padding: 8px 16px;
+	margin-right: 10px;
+	border: none;
+	border-radius: 4px;
+	cursor: pointer;
+}
+
+.career-container>section {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+
+.career-toggle {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	border: 2px solid #F0BB78;
+	border-radius: 25px;
+	width: 150px;
+	position: relative;
+}
+
+/* 경력구분 텍스트 스타일 */
+.career-container span {
+	font-size: 17px;
+	color: #555;
+	font-weight: bold;
+}
+
+button.newbie,
+button.exp {
+	flex: 1;
+	padding: 10px;
+	border: none;
+	background-color: transparent;
+	cursor: pointer;
+	font-size: 17px;
+	color: #555;
+	transition: all 0.3s ease;
+	margin-right: 0px;
+}
+
+button.newbie {
+	border-radius: 20px 0 0 20px;
+}
+
+button.exp {
+	border-radius: 0 20px 20px 0;
+}
+
+/* 버튼이 선택되었을 때의 활성화 스타일 */
+button.newbie.active,
+button.exp.active {
+	background-color: #F0BB78;
+	color: white;
+}
+
+.exp-append {
+	background-color: #543A14;
+	color: white;
+	margin-top: 10px;
+}
+
+.input-container {
+	margin-top: 20px;
+	padding: 20px;
+	background-color: white;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-container label {
+	display: block;
+	margin-bottom: 15px;
+}
+
+.input-container input[type="text"],
+.input-container input[type="date"],
+.input-container textarea {
+	width: 100%;
+	padding: 8px;
+	border: 1px solid #ddd;
+	border-radius: 4px;
+	margin-top: 5px;
+}
+
+.input-container textarea {
+	height: 100px;
+	resize: none;
 }

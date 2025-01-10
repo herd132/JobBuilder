@@ -55,6 +55,12 @@ public interface ResumeService {
 	int updateCategory(Resume resume, List<String> workTypeList, List<String> addressList, List<Integer> jobTypeNoList,
 			List<ResumeDaysTime> daysTimeList);
 
+	/** 이력서 제목 업데이트
+	 * @param requestBody
+	 * @return
+	 */
+	int updateTitle(Map<String, Object> requestBody);
+
 
 
 

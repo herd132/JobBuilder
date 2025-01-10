@@ -168,14 +168,12 @@ public class ResumeServiceImpl implements ResumeService {
 		workTypeMap.put("workTypeList", workTypeList);
 
 		// ex ) {"resumeNo" : 1, "workTypeList" : [1002, 1001, 1010]}
-		
-		int result1 = mapper.updateCategoryWorkType(workTypeMap);
-		
-		result = mapper.insertResumeWorkType(workTypeMap);
-		
-		
-		if (result != workTypeList.size()) {
-			throw new RuntimeException("RESUME_WORKTYPE 삽입 중 예외 발생");
+
+		int result1 = mapper.updateCategoryWorkTypeDelete(workTypeMap);
+
+		if (result1 > 0) {
+
+			result = mapper.updateCategoryWorkType(workTypeMap);
 		}
 
 		// addressList 수정
@@ -183,9 +181,10 @@ public class ResumeServiceImpl implements ResumeService {
 		addressMap.put("resumeNo", resumeNo);
 		addressMap.put("addressList", addressList);
 
-		result = mapper.updateCategoryAddress(addressMap);
-		if (result != addressList.size()) {
-			throw new RuntimeException("RESUME_ADDRESS 삽입 중 예외 발생");
+		result1 = mapper.updateCategoryAddressDelete(addressMap);
+
+		if (result1 > 0) {
+			result = mapper.updateCategoryAddress(addressMap);
 		}
 
 		// 4. RESUME 관련 RESUME_JOB_TYPE 수정
@@ -193,22 +192,33 @@ public class ResumeServiceImpl implements ResumeService {
 		jobTypeMap.put("resumeNo", resumeNo);
 		jobTypeMap.put("jobTypeNoList", jobTypeNoList);
 
-		result = mapper.updateCategoryJobType(jobTypeMap);
-		if (result != jobTypeNoList.size()) {
-			throw new RuntimeException("RESUME_JOB_TYPE 삽입 중 예외 발생");
+		result1 = mapper.updateCategoryJobTypeDelete(jobTypeMap);
+		if (result1 > 0) {
+			result = mapper.updateCategoryJobType(jobTypeMap);
 		}
 
-		// 5. RESUME_DAYSTIME 삽입
+		// 5. RESUME_DAYSTIME 수정
 		// dayTimesList에 resumeNo 각각 세팅
 		for (ResumeDaysTime daysTime : daysTimeList) {
 			daysTime.setResumeNo(resumeNo);
+			log.debug("daysTime : " + daysTime);
 		}
 
-		result = mapper.updateCategoryDaysTime(daysTimeList);
-		if (result != daysTimeList.size()) {
-			throw new RuntimeException("RESUME_DAYSTIME 삽입 중 예외 발생");
+		Map<String, Object> daysTimeMap = new HashMap<>();
+		daysTimeMap.put("resumeNo", resumeNo);
+		daysTimeMap.put("list", daysTimeList);
+		result1 = mapper.updateCategoryDaysTimeDelete(daysTimeMap);
+
+		if (result1 > 0) {
+			result = mapper.updateCategoryDaysTime(daysTimeList);
 		}
 		return result;
 
+	}
+
+	// 제목 수정
+	@Override
+	public int updateTitle(Map<String, Object> requestBody) {
+		return mapper.updateTitle(requestBody);
 	}
 }

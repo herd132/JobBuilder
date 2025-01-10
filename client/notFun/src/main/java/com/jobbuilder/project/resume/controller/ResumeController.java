@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -184,45 +185,35 @@ public class ResumeController {
 
 	@PostMapping("updateCategory")
 	public String updateCategory(@SessionAttribute("loginWorker") Worker loginWorker,
-			@RequestParam(value = "salAmount", defaultValue = "0") int salAmount,
-			Resume resume,
+			@RequestParam(value = "salAmount", defaultValue = "0") int salAmount, Resume resume,
 			@RequestParam("workTypeList") List<String> workTypeList, // 업직종고유번호 list,
 			@RequestParam("addressList") List<String> addressList, // 희망 근무지역 list
 			@RequestParam("jobTypeNo") List<Integer> jobTypeNoList, // 근무형태 list) {
 			@RequestParam("daysTimeList") String daysTimeListJson, // 요일날짜 JSON
+			@RequestParam("currentUrl") String currentUrl, // 현재 페이지 url
 			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException {
-
-		log.debug("resume : " + resume);
-		log.debug("희망업종 workTypeList {}", workTypeList);
-		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
-		log.debug("희망 근무지 addressList {}", addressList);
-		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson);
 
 		List<ResumeDaysTime> daysTimeList = null;
 		if (daysTimeListJson != null) {
 			ObjectMapper objectMapper = new ObjectMapper();
 			daysTimeList = objectMapper.readValue(daysTimeListJson, new TypeReference<List<ResumeDaysTime>>() {
 			});
-
-			// 데이터 확인
-			for (ResumeDaysTime daysTime : daysTimeList) {
-				log.debug("근무요일시간 daysTime {}", daysTime);
-			}
 		}
-
-		// -------------------------
 
 		// resume에 근로자번호 세팅
 		resume.setWorkerNo(loginWorker.getWorkerNo());
-		
+
 		if (salAmount != 0) { // 희망급여가 있다면
 			resume.setSalaryAmount(salAmount); // resume 객체에 세팅
 
 		}
-		
-		int result = service.updateCategory(resume, workTypeList, addressList, jobTypeNoList,daysTimeList);
-		
+
+		int result = service.updateCategory(resume, workTypeList, addressList, jobTypeNoList, daysTimeList);
+
+		log.debug("currentUrl : " + currentUrl);
+
 		String message = null;
+
 		if (result > 0) {
 			message = "이력서 업데이트 완료";
 		} else {
@@ -231,8 +222,36 @@ public class ResumeController {
 
 		ra.addFlashAttribute(message);
 
-		return "띠용";
+		if (currentUrl.startsWith(",")) {
+			currentUrl = currentUrl.substring(1); // 첫 번째 문자를 잘라냄
 
+			if (currentUrl.startsWith("http://localhost")) {
+				currentUrl = currentUrl.substring("http://localhost/".length());
+			}
+		}
+
+		log.debug("currentUrl :" + currentUrl);
+
+		return "redirect:/" + currentUrl;
+	}
+
+	@PostMapping("/updateTitle")
+	@ResponseBody
+	public Map<String, Object> updateResumeContent(@RequestBody Map<String, Object> requestBody) {
+		
+		log.debug("requestBody : " + requestBody);
+		
+		int result = service.updateTitle(requestBody);
+		
+		Map<String, Object> resp = new HashMap<>();
+		if (result > 0) {
+			resp.put("status", "success");
+			resp.put("message", "제목이 업데이트되었습니다.");
+		} else {
+			resp.put("status", "error");
+			resp.put("message", "제목 업데이트에 실패했습니다.");
+		}
+		return resp;
 	}
 
 }
