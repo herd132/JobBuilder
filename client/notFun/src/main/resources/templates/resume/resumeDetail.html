@@ -23,8 +23,9 @@
 
 
                 <div class="writetime">최종 편집 : <span id="writetime"></span></div>
-                <div class="edit">
+                <div class="edit-title">
                     <h2 id="resumeTitle"></h2>
+                    <button class="title-btn" type="button" id="titleBtn"> 수정 </button>
                 </div>
 
                 <section class="form-section">
@@ -63,8 +64,9 @@
 
                 <div class="edit">
                     <h2>학력 및 경력</h2>
+                    <button class="grade-btn" type="button" id="gradeBtn"> 수정 </button>
                 </div>
-                <section class="form-section">
+                <section class="form-section" id="gradeSection">
                     <h3 id="gradeName"></h3>
 
                     <div id="career-section">
@@ -89,7 +91,9 @@
                 <div id="categoryArea">
                     <div class="edit">
                         <h2>희망근무 조건</h2>
+
                         <button class="category-btn" type="button" id="categoryBtn" th:if="${session.loginWorker}"> Edit </button>
+
                     </div>
                 </div>
                 <section class="form-section" name="category-section" id="category-section">
@@ -146,7 +150,9 @@
                 <div id="selfArea">
                     <div class="edit">
                         <h2>자기소개</h2>
+
                         <button th:if="${session.loginWorker}" class="edit-btn" type="button" id="selfBtn"> Edit </button>
+
                     </div>
                     <section class="form-section">
                         <div id="resumeContent" style="white-space: pre-wrap;"></div>

@@ -152,6 +152,7 @@ public class ResumeListContorller {
 	@PostMapping("/updateContent")
 	@ResponseBody
 	public Map<String, Object> updateResumeContent(@RequestBody Map<String, Object> requestBody) {
+		log.debug("requestBody : " + requestBody);
 		int result = service.updateResumeContent(requestBody);
 
 		Map<String, Object> response = new HashMap<>();
