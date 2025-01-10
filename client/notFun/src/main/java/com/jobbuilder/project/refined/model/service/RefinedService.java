@@ -10,6 +10,8 @@ public interface RefinedService {
 
 	List<Refined> getRecruitmentList(int recruitmentNo);
 
+	List<Refined> getRecruitmentListb(int recruitmentNo);
+
 	/*
 	List<ResumeWorkType> resumeWorkType(int recruitmentNo);
 

@@ -62,8 +62,31 @@ public class RefinedContoller {
 		return response;
 	}
 	
-	
-	
+	@PostMapping("/listb")
+	@ResponseBody
+	public Map<String, Object> getRecommendationsb(@RequestBody Map<String, Object> requestBody) {
+		int recruitmentNo = Integer.parseInt(requestBody.get("recruitmentNo").toString());
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		// 공고 리스트 조회
+		List<Refined> recruitment = service.getRecruitmentListb(recruitmentNo);
+
+		// 배열로 구성된 상세 정보에 필요한 객체들 조회
+		/*List<ResumeWorkType> resumeWorkType = service.resumeWorkType(recruitmentNo);
+		List<String> resumeJobTypeList = service.resumeJobTypeList(recruitmentNo);
+		List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(recruitmentNo);
+		List<String> workcondAddressTypeInfo = service.workcondAddressTypeInfo(recruitmentNo);
+
+		response.put("resumeWorkType", resumeWorkType);
+		response.put("resumeJobTypeList", resumeJobTypeList);
+		response.put("resumeDaysTime", resumeDaysTime);
+		response.put("workcondAddressTypeInfo", workcondAddressTypeInfo);
+		*/response.put("recruitment", recruitment);
+
+
+		return response;
+	}
 	
 	
 	

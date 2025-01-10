@@ -170,7 +170,7 @@ public class RecruitmentController {
 						Model model, RedirectAttributes ra) {
 		
 		Recruitment recruitment = service.selectOne(recruitmentNo);
-		int recommendNum = recommendService.getRecommendCount(recruitment);
+		Integer recommendNum = recommendService.getRecommendCount(recruitment);
 		
 		log.debug("recruitment : " + recruitment);
 

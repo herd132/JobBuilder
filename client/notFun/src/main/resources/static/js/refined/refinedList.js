@@ -24,7 +24,7 @@ let isInitialState = "N"; // 초기 상태 (Y: 초기 상태, N: 일반 상태)
 // 서버 상태를 동적으로 업데이트
 function serverUpdate() {
   if (isInitialState === "Y") return; // 초기 상태일 경우 실행하지 않음
-
+  changeServer();
   server.push([...Object.keys(selectedMinorCategories)]);
   console.log(`${serverLogIndex}:`, [...server[serverLogIndex - 1]]); // 서버 상태 출력
   serverLogIndex++;
@@ -34,7 +34,7 @@ function serverUpdate() {
 // 서버를 초기 상태로 리셋
 function serverUpdate2() {
   if (isInitialState === "Y") return; // 이미 초기 상태면 실행하지 않음
-
+  defaultServer()
   const initialData = ["초기값"];
   server.push(initialData);
   console.log(`${serverLogIndex}:`, initialData); // 초기값 출력
@@ -246,19 +246,92 @@ function init() {
 init();
 
 
+document.getElementById("test-btn").addEventListener("click", () => {
+  changeServer(); // 함수 호출
+});
 
 
 
 
-
-
-
-
-
-
-
-
-
+const changeServer = () => {
+  document.addEventListener("DOMContentLoaded", () => {
+    const urlParams = new URLSearchParams(window.location.search);
+    let currentPage = parseInt(urlParams.get("cp")) || 1; // 기본값 1
+  
+    
+    // `resumeNo`가 없는 경우 URL을 업데이트
+    if (!urlParams.has("cp")) {
+      window.history.replaceState(
+        {},
+        "",
+        `${window.location.pathname}?&cp=${currentPage}`
+      );
+    }
+     
+  
+  const recruitmentNo = 16;
+    // Fetch 요청 제거 후 데이터를 받아오는 로직 수정
+    fetch("/refined/listb", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ recruitmentNo: recruitmentNo }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("서버에서 받은 데이터:", data);
+  
+        const {
+          /*
+          resume,
+          recommendations,
+          resumeDaysTime,
+          resumeJobTypeList,
+          resumeWorkType,
+          workcondAddressTypeInfo,
+          */
+  
+          recruitment,
+        } = data;
+  
+        // 전역 변수에 데이터 저장
+        recruitmentData =[];
+        recruitmentData = recruitment;
+        
+  
+        // 페이지네이션 처리 및 데이터 로드
+        const itemsPerPage = 10; // 한 페이지당 항목 수
+        const paginatedData = recruitment.slice(
+          (currentPage - 1) * itemsPerPage,
+          currentPage * itemsPerPage
+        );
+  
+        // UI 업데이트
+        updateUI(
+          /*
+          resume,
+          resumeDaysTime,
+          resumeJobTypeList,
+          resumeWorkType,
+          workcondAddressTypeInfo
+          */
+          
+          paginatedData,
+        );
+        // 페이지네이션 로직 호출
+        createPagination(recruitment, document.getElementById("pagination"));
+      })
+  
+   
+      .catch((error) => {
+        console.error("요청 오류:", error);
+      });
+  
+   });
+  
+  };
+  changeServer();
 
 
 
@@ -278,12 +351,16 @@ init();
 
 // 전역 변수 및 유틸리티 함수 영역
 // ----------------------------------------
+/*
 let resumeData = {};
-let recommendationsData = {};
+
 let resumeDaysTimeData = {};
 let resumeJobTypeListData = {};
 let resumeWorkTypeData = {};
 let workcondAddressTypeInfoData = {};
+
+*/
+let recruitmentData = [];
 
 // 경력 변환
 const formatCareer = (totalCareer) => {
@@ -340,22 +417,25 @@ const formatSalary = (salaryNo, salaryAmount, salaryName = "") => {
     return "급여 정보 없음";
   }
 };
-/*
+
 // 기존 Fetch 요청 영역
 // ----------------------------------------
+const defaultServer = () => {
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   let currentPage = parseInt(urlParams.get("cp")) || 1; // 기본값 1
 
+  
   // `resumeNo`가 없는 경우 URL을 업데이트
-  if (!urlParams.has("resumeNo")) {
+  if (!urlParams.has("cp")) {
     window.history.replaceState(
       {},
       "",
-      `${window.location.pathname}?resumeNo=${resumeNo}&cp=${currentPage}`
+      `${window.location.pathname}?&cp=${currentPage}`
     );
   }
-*/
+   
+
 const recruitmentNo = 16;
   // Fetch 요청 제거 후 데이터를 받아오는 로직 수정
   fetch("/refined/lista", {
@@ -368,39 +448,45 @@ const recruitmentNo = 16;
     .then((response) => response.json())
     .then((data) => {
       console.log("서버에서 받은 데이터:", data);
-/*
+
       const {
+        /*
         resume,
         recommendations,
         resumeDaysTime,
         resumeJobTypeList,
         resumeWorkType,
         workcondAddressTypeInfo,
+        */
+
+        recruitment,
       } = data;
-*/
+
       // 전역 변수에 데이터 저장
-      //resumeData = resume;
+      recruitmentData = recruitment;
       
-/*
+
       // 페이지네이션 처리 및 데이터 로드
-      const itemsPerPage = 5; // 한 페이지당 항목 수
-      const paginatedData = recommendations.slice(
+      const itemsPerPage = 10; // 한 페이지당 항목 수
+      const paginatedData = recruitment.slice(
         (currentPage - 1) * itemsPerPage,
         currentPage * itemsPerPage
       );
 
       // UI 업데이트
       updateUI(
+        /*
         resume,
-        paginatedData,
         resumeDaysTime,
         resumeJobTypeList,
         resumeWorkType,
         workcondAddressTypeInfo
+        */
+        paginatedData,
       );
-*/
+
       // 페이지네이션 로직 호출
-      //createPagination(recommendations, document.getElementById("pagination"));
+      createPagination(recruitment, document.getElementById("pagination"));
     })
 
  
@@ -408,20 +494,32 @@ const recruitmentNo = 16;
       console.error("요청 오류:", error);
     });
 
-// });
+ });
 
-/*
+};
+
+
+
+
+
+console.log
+
+
 
 // 기존 UI 업데이트 함수 영역
 // ----------------------------------------
 const updateUI = (
+/*
   resume,
-  recommendations,
   resumeDaysTime,
   resumeJobTypeList,
   resumeWorkType,
   workcondAddressTypeInfo
+*/
+recruitmentData,
 ) => {
+
+  /*
   // 작성시간
   const writetime = resume.modificationDate
     ? resume.modificationDate
@@ -496,7 +594,7 @@ const updateUI = (
     resume.salaryName
   );
   document.getElementById("salary").innerHTML = `${salary}`;
-
+*/
   // 부모 요소 선택
   const recruitmentBody = document.getElementById("recruitmentbody");
 
@@ -505,9 +603,9 @@ const updateUI = (
 
   // 빈 배열일 경우 메시지 생성
   if (
-    !recommendations ||
-    !Array.isArray(recommendations) ||
-    recommendations.length === 0
+    !recruitmentData ||
+    !Array.isArray(recruitmentData) ||
+    recruitmentData.length === 0
   ) {
     const noDataRow = document.createElement("tr");
     noDataRow.innerHTML =
@@ -515,34 +613,34 @@ const updateUI = (
     recruitmentBody.appendChild(noDataRow);
   } else {
     // 배열 값 만큼 반복
-    recommendations.forEach((recommendation) => {
+    recruitmentData.forEach((recruitment) => {
       const row = document.createElement("tr");
 
       // 각 열(td) 생성 및 데이터 추가
       row.innerHTML = `
-      <td>${recommendation.recruitmentNo || "값 없음"}</td>
-      <td>${recommendation.businessAddress || "값 없음"}</td>
+      <td>${recruitment.recruitmentNo || "값 없음"}</td>
+      <td>${recruitment.businessAddress || "값 없음"}</td>
       <td>
         <ul recruitmentNo="${
-          recommendation.recruitmentNo || "값 없음"
+          recruitment.recruitmentNo || "값 없음"
         }" style="cursor: pointer;" 
             onclick="location.href='/recruitment/detail/${
-              recommendation.recruitmentNo
+              recruitment.recruitmentNo
             }'">
-          <li>${recommendation.recruitmentTitle || "값 없음"}</li>
-          <li>${recommendation.businessName || "값 없음"}</li>
+          <li>${recruitment.recruitmentTitle || "값 없음"}</li>
+          <li>${recruitment.businessName || "값 없음"}</li>
         </ul>
       </td>
       <td>
         <span>${
-          formatSalaryAmount(recommendation.salaryMount) + " 원" || "값 없음"
+          formatSalaryAmount(recruitment.salaryMount) + " 원" || "값 없음"
         }</span>
-        <span>${recommendation.salaryName || "값 없음"}</span>
+        <span>${recruitment.salaryName || "값 없음"}</span>
       </td>
-      <td>${recommendation.timeName || "값 없음"}</td>
-      <td>${formatTime(recommendation.writeDate) || "값 없음"}</td>
+      <td>${recruitment.timeName || "값 없음"}</td>
+      <td>${formatTime(recruitment.writeDate) || "값 없음"}</td>
       <td>${
-        formatDeadline(recommendation.recruitmentDeadline) || "값 없음"
+        formatDeadline(recruitment.recruitmentDeadline) || "값 없음"
       }</td>
     `;
 
@@ -555,15 +653,14 @@ const updateUI = (
 
 // 페이지네이션 로직
 const createPagination = (data, paginationContainer) => {
-  if (!recommendationsData || !Array.isArray(recommendationsData) || recommendationsData.length === 0) {
+  if (!recruitmentData || !Array.isArray(recruitmentData) || recruitmentData.length === 0) {
     return;
   }
 
-  const itemsPerPage = 5; // 한 페이지당 항목 수
+  const itemsPerPage = 10; // 한 페이지당 항목 수
   const pagesPerGroup = 10; // 페이지 그룹당 페이지 수
   const totalPages = Math.ceil(data.length / itemsPerPage);
   const urlParams = new URLSearchParams(window.location.search);
-  const resumeNo = urlParams.get("resumeNo");
   let currentPage = parseInt(urlParams.get("cp")) || 1;
 
   // 현재 그룹 계산
@@ -577,7 +674,7 @@ const createPagination = (data, paginationContainer) => {
   const createLink = (text, targetPage, isCurrent = false) => {
     const link = document.createElement("a");
     link.textContent = text;
-    link.href = `?resumeNo=${resumeNo}&cp=${targetPage}`;
+    link.href = `?&cp=${targetPage}`;
     link.className = "pagination-link"; // 공통 클래스 추가
 
     if (isCurrent) {
@@ -587,9 +684,9 @@ const createPagination = (data, paginationContainer) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
       currentPage = targetPage;
-      window.history.pushState({}, "", `?resumeNo=${resumeNo}&cp=${currentPage}`);
+      window.history.pushState({}, "", `?&cp=${currentPage}`);
       const paginatedData = data.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-      updateUI(resumeData, paginatedData, [], [], [], []);
+      updateUI(paginatedData);
       createPagination(data, paginationContainer); // 갱신
     });
 
@@ -623,4 +720,8 @@ const createPagination = (data, paginationContainer) => {
 };
 
 
-*/
+
+
+defaultServer();
+
+changeServer();
