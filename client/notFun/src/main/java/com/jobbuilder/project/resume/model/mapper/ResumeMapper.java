@@ -62,5 +62,15 @@ public interface ResumeMapper {
 	 * @return
 	 */
 	int updateCategory(Resume resume);
+	
+	int updateCategoryperiod(Resume resume);
+
+	int updateCategoryWorkType(Map<String, Object> workTypeMap);
+
+	int updateCategoryAddress(Map<String, Object> addressMap);
+
+	int updateCategoryJobType(Map<String, Object> jobTypeMap);
+
+	int updateCategoryDaysTime(List<ResumeDaysTime> daysTimeList);
 
 }

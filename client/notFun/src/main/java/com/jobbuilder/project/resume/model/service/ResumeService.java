@@ -53,7 +53,7 @@ public interface ResumeService {
 	 * @return
 	 */
 	int updateCategory(Resume resume, List<String> workTypeList, List<String> addressList, List<Integer> jobTypeNoList,
-			String daysTimeListJson);
+			List<ResumeDaysTime> daysTimeList);
 
 
 

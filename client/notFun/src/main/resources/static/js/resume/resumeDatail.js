@@ -638,7 +638,6 @@ categoryBtn.addEventListener("click", async (e) => {
 
     // selectElement, inputElement, selectedValue 재정의 후 이벤트 바인딩
     var selectElement = document.querySelector('select[name="salaryNo"]');
-    
 
     // selectElement가 존재하는지 확인한 후 이벤트 리스너 추가
     if (selectElement) {
@@ -658,6 +657,14 @@ categoryBtn.addEventListener("click", async (e) => {
   if (updateCategoryForm) {
     updateCategoryForm.addEventListener("submit", (e) => {
       e.preventDefault();
+
+      // resumeNo를 hidden input으로 추가
+      const resumeNoInput = document.createElement("input");
+      resumeNoInput.type = "hidden";
+      resumeNoInput.name = "resumeNo";
+      resumeNoInput.value = resumeNo;
+      console.log(resumeNo);
+      updateCategoryForm.appendChild(resumeNoInput); // 폼에 추가
 
       if (confirm("저장하시겠습니까?")) {
         let workTypeList = []; // 업직종저장배열(5개까지)
@@ -747,9 +754,10 @@ categoryBtn.addEventListener("click", async (e) => {
         hiddenInput4.value = addressList;
 
         updateCategoryForm.appendChild(hiddenInput4);
+        
+        updateCategoryForm.submit();
       }
 
-      updateCategoryForm.submit();
     });
   }
 

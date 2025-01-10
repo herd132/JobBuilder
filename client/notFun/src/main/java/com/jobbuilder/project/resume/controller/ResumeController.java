@@ -220,7 +220,7 @@ public class ResumeController {
 
 		}
 		
-		int result = service.updateCategory(resume, workTypeList, addressList, jobTypeNoList,daysTimeListJson);
+		int result = service.updateCategory(resume, workTypeList, addressList, jobTypeNoList,daysTimeList);
 		
 		String message = null;
 		if (result > 0) {
