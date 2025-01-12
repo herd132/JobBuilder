@@ -102,5 +102,9 @@ public class Refined {
 	private String workerAddress;	// 알바생 주소
 	private int age;
 
+	private String parent; // 중분류/대분류
     
+
+	private String worktypeNo;
+	private String worktypeCategory;
 }

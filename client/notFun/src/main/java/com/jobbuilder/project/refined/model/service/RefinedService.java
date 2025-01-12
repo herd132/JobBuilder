@@ -3,15 +3,25 @@ package com.jobbuilder.project.refined.model.service;
 import java.util.List;
 
 import com.jobbuilder.project.refined.model.dto.Refined;
-import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
-import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 
 public interface RefinedService {
 
-	List<Refined> getRecruitmentList(int recruitmentNo);
+	List<Refined> getRecruitmentList();
 
 	List<Refined> getRecruitmentListb(int recruitmentNo);
 
+	List<Refined> refinedAddress1();
+
+	List<Refined> refinedAddress2();
+
+	List<Refined> refineJob1();
+
+	List<Refined> refineJob2();
+
+	
+	
+	
+	
 	/*
 	List<ResumeWorkType> resumeWorkType(int recruitmentNo);
 

@@ -26,14 +26,13 @@
       <div id="main-container">
         <!-- 대분류 -->
         <div id="category-container">
-          <button class="category-btn" data-category="1">대분류1 <span name="category-count" class="count-badge"></span></button>
-          <button class="category-btn" data-category="2">대분류2 <span name="category-count" class="count-badge"></span></button>
+          <button class="category-btn active" data-category="1">지역별 <span name="category-count" class="count-badge"></span></button>
+          <button class="category-btn" data-category="2">업직종 <span name="category-count" class="count-badge"></span></button>
           <button class="category-btn" data-category="3">대분류3 <span name="category-count" class="count-badge"></span></button>
           <button class="category-btn" data-category="4">대분류4 <span name="category-count" class="count-badge"></span></button>
         </div>
       
         
-
 
         <!-- 내부 뼈대 -->
         <div id="content-container">
@@ -52,10 +51,13 @@
             </div>
           </div>
       
-          <!-- 세 번째 줄: 선택된 소분류 -->
-          <div id="selected-minorcategories">
-            <ul id="selected-list"></ul>
-          </div>
+        <!-- 세 번째 줄: 선택된 소분류 -->
+        <div id="selected-minorcategories">
+          <!-- 기존 구조 유지 -->
+          <ul id="selected-list">
+            <!-- 여기에 선택된 항목이 기존 방식대로 추가 -->
+          </ul>
+        </div>
       
           <!-- 초기화 및 임시 제출 버튼 -->
           <div id="action-buttons">

@@ -112,7 +112,33 @@
 		ORDER BY A.WRITE_DATE DESC
     </select>
 
-
-
-
+	<select id="refinedAddress1" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT WORKCOND_ADDRESS_TYPE_NO,WORKCOND_ADDRESS_TYPE_INFO
+		FROM WORKCOND_ADDRESS_TYPE
+		WHERE WORKCOND_ADDRESS_TYPE_NO LIKE '%00'
+		ORDER BY 1
+	</select>
+	
+	<select id="refinedAddress2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT WORKCOND_ADDRESS_TYPE_NO,WORKCOND_ADDRESS_TYPE_INFO
+		FROM WORKCOND_ADDRESS_TYPE
+		WHERE WORKCOND_ADDRESS_TYPE_NO NOT LIKE '%00'
+		ORDER BY 1
+	</select>
+	
+	<select id="refineJob1" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT WORKTYPE_NO,WORKTYPE_CATEGORY
+		FROM EMPLOYER_WORKTYPE
+		WHERE WORKTYPE_NO LIKE '%00'
+		ORDER BY 1
+	</select>
+	
+	<select id="refineJob2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT WORKTYPE_NO,WORKTYPE_CATEGORY
+		FROM EMPLOYER_WORKTYPE
+		WHERE WORKTYPE_NO NOT LIKE '%00'
+		ORDER BY 1
+	</select>
+	
+	
 </mapper>

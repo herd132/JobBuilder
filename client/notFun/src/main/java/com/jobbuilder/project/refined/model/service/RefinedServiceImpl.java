@@ -21,13 +21,33 @@ public class RefinedServiceImpl implements RefinedService {
 	private final RefinedMapper mapper;
 	
 	@Override
-	public List<Refined> getRecruitmentList(int recruitmentNo) {
-		return mapper.getRecruitmentList(recruitmentNo);
+	public List<Refined> getRecruitmentList() {
+		return mapper.getRecruitmentList();
 	}
 	
 	@Override
 	public List<Refined> getRecruitmentListb(int recruitmentNo) {
 		return mapper.getRecruitmentListb(recruitmentNo);
+	}
+	
+	@Override
+	public List<Refined> refinedAddress1() {
+		return mapper.refinedAddress1();
+	}
+	
+	@Override
+	public List<Refined> refinedAddress2() {
+		return mapper.refinedAddress2();
+	}
+	
+	@Override
+	public List<Refined> refineJob1() {
+		return mapper.refineJob1();
+	}
+	
+	@Override
+	public List<Refined> refineJob2() {
+		return mapper.refineJob2();
 	}
 	
 	

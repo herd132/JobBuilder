@@ -382,7 +382,6 @@
   border: 1px solid #ddd;
   cursor: pointer;
 }
-
 /* 대분류 스타일 */
 .category-btn {
   font-size: 16px;
@@ -418,33 +417,25 @@
   cursor: pointer;
 }
 
+/* 카운트 배지 */
 .count-badge {
   font-size: 12px;
   color: #fff;
   background-color: #f00;
   border-radius: 50%;
   padding: 2px 5px;
-  display: none; /* 기본값 숨김 */
-  
+  display: none; /* 기본적으로 숨김 */
+}
+
+.count-badge.visible {
+  display: inline-block; /* 카운트가 있으면 보임 */
 }
 
 /* 활성화 상태 스타일 */
-.category-btn.active .count-badge {
-  display: inline-block;
+.category-btn.active {
+  font-weight: bold;
 }
 
-#selected-list li {
-  margin: 5px;
-  padding: 5px 10px;
-  display: inline-block;
-  background-color: #f0f0f0;
-  cursor: pointer;
-}
-
-.category-count {
-  font-size: 14px;
-  color: red;
+.category-btn .count-badge {
   margin-left: 5px;
-  display: none; /* 초기 상태는 숨김 */
-  visibility:hidden;
 }
