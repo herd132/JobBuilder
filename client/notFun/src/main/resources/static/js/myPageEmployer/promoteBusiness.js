@@ -92,7 +92,6 @@ const businessDetailModal = async (employerNo) => {
       }
     }
   }
-
   // 버튼에 employerNo 설정
   updateBusinessBtn.setAttribute("data-employer-no", employerNo);
   deleteBusinessBtn.setAttribute("data-employer-no", employerNo);

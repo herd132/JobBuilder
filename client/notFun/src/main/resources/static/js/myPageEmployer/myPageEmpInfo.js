@@ -159,21 +159,21 @@ const businessDetailModal = async (employerNo) => {
         
         modalRecruitmentContent.append(employerRecruitmentUl);
       }
-    }
-    
-    // 버튼에 employerNo 설정
-    updateBusinessBtn.setAttribute("data-employer-no", employerNo);
-    deleteBusinessBtn.setAttribute("data-employer-no", employerNo);
+    }    
   }  
-}
+  // 버튼에 employerNo 설정
+  updateBusinessBtn.setAttribute("data-employer-no", employerNo);
+  deleteBusinessBtn.setAttribute("data-employer-no", employerNo);
+};
 
 // 수정하기 버튼 클릭 시 수정 페이지로 이동
-updateBusinessBtn.addEventListener("click", (employerNo) => {
+updateBusinessBtn.addEventListener("click", () => {
+  const employerNo = updateBusinessBtn.getAttribute("data-employer-no");
   window.location.href = `updateBusiness/${employerNo}`;
 });
 
-deleteBusinessBtn.addEventListener("click", (employerNo) => {
-
+deleteBusinessBtn.addEventListener("click", () => {
+  const employerNo = deleteBusinessBtn.getAttribute("data-employer-no");
   if (!confirm("해당 사업장을 삭제 하시겠습니까?")) {
     alert("취소되었습니다.");
     return;
