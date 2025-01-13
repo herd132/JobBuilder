@@ -215,12 +215,10 @@ public class ResumeController {
 		String message = null;
 
 		if (result > 0) {
-			message = "이력서 업데이트 완료";
+			message = "카테고리 업데이트 완료";
 		} else {
-			message = "이력서 업데이트 실패";
+			message = "카테고리 업데이트 실패";
 		}
-
-		ra.addFlashAttribute(message);
 
 		if (currentUrl.startsWith(",")) {
 			currentUrl = currentUrl.substring(1); // 첫 번째 문자를 잘라냄
@@ -229,8 +227,8 @@ public class ResumeController {
 				currentUrl = currentUrl.substring("http://localhost/".length());
 			}
 		}
-
-		log.debug("currentUrl :" + currentUrl);
+		
+		ra.addFlashAttribute("message", message);
 
 		return "redirect:/" + currentUrl;
 	}
@@ -251,18 +249,21 @@ public class ResumeController {
 			resp.put("status", "error");
 			resp.put("message", "제목 업데이트에 실패했습니다.");
 		}
+		
 		return resp;
 	}
 	
 	@PostMapping("/updateGrade")
-	public Map<String, Object> updateGrade(Resume resume, 
+	public String updateGrade(Resume resume, 
+			@SessionAttribute("loginWorker") Worker loginWorker,
 			@RequestParam(value = "careerInfoList", required = false) String careerInfoListJson,
-			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException {
+			RedirectAttributes ra,
+			@RequestParam("currentUrl") String currentUrl) throws JsonMappingException, JsonProcessingException {
 		
-		log.debug("greadeNo : " + resume.getGradeNo());
-		log.debug("careerList : " + careerInfoListJson);
+		resume.setWorkerNo(loginWorker.getWorkerNo());
 		
 		List<CareerInfo> careerInfoList = null;
+		
 		if (careerInfoListJson != null) {
 			ObjectMapper objectMapper = new ObjectMapper();
 			careerInfoList = objectMapper.readValue(careerInfoListJson, new TypeReference<List<CareerInfo>>() {
@@ -272,16 +273,25 @@ public class ResumeController {
 		int result = service.updateGrade(resume,careerInfoList);
 		
 		String message = null;
+		
 		if (result > 0) {
-			message = "이력서 작성 완료";
+			message = "학력/경력 수정 완료";
 		} else {
-			message = "이력서 작성 실패";
+			message = "학력/경력 수정 실패";
 		}
 
-		ra.addFlashAttribute(message);
+		if (currentUrl.startsWith(",")) {
+			currentUrl = currentUrl.substring(1); // 첫 번째 문자를 잘라냄
+
+			if (currentUrl.startsWith("http://localhost")) {
+				currentUrl = currentUrl.substring("http://localhost/".length());
+			}
+		}
 		
+		ra.addFlashAttribute("message", message);
 		
-		return null;
+		return "redirect:/" + currentUrl;
+		
 	}
 	
 	

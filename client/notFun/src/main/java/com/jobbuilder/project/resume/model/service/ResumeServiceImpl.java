@@ -224,16 +224,24 @@ public class ResumeServiceImpl implements ResumeService {
 
 	@Override
 	public int updateGrade(Resume resume, List<CareerInfo> careerInfoList) {
+
 		int resumeNo = resume.getResumeNo();
-		int gradeNo = resume.getGradeNo();
-		int workerNo = resume.getWorkerNo();
 		
-		
-		int result = mapper.updateGrade(resumeNo, gradeNo);
-		if(result == 0) {
-			throw new RuntimeException("학력 삽입 중 예외 발생");
+		int result = mapper.updateGrade(resume);
+
+		List<Integer> resumeCareerNoList = mapper.getCareerNoList(resume.getResumeNo());
+
+		for (int resumeCareerNo : resumeCareerNoList) {
+
+			result = mapper.deleteResumeCareer(resumeCareerNo);
+			
+			result = mapper.deleteCareerInfo(resumeCareerNo);
 		}
 		
+		if(result == 0) {
+			throw new RuntimeException("CAREER_INFO 삽입 중 예외 발생");
+		}
+
 		if (careerInfoList != null) {
 
 			for (CareerInfo careerInfo : careerInfoList) {
@@ -256,9 +264,8 @@ public class ResumeServiceImpl implements ResumeService {
 					throw new RuntimeException("RESUME_CAREER 삽입 중 예외 발생");
 				}
 			}
-
 		}
-		
+
 		return result;
 	}
 }
