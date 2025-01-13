@@ -97,6 +97,16 @@
   border: none;
 }
 
+.list-table td:nth-child(3), .list-table th:nth-child(3) {
+  padding: 0;
+  border: none;
+  width: 400px;
+}
+
+.list-table td:nth-child(4) {
+  text-align: center;
+}
+
 /* 공고 제목과 회사명 컨테이너 */
 .list-table td ul {
   margin: 0;
@@ -161,6 +171,42 @@
   color: #666;
   margin: 0;
   min-width: 120px;
+}
+
+
+
+/* 검색 폼 스타일링 */
+#recruitmentSearch {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+#searchKey {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+#searchQuery {
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  width: 300px;
+}
+
+#recruitmentSearch button {
+  padding: 8px 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+#recruitmentSearch button:hover {
+  background-color: #0056b3;
 }
 
 /* 페이지네이션 스타일링 */

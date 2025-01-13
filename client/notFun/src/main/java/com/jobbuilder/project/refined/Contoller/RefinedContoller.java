@@ -50,7 +50,7 @@ public class RefinedContoller {
 	@PostMapping("/listb")
 	@ResponseBody
 	public Map<String, Object> getRecommendationsb(@RequestBody Map<String, Object> requestBody) {
-		int recruitmentNo = Integer.parseInt(requestBody.get("recruitmentNo").toString());
+	
 		
 		Map<String, Object> response = new HashMap<>();
 		
@@ -60,10 +60,10 @@ public class RefinedContoller {
 	    System.out.println("categorySelections: " + categorySelections);
 		
 		// 공고 리스트 조회
-		List<Refined> recruitment = service.getRecruitmentListb(recruitmentNo);
+		List<Refined> recruitment = service.getRecruitmentListb(categorySelections);
 		
 		response.put("recruitment", recruitment);
-
+		response.put("categorySelections", categorySelections);
 
 		return response;
 	}

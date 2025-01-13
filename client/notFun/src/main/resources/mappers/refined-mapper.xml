@@ -108,14 +108,30 @@
 			WORKCOND_TIME K ON A.TIME_NO = K.TIME_NO
 		WHERE 	
 			A.RECRUITMENT_DEL_FL = 'N'
-		AND 
-			(
-			
-			
-			
-			
-			)
-			
+		<if test="category1 != null and category1.size > 0">
+		    AND A.WORKCOND_ADDRESS_TYPE_NO IN (
+		        SELECT B.WORKCOND_ADDRESS_TYPE_NO
+		        FROM WORKCOND_ADDRESS_TYPE B
+		        WHERE 
+		        <foreach item="item" collection="category1" separator=" OR ">
+		            WORKCOND_ADDRESS_TYPE_INFO = #{item}
+		        </foreach>
+		    )
+		</if>
+		
+		<if test="category2 != null and category2.size > 0">
+		    AND A.EMPLOYER_NO IN (
+		        SELECT DISTINCT C.EMPLOYER_NO
+		        FROM EMPLOYER_WORKTYPE D
+		        JOIN BUSINESS_WORKTYPE C
+		        ON C.WORKTYPE_NO = D.WORKTYPE_NO
+		        WHERE 
+		        <foreach item="item" collection="category2" separator=" OR ">
+		            D.WORKTYPE_CATEGORY = #{item}
+		        </foreach>
+		    ) 
+		</if>
+
 			
 		
 		ORDER BY A.WRITE_DATE DESC
