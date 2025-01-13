@@ -231,34 +231,34 @@ const updateUI = (
     recruitmentBody.appendChild(noDataRow);
   } else {
     // 배열 값 만큼 반복
-    recommendations.forEach((recommendation) => {
+    recommendations.forEach((i) => {
       const row = document.createElement("tr");
 
       // 각 열(td) 생성 및 데이터 추가
       row.innerHTML = `
-      <td>${recommendation.recruitmentNo || "값 없음"}</td>
-      <td>${recommendation.businessAddress || "값 없음"}</td>
+      <td>${i.recruitmentNo || "값 없음"}</td>
+      <td>${i.businessAddress || "값 없음"}</td>
       <td>
         <ul recruitmentNo="${
-          recommendation.recruitmentNo || "값 없음"
+          i.recruitmentNo || "값 없음"
         }" style="cursor: pointer;" 
             onclick="location.href='/recruitment/detail/${
-              recommendation.recruitmentNo
+              i.recruitmentNo
             }'">
-          <li>${recommendation.recruitmentTitle || "값 없음"}</li>
-          <li>${recommendation.businessName || "값 없음"}</li>
+          <li>${i.recruitmentTitle || "값 없음"}</li>
+          <li>${i.businessName || "값 없음"}</li>
         </ul>
       </td>
       <td>
         <span>${
-          formatSalaryAmount(recommendation.salaryMount) + " 원" || "값 없음"
+          formatSalaryAmount(i.salaryMount) + " 원" || "값 없음"
         }</span>
-        <span>${recommendation.salaryName || "값 없음"}</span>
+        <span>${i.salaryName || "값 없음"}</span>
       </td>
-      <td>${recommendation.timeName || "값 없음"}</td>
-      <td>${formatTime(recommendation.writeDate) || "값 없음"}</td>
+      <td>${i.timeName || "값 없음"}</td>
+      <td>${formatTime(i.writeDate) || "값 없음"}</td>
       <td>${
-        formatDeadline(recommendation.recruitmentDeadline) || "값 없음"
+        formatDeadline(i.recruitmentDeadline) || "값 없음"
       }</td>
     `;
 

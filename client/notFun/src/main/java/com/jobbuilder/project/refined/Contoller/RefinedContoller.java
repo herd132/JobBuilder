@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 import com.jobbuilder.project.refined.model.dto.Refined;
 import com.jobbuilder.project.refined.model.service.RefinedService;
-import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
-import com.jobbuilder.project.resume.model.dto.ResumeWorkType;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,26 +36,13 @@ public class RefinedContoller {
 	
 	@PostMapping("/lista")
 	@ResponseBody
-	public Map<String, Object> getRecommendations(@RequestBody Map<String, Object> requestBody) {
-		int recruitmentNo = Integer.parseInt(requestBody.get("recruitmentNo").toString());
+	public Map<String, Object> getRecommendations() {
 		
 		Map<String, Object> response = new HashMap<>();
 		
 		// 공고 리스트 조회
-		List<Refined> recruitment = service.getRecruitmentList(recruitmentNo);
-
-		// 배열로 구성된 상세 정보에 필요한 객체들 조회
-		/*List<ResumeWorkType> resumeWorkType = service.resumeWorkType(recruitmentNo);
-		List<String> resumeJobTypeList = service.resumeJobTypeList(recruitmentNo);
-		List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(recruitmentNo);
-		List<String> workcondAddressTypeInfo = service.workcondAddressTypeInfo(recruitmentNo);
-
-		response.put("resumeWorkType", resumeWorkType);
-		response.put("resumeJobTypeList", resumeJobTypeList);
-		response.put("resumeDaysTime", resumeDaysTime);
-		response.put("workcondAddressTypeInfo", workcondAddressTypeInfo);
-		*/response.put("recruitment", recruitment);
-
+		List<Refined> recruitment = service.getRecruitmentList();
+		response.put("recruitment", recruitment);
 
 		return response;
 	}
@@ -69,26 +54,41 @@ public class RefinedContoller {
 		
 		Map<String, Object> response = new HashMap<>();
 		
+	    Map<String, List<String>> categorySelections = (Map<String, List<String>>) requestBody.get("categorySelections");
+
+	    // categorySelections 데이터 확인
+	    System.out.println("categorySelections: " + categorySelections);
+		
 		// 공고 리스트 조회
 		List<Refined> recruitment = service.getRecruitmentListb(recruitmentNo);
-
-		// 배열로 구성된 상세 정보에 필요한 객체들 조회
-		/*List<ResumeWorkType> resumeWorkType = service.resumeWorkType(recruitmentNo);
-		List<String> resumeJobTypeList = service.resumeJobTypeList(recruitmentNo);
-		List<ResumeDaysTime> resumeDaysTime = service.resumeDaysTime(recruitmentNo);
-		List<String> workcondAddressTypeInfo = service.workcondAddressTypeInfo(recruitmentNo);
-
-		response.put("resumeWorkType", resumeWorkType);
-		response.put("resumeJobTypeList", resumeJobTypeList);
-		response.put("resumeDaysTime", resumeDaysTime);
-		response.put("workcondAddressTypeInfo", workcondAddressTypeInfo);
-		*/response.put("recruitment", recruitment);
+		
+		response.put("recruitment", recruitment);
 
 
 		return response;
 	}
 	
+	@PostMapping("/categories")
+	@ResponseBody
+	public Map<String, Object> getCategories() {
+		
+		Map<String, Object> response = new HashMap<>();
+		
+		// 지역별 중/소분류 조회
+		List<Refined> refinedAddress1 = service.refinedAddress1();
+		List<Refined> refinedAddress2 = service.refinedAddress2();
+		
+		// 업직종 중/소분류 조회
+		List<Refined> refineJob1 = service.refineJob1();
+		List<Refined> refineJob2 = service.refineJob2();
+		
+		response.put("refinedAddress1", refinedAddress1);
+		response.put("refinedAddress2", refinedAddress2);
+		response.put("refineJob1", refineJob1);
+		response.put("refineJob2", refineJob2);
 	
+		return response;
+	}
 	
 	
 	

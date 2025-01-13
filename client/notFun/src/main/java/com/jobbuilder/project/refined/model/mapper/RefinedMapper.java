@@ -9,9 +9,17 @@ import com.jobbuilder.project.refined.model.dto.Refined;
 @Mapper
 public interface RefinedMapper {
 
-	List<Refined> getRecruitmentList(int recruitmentNo);
+	List<Refined> getRecruitmentList();
 
 	List<Refined> getRecruitmentListb(int recruitmentNo);
+
+	List<Refined> refinedAddress1();
+
+	List<Refined> refinedAddress2();
+
+	List<Refined> refineJob1();
+	
+	List<Refined> refineJob2();
 
 	/*
 	List<ResumeDaysTime> resumeDaysTime(int recruitmentNo);
