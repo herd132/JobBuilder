@@ -88,8 +88,8 @@ public class ResumeListServiceImpl implements ResumeListService {
 
     // 고용주 유효성 검사
 	@Override
-	public Map<String, Object> getEmployercheck(int resumeNo, int employerNo) {
-	     Map<String, Object> params = Map.of("resumeNo", resumeNo, "employerNo", employerNo);
+	public Map<String, Object> getEmployercheck(int resumeNo, int memberNo) {
+	     Map<String, Object> params = Map.of("resumeNo", resumeNo, "memberNo", memberNo);
 	     return mapper.getEmployercheck(params); 
 	}
 

@@ -37,7 +37,7 @@ public interface ResumeListService {
 	Map<String, Object> getResumecheck(int resumeNo, int workerNo);
 
 	// 고용주 유효성 검사
-	Map<String, Object> getEmployercheck(int resumeNo, int employerNo);
+	Map<String, Object> getEmployercheck(int resumeNo, int memberNo);
 
 	
 
