@@ -71,6 +71,10 @@ main {
     margin-right:  10px;
 }
 
+#updateBtn:hover, #deleteBtn:hover {
+    background-color: #ff9838;
+}
+
 #goToListBtn {
     padding: 8px 20px;
     border: 2px solid black;
@@ -81,11 +85,9 @@ main {
     transition: background-color 0.2s;
     margin-right:  10px;
 }
-
-
-
-button:hover {
+#goToListBtn:hover {
     background-color: #ff9838;
+    color:white;
 }
 
 .img-box {
