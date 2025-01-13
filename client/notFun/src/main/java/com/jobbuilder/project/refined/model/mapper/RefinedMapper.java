@@ -1,6 +1,7 @@
 package com.jobbuilder.project.refined.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,7 +12,7 @@ public interface RefinedMapper {
 
 	List<Refined> getRecruitmentList();
 
-	List<Refined> getRecruitmentListb(int recruitmentNo);
+	
 
 	List<Refined> refinedAddress1();
 
@@ -20,6 +21,8 @@ public interface RefinedMapper {
 	List<Refined> refineJob1();
 	
 	List<Refined> refineJob2();
+
+	List<Refined> getRecruitmentListb(Map<String, List<String>> categorySelections);
 
 	/*
 	List<ResumeDaysTime> resumeDaysTime(int recruitmentNo);

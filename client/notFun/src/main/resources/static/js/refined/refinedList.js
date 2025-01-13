@@ -3,9 +3,13 @@ var mockSubcategories = {};
 var mockMinorCategories = {};
 const categorySelections = {
   category1: [], // 대분류 1
+  category11: [], // 대분류 1 전체선택
   category2: [], // 대분류 2
+  category22: [], // 대분류 2전체선택
   category3: [], // 대분류 3
-  category4: []  // 대분류 4
+  category33: [], // 대분류 3
+  category4: [],  // 대분류 4
+  category44: []  // 대분류 4
 };
 
 const ca = async () => {
@@ -287,7 +291,6 @@ const changeServer = async () => {
   console.log("changeServer 호출됨");
   const urlParams = new URLSearchParams(window.location.search);
   const currentPage = parseInt(urlParams.get("cp")) || 1;
-  const recruitmentNo = 16;
  
 
 // URL에 `cp` 파라미터를 무조건 1로 설정
@@ -302,7 +305,7 @@ window.history.replaceState(
     const response = await fetch("/refined/listb", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ recruitmentNo, categorySelections }),
+      body: JSON.stringify({ categorySelections }),
     });
     const data = await response.json();
     console.log("서버에서 받은 데이터:", data);

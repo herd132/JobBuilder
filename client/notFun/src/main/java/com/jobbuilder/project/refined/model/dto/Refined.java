@@ -107,4 +107,11 @@ public class Refined {
 
 	private String worktypeNo;
 	private String worktypeCategory;
+	
+	private String minorCategories;
+	
+    private List<String> category1;
+    private List<String> category2;
+    private List<String> category3;
+    private List<String> category4;
 }

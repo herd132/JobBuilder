@@ -26,8 +26,8 @@ public class RefinedServiceImpl implements RefinedService {
 	}
 	
 	@Override
-	public List<Refined> getRecruitmentListb(int recruitmentNo) {
-		return mapper.getRecruitmentListb(recruitmentNo);
+	public List<Refined> getRecruitmentListb(Map<String, List<String>> categorySelections) {
+		return mapper.getRecruitmentListb(categorySelections);
 	}
 	
 	@Override
