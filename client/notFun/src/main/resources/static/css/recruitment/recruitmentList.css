@@ -97,6 +97,16 @@
   border: none;
 }
 
+.list-table td:nth-child(3), .list-table th:nth-child(3) {
+  padding: 0;
+  border: none;
+  width: 400px;
+}
+
+.list-table td:nth-child(4) {
+  text-align: center;
+}
+
 /* 공고 제목과 회사명 컨테이너 */
 .list-table td ul {
   margin: 0;

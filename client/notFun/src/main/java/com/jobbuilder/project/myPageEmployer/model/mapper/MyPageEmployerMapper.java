@@ -82,6 +82,11 @@ public interface MyPageEmployerMapper {
 	
 	/* ********** 비밀번호 변경 페이지 관련 ********** */
 	
+	/** 원래 비밀번호 얻어오기
+	 * @param memberNo
+	 * @return
+	 */
+	String getOriginPw(int memberNo);
 	
 	
 	/* ********** 내가 쓴 공고 페이지 관련 ********** */
@@ -318,6 +323,8 @@ public interface MyPageEmployerMapper {
 	 * @return
 	 */
 	List<RecruitmentResume> viewResumesList(int memberNo, RowBounds rowBounds);
+
+
 
 	
 

@@ -11,7 +11,7 @@ body {
 }
 
 /* 메인 컨텐츠 영역 */
-.employerFindPassword-gray {
+.employerFindEmail-gray {
   width: 100%;
   min-height: calc(100vh - 400px);
   display: flex;
@@ -20,7 +20,7 @@ body {
   padding: 40px 20px;
 }
 
-.employerFindPassword-white {
+.employerFindEmail-white {
   background: white;
   width: 100%;
   max-width: 480px;
@@ -53,7 +53,7 @@ body {
 }
 
 /* 입력 폼 영역 */
-.find-password-container {
+.find-email-container {
   width: 100%;
   max-width: 400px;
   margin: 0 auto;
@@ -78,31 +78,27 @@ body {
   transition: all 0.2s ease;
 }
 
-/* 찾기 방법 버튼 호버 */
 .find-method-area button:hover {
   background-color: #FFA500; /* 주황색 배경 */
   border-color: #FF8C00; /* 진한 주황색 테두리 */
   color: white;
 }
 
+/* 선택된 버튼 스타일 */
 .find-method-area button.active {
   background-color: #695A42;
   color: white;
   border-color: #695A42;
 }
 
-/* 입력 필드 공통 스타일 */
+/* 입력 필드 스타일링 */
 .memberName-area,
-.memberEmail-area,
-.authKey-area,
 .businessRegistrationNumber-area,
 .memberTel-area {
   margin-bottom: 20px;
 }
 
 .memberName-area span,
-.memberEmail-area span,
-.authKey-area span,
 .businessRegistrationNumber-area span,
 .memberTel-area span {
   display: block;
@@ -111,41 +107,14 @@ body {
   font-size: 14px;
 }
 
-/* 입력 필드와 버튼이 한 줄에 있는 영역 */
-.input-button-row {
-  display: flex;
-  gap: 8px;
-  align-items: flex-start;
-  margin-bottom: 8px;
-}
-
-.input-button-row input[type="text"],
-.input-button-row input[type="email"] {
-  flex: 1;
-}
-
-.input-button-row button {
-  padding: 12px 20px;
-  background-color: #695A42;
-  color: white;
-  border: none;
+input[type="text"] {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
   border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  white-space: nowrap;
+  font-size: 16px;
 }
 
-.input-button-row button:hover {
-  background-color: #574B37;
-}
-
-/* 인증 메시지 스타일 */
-#authKeyMessage {
-  font-size: 12px;
-  color: #999;
-}
-
-/* 사업자등록번호 입력 영역 */
 .businessRegistrationNumber-area > div:first-child {
   display: flex;
   align-items: center;
@@ -156,25 +125,14 @@ body {
   flex: 1;
 }
 
+.businessRegistrationNumber-area span:not(:first-child) {
+  color: #666;
+}
+
 .businessRegistrationNumber-area > div:last-child {
   font-size: 12px;
   color: #999;
   margin-top: 4px;
-}
-
-/* 입력 필드 공통 스타일 */
-input[type="text"],
-input[type="email"] {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 4px;
-  font-size: 16px;
-}
-
-input[disabled] {
-  background-color: #f5f5f5;
-  cursor: not-allowed;
 }
 
 /* 버튼 영역 */
@@ -200,12 +158,11 @@ input[disabled] {
 
 /* 반응형 스타일링 */
 @media (max-width: 480px) {
-  .employerFindPassword-white {
+  .employerFindEmail-white {
     padding: 30px 15px;
   }
   
-  input[type="text"],
-  input[type="email"] {
+  input[type="text"] {
     padding: 10px;
     font-size: 14px;
   }
@@ -214,56 +171,4 @@ input[disabled] {
     font-size: 13px;
     padding: 10px;
   }
-  
-  .input-button-row {
-    flex-direction: column;
-  }
-  
-  .input-button-row button {
-    width: 100%;
-    margin-top: 8px;
-  }
-}
-
-.error {
-  color: #ff4d4f;
-  font-size: 1rem;
-}
-
-.confirm {
-  color: #52c41a;
-  font-size: 1rem;
-}
-
-/* 읽기 전용 입력 필드 스타일 수정 */
-input[readonly] {
-  background-color: #FFF8DC; /* 크림색 배경 */
-  border: 1px solid #DEB887; /* 베이지색 테두리 */
-  color: #8B4513; /* 갈색 텍스트 */
-  cursor: not-allowed;
-}
-
-
-
-#sendAuthKeyBtn {
-  padding: 12px 20px;
-  background-color: #695A42;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  font-size: 14px;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: all 0.2s ease;
-}
-
-#sendAuthKeyBtn:hover {
-  background-color: #574B37;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-/* 버튼이 클릭됐을 때의 효과 */
-#sendAuthKeyBtn:active {
-  transform: translateY(1px);
-  box-shadow: none;
 }

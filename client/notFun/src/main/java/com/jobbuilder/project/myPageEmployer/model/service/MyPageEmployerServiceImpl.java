@@ -116,7 +116,15 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	
 	/* ********** 비밀번호 변경 페이지 관련 ********** */
 	
-	
+	@Override	// 비밀번호 확인
+	public int checkPw(Employer loginEmployer, String currentPw) {
+		
+		String encOriginPw = mapper.getOriginPw(loginEmployer.getMemberNo());
+		
+		if(!bcrypt.matches(currentPw, encOriginPw)) return 0;
+		
+		return 1;
+	}
 	
 	/* ********** 내가 쓴 공고 페이지 관련 ********** */
 	

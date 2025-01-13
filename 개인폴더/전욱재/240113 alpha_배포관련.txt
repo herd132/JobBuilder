@@ -1,0 +1,38 @@
+Gradle 말고 Maven 도 이용함
+
+용어 개념 및 특징 알고있으면 좋음!
+
+STS 켜서 Run as - Spring Boot App : 배포하는 과정이었음!
+
+STS가 GUI를 만들어준 것뿐
+
+웹상에 배포하기 위해 STS를 무조건 켜야하는 것은 아님
+-> 그럼 어떻게 배포할까??
+-> cmd에서도 가능!
+p2 2. Spring Boot Project 배포하기 부분
+
+cmd enter
+(*) 처음 현재 경로 : C:\Users\user1>
+이동할 때 "cd [폴더경로]"
+폴더들어가서 주소창에 cmd enter 누르면 자동으로 이동함
+C:\workspace\06_Framework\boardProject-boot>
+
+cmd창에 gradlew clean build 입력 후 enter
+
+libs 폴더 안에 ~~~.jar 파일 있음
+
+~~plain.jar 파일이 아니라 전체 .jar을 배포할거임!
+
+p3 3. 보기!
+
+(*) 프로젝트 경로 끝까지 안들어오고 수행 안됨!
+C:\workspace\06_Framework\boardProject-boot 여기까지 와야함
+
+(*) gradle 이 아니라 gradlew 까지 있어야 함!
+
+(*) 배포할 떄 build해놨던 jar파일 입력할 때 풀네임이어야함!
+java -jar build/libs/boardProject-boot-0.0.1-SNAPSHOT.jar
+
+(*) 배포 중인 서버종료할 때 ctrl + C 눌러야함!
+C:\workspace\06_Framework\boardProject-boot
+가 나오고 커서깜박여야함!
