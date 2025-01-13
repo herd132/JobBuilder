@@ -27,8 +27,8 @@ const openPasswordModal = () => {
 // 모달 닫기
 const closePasswordModal = () => {
   passwordModalContainer.classList.add("hidden");
-  wrongPwMessage.innerText = ''; // 에러 메시지 초기화
-  passwordInput.value = ''; // 입력 초기화
+  wrongPwMessage.innerText = ""; // 에러 메시지 초기화
+  passwordInput.value = ""; // 입력 초기화
 };
 
 // 비밀번호 확인
@@ -85,7 +85,7 @@ const worktypeArea = document.querySelector(".worktype-area");
 const modalRecruitmentContent = document.querySelector(".modal-recruitment-content");
 
 const businessDetailModal = async (employerNo) => {
-
+  modalContainer.classList.remove("hidden");
   const modalContainer = document.querySelector('.modal-container');
   modalContainer.classList.remove('hidden');
   
@@ -164,14 +164,17 @@ const businessDetailModal = async (employerNo) => {
         modalRecruitmentContent.append(employerRecruitmentUl);
       }
     }
+    
+    // 버튼에 employerNo 설정
+    updateBusinessBtn.setAttribute("data-employer-no", employerNo);
+    deleteBusinessBtn.setAttribute("data-employer-no", employerNo);
   }
-
   // 수정하기 버튼 클릭 시 수정 페이지로 이동
-  updateBusinessBtn.addEventListener("click", () => {
+  updateBusinessBtn.addEventListener("click", (employerNo) => {
     window.location.href = `updateBusiness/${employerNo}`;
   });
 
-  deleteBusinessBtn.addEventListener("click", () => {
+  deleteBusinessBtn.addEventListener("click", (employerNo) => {
 
     if (!confirm("해당 사업장을 삭제 하시겠습니까?")) {
       alert("취소되었습니다.");
@@ -181,7 +184,7 @@ const businessDetailModal = async (employerNo) => {
     window.location.href = `deleteBusiness/${employerNo}`;
   })
   
-  modalContainer.classList.remove("hidden");
+  
 
 }
 

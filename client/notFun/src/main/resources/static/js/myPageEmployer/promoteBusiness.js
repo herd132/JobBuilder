@@ -1,16 +1,13 @@
-
 const newEl = (tag, attr, cls) => {
-
   const el = document.createElement(tag);                 // 요소 생성
   for (let key in attr) el.setAttribute(key, attr[key]);  // 요소에 속성 추가
   for (let className of cls) el.classList.add(className); // 요소에 클래스명 추가
-  
   return el;                                              // 생성된 요소 반환
 };
 
 const updataInfo = () => {
-  location.href= "/myPageEmp/updateInfo";
-}
+  location.href = "/myPageEmp/updateInfo";
+};
 
 const updateBusinessBtn = document.querySelector(".update-business-btn");
 const deleteBusinessBtn = document.querySelector(".delete-business-btn");
@@ -23,10 +20,8 @@ const worktypeArea = document.querySelector(".worktype-area");
 const modalRecruitmentContent = document.querySelector(".modal-recruitment-content");
 
 const businessDetailModal = async (employerNo) => {
+  modalContainer.classList.remove("hidden");
 
-  const modalContainer = document.querySelector('.modal-container');
-  modalContainer.classList.remove('hidden');
-  
   nicknameArea.innerHTML = "사업장 위치 : ";
   telArea.innerHTML = "사업장 연락처 : ";
   addressArea.innerHTML = "사업장 주소 : ";
@@ -34,13 +29,11 @@ const businessDetailModal = async (employerNo) => {
 
   const resp = await fetch("/myPageEmp/business?employerNo=" + employerNo);
 
-  if(resp.status == 200){
-
+  if (resp.status === 200) {
     const result = await resp.json();
-    console.log(result);
 
-    if(result.businessTel == null) result.businessTel = "미입력 상태입니다.";
-    if(result.businessWorktype.length == 0) result.businessWorktype = "미입력 상태입니다.";
+    if (result.businessTel == null) result.businessTel = "미입력 상태입니다.";
+    if (result.businessWorktype.length === 0) result.businessWorktype = "미입력 상태입니다.";
 
     nicknameArea.innerHTML += result.businessNickname;
     telArea.innerHTML += result.businessTel;
@@ -50,14 +43,11 @@ const businessDetailModal = async (employerNo) => {
     // 공고목록 불러와서 제목, 마감일, 인원, 완료여부 표시
     modalRecruitmentContent.innerHTML = "";
 
-    console.log(result.recruitmentList);
-    if(result.recruitmentList.length === 0){
+    if (result.recruitmentList.length === 0) {
       const noRecruitmentDiv = document.createElement("div");
       noRecruitmentDiv.innerText = "등록된 공고가 없습니다";
       modalRecruitmentContent.append(noRecruitmentDiv);
-
-    } else{
-
+    } else {
       const recruitmentUl = document.createElement("ul");
 
       const recruitNo = document.createElement("li");
@@ -78,8 +68,7 @@ const businessDetailModal = async (employerNo) => {
       recruitmentUl.append(recruitNo, titleLi, deadlineLi, numOfRecruitLi, completLi);
       modalRecruitmentContent.append(recruitmentUl);
 
-      for(let i=0; i<result.recruitmentList.length; i++){
-
+      for (let i = 0; i < result.recruitmentList.length; i++) {
         const employerRecruitmentUl = document.createElement("ul");
 
         const recruitmentNo = document.createElement("li");
@@ -98,48 +87,50 @@ const businessDetailModal = async (employerNo) => {
         recruitCompleteFl.innerText = result.recruitmentList[i].recruitCompleteFl;
 
         employerRecruitmentUl.append(recruitmentNo, recruitmentTitleLi, recruitmentDeadlineLi, numOfRecruitmentNameLi, recruitCompleteFl);
-        
         modalRecruitmentContent.append(employerRecruitmentUl);
       }
     }
   }
 
-  // 수정하기 버튼 클릭 시 수정 페이지로 이동
-  updateBusinessBtn.addEventListener("click", () => {
-    window.location.href = `updateBusiness/${employerNo}`;
-  });
+  // 버튼에 employerNo 설정
+  updateBusinessBtn.setAttribute("data-employer-no", employerNo);
+  deleteBusinessBtn.setAttribute("data-employer-no", employerNo);
+};
 
-  deleteBusinessBtn.addEventListener("click", () => {
+// 수정하기 버튼 클릭 시 수정 페이지로 이동
+updateBusinessBtn.addEventListener("click", () => {
+  const employerNo = updateBusinessBtn.getAttribute("data-employer-no");
+  window.location.href = `updateBusiness/${employerNo}`;
+});
 
-    if (!confirm("해당 사업장을 삭제 하시겠습니까?")) {
-      alert("취소되었습니다.");
-      return;
-    }
+// 삭제하기 버튼 클릭 시 삭제 확인
+deleteBusinessBtn.addEventListener("click", () => {
+  const employerNo = deleteBusinessBtn.getAttribute("data-employer-no");
 
-    window.location.href = `deleteBusiness/${employerNo}`;
-  })
-  
-  modalContainer.classList.remove("hidden");
-
-}
-
-// 모달 영역
-document.addEventListener('DOMContentLoaded', function() {
-  const modalContainer = document.querySelector('.modal-container');
-  const closeButton = document.querySelector('.btn-area span');
-
-  // ESC 키로 모달 닫기
-  document.addEventListener('keydown', (e) => {
-      if(e.key === 'Escape' && !modalContainer.classList.contains('hidden')) {
-          modalContainer.classList.add('hidden');
-      }
-  });
-
-  // X 버튼 클릭으로 모달 닫기 (버튼이 있는 경우)
-  if(closeButton) {
-      closeButton.addEventListener('click', () => {
-          modalContainer.classList.add('hidden');
-      });
+  if (!confirm("해당 사업장을 삭제 하시겠습니까?")) {
+    alert("취소되었습니다.");
+    return;
   }
 
+  window.location.href = `deleteBusiness/${employerNo}`;
+});
+
+// 모달 영역
+document.addEventListener("DOMContentLoaded", function () {
+  const modalContainer = document.querySelector(".modal-container");
+  const closeButton = document.querySelector(".btn-area span");
+
+  // ESC 키로 모달 닫기
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && !modalContainer.classList.contains("hidden")) {
+      modalContainer.classList.add("hidden");
+    }
+  });
+
+  // X 버튼 클릭으로 모달 닫기
+  if (closeButton) {
+    closeButton.addEventListener("click", () => {
+      modalContainer.classList.add("hidden");
+    });
+  }
 });
