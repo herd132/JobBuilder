@@ -20,6 +20,7 @@ const worktypeArea = document.querySelector(".worktype-area");
 const modalRecruitmentContent = document.querySelector(".modal-recruitment-content");
 
 const businessDetailModal = async (employerNo) => {
+  
   modalContainer.classList.remove("hidden");
 
   nicknameArea.innerHTML = "사업장 위치 : ";
@@ -91,7 +92,6 @@ const businessDetailModal = async (employerNo) => {
       }
     }
   }
-
   // 버튼에 employerNo 설정
   updateBusinessBtn.setAttribute("data-employer-no", employerNo);
   deleteBusinessBtn.setAttribute("data-employer-no", employerNo);
