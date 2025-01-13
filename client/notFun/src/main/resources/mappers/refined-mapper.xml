@@ -108,7 +108,16 @@
 			WORKCOND_TIME K ON A.TIME_NO = K.TIME_NO
 		WHERE 	
 			A.RECRUITMENT_DEL_FL = 'N'
-		AND A.RECRUITMENT_NO= 16
+		AND 
+			(
+			
+			
+			
+			
+			)
+			
+			
+		
 		ORDER BY A.WRITE_DATE DESC
     </select>
 
