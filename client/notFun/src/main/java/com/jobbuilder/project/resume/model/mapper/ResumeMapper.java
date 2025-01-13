@@ -99,4 +99,15 @@ public interface ResumeMapper {
 	 */
 	int updateTitle(Map<String, Object> requestBody);
 
+	/** 이력서 학력 수정
+	 * @param resumeNo
+	 * @param gradeNo
+	 * @return
+	 */
+	int updateGrade(int resumeNo, int gradeNo);
+
+	int updateCareerInfo(CareerInfo careerInfo);
+
+	int updateResumeCareer(Map<String, Integer> resumeCareerMap);
+
 }

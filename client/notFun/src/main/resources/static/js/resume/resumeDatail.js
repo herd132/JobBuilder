@@ -5,6 +5,7 @@ let resumeDaysTimeData = {};
 let resumeJobTypeListData = {};
 let resumeWorkTypeData = {};
 let workcondAddressTypeInfoData = {};
+let careerInfoList = [];
 
 // 경력 변환
 const formatCareer = (totalCareer, career) => {
@@ -509,6 +510,236 @@ const addSubAddressCategory = (liSubAddressName) => {
     });
 };
 
+// 경력사항 수정
+
+const nowGrade = document.getElementById("nowGrade");
+document.addEventListener("click", (event) => {
+  if (event.target.id === "gradeBtn") {
+    // 수정 버튼 클릭 시에만 동작
+    if (confirm("학력 및 경력을 수정하시겠습니까?")) {
+      nowGrade.remove();
+      // 경력 수정 폼 활성화
+      document.getElementById("gradeSection").innerHTML = `
+      <form action="/resume/updateGrade" method="post" id="updateGrade">
+      <div class="edit"  id="gradeSection">
+                    <h2>학력 및 경력</h2>
+                    <button class="grade-btn" type="submit" id="gradeBtnSave"> 저장 </button>
+                    <button class="grade-btn" type="button" id="gradeBtnCancel"> 취소 </button>
+      </div>
+          <h3>학력</h3>
+          <select name="gradeNo" id="gradeNo">
+            <option value="1">비공개</option>
+            <option value="2">중졸</option>
+            <option value="3">고졸</option>
+            <option value="4">대졸(2,3년제)</option>
+            <option value="5">대졸(4년제)</option>
+            <option value="6">대학원이상</option>
+          </select>
+
+          <h3>경력</h3>
+          <div class="career-container">
+            <section>
+              <span>경력구분</span>
+              <div class="career-toggle">
+                <button class="newbie active" type="button">신입</button>
+                <button class="exp" type="button">경력</button>
+              </div>
+            </section>
+            <div class="input-container" style="display: none;">
+              <label>
+                회사명:
+                <input type="text" class="company-name" placeholder="회사명을 입력하세요" maxlength="100" disabled>
+              </label>
+              <label>
+                근무기간:
+                <input type="date" class="start-date" disabled>
+                <input type="date" class="end-date" disabled>
+              </label>
+              <label>
+                담당업무:
+                <textarea class="career-description" maxlength="500" placeholder="담당업무를 입력하세요" disabled></textarea>
+                <div class="exp-char-counter">0 / 500자</div>
+              </label>
+            </div>
+
+            <button class="exp-append" onclick="expappend()" type="button" style="display: none">경력사항 추가</button>
+          </div>
+        </form>
+      `;
+    }
+  }
+});
+
+let canEdit = false; // 수정 버튼을 클릭했는지 여부를 추적하는 변수
+let careerType = "newbie";
+
+document.addEventListener("click", (event) => {
+  // 수정 버튼 클릭 후에만 신입/경력 선택 및 경력사항 추가 버튼 활성화
+  if (event.target.id === "gradeBtn") {
+    canEdit = true; // 수정 버튼이 클릭되면 편집 가능
+  }
+
+  // 신입 버튼 클릭 시
+  if (canEdit && event.target.classList.contains("newbie")) {
+    showInputs(false); // 신입 입력 활성화
+  }
+
+  // 경력 버튼 클릭 시
+  if (canEdit && event.target.classList.contains("exp")) {
+    showInputs(true); // 경력 입력 활성화
+  }
+});
+
+// showInputs 함수 정의
+function showInputs(isExperienced) {
+  const inputContainer = document.querySelector(".input-container");
+  const expAppend = document.querySelector(".exp-append");
+  const formElements = inputContainer.querySelectorAll("input, textarea");
+
+  const newbieButton = document.querySelector(".newbie");
+  const expButton = document.querySelector(".exp");
+
+  if (isExperienced) {
+    expButton.classList.add("active");
+    newbieButton.classList.remove("active");
+
+    careerType = "exp"; // 경력 세팅
+    inputContainer.style.display = "block";
+    expAppend.style.display = "block";
+
+    formElements.forEach((element) => {
+      element.disabled = false;
+    });
+    expAppend.disabled = false;
+  } else {
+    newbieButton.classList.add("active");
+    expButton.classList.remove("active");
+
+    careerType = "newbie"; // 신입 세팅
+    inputContainer.style.display = "none";
+
+    formElements.forEach((element) => {
+      element.disabled = true;
+    });
+
+    expAppend.style.display = "none";
+    expAppend.disabled = true;
+  }
+}
+
+// 경력사항 추가 버튼 클릭 시 입력 필드 추가
+function expappend() {
+  const inputContainer = document.querySelector(".input-container");
+
+  const newContainer = document.createElement("div");
+  newContainer.className = "input-container";
+
+  newContainer.innerHTML = `
+    <label>
+      회사명:
+      <input type="text" class="company-name" placeholder="회사명을 입력하세요">
+    </label>
+    <label>
+      근무기간:
+      <input type="date" class="start-date">
+      <input type="date" class="end-date">
+    </label>
+    <label>
+      담당업무:
+      <textarea class="career-description" placeholder="담당업무를 입력하세요"></textarea>
+      <div class="exp-char-counter">0 / 500자</div>
+    </label>
+  `;
+
+  // 삭제 버튼 추가
+  const deleteBtn = document.createElement("button");
+  deleteBtn.innerText = "삭제";
+  deleteBtn.classList.add("delete-btn");
+  deleteBtn.onclick = () => newContainer.remove(); // 삭제 버튼 클릭 시 해당 항목 삭제
+
+  newContainer.appendChild(deleteBtn);
+
+  inputContainer.appendChild(newContainer);
+}
+
+// 저장 버튼 클릭 이벤트 처리
+document.addEventListener("click", (e) => {
+  if (e.target.id === "gradeBtnSave") {
+    // 저장 전 확인
+    if (confirm("저장하시겠습니까?")) {
+      e.preventDefault();
+      const gradeUpdateForm = document.querySelector("#updateGrade");
+      
+      if (gradeUpdateForm) {
+        let careerInfoList = [];
+
+        if (careerType === "newbie"){
+          gradeUpdateForm.submit();
+        }
+
+        if (careerType === "exp") {
+          const companyNameList = document.querySelectorAll(".company-name");
+          const startDateList = document.querySelectorAll(".start-date");
+          const endDateList = document.querySelectorAll(".end-date");
+          const careerDescriptionList = document.querySelectorAll(".career-description");
+
+          for (let i = 0; i < companyNameList.length; i++) {
+            if (
+              companyNameList[i].value.trim().length === 0 ||
+              startDateList[i].value.trim().length === 0 ||
+              careerDescriptionList[i].value.trim().length === 0
+            ) {
+              alert("경력사항 관련 필드는 비어있을 수 없습니다.");
+              return; // 필드가 비어 있으면 바로 return
+            }
+
+            if (
+              endDateList[i].value.trim() !== "" &&
+              startDateList[i].value.trim() > endDateList[i].value.trim()
+            ) {
+              alert("입사일과 퇴사일을 올바르게 작성 해주세요");
+              return; // 날짜가 잘못되었으면 return
+            }
+
+            let careerInfoObj = {
+              careerNo: i,
+              companyName: companyNameList[i].value,
+              startDate: startDateList[i].value,
+              endDate: endDateList[i].value,
+              careerDescription: careerDescriptionList[i].value,
+            };
+
+            careerInfoList.push(careerInfoObj);
+          }
+
+          // hidden input 생성 및 추가
+          const hiddenInput2 = document.createElement("input");
+          hiddenInput2.type = "hidden";
+          hiddenInput2.name = "careerInfoList";
+          hiddenInput2.value = JSON.stringify(careerInfoList);
+
+          gradeUpdateForm.appendChild(hiddenInput2);
+
+          // 폼 제출
+          gradeUpdateForm.submit();
+        }
+      }
+    }
+  }
+});
+
+// 취소 버튼 클릭 이벤트 처리
+document.addEventListener("click", (e) => {
+  if (e.target.id === "gradeBtnCancel") {
+    if (confirm("취소하시겠습니까?")) {
+      location.reload(true); // 페이지 새로고침
+    }
+  }
+});
+
+
+
+
 const categoryBtn = document.querySelector(".category-btn");
 categoryBtn.addEventListener("click", async (e) => {
   if (confirm("희망근무 조건을 수정하시겠습니까?")) {
@@ -653,13 +884,14 @@ categoryBtn.addEventListener("click", async (e) => {
   const updateCategoryCancelBtn = document.getElementById(
     "updateCategoryCancelBtn"
   );
+
   const updateCategoryForm = document.querySelector("#updateCategoryForm");
 
   // 제출 이벤트
   if (updateCategoryForm) {
     updateCategoryForm.addEventListener("submit", (e) => {
       e.preventDefault();
-
+      
       // resumeNo를 hidden input으로 추가
       const resumeNoInput = document.createElement("input");
       resumeNoInput.type = "hidden";
@@ -808,44 +1040,44 @@ document.addEventListener("click", (e) => {
 
     // 동적으로 생성된 요소에 대한 이벤트 리스너 등록
     document.getElementById("titleUpdateBtn").addEventListener("click", (e) => {
-      if (confirm("저장하시겠습니까?")){
-      const updateTitle = document.getElementById("updateTitle").value;
+      if (confirm("저장하시겠습니까?")) {
+        const updateTitle = document.getElementById("updateTitle").value;
 
-      if(updateTitle.trim() == ""){
-        alert("제목을 입력 해주세요");
-        return;
-      }
-      // fetch 요청 보내기
-      fetch("/resume/updateTitle", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          resumeNo: resumeNo,
-          updateTitle: updateTitle,
-        }),
-      })
-        .then((resp) => {
-          if (!resp.ok) {
-            throw new Error("에러");
-          }
-          return resp.json();
+        if (updateTitle.trim() == "") {
+          alert("제목을 입력 해주세요");
+          return;
+        }
+        // fetch 요청 보내기
+        fetch("/resume/updateTitle", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            resumeNo: resumeNo,
+            updateTitle: updateTitle,
+          }),
         })
-        .then((data) => {
-          document.querySelector(".edit-title").innerHTML = `
+          .then((resp) => {
+            if (!resp.ok) {
+              throw new Error("에러");
+            }
+            return resp.json();
+          })
+          .then((data) => {
+            document.querySelector(".edit-title").innerHTML = `
             <h2 id="resumeTitle">제목 : ${updateTitle}</h2>  <!-- 제목 업데이트 -->
             <button class="title-btn" type="button" id="titleBtn"> 수정 </button>
         `;
-          alert(data.message); // 성공 메시지 출력
-        })
-        .catch((error) => {
-          console.error("저장 중 오류 발생:", error);
-          alert(error.message); // 오류 메시지 출력
-        });
+            alert(data.message); // 성공 메시지 출력
+          })
+          .catch((error) => {
+            console.error("저장 중 오류 발생:", error);
+            alert(error.message); // 오류 메시지 출력
+          });
       }
     });
-  
+
     // 취소 버튼 처리
   }
 
@@ -858,98 +1090,6 @@ document.addEventListener("click", (e) => {
     }
   }
 });
-
-function showInputs(isExperienced) {
-  // inputContainer 안의 모든 폼 요소들에 대해 disabled 속성 설정
-  const newbieButton = document.querySelector(".newbie");
-  const expButton = document.querySelector(".exp");
-
-  if (isExperienced) {
-    // 경력 버튼 활성화
-    expButton.classList.add("active");
-    newbieButton.classList.remove("active");
-
-    careerType = "exp"; // 경력 세팅
-    inputContainer.style.display = "block";
-    expAppend.style.display = "block";
-
-    // 모든 폼 요소들의 disabled 속성 해제
-    formElements.forEach((element) => {
-      element.disabled = false;
-    });
-    expAppend.disabled = false;
-  } else {
-    // 신입 버튼 활성화
-    newbieButton.classList.add("active");
-    expButton.classList.remove("active");
-
-    careerType = "newbie"; // 신입 세팅
-    inputContainer.style.display = "none";
-
-    // 모든 폼 요소들에 disabled 속성 추가
-    formElements.forEach((element) => {
-      element.disabled = true;
-    });
-
-    expAppend.style.display = "none";
-    expAppend.disabled = true;
-  }
-}
-
-document.addEventListener("click", (event) => {
-  if(event.target.id === "gradeBtn"){
-    if(confirm("학력 및 경력을 수정하시겠습니까?")){
-      document.getElementById("gradeSection").innerHTML = `
-      <form>
-      <h3>학력</h3>
-      <select name="gradeNo" id="gradeNo">
-        <option value="1">비공개</option>
-        <option value="2">중졸</option>
-        <option value="3">고졸</option>
-        <option value="4">대졸(2,3년제)</option>
-        <option value="5">대졸(4년제)</option>
-        <option value="6">대학원이상</option>
-      </select>
-
-      <h3>경력</h3>
-      <div class="career-container">
-        <section>
-          <span>경력구분</span>
-          <div class="career-toggle">
-            <button class="newbie active" onclick="showInputs(false)" type="button">신입</button>
-            <button class="exp" onclick="showInputs(true)" type="button">경력</button>
-          </div>
-        </section>
-        <div class="input-container" style="display: none;">
-          <label>
-            회사명:
-            <input type="text" class="company-name" placeholder="회사명을 입력하세요" maxlength="100" disabled>
-          </label>
-          <label>
-            근무기간:
-            <input type="date" class="start-date" disabled>
-            <input type="date" class="end-date" disabled>
-          </label>
-          <label>
-            담당업무:
-            <textarea class="career-description" maxlength="500" placeholder="담당업무를 입력하세요" disabled></textarea>
-            <div class="exp-char-counter">0 / 500자</div>
-          </label>
-        </div>
-
-        <button class="exp-append" onclick="expappend()" style="display: none" type="button">경력사항
-          추가</button>
-      </div>
-
-    </form>
-      `;
-    }
-  }
-
-});
-
-
-
 
 document.addEventListener("click", (event) => {
   // 수정 버튼 클릭 이벤트
@@ -1023,19 +1163,7 @@ document.addEventListener("click", (event) => {
   // 취소 버튼 클릭 이벤트
   if (event.target.id === "canselBtn") {
     if (confirm("취소하시겠습니까?")) {
-      // 원래 UI 복구
-      const content = resumeData.resumeContent;
-      document.getElementById("selfArea").innerHTML = `
-                <div id="selfArea">
-                    <div class="edit">
-                        <h2>자기소개</h2>
-                        <button class="edit-btn" type="button" id="selfBtn">Edit</button>
-                    </div>
-                    <section class="form-section">
-                        <div id="resumeContent" style="white-space: pre-wrap;">${content}</div>
-                    </section>
-                </div>
-            `;
+      location.reload(true);
     }
   }
 });
