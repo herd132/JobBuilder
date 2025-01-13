@@ -564,6 +564,7 @@ document.addEventListener("click", (event) => {
 
             <button class="exp-append" onclick="expappend()" type="button" style="display: none">경력사항 추가</button>
           </div>
+          <input type="hidden" id="currentUrl" name="currentUrl" value="">
         </form>
       `;
     }
@@ -669,11 +670,23 @@ document.addEventListener("click", (e) => {
     if (confirm("저장하시겠습니까?")) {
       e.preventDefault();
       const gradeUpdateForm = document.querySelector("#updateGrade");
-      
+
+      const resumeNoInput = document.createElement("input");
+      resumeNoInput.type = "hidden";
+      resumeNoInput.name = "resumeNo";
+      resumeNoInput.value = resumeNo;
+      gradeUpdateForm.appendChild(resumeNoInput); // 폼에 추가
+
       if (gradeUpdateForm) {
         let careerInfoList = [];
 
-        if (careerType === "newbie"){
+        if (careerType === "newbie") {
+          const hiddenInput6 = document.createElement("input");
+          hiddenInput6.type = "hidden";
+          hiddenInput6.name = "currentUrl";
+          hiddenInput6.value = window.location.href;
+
+          gradeUpdateForm.appendChild(hiddenInput6);
           gradeUpdateForm.submit();
         }
 
@@ -681,7 +694,9 @@ document.addEventListener("click", (e) => {
           const companyNameList = document.querySelectorAll(".company-name");
           const startDateList = document.querySelectorAll(".start-date");
           const endDateList = document.querySelectorAll(".end-date");
-          const careerDescriptionList = document.querySelectorAll(".career-description");
+          const careerDescriptionList = document.querySelectorAll(
+            ".career-description"
+          );
 
           for (let i = 0; i < companyNameList.length; i++) {
             if (
@@ -701,13 +716,13 @@ document.addEventListener("click", (e) => {
               return; // 날짜가 잘못되었으면 return
             }
 
-            let careerInfoObj = {
-              careerNo: i,
-              companyName: companyNameList[i].value,
-              startDate: startDateList[i].value,
-              endDate: endDateList[i].value,
-              careerDescription: careerDescriptionList[i].value,
-            };
+            let careerInfoObj = {};
+
+            careerInfoObj.careerNo = i; // 순서식별용 가데이터
+            careerInfoObj.companyName = companyNameList[i].value;
+            careerInfoObj.startDate = startDateList[i].value;
+            careerInfoObj.endDate = endDateList[i].value;
+            careerInfoObj.careerDescription = careerDescriptionList[i].value;
 
             careerInfoList.push(careerInfoObj);
           }
@@ -719,6 +734,13 @@ document.addEventListener("click", (e) => {
           hiddenInput2.value = JSON.stringify(careerInfoList);
 
           gradeUpdateForm.appendChild(hiddenInput2);
+
+          const hiddenInput6 = document.createElement("input");
+          hiddenInput6.type = "hidden";
+          hiddenInput6.name = "currentUrl";
+          hiddenInput6.value = window.location.href;
+
+          gradeUpdateForm.appendChild(hiddenInput6);
 
           // 폼 제출
           gradeUpdateForm.submit();
@@ -736,9 +758,6 @@ document.addEventListener("click", (e) => {
     }
   }
 });
-
-
-
 
 const categoryBtn = document.querySelector(".category-btn");
 categoryBtn.addEventListener("click", async (e) => {
@@ -891,7 +910,7 @@ categoryBtn.addEventListener("click", async (e) => {
   if (updateCategoryForm) {
     updateCategoryForm.addEventListener("submit", (e) => {
       e.preventDefault();
-      
+
       // resumeNo를 hidden input으로 추가
       const resumeNoInput = document.createElement("input");
       resumeNoInput.type = "hidden";
@@ -1070,6 +1089,7 @@ document.addEventListener("click", (e) => {
             <button class="title-btn" type="button" id="titleBtn"> 수정 </button>
         `;
             alert(data.message); // 성공 메시지 출력
+            location.reload();
           })
           .catch((error) => {
             console.error("저장 중 오류 발생:", error);

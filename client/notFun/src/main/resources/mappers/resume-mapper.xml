@@ -6,8 +6,7 @@
 	<!-- 대분류 리스트 얻어오기 -->
 	<select id="selectMajorCategory">
 		SELECT SUBSTR(WORKTYPE_NO, 1, 2) AS "workTypeNo",
-		SUBSTR(WORKTYPE_CATEGORY, 1, INSTR(WORKTYPE_CATEGORY, '전체')-2) AS
-		"majorCategoryName"
+		WORKTYPE_CATEGORY AS "majorCategoryName"
 		FROM EMPLOYER_WORKTYPE
 		WHERE WORKTYPE_NO LIKE '__00'
 	</select>
@@ -249,7 +248,8 @@
 	<!-- 제목 업데이트 -->
 	<update id="updateTitle">
 		UPDATE RESUME
-		SET RESUME_TITLE = #{updateTitle}
+		SET RESUME_TITLE = #{updateTitle},
+			MODIFICATION_DATE = SYSDATE
 		WHERE RESUME_NO = #{resumeNo}
 	</update>
 
@@ -257,30 +257,47 @@
 	<update id="updateGrade">
 		UPDATE RESUME
 		SET
-		GRADE_NO = #{gradeNo}
+		GRADE_NO = #{gradeNo},
+		MODIFICATION_DATE = SYSDATE
 		WHERE
 		RESUME_NO = #{resumeNo}
 	</update>
 
-	<!-- 6-1. 이력서 관련 CAREER_INFO 삽입 -->
-	<update id="updateCareerInfo" parameterType="CareerInfo">
-		UPDATE CAREER_INFO
-		SET
-		COMPANY_NAME = #{companyName},
-		START_DATE = TO_DATE(#{startDate}, 'yyyy-MM-dd'),
-		END_DATE = TO_DATE(#{endDate}, 'yyyy-MM-dd'),
-		CAREER_DESCRIPTION = #{careerDescription},
-		WORKER_NO = #{workerNo}
-		WHERE CAREER_NO = #{careerNo}
-	</update>
+	<select id="getCareerNoList">
+		SELECT CAREER_NO FROM RESUME_CAREER
+		WHERE RESUME_NO = #{resumeNo}
+	</select>
+	
+	<delete id="deleteResumeCareer">
+		DELETE RESUME_CAREER
+		WHERE CAREER_NO = #{resumeCareerNo}
+	</delete>
 
-	<!-- 6-2. 이력서 관련 RESUME_CAREER 삽입 -->
-	<update id="updateResumeCareer" parameterType="map">
-		UPDATE RESUME_CAREER
-		SET career_no = #{careerNo}
-		WHERE resume_no = #{resumeNo} AND career_no = #{careerNo}
-	</update>
-
+	<delete id="deleteCareerInfo">
+		DELETE CAREER_INFO
+		WHERE CAREER_NO = #{resumeCareerNo}
+	</delete>
+	
+	<insert id="updateCareerInfo" parameterType="CareerInfo"
+		useGeneratedKeys="true">
+		<selectKey order="BEFORE" resultType="_int"
+			keyProperty="careerNo">
+			SELECT SEQ_CAREER_INFO_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CAREER_INFO VALUES (
+		#{careerNo},
+		#{companyName},
+		TO_DATE(#{startDate}, 'yyyy-MM-dd'),
+		TO_DATE(#{endDate}, 'yyyy-MM-dd'),
+		#{careerDescription},
+		#{workerNo}
+		)
+	</insert>
+	
+	<insert id="updateResumeCareer" parameterType="map">
+		INSERT INTO
+		RESUME_CAREER VALUES (#{resumeNo}, #{careerNo})
+	</insert>
 
 
 

@@ -104,10 +104,23 @@ public interface ResumeMapper {
 	 * @param gradeNo
 	 * @return
 	 */
-	int updateGrade(int resumeNo, int gradeNo);
+
+	int updateGrade(Resume resume);
+	
+	List<Integer> getCareerNoList(int resumeNo);
+
+	int deleteResumeCareer(int resumeCareerNo);
+
+	int deleteCareerInfo(int resumeCareerNo);
 
 	int updateCareerInfo(CareerInfo careerInfo);
 
 	int updateResumeCareer(Map<String, Integer> resumeCareerMap);
+	
+	
+
+
+
+
 
 }
