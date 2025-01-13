@@ -231,7 +231,8 @@
 	<!-- 5-1. 이력서 관련 RESUME_DAYSTIME 수정 (삭제 후 삽입) -->
 	<delete id="updateCategoryDaysTimeDelete">
 		DELETE FROM RESUME_DAYSTIME
-		WHERE RESUME_NO = #{resumeNo}  <!-- resumeNo를 그대로 사용 -->
+		WHERE RESUME_NO = #{resumeNo}  <!-- resumeNo를 
+			그대로 사용 -->
 	</delete>
 
 	<insert id="updateCategoryDaysTime">
@@ -245,12 +246,40 @@
 		)
 	</insert>
 
-<!-- 제목 업데이트 -->
-<update id="updateTitle">
-UPDATE RESUME
-SET RESUME_TITLE = #{updateTitle}
-WHERE RESUME_NO = #{resumeNo}
-</update>
+	<!-- 제목 업데이트 -->
+	<update id="updateTitle">
+		UPDATE RESUME
+		SET RESUME_TITLE = #{updateTitle}
+		WHERE RESUME_NO = #{resumeNo}
+	</update>
+
+	<!-- 이력서 학력 수정 -->
+	<update id="updateGrade">
+		UPDATE RESUME
+		SET
+		GRADE_NO = #{gradeNo}
+		WHERE
+		RESUME_NO = #{resumeNo}
+	</update>
+
+	<!-- 6-1. 이력서 관련 CAREER_INFO 삽입 -->
+	<update id="updateCareerInfo" parameterType="CareerInfo">
+		UPDATE CAREER_INFO
+		SET
+		COMPANY_NAME = #{companyName},
+		START_DATE = TO_DATE(#{startDate}, 'yyyy-MM-dd'),
+		END_DATE = TO_DATE(#{endDate}, 'yyyy-MM-dd'),
+		CAREER_DESCRIPTION = #{careerDescription},
+		WORKER_NO = #{workerNo}
+		WHERE CAREER_NO = #{careerNo}
+	</update>
+
+	<!-- 6-2. 이력서 관련 RESUME_CAREER 삽입 -->
+	<update id="updateResumeCareer" parameterType="map">
+		UPDATE RESUME_CAREER
+		SET career_no = #{careerNo}
+		WHERE resume_no = #{resumeNo} AND career_no = #{careerNo}
+	</update>
 
 
 

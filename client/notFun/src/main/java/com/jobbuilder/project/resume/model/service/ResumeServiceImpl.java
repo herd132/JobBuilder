@@ -221,4 +221,44 @@ public class ResumeServiceImpl implements ResumeService {
 	public int updateTitle(Map<String, Object> requestBody) {
 		return mapper.updateTitle(requestBody);
 	}
+
+	@Override
+	public int updateGrade(Resume resume, List<CareerInfo> careerInfoList) {
+		int resumeNo = resume.getResumeNo();
+		int gradeNo = resume.getGradeNo();
+		int workerNo = resume.getWorkerNo();
+		
+		
+		int result = mapper.updateGrade(resumeNo, gradeNo);
+		if(result == 0) {
+			throw new RuntimeException("학력 삽입 중 예외 발생");
+		}
+		
+		if (careerInfoList != null) {
+
+			for (CareerInfo careerInfo : careerInfoList) {
+
+				careerInfo.setWorkerNo(resume.getWorkerNo());
+
+				// 6-1. CAREER_INFO 삽입
+				result = mapper.updateCareerInfo(careerInfo);
+				if (result == 0) {
+					throw new RuntimeException("CAREER_INFO 삽입 중 예외 발생");
+				}
+
+				// 6-2. RESUME_CAREER 삽입
+				Map<String, Integer> resumeCareerMap = new HashMap<>();
+				resumeCareerMap.put("resumeNo", resumeNo);
+				resumeCareerMap.put("careerNo", careerInfo.getCareerNo());
+
+				result = mapper.updateResumeCareer(resumeCareerMap);
+				if (result == 0) {
+					throw new RuntimeException("RESUME_CAREER 삽입 중 예외 발생");
+				}
+			}
+
+		}
+		
+		return result;
+	}
 }

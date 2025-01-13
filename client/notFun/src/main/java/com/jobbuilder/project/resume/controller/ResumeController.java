@@ -253,5 +253,38 @@ public class ResumeController {
 		}
 		return resp;
 	}
+	
+	@PostMapping("/updateGrade")
+	public Map<String, Object> updateGrade(Resume resume, 
+			@RequestParam(value = "careerInfoList", required = false) String careerInfoListJson,
+			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException {
+		
+		log.debug("greadeNo : " + resume.getGradeNo());
+		log.debug("careerList : " + careerInfoListJson);
+		
+		List<CareerInfo> careerInfoList = null;
+		if (careerInfoListJson != null) {
+			ObjectMapper objectMapper = new ObjectMapper();
+			careerInfoList = objectMapper.readValue(careerInfoListJson, new TypeReference<List<CareerInfo>>() {
+			});
+		}
+
+		int result = service.updateGrade(resume,careerInfoList);
+		
+		String message = null;
+		if (result > 0) {
+			message = "이력서 작성 완료";
+		} else {
+			message = "이력서 작성 실패";
+		}
+
+		ra.addFlashAttribute(message);
+		
+		
+		return null;
+	}
+	
+	
+	
 
 }

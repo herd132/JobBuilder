@@ -37,7 +37,7 @@ checkPwbtn.addEventListener("click", (e) => {
     }
 
     // 비밀번호 일치할 때
-    window.location.href = 'http://localhost/myPageWorkee/updateInfo';
+    window.location.href = '/myPageWorkee/updateInfo';
 
 });
 

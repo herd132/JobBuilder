@@ -61,6 +61,13 @@ public interface ResumeService {
 	 */
 	int updateTitle(Map<String, Object> requestBody);
 
+	/** 학력/경력사항 수정
+	 * @param resume
+	 * @param careerInfoList
+	 * @return
+	 */
+	int updateGrade(Resume resume, List<CareerInfo> careerInfoList);
+
 
 
 
