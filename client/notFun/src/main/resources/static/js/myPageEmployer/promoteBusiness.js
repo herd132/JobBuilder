@@ -20,6 +20,7 @@ const worktypeArea = document.querySelector(".worktype-area");
 const modalRecruitmentContent = document.querySelector(".modal-recruitment-content");
 
 const businessDetailModal = async (employerNo) => {
+  
   modalContainer.classList.remove("hidden");
 
   nicknameArea.innerHTML = "사업장 위치 : ";
