@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>비밀번호 변경</title>
+
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/changePw.css">
+
+  <!--  12월 27일 오전 9시 36분 횟수 51회 -->
+  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+
+  <!-- https://github.com/sockjs/sockjs-client -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+</head>
+
+<body>
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+
+  <div class="changePw-gray">
+    <main class="changePw-white">
+
+      <div class="header">
+        <h2 class="title">비밀번호 변경</h2>
+      </div>
+
+      <form action="/myPageEmp/changePw" method="POST" class="formSection">
+        <div class="form-group1" id="form-group1">
+          <label>현재 비밀번호</label>
+          <input type="password" class="form-control" id="empCurrentPw" required>
+          <span class="change-message" id="checkCurrentPw"></span>
+        </div>
+
+        <div class="form-group2">
+          <label>신규 비밀번호</label>
+          <input type="password" class="form-control" name="empPw" id="memberPw" maxlength='20' placeholder="6~20 영문/숫자/특수문자" required>
+        </div>
+
+        <div class="form-group3">
+          <label>신규 비밀번호 확인</label>
+          <input type="password" class="form-control" id="memberPwConfirm" required>
+          <span class="confirm-message" id="pwMessage"></span>
+        </div>
+
+        <div class="button-group">
+          <button type="submit" id="changePwForm" class="btn btn-primary">변경</button>
+          <button type="button" class="btn btn-secondary"
+                onclick="location.href='/myPageEmp/info'">취소</button>
+        </div>
+      </form>
+
+    </main>
+  </div>
+
+  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
+
+  <script src="/js/myPageEmp/changePw.js"></script>
+</body>
+
+</html>

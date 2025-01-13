@@ -99,21 +99,9 @@ public class MyPageEmployerController {
 		
 		return employer;
 	}
+
 	
-	
-	/** 기본정보 수정 페이지 이동(get)
-	 * @param loginEmployer
-	 * @param model (주소 전달용)
-	 * @return myPageEmployer/updateInfo.html
-	 * @author JWJ
-	 */
-	@GetMapping("updateInfo")
-	public String MyPageUpdateInfo(@SessionAttribute("loginEmployer") Employer loginEmployer,
-								Model model) {
-		return "myPageEmployer/updateInfo";
-	}
-	
-	/** 기본정보 수정페이지 이동 내 비밀번호 확인
+	/** 기본정보 수정페이지 이동 전 비밀번호 확인
 	 * @param bodyMap
 	 * @return
 	 */
@@ -129,13 +117,40 @@ public class MyPageEmployerController {
 		return ResponseEntity.ok(mainEmployer);
 	}
 	
-	/** 비밀번호 변경 페이지 이동(get) 아직 작성 안함
+
+	/** 기본정보 수정 페이지 이동(get)
+	 * @param loginEmployer
+	 * @param model (주소 전달용)
+	 * @return myPageEmployer/updateInfo.html
+	 * @author JWJ
+	 */
+	@GetMapping("updateInfo")
+	public String MyPageUpdateInfo(@SessionAttribute("loginEmployer") Employer loginEmployer,
+								Model model) {
+		return "myPageEmployer/updateInfo";
+	}
+	
+
+	/** 비밀번호 변경 페이지 이동(get)
 	 * @return myPageEmployer/changePw.html
 	 * @author JWJ
 	 */
 	@GetMapping("changePw")
 	public String MyPageEmpChangePw() {
 		return "myPageEmployer/changePw";
+	}
+	
+	/** 현재 비밀번호 확인 (비밀번호 변경 페이지 내)
+	 * @param loginEmployer
+	 * @param memberPw
+	 * @return
+	 */
+	@ResponseBody
+	@PostMapping("checkCurrentPw")
+	public int checkPw(@SessionAttribute("loginEmployer") Employer loginEmployer,
+						@RequestBody String currentPw) {
+		
+		return service.checkPw(loginEmployer, currentPw);
 	}
 	
 	

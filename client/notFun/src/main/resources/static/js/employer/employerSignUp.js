@@ -1,5 +1,10 @@
 console.log("employerSignUp.html과 연결됨");
 
+const cancelSignUpBtn = document.querySelector("#cancelSignUpBtn");
+cancelSignUpBtn.addEventListener("click", () => {
+  location.href = "/multiSignUp";
+})
+
 // 회원가입 유효성 검사 객체
 const checkObj = {
   "essentialAge": false,                // 나이 필수 약관

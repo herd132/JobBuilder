@@ -101,7 +101,12 @@
 	</select>
 
 <!-- 비밀번호 변경 페이지 관련 -->
-
+	<!-- 원래 비밀번호 얻어오기 -->
+	<select id="getOriginPw">
+		SELECT MEMBER_PW
+		FROM "MEMBER"
+		WHERE MEMBER_NO = ${memberNo}
+	</select>
 
 
 <!-- 내가 쓴 공고 페이지 관련 -->

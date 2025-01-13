@@ -49,6 +49,12 @@ public interface MyPageEmployerService {
 	
 	/* ********** 비밀번호 변경 페이지 관련 ********** */
 	
+	/** 비밀번호 확인
+	 * @param loginEmployer
+	 * @param memberPw
+	 * @return
+	 */
+	int checkPw(Employer loginEmployer, String currentPw);
 	
 
 	/* ********** 내가 쓴 공고 페이지 관련 ********** */
@@ -194,6 +200,8 @@ public interface MyPageEmployerService {
 	 * @return
 	 */
 	RecruitmentResume viewRecruitResume(int recruitmentNo, int resumeNo);
+
+
 
 
 
