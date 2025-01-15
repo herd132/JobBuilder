@@ -25,6 +25,8 @@ public class MainController {
 	
 	@RequestMapping("/")
 	public String mainPage(HttpServletResponse resp, Model model) {
+		
+		// Top 브랜드 10순위
 		List<Brand> topBrandList = mainService.selectTopBrand();
 		
 		// 5개씩 묶은 리스트 생성
@@ -36,6 +38,11 @@ public class MainController {
 
         // chunkedList를 모델에 추가
         model.addAttribute("chunkedTopBrandList", chunkedList);
+        
+        // 플래티넘 공고 조회
+        List<Brand> platinumBrandList = mainService.selectPlatinumList();
+        
+        model.addAttribute("platinumBrandList", platinumBrandList);
 		return "main";
 	}
 	

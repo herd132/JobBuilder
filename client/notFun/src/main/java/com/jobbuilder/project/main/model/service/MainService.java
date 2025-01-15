@@ -12,4 +12,9 @@ public interface MainService {
 	 */
 	List<Brand> selectTopBrand();
 
+	/** 플래티넘 공고 조회
+	 * @return
+	 */
+	List<Brand> selectPlatinumList();
+
 }
