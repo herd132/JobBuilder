@@ -343,4 +343,17 @@
 		SET RECRUITMENT_DEL_FL = 'Y'
 		WHERE RECRUITMENT_NO = ${recruitmentNo}
 	</update>
+	
+	<!--  메인페이지 탑 공고 관련 -->
+	<!--  탑브랜드 최신공고번호 조회  -->
+	<select id="getLatestTopBrandRecruitments">
+		SELECT RECRUITMENT_NO
+		FROM (
+		    SELECT RECRUITMENT_NO
+		    FROM "RECRUITMENT"
+		    WHERE EMPLOYER_NO = ${employerNo}
+		    ORDER BY WRITE_DATE DESC
+		)
+		WHERE ROWNUM = 1
+	</select>
 </mapper>

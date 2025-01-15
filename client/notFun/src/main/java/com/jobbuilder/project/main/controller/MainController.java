@@ -1,18 +1,41 @@
 package com.jobbuilder.project.main.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jobbuilder.project.main.model.dto.Brand;
+import com.jobbuilder.project.main.model.service.MainService;
+
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@RequiredArgsConstructor
+@Slf4j
 public class MainController {
 	
+	private final MainService mainService;
+	
 	@RequestMapping("/")
-	public String mainPage(HttpServletResponse resp) {
+	public String mainPage(HttpServletResponse resp, Model model) {
+		List<Brand> topBrandList = mainService.selectTopBrand();
+		
+		// 5개씩 묶은 리스트 생성
+        List<List<Brand>> chunkedList = new ArrayList<>();
+        for (int i = 0; i < topBrandList.size(); i += 5) {
+            int end = Math.min(i + 5, topBrandList.size());
+            chunkedList.add(topBrandList.subList(i, end));
+        }
+
+        // chunkedList를 모델에 추가
+        model.addAttribute("chunkedTopBrandList", chunkedList);
 		return "main";
 	}
 	

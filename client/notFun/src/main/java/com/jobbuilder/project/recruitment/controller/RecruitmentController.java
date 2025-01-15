@@ -356,7 +356,24 @@ public class RecruitmentController {
 		return "redirect:" + path;
 	}
 	
+	// -------------
 	
+	/** 탑브랜드 최신공고번호 조회 및 디테일 조회 메서드 리다이렉트
+	 * @return
+	 */
+	@GetMapping("latestTopBrandRecruitment")
+	public String getLatestTopBrandRecruitments(@RequestParam("employerNo") int employerNo,
+												RedirectAttributes ra) {
+		int recruitmentNo = service.getLatestTopBrandRecruitments(employerNo);
+		
+		if(recruitmentNo > 0) {
+			return "redirect:/recruitment/detail/" + recruitmentNo;			
+		}
+		
+		// 결제 많이하여 탑브랜드에 조회되고있으나 등록된 공고가 하나도 없을 경우 대비
+		ra.addFlashAttribute("message", "해당 브랜드에 등록된 공고가 없습니다.");
+		return "redirect:/";
+	}
 	
 	
 	
