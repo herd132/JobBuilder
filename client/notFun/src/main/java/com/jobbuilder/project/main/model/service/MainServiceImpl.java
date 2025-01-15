@@ -1,14 +1,13 @@
 package com.jobbuilder.project.main.model.service;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.jobbuilder.project.main.model.dto.Brand;
 import com.jobbuilder.project.main.model.mapper.MainMapper;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
