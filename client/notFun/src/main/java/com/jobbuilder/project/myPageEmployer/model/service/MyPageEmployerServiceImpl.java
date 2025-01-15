@@ -113,6 +113,21 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 		return mapper.getEmployer(bodyMap.get("memberEmail"));
 	}
 	
+	@Override	// 대표자명 변경(기본정보 수정페이지 내)
+	public int changeMemberName(Map<String, String> bodyMap) {
+		return mapper.changeMemberName(bodyMap);
+	}
+	
+	@Override	// 대표자 연락처 변경(기본정보 수정페이지 내)
+	public int changeMemberTel(Map<String, String> bodyMap) {
+		return mapper.changeMemberTel(bodyMap);
+	}
+	
+	@Override	// 선택약관 동의여부 변경
+	public int changeOptionalAgree(Map<String, String> bodyMap) {
+		return mapper.changeOptionalAgree(bodyMap);
+	}
+	
 	
 	/* ********** 비밀번호 변경 페이지 관련 ********** */
 	
@@ -494,4 +509,10 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	
 	
 	/* ********** 회원탈퇴 페이지 관련 ********** */
+	
+	
+	@Override	// 회원 탈퇴
+	public int secession(int memberNo) {
+		return mapper.secession(memberNo);
+	}
 }

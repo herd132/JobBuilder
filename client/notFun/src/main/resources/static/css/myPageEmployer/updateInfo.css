@@ -1,0 +1,110 @@
+/* 전체 컨테이너 스타일 */
+.updateInfo-gray {
+  background-color: #f8f9fa;
+  padding: 40px 20px;
+  min-height: calc(100vh - 200px);
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* 흰색 메인 컨텐츠 영역 */
+.updateInfo-white {
+  background-color: white;
+  border-radius: 8px;
+  padding: 30px;
+  width: 100%;
+  max-width: 600px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* 각 정보 행 스타일 */
+.updateInfo-white p {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+  font-size: 15px;
+}
+
+/* 레이블 스타일 */
+.updateInfo-white p > :first-child {
+  color: #666;
+  min-width: 140px;
+}
+
+/* span 태그 스타일 */
+.updateInfo-white span {
+  flex: 1;
+  color: #333;
+  margin-right: 10px;
+}
+
+/* 변경하기 버튼 스타일 */
+.updateInfo-white button {
+  background-color: #794B2D;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+}
+
+.updateInfo-white button:hover {
+  background-color: #5d3a22;
+}
+
+/* 입력 필드 스타일 (변경 시 나타나는) */
+.updateInfo-white input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+/* 저장/취소 버튼 스타일 */
+.saveButton {
+  background-color: #4CAF50 !important;
+}
+
+.saveButton:hover {
+  background-color: #45a049 !important;
+}
+
+.cancelButton {
+  background-color: #f44336 !important;
+  margin-left: 8px;
+}
+
+.cancelButton:hover {
+  background-color: #da190b !important;
+}
+
+/* 돌아가기 버튼을 감싸는 p태그 스타일 */
+.updateInfo-white p:last-child {
+  border-bottom: none;
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+}
+
+/* 돌아가기 버튼 스타일 */
+#backInfoBtn {
+  background-color: #FF9F40;
+  color: white;
+  border: none;
+  padding: 12px 30px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: opacity 0.3s ease;
+}
+
+#backInfoBtn:hover {
+  opacity: 0.8;
+}
