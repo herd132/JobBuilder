@@ -21,7 +21,6 @@ import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
 import com.jobbuilder.project.recruitment.model.serivce.RecruitmentService;
-import com.jobbuilder.project.resume.model.dto.Resume;
 import com.jobbuilder.project.resume.model.service.RecommendService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
@@ -375,6 +374,26 @@ public class RecruitmentController {
 		return "redirect:/";
 	}
 	
+	
+	/** 기업 정보 보기 이동 시 출력되는 페이지
+	 * @param loginEmployer
+	 * @param loginWorker
+	 * @param model
+	 * @return
+	 */
+	@GetMapping("showPromoteBusiness")
+	public String showPromoteBusiness(@RequestParam("recruitmentNo") int recruitmentNo,
+									@SessionAttribute(value="loginEmployer", required = false) Employer loginEmployer,
+									@SessionAttribute(value="loginWorker", required=false) Worker loginWorker, Model model
+									) {		
+		
+		Recruitment recruitment = service.showPromoteEmploy(recruitmentNo);	
+		log.debug("채용컨트롤러" + recruitmentNo );
+		
+		model.addAttribute("recruitment", recruitment);
+		
+		return "recruitment/showPromoteBusiness";
+	}
 	
 	
 }

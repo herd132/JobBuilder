@@ -374,4 +374,13 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 		return mapper.getLatestTopBrandRecruitments(employerNo);
 	}
 	
+	/** 공고에 맞는 employNo 조회하기
+	 *
+	 */
+	@Override
+	public Recruitment showPromoteEmploy(int recruitmentNo) {
+		log.debug( "으응" + mapper.showPromoteEmploy(recruitmentNo));
+		return mapper.showPromoteEmploy(recruitmentNo);
+	}
+	
 }

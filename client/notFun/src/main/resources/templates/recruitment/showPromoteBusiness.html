@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  
+  <th:block th:replace="~{common/common}"></th:block>
+</head>
+<body>
+  <th:block th:replace="~{common/main-header}"></th:block>
+
+  <h3>회사 소개입니다.</h3>
+  <h1> ex - 잡코리아 </h1>
+  <table>
+    <th:block th:object="${recruitment}">
+      <tr>
+        <th>대표자명 :</th>
+        <td th:text="*{memberName}"> 대표자명</td>
+      </tr>
+      <tr>
+        <th>설립일 : </th>
+        <td th:text="*{enrollDate}"></td>
+      </tr>
+      <tr>
+        <th>대표 전화번호 : </th>
+        <td th:text="*{memberTel}"></td>
+      </tr>
+      <tr>
+        <!-- <th>사업내용 : </th>
+        <td th:text="*{businessWorktype}"></td> -->
+      </tr>
+      <tr>
+        <th> 사업장 소개</th>
+      </tr>
+    </th:block>
+  </table>
+
+  
+
+  </section>
+
+  <th:block th:replace="~{common/main-footer}"></th:block>
+</body>
+</html>

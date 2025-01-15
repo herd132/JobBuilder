@@ -534,15 +534,6 @@ public class MyPageEmployerController {
 		return "myPageEmployer/promoteBusiness";
 	}
 	
-	// 기업 정보 보기 누를시 이동하는 페이지
-	@GetMapping("showPromoteBusiness")
-	public String showPromoteBusiness(@SessionAttribute(value="loginEmployer", required = false) Employer loginEmployer,
-									@SessionAttribute(value="loginWorker", required=false) Worker loginWorker, Model model
-			) {
-		
-		
-		
-		return "myPageEmployer/showPromoteBusiness";
-	}
+	
 
 }
