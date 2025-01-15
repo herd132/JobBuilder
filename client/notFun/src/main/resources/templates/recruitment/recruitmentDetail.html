@@ -24,8 +24,12 @@
 
   <div class="recruitmentDetail-gray">
     <main class="recruitmentDetail-white" th:object="${recruitment}">
-
+      
       <div class="recruitment-title-container">
+        <!-- showPromoteBusiness 페이지로 이동시킬 예정-->
+        <button class="showPromoteBusiness">
+          기업 정보 보기
+        </button>
         <div class="recruitment-title-area">
           <span th:text="*{recruitmentTitle}" id="recruitmentTitle"></span>
           <span th:text="| ~*{recruitmentDeadline}|" id="recruitmentDeadline"></span>
@@ -45,6 +49,7 @@
         <div class="status-box closed" th:unless="*{recruitCompleteFl == 'N'}">
           모집 완료
         </div>
+
 
       </div>
 
