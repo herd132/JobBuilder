@@ -101,6 +101,9 @@
   </div>
   <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
 </body>
+<script th:inline="javascript">
+  const businessNickname = /*[[${business.businessNickname}]]*/"";
+</script>
 <script src="/js/myPageEmployer/promoteBusiness.js"></script>
 
 </html>

@@ -1,5 +1,4 @@
 console.log("recruitmentDetail.js 와 연결됨");
-
 const newEl = (tag, attr, cls) => {
   const el = document.createElement(tag); // 요소 생성
   for (let key in attr) {
@@ -469,5 +468,5 @@ showPromoteBusiness.addEventListener("click", () => {
 
   let path = window.location.pathname;
   path = path.substring(path.lastIndexOf('/') + 1, path.length);
-    location.href = "/recruitment/showPromoteBusiness?recruitmentNo=" + path;  
+    location.href = "/recruitment/showPromoteBusiness?recruitmentNo=" + path + "";  
 });

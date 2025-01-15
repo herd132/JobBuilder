@@ -217,10 +217,12 @@
   <div class="recommend-modal-outside"></div>
 
 
+  <script th:inline="javascript">
+    const businessNickname = /*[[${recruitment.businessNickname}]]*/"";
+  </script>
   <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xppqitiq8t"></script>
   <script type="text/javascript" src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=xppqitiq8t&submodules=geocoder"></script>
   <script src="/js/recruitment/recruitmentDetail.js"></script>
-
 
   <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
   <th:block th:replace="~{common/main-footer}"></th:block>  
