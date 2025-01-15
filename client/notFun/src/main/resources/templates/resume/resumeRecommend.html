@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-    
+
   <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
   <th:block th:replace="~{common/common}"></th:block>
 
   <link rel="stylesheet" href="/css/resume/resumeRecommend.css">
 
 </head>
+
 <body>
-  
+
   <th:block th:replace="~{common/main-header}"></th:block>
 
 
@@ -21,51 +23,58 @@
   <div class="recruitmentList-gray">
     <main class="recruitmentList-white">
       <h2>맞춤 공고 목록</h2>
-      
-      
+
+
       <section class="form-section">
 
         <!-- 경력 정보 -->
         <div class="header-info">
           <div class="last-updated">최종 수정일: <span id="writetime"></span></div>
         </div>
-      
+
         <!-- 세부 정보 -->
         <div class="details">
           <div class="detail-item">
-            <span class="label">근무지역:</span>
+            <span class="label">근무지역 : </span>
             <span class="content" id="workcondAddressTypeInfo"></span>
           </div>
           <div class="detail-item">
-            <span class="label">근무형태:</span>
+            <span class="label">근무형태 : </span>
             <span class="content" id="resumeJobTypeList"></span>
           </div>
           <div class="detail-item">
-            <span class="label">근무기간:</span>
+            <span class="label">근무기간 : </span>
             <span class="content" id="periodName"></span>
           </div>
           <div class="detail-item">
-            <span class="label">근무요일:</span>
+            <span class="label">근무요일 : </span>
             <span class="content" id="dayList"></span>
           </div>
           <div class="detail-item">
-            <span class="label">근무시간:</span>
+            <span class="label">근무시간 : </span>
             <span class="content" id="timeList"></span>
           </div>
           <div class="detail-item">
-            <span class="label">희망급여:</span>
+            <span class="label">희망급여 :</span>
             <span class="content" id="salary">)</span>
           </div>
-        </div>
 
-          <div class="detail-item2">
+          <div class="detail-item">
+            <span class="label">최종학력 : </span>
+            <span class="content" id="gradeName">)</span>
+          </div>
+          
+          <div class="detail-item">
             <span class="label">근무직종:</span>
             <span class="content" id="resumeWorkType"></span>
           </div>
-       
-      
+
+        </div>
+
+ 
+
       </section>
-      
+
 
       <div class="list-wrapper">
         <table class="list-table">

@@ -163,11 +163,6 @@ const addEventListeners = (container) => {
     const index = target.id.split("_")[1];
     const item = globalResumeList[index];
 
-    if (!item) {
-      console.error("유효하지 않은 이력서 항목입니다.");
-      return;
-    }
-
     if (target.classList.contains("refund-button")) {
       if (confirm("삭제하시겠습니까?")) {
         updateResumeStatus(item.resumeNo, 2, "Y", index);

@@ -108,31 +108,78 @@
 			WORKCOND_TIME K ON A.TIME_NO = K.TIME_NO
 		WHERE 	
 			A.RECRUITMENT_DEL_FL = 'N'
-		<if test="category1 != null and category1.size > 0">
+			
+		<!-- category11, category1 둘 중 하나라도 값이 있으면 -->
+		<if test="(category11 != null and category11.size > 0) 
+		       or (category1 != null and category1.size > 0)">
 		    AND A.WORKCOND_ADDRESS_TYPE_NO IN (
 		        SELECT B.WORKCOND_ADDRESS_TYPE_NO
 		        FROM WORKCOND_ADDRESS_TYPE B
 		        WHERE 
-		        <foreach item="item" collection="category1" separator=" OR ">
-		            WORKCOND_ADDRESS_TYPE_INFO = #{item}
-		        </foreach>
+		            -- 1) 아래 조건들이 모두 OR로 묶여야 함
+		            1=0
+		            <!-- 카테고리11(전체) 있을 때 LIKE 조건 -->
+		            <if test="category11 != null and category11.size > 0">
+		              OR (
+		                  <foreach item="item" collection="category11" separator=" OR ">
+		                      B.WORKCOND_ADDRESS_TYPE_NO LIKE #{item}
+		                  </foreach>
+		              )
+		            </if>
+		
+		            <!-- 카테고리1(개별) 있을 때 = 조건 -->
+		            <if test="category1 != null and category1.size > 0">
+		              OR (
+		                  <foreach item="item" collection="category1" separator=" OR ">
+		                      B.WORKCOND_ADDRESS_TYPE_INFO = #{item}
+		                  </foreach>
+		              )
+		            </if>
 		    )
 		</if>
+
 		
-		<if test="category2 != null and category2.size > 0">
+		<if test="(category22 != null and category22.size > 0) 
+		       or (category2 != null and category2.size > 0)">
 		    AND A.EMPLOYER_NO IN (
 		        SELECT DISTINCT C.EMPLOYER_NO
 		        FROM EMPLOYER_WORKTYPE D
 		        JOIN BUSINESS_WORKTYPE C
 		        ON C.WORKTYPE_NO = D.WORKTYPE_NO
 		        WHERE 
-		        <foreach item="item" collection="category2" separator=" OR ">
-		            D.WORKTYPE_CATEGORY = #{item}
-		        </foreach>
-		    ) 
+		            -- 1) 아래 조건들이 모두 OR로 묶여야 함
+		            1=0
+		            <!-- 카테고리(전체) 있을 때 LIKE 조건 -->
+		            <if test="category22 != null and category22.size > 0">
+		              OR (
+		                  <foreach item="item" collection="category22" separator=" OR ">
+		                      D.WORKTYPE_NO LIKE #{item}
+		                  </foreach>
+		              )
+		            </if>
+		
+		            <!-- 카테고리(개별) 있을 때 = 조건 -->
+		            <if test="category2 != null and category2.size > 0">
+		              OR (
+				        <foreach item="item" collection="category2" separator=" OR ">
+				            D.WORKTYPE_CATEGORY = #{item}
+				        </foreach>
+		              )
+		            </if>
+		    )
 		</if>
 
-			
+		<if test="category31 != null and category31.size > 0">
+		    AND A.PERIOD_NO IN (
+		        SELECT B.PERIOD_NO
+		        FROM WORKCOND_PERIOD B
+		        WHERE 
+		        <foreach item="item" collection="category31" separator=" OR ">
+		            B.PERIOD_NAME LIKE #{item}
+		        </foreach>
+		    )
+		</if>	
+		
 		
 		ORDER BY A.WRITE_DATE DESC
     </select>
@@ -164,6 +211,19 @@
 		WHERE WORKTYPE_NO NOT LIKE '%00'
 		ORDER BY 1
 	</select>
+	
+	<select id="refinePeriod2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT PERIOD_NO,PERIOD_NAME
+		FROM WORKCOND_PERIOD
+		ORDER BY 1
+	</select>
+	
+	<select id="refineDays2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT DAYS_NO,DAYS_NAME
+		FROM WORKCOND_DAYS
+		ORDER BY 1
+	</select>
+	
 	
 	
 </mapper>
