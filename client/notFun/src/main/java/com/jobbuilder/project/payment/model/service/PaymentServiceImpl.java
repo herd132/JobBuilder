@@ -89,8 +89,13 @@ public class PaymentServiceImpl implements PaymentService {
 
                 // 3-2 단계 생성된 membershipNo와 결제 연결 (2-1과 동일)
                 log.info("Linking new membershipNo {} to paymentNo {}: {}", membership.getMembershipNo(), payment.getPaymentNo());
+                
                 payment.setMembershipNo(membership.getMembershipNo());
+                
                 mapper.connectionPayment(payment); // PAYMENT_MEMBERSHIP 연결
+              	
+                membership.setPaymentNo(payment.getPaymentNo()); // 1단계실시한 결제번호 부여
+               	mapper.connectionPaymentType(membership);
             }
         }
         
