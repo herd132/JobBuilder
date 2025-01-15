@@ -85,7 +85,10 @@ public class RefinedServiceImpl implements RefinedService {
 		return mapper.refinePreferred2();
 	}
 	
-	
+	@Override
+	public List<Refined> refineSalary2() {
+		return mapper.refineSalary2();
+	}
 	
 	
 	

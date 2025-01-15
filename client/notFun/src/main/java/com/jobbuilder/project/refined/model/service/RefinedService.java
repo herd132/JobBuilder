@@ -34,6 +34,10 @@ public interface RefinedService {
 	List<Refined> refineSupport2();
 
 	List<Refined> refinePreferred2();
+
+
+
+	List<Refined> refineSalary2();
 	
 
 }

@@ -248,6 +248,22 @@
 		    )
 		</if>
 		
+		<if test="category51 != null and category51.size > 0">
+		    AND A.SALARY_NO IN (
+		        SELECT B.SALARY_NO
+		        FROM SALARY B
+		        WHERE 
+		        <foreach item="item" collection="category51" separator=" OR ">
+		            B.SALARY_NAME LIKE #{item}
+		        </foreach>
+		    )
+		</if>
+		
+		<if test="category52 != null and category52.size > 0">
+		    AND A.SALARY_NO = #{category52.salaryNo}
+		    AND A.SALARY_MOUNT >= #{category52.salaryMount}
+		</if>
+		
 		
 		ORDER BY A.WRITE_DATE DESC
     </select>
@@ -319,6 +335,12 @@
 	<select id="refinePreferred2" parameterType="Refined" resultMap="refinedResultMap">
 		SELECT PREFERRED_NO,PREFERRED_CATEGORY
 		FROM PREFERRED
+		ORDER BY 1
+	</select>
+	
+	<select id="refineSalary2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT SALARY_NO,SALARY_NAME
+		FROM SALARY
 		ORDER BY 1
 	</select>
 	

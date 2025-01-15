@@ -13,6 +13,15 @@
 	    <result property="membershipDelFl" column="MEMBERSHIP_DEL_FL"/>
 	</resultMap>
 	
+	<select id="getEmployerNo" resultMap="membershipResultMap">
+	   SELECT BUSINESS_NAME,EMPLOYER_NO
+	   FROM EMPLOYER
+	   WHERE MEMBER_NO = #{membershipNo}
+	   AND BUSINESS_DEL_FL ='N'
+	</select>
+	
+	
+	
 	<!-- employerNo로 맴버십 조회 -->
 	<select id="selectMembershipDetails" resultMap="membershipResultMap">
 	    SELECT 

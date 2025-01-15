@@ -68,6 +68,16 @@ public class PaymentController {
         return response;
     }
 
+    // 맴버십 정보 받아오기
+    @PostMapping("/getEmployerNo")
+    @ResponseBody
+    public Map<String, Object> getEmployerNo(@SessionAttribute("loginEmployer") Employer loginEmployer) {
+        Map<String, Object> response = new HashMap<>();
+        List<Employer> getEmployerNo = service.getEmployerNo(loginEmployer.getMemberNo());
+        response.put("getEmployerNo", getEmployerNo);
+        return response;
+    }
+    
     
     // 맴버십 정보 받아오기
     @PostMapping("/details")

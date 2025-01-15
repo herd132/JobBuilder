@@ -4,11 +4,15 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.payment.model.dto.Payment;
 
 @Mapper
 public interface PaymentMapper {
+	
+	// 사업주 조회
+	List<Employer> getEmployerNo(int memberNo);
 
 	// 맴버십 조회
 	List<Membership> selectMembershipDetails(int employerNo);

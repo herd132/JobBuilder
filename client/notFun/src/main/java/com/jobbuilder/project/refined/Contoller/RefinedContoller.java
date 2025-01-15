@@ -56,8 +56,7 @@ public class RefinedContoller {
 		
 	    Map<String, List<String>> categorySelections = (Map<String, List<String>>) requestBody.get("categorySelections");
 
-	    // categorySelections 데이터 확인
-	    System.out.println("categorySelections: " + categorySelections);
+	
 		
 		// 공고 리스트 조회
 		List<Refined> recruitment = service.getRecruitmentListb(categorySelections);
@@ -103,6 +102,9 @@ public class RefinedContoller {
 		// 우대사항 소분류 조회
 		List<Refined> refinePreferred2 = service.refinePreferred2();
 		
+		// 급여부분 
+		List<Refined> refineSalary2 = service.refineSalary2();
+		
 		response.put("refinedAddress1", refinedAddress1);
 		response.put("refinedAddress2", refinedAddress2);
 		response.put("refineJob1", refineJob1);
@@ -114,6 +116,7 @@ public class RefinedContoller {
 		response.put("refineGrade2", refineGrade2);
 		response.put("refineSupport2", refineSupport2);
 		response.put("refinePreferred2", refinePreferred2);
+		response.put("refineSalary2", refineSalary2);
 	
 		return response;
 	}

@@ -9,6 +9,24 @@ const getEmployerNo = () => {
 
 const employerNo = getEmployerNo();
 
+
+async function getEmployer() {
+  try {
+    // 데이터 요청 (서버와 통신)
+    const response = await fetch("/payments/getEmployerNo", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" }
+    });
+    const data = await response.json();
+
+    
+  } catch (error) {
+    console.error("오류:", error);
+  }
+}
+
+console.log
+
 // 데이터 캐싱 함수
 async function fetchAndCacheMembershipData(employerNo) {
   if (globalMembershipList.length > 0) {
