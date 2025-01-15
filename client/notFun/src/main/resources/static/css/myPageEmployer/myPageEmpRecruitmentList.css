@@ -1,0 +1,138 @@
+/* 전체 영역 스타일 */
+.recruitmentList-gray {
+  background-color: #fff5ee;  /* 매우 연한 주황색 배경 */
+  padding: 2rem;
+  min-height: 100vh;
+}
+
+/* 메인 컨텐츠 영역 */
+.myPageEmpInfo-white {
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(255, 127, 80, 0.1);
+  padding: 2rem;
+  margin: 0 auto;
+  max-width: 1200px;
+}
+
+/* 테이블 스타일링 */
+.list-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.list-table th {
+  background-color: #ffab8c;  /* 더 연한 주황색으로 변경 */
+  color: white;
+  padding: 1rem;
+  font-weight: 600;
+}
+
+.list-table td {
+  padding: 1rem;
+  border-bottom: 1px solid #ffdab9;
+  text-align: center;
+}
+
+.list-table tr:hover {
+  background-color: #fff5ee;
+}
+
+/* 구인완료여부 스타일링 */
+.list-table td span[id^="completeFl"] {
+  display: inline-block;
+  margin-right: 10px;  /* span과 button 사이 간격 */
+  vertical-align: middle;
+}
+
+.change-recruit-complete {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+/* 버튼 스타일링 */
+.btn-container button,
+.change-recruit-complete {
+  background-color: #ff7f50;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.btn-container button:hover,
+.change-recruit-complete:hover {
+  background-color: #ff6347;
+}
+
+/* 페이지네이션 영역 */
+.paginationRecruitment-area {
+  display: flex;
+  justify-content: center;
+  margin: 2rem 0;
+}
+
+.pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+  gap: 0.5rem;
+}
+
+.pagination li {
+  display: inline-block;
+}
+
+.pagination a {
+  display: block;
+  padding: 0.5rem 1rem;
+  text-decoration: none;
+  color: #ff7f50;
+  border: 1px solid #ff7f50;
+  border-radius: 4px;
+  transition: all 0.3s;
+}
+
+.pagination a:hover,
+.pagination a.current {
+  background-color: #ff7f50;
+  color: white;
+}
+
+/* 검색 폼 스타일링 */
+#recruitmentSearch {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+#searchKey {
+  padding: 0.5rem;
+  border: 1px solid #ffdab9;
+  border-radius: 4px;
+}
+
+#searchQuery {
+  padding: 0.5rem;
+  border: 1px solid #ffdab9;
+  border-radius: 4px;
+  width: 300px;
+}
+
+#recruitmentSearch button {
+  background-color: #ff7f50;
+  color: white;
+  border: none;
+  padding: 0.5rem 2rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#recruitmentSearch button:hover {
+  background-color: #ff6347;
+}

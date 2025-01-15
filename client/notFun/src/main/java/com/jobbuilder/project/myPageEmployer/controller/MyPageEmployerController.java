@@ -130,6 +130,54 @@ public class MyPageEmployerController {
 		return "myPageEmployer/updateInfo";
 	}
 	
+	/** 대표자명 변경(기본정보 수정페이지 내)
+	 * @param bodyMap(memberNo, memberName)
+	 * @return
+	 */
+	@ResponseBody
+	@PutMapping("changeMemberName")
+	public int ChangeMemberName(@SessionAttribute("loginEmployer") Employer loginEmployer,
+								@RequestBody Map<String, String> bodyMap) {
+		
+		int result = service.changeMemberName(bodyMap);
+		
+		if(result > 0) loginEmployer.setMemberName(bodyMap.get("memberName"));
+		
+		return result;
+	}
+	
+	/** 대표자 연락처 변경(기본정보 수정페이지 내)
+	 * @param bodyMap(memberNo, memberTel)
+	 * @return
+	 */
+	@ResponseBody
+	@PutMapping("changeMemberTel")
+	public int ChangeMemberTel(@SessionAttribute("loginEmployer") Employer loginEmployer,
+							@RequestBody Map<String, String> bodyMap) {
+		
+		int result = service.changeMemberTel(bodyMap);
+		
+		if(result > 0) loginEmployer.setMemberTel(bodyMap.get("memberTel"));
+		
+		return result;
+	}
+	
+	/** 선택약관 동의여부 변경(기본정보 수정페이지 내)
+	 * @param bodyMap(memberNo, agree)
+	 * @return
+	 */
+	@ResponseBody
+	@PutMapping("changeOptionalAgree")
+	public int ChangeOptionalAgree(@SessionAttribute("loginEmployer") Employer loginEmployer,
+								@RequestBody Map<String, String> bodyMap) {
+		
+		int result = service.changeOptionalAgree(bodyMap);
+		
+		if(result > 0) loginEmployer.setOptionalAgreeFl(bodyMap.get("agree"));
+		
+		return result;
+	}
+	
 
 	/** 비밀번호 변경 페이지 이동(get)
 	 * @return myPageEmployer/changePw.html
@@ -498,13 +546,43 @@ public class MyPageEmployerController {
 		return ResponseEntity.ok(recruitResume);
 	}
 	
-	/** 회원 탈퇴 페이지 이동(get) 아직 작성 안함
+	/** 회원 탈퇴 페이지 이동(get)
 	 * @return myPageEmployer/secession.html
 	 * @author JWJ
 	 */
 	@GetMapping("secession")
 	public String MyPageEmpSecession() {
 		return "myPageEmployer/secession";
+	}
+	
+	/** 회원 탈퇴(post)
+	 * @param loginEmployer(memberNo 불러오기 용도)
+	 * @param status(로그아웃 용도)
+	 * @return
+	 */
+	@PostMapping("secession")
+	public String secession(@SessionAttribute("loginEmployer") Employer loginEmployer,
+						SessionStatus status,
+						RedirectAttributes ra) {
+		
+		int result = service.secession(loginEmployer.getMemberNo());
+		
+		String message = null;
+		String path = null;
+		
+		if(result > 0) {
+			message = "탈퇴되었습니다";
+			path = "/";
+			status.setComplete();
+			
+		} else {
+			message = "회원탈퇴 실패";
+			path = "secession";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:/" + path;
 	}
 	
 	//맨 밑에 만든 페이지 나중에 복붙

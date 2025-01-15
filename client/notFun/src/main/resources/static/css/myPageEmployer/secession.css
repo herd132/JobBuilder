@@ -1,0 +1,130 @@
+/* 전체 레이아웃 */
+.secession-gray {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 40px 0;
+}
+
+.secession-white {
+  background-color: white;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #FFCBA4;
+}
+
+/* 제목 스타일링 */
+.title {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.secession-title-middle {
+  text-align: center;
+  color: #666;
+  margin-bottom: 30px;
+  font-size: 16px;
+}
+
+/* 비밀번호 입력 영역 */
+.pwarea {
+  margin-bottom: 30px;
+  text-align: center;
+}
+
+.required {
+  display: inline-block;
+  width: 100px;
+  text-align: right;
+  margin-right: 10px;
+  color: #333;
+}
+
+.secession-input {
+  padding: 8px 12px;
+  width: 250px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+/* 약관 영역 */
+.secession-middle {
+  border: 1px solid #ddd;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 4px;
+}
+
+.myPage-title-line {
+  padding: 0 10px;
+  margin-bottom: 15px;
+}
+
+.agt {
+  font-weight: bold;
+  color: #333;
+  margin: 0;
+}
+
+/* 약관 내용 스크롤 영역 */
+.secession-middle pre {
+  font-family: inherit;
+  white-space: pre-wrap;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #666;
+}
+
+/* 동의 체크박스 영역 */
+.secession-agree {
+  text-align: center;
+  margin: 20px 0;
+}
+
+/* 버튼 영역 */
+.secession-mainbtn-area {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.secession-btn-main {
+  padding: 10px 30px;
+  margin: 0 5px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.secession-btn-main:first-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+.secession-btn-main:last-child {
+  background-color: #6c757d;
+  color: white;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .secession-white {
+    margin: 0 20px;
+    padding: 20px;
+  }
+  
+  .secession-input {
+    width: 200px;
+  }
+  
+  .required {
+    display: block;
+    text-align: left;
+    margin-bottom: 5px;
+  }
+}

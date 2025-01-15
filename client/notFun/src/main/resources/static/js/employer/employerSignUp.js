@@ -520,6 +520,55 @@ signUpEmpForm.addEventListener("submit", e => {
     }
   }
 })
+
+
+
+// 모달영역 
+const modalService = document.getElementById('modalService');
+const modalPrivateInfo = document.getElementById('modalPrivateInfo');
+const modalRecommend = document.getElementById('modalRecommend');
+
+// 버튼들
+const serviceAgreeBtn = document.getElementById('serviceAgree');
+const privateInfoAgreeBtn = document.getElementById('privateInfoAgree');
+const recommendAgreeBtn = document.getElementById('recommendAgree');
+
+// 모달 열기 함수
+const openModal = (modal) => {
+  modal.style.display = 'block';
+  // 모달 닫기 버튼 생성
+  const closeButton = newEl('span', { class: 'modal-close' }, ['modal-close']);
+  closeButton.innerHTML = '&times;';
+  closeButton.onclick = () => closeModal(modal);
+  modal.querySelector('.modal-service-content').appendChild(closeButton);
+};
+
+// 모달 닫기 함수
+const closeModal = (modal) => {
+  modal.style.display = 'none';
+  // 모달 닫기 버튼 삭제
+  const closeButton = modal.querySelector('.modal-close');
+  if (closeButton) closeButton.remove();
+};
+
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    closeModal(modalService);
+    closeModal(modalPrivateInfo);
+    closeModal(modalRecommend);
+  }
+});
+
+// 서비스 이용 약관 모달 열기
+serviceAgreeBtn.addEventListener('click', () => openModal(modalService));
+
+// 개인정보 수집 및 이용 동의 모달 열기
+privateInfoAgreeBtn.addEventListener('click', () => openModal(modalPrivateInfo));
+
+// 이력서 추천 모달 열기
+recommendAgreeBtn.addEventListener('click', () => openModal(modalRecommend));
+
 // 회사명/점포명 입력안 된 경우 제출 막기
 // 사업장 주소 입력안 된 경우 제출 막기
 

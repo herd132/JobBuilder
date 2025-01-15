@@ -12,6 +12,27 @@
 
 <body>
   <th:block th:replace="~{common/main-header}"></th:block>
+  
+  <!-- 모달(서비스 이용약관) 영역 -->
+  <div id="modalService" class="modal" style="display: none;">
+    <div class="modal-service-content">
+      서비스 이용약관 관련 모달창입니다.
+    </div>
+  </div>
+
+  <!-- 모달(개인정보 수집) 영역 -->
+  <div id="modalPrivateInfo" class="modal" style="display: none;">
+    <div class="modal-privateInfo-content">
+      개인정보 수집 관련 모달창입니다.
+    </div>
+  </div> 
+ 
+  <!-- 모달(이력서 추천) 영역 -->
+  <div id="modalRecommend" class="modal" style="display: none;">
+    <div class="modal-recommend-content">
+      선택약관 관련 모달창입니다.
+    </div>
+  </div>
 
   <!-- 가장 끝 배경(회색)-->
   <div class="employSignUp-background-gray">
@@ -41,20 +62,20 @@
                 <div>
                   <input type="checkbox" id="essentialService" class="checkAll">
                   <label for="essentialService">(필수) 서비스 이용약관 동의</label>
-                  <button type="button" class="fa-solid fa-angle-right"></button>
+                  <button type="button" id="serviceAgree" class="fa-solid fa-angle-right"></button>
                 </div>
                 <div>
                   <input type="checkbox" id="essentialPersonalInfo" class="checkAll">
                   <label for="essentialPersonalInfo">(필수) 개인정보 수집 및 이용 동의</label>
-                  <button type="button" class="fa-solid fa-angle-right"></button>
+                  <button type="button" id="privateInfoAgree" class="fa-solid fa-angle-right"></button>
                 </div>
               </div>
   
               <div class="optionaal-agree">
                 <div>
                   <input type="checkbox" id="optionalNotice" class="checkAll" name="optionalAgree">
-                  <label for="optionalNotice">(선택) 공고추천, 멤버십혜택 알림</label>
-                  <button type="button" class="fa-solid fa-angle-right"></button>
+                  <label for="optionalNotice">(선택) 이력서 추천, 멤버십혜택 알림</label>
+                  <button type="button" id="recommendAgree" class="fa-solid fa-angle-right"></button>
                 </div>
               </div>
 
