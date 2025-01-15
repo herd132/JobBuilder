@@ -1,3 +1,74 @@
+let currentIndex = 0;
+let autoSlideInterval;
+const slideInterval = 5000; // 5초
+const carousel = document.getElementById('carousel');
+
+// 슬라이드 이동 함수
+function moveSlide(direction) {
+    const slides = document.querySelectorAll('.carousel-slide');
+    if (!slides.length) return;
+
+    currentIndex = (currentIndex + direction + slides.length) % slides.length;
+    updateCarousel();
+    
+    // 수동으로 슬라이드 이동 시 자동 슬라이드 타이머 재설정
+    resetAutoSlide();
+}
+
+// 캐러셀 업데이트 함수
+function updateCarousel() {
+    if (!carousel) return;
+    carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+}
+
+// 자동 슬라이드 시작 함수
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        moveSlide(1); // 1은 다음 슬라이드로 이동
+    }, slideInterval);
+}
+
+// 자동 슬라이드 중지 함수
+function stopAutoSlide() {
+    if (autoSlideInterval) {
+        clearInterval(autoSlideInterval);
+    }
+}
+
+// 자동 슬라이드 재설정 함수
+function resetAutoSlide() {
+    stopAutoSlide();
+    startAutoSlide();
+}
+
+// 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    updateCarousel();
+    startAutoSlide();
+
+    // 마우스가 캐러셀 위에 있을 때 자동 슬라이드 중지
+    carousel.addEventListener('mouseenter', stopAutoSlide);
+    
+    // 마우스가 캐러셀을 벗어날 때 자동 슬라이드 재시작
+    carousel.addEventListener('mouseleave', startAutoSlide);
+});
+
+// 페이지 벗어날 때 인터벌 정리
+window.addEventListener('beforeunload', () => {
+    stopAutoSlide();
+});
+
+//------------
+
+// 탑브랜드로고 클릭 시
+function fowardRecruitment(empNo) {
+	const employerNo = Number(empNo);
+	location.href = `/recruitment/latestTopBrandRecruitment?employerNo=${employerNo}`;
+}
+
+
+//-----
+
 const navMypage = document.querySelector(".nav-mypage");
 let selectChattingNo; // 선택한 채팅방 번호
 let selectTargetNo; // 현재 채팅 대상

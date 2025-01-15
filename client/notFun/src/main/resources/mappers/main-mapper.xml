@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.jobbuilder.project.main.model.mapper.MainMapper">
+	
+	<select id="selectTopBrand">
+	<![CDATA[ 
+		WITH PaymentSum AS (
+		    SELECT 
+		        p.PAYMENT_NO,
+		        p.PAYMENT_AMOUNT,
+		        p.PAYMENT_DATE,
+		        m.EMPLOYER_NO
+		    FROM PAYMENT p
+		    JOIN PAYMENT_MEMBERSHIP pm ON p.PAYMENT_NO = pm.PAYMENT_NO
+		    JOIN MEMBERSHIP m ON pm.MEMBERSHIP_NO = m.MEMBERSHIP_NO
+		    GROUP BY 
+		        p.PAYMENT_NO,
+		        p.PAYMENT_AMOUNT,
+		        p.PAYMENT_DATE,
+		        m.EMPLOYER_NO
+		),
+		RankedEmployers AS (
+		    SELECT 
+		        e.EMPLOYER_NO,
+		        e.BUSINESS_NAME,
+		        e.BUSINESS_NICKNAME,
+		        SUM(ps.PAYMENT_AMOUNT) AS TOTAL_PAYMENT,
+		        TO_CHAR(MAX(ps.PAYMENT_DATE), 'YYYY.MM.DD HH24:mm:ss') AS LATEST_PAYMENT_DATE,
+		        RANK() OVER (
+		            ORDER BY 
+		                SUM(ps.PAYMENT_AMOUNT) DESC,
+		                MAX(ps.PAYMENT_DATE) DESC
+		        ) AS PAYMENT_RANK,
+		        CONCAT(BI.BUSINESS_IMG_PATH, BI.BUSINESS_IMG_RENAME) AS BUSINESS_IMG_URL
+		    FROM EMPLOYER e
+		    JOIN PaymentSum ps ON e.EMPLOYER_NO = ps.EMPLOYER_NO
+		    JOIN BUSINESS_IMG bi ON e.EMPLOYER_NO = bi.EMPLOYER_NO
+		    AND bi.BUSINESS_IMG_ORDER = 0
+		    GROUP BY 
+		        e.EMPLOYER_NO,
+		        e.BUSINESS_NAME,
+		        e.BUSINESS_NICKNAME,
+		        bi.BUSINESS_IMG_PATH, bi.BUSINESS_IMG_RENAME
+		)
+		SELECT *
+		FROM RankedEmployers
+		WHERE PAYMENT_RANK <= 10	
+		]]>
+	</select>
+
+</mapper>

@@ -131,6 +131,12 @@ public interface RecruitmentService {
 	 */
 	int deleteRecruitment(int recruitmentNo);
 
+	/** 탑브랜드 최신공고번호 조회
+	 * @param employerNo
+	 * @return
+	 */
+	int getLatestTopBrandRecruitments(int employerNo);
+
 
 
 
