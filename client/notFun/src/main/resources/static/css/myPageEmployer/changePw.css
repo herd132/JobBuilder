@@ -1,0 +1,129 @@
+/* 전체 페이지 스타일 */
+.changePw-gray {
+  background-color: #f5f5f5;
+  min-height: 100vh;
+  padding: 40px 20px;
+}
+
+/* 메인 컨테이너 */
+.changePw-white {
+  background-color: white;
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 40px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border: 2px solid #FFCBA4; /* 부드러운 주황색 테두리 추가 */
+}
+
+/* 제목 스타일 */
+.header .title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 30px;
+  font-weight: bold;
+}
+
+/* 폼 섹션 */
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+/* 폼 그룹 공통 스타일 */
+.form-group1,
+.form-group2,
+.form-group3 {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* 라벨 스타일 */
+label {
+  font-size: 14px;
+  color: #333;
+  font-weight: 500;
+}
+
+/* 입력 필드 스타일 */
+.form-control {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: #007bff;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* 메시지 스타일 */
+.change-message,
+.confirm-message {
+  font-size: 12px;
+  color: #dc3545;
+  margin-top: 4px;
+}
+
+/* 버튼 그룹 */
+.button-group {
+  display: flex;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* 버튼 스타일 */
+.btn {
+  padding: 12px 24px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background-color: #604020;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #503010;
+}
+
+.btn-secondary {
+  background-color: #e9ecef;
+  color: #333;
+}
+
+.btn-secondary:hover {
+  background-color: #dee2e6;
+}
+
+/* 반응형 스타일 */
+@media (max-width: 480px) {
+  .changePw-white {
+    padding: 20px;
+  }
+  
+  .button-group {
+    flex-direction: column;
+  }
+  
+  .btn {
+    width: 100%;
+  }
+}
+
+
+.confirm{
+  color: green;
+}
+
+.error{
+  color: red;
+}

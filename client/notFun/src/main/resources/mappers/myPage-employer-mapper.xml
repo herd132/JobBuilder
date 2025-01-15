@@ -107,6 +107,13 @@
 		FROM "MEMBER"
 		WHERE MEMBER_NO = ${memberNo}
 	</select>
+	
+	<!-- 비밀번호 변경 -->
+	<update id="changePw">
+		UPDATE "MEMBER"
+		SET MEMBER_PW = #{encPw}
+		WHERE MEMBER_NO = ${memberNo}
+	</update>
 
 
 <!-- 내가 쓴 공고 페이지 관련 -->
@@ -280,6 +287,7 @@
 		SELECT WORKTYPE_NO
 		FROM EMPLOYER_WORKTYPE
 		WHERE WORKTYPE_CATEGORY = #{category}
+			AND WORKTYPE_NO NOT LIKE '__00'
 	</select>
 	
 	<!-- M:N 해소테이블(BUSINESS_WORKTYPE)에 데이터 삽입 -->

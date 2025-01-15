@@ -88,6 +88,12 @@ public interface MyPageEmployerMapper {
 	 */
 	String getOriginPw(int memberNo);
 	
+	/** 비밀번호 변경
+	 * @param map(memberNo, encPw)
+	 * @return
+	 */
+	int changePw(Map<String, Object> map);
+	
 	
 	/* ********** 내가 쓴 공고 페이지 관련 ********** */
 	
@@ -326,16 +332,9 @@ public interface MyPageEmployerMapper {
 
 
 
-	
 
-	
-	
 	/* ********** 회원 탈퇴 페이지 관련 ********** */
 	
-	
-
-
-
 
 
 }
