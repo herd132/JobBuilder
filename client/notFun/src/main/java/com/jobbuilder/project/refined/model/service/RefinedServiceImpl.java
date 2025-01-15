@@ -50,6 +50,15 @@ public class RefinedServiceImpl implements RefinedService {
 		return mapper.refineJob2();
 	}
 	
+	@Override
+	public List<Refined> refinePeriod2() {
+		return mapper.refinePeriod2();
+	}
+	
+	@Override
+	public List<Refined> refineDays2() {
+		return mapper.refineDays2();
+	}
 	
 	/*
 	@Override

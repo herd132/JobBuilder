@@ -82,10 +82,16 @@ public class RefinedContoller {
 		List<Refined> refineJob1 = service.refineJob1();
 		List<Refined> refineJob2 = service.refineJob2();
 		
+		List<Refined> refinePeriod2 = service.refinePeriod2();
+		List<Refined> refineDays2 = service.refineDays2();
+		
+		
 		response.put("refinedAddress1", refinedAddress1);
 		response.put("refinedAddress2", refinedAddress2);
 		response.put("refineJob1", refineJob1);
 		response.put("refineJob2", refineJob2);
+		response.put("refinePeriod2", refinePeriod2);
+		response.put("refineDays2", refineDays2);
 	
 		return response;
 	}

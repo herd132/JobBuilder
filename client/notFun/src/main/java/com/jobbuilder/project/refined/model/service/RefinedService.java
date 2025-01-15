@@ -19,9 +19,11 @@ public interface RefinedService {
 
 	List<Refined> refineJob2();
 
-
-
 	List<Refined> getRecruitmentListb(Map<String, List<String>> categorySelections);
+
+	List<Refined> refinePeriod2();
+	
+	List<Refined> refineDays2();
 
 	
 	

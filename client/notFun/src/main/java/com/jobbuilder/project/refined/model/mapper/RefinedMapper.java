@@ -24,6 +24,12 @@ public interface RefinedMapper {
 
 	List<Refined> getRecruitmentListb(Map<String, List<String>> categorySelections);
 
+	List<Refined> refinePeriod2();
+
+	List<Refined> refineDays2();
+	
+	
+
 	/*
 	List<ResumeDaysTime> resumeDaysTime(int recruitmentNo);
 
