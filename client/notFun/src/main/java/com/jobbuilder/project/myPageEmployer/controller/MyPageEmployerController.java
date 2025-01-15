@@ -28,6 +28,7 @@ import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.myPageEmployer.model.service.MyPageEmployerService;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
+import com.jobbuilder.project.worker.model.dto.Worker;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -505,6 +506,17 @@ public class MyPageEmployerController {
 		model.addAttribute("businessList" ,businessList);
 		
 		return "myPageEmployer/promoteBusiness";
+	}
+	
+	// 기업 정보 보기 누를시 이동하는 페이지
+	@GetMapping("showPromoteBusiness")
+	public String showPromoteBusiness(@SessionAttribute(value="loginEmployer", required = false) Employer loginEmployer,
+									@SessionAttribute(value="loginWorker", required=false) Worker loginWorker, Model model
+			) {
+		
+		
+		
+		return "myPageEmployer/showPromoteBusiness";
 	}
 
 }
