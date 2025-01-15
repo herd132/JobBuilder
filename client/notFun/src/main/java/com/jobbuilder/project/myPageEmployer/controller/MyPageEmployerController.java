@@ -1,6 +1,5 @@
 package com.jobbuilder.project.myPageEmployer.controller;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -17,18 +16,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.jobbuilder.project.board.model.dto.Board;
-import com.jobbuilder.project.employer.model.dto.BusinessImg;
-import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.myPageEmployer.model.service.MyPageEmployerService;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
 import com.jobbuilder.project.worker.model.dto.Worker;
+
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -148,10 +147,37 @@ public class MyPageEmployerController {
 	 */
 	@ResponseBody
 	@PostMapping("checkCurrentPw")
-	public int checkPw(@SessionAttribute("loginEmployer") Employer loginEmployer,
-						@RequestBody String currentPw) {
+	public int checkCurrentPw(@SessionAttribute("loginEmployer") Employer loginEmployer,
+						@RequestBody Map<String, String> bodyMap) {
+
+		return service.checkCurrentPw(loginEmployer, bodyMap.get("currentPw"));
+	}
+	
+	
+	@PostMapping("changePw")
+	public String changePw(@SessionAttribute("loginEmployer") Employer loginEmployer,
+						@RequestParam("newPw") String newPw,
+						SessionStatus status,
+						RedirectAttributes ra) {
 		
-		return service.checkPw(loginEmployer, currentPw);
+		int result = service.changePw(loginEmployer.getMemberNo(), newPw);
+		
+		String message = null;
+		String url = null;
+		
+		if(result > 0) {
+			message = "비밀빈호가 변경되었습니다. 다시 로그인해 주세요";
+			status.setComplete();
+			url = "";
+			
+		} else {
+			message = "비밀번호 변경 실패";
+			url = "/myPageEmp/changePw";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
+		return "redirect:/" + url;
 	}
 	
 	

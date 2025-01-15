@@ -29,13 +29,14 @@
       <form action="/myPageEmp/changePw" method="POST" class="formSection">
         <div class="form-group1" id="form-group1">
           <label>현재 비밀번호</label>
-          <input type="password" class="form-control" id="empCurrentPw" required>
+          <input type="password" class="form-control" id="empCurrentPw" required
+          placeholder="현재 비밀번호를 입력해주세요">
           <span class="change-message" id="checkCurrentPw"></span>
         </div>
 
         <div class="form-group2">
           <label>신규 비밀번호</label>
-          <input type="password" class="form-control" name="empPw" id="memberPw" maxlength='20' placeholder="6~20 영문/숫자/특수문자" required>
+          <input type="password" class="form-control" name="newPw" id="memberPw" maxlength='20' placeholder="6~20 영문/숫자/특수문자" required>
         </div>
 
         <div class="form-group3">
@@ -56,7 +57,7 @@
 
   <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
 
-  <script src="/js/myPageEmp/changePw.js"></script>
+  <script src="/js/myPageEmployer/changePw.js"></script>
 </body>
 
 </html>

@@ -117,13 +117,25 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	/* ********** 비밀번호 변경 페이지 관련 ********** */
 	
 	@Override	// 비밀번호 확인
-	public int checkPw(Employer loginEmployer, String currentPw) {
+	public int checkCurrentPw(Employer loginEmployer, String currentPw) {
 		
 		String encOriginPw = mapper.getOriginPw(loginEmployer.getMemberNo());
 		
 		if(!bcrypt.matches(currentPw, encOriginPw)) return 0;
 		
 		return 1;
+	}
+	
+	@Override	// 비밀번호 변경
+	public int changePw(int memberNo, String newPw) {
+
+		String encPw = bcrypt.encode(newPw);
+		
+		Map<String, Object> map = new HashMap<>();
+		map.put("memberNo", memberNo);
+		map.put("encPw", encPw);
+		
+		return mapper.changePw(map);
 	}
 	
 	/* ********** 내가 쓴 공고 페이지 관련 ********** */

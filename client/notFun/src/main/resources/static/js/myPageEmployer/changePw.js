@@ -10,15 +10,13 @@ const checkCurrentPw = document.querySelector("#checkCurrentPw"); // span 태그
 
 empCurrentPw.addEventListener("input", (e) => {
 
+  checkObj.empCurrentPw = false;
   const currentPw = e.target.value;
 
   if (currentPw.trim().length === 0) {
 
     checkCurrentPw.innerText = "현재 비밀번호를 입력해 주세요";
     checkCurrentPw.classList.remove("confirm", "error");
-    checkObj.empCurrentPw = false;
-
-    currentPw = "";
 
     return;
   }
@@ -26,7 +24,7 @@ empCurrentPw.addEventListener("input", (e) => {
   fetch("/myPageEmp/checkCurrentPw", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: { currentPw: currentPw }
+    body: JSON.stringify({ currentPw: currentPw })
   })
   .then(resp => resp.text())
   .then(result => {
@@ -37,18 +35,13 @@ empCurrentPw.addEventListener("input", (e) => {
 
         checkCurrentPw.innerText = "현재 비밀번호를 입력해 주세요";
         checkCurrentPw.classList.remove("confirm", "error");
-        checkObj.empCurrentPw = false;
-
-        currentPw = "";
         return;
 
       } else {
         
         checkCurrentPw.innerText = "현재 비밀번호가 일치하지 않습니다";
         checkCurrentPw.classList.add("error");
-        checkCurrentPw.classList.remove("confirm");
-        checkObj.empCurrentPw = false;
-        
+        checkCurrentPw.classList.remove("confirm");        
         return;
       }
     }
@@ -138,20 +131,31 @@ const changePwForm = document.querySelector("#changePwForm"); // button 태그
 const formSection = document.querySelector(".formSection");
 
 formSection.addEventListener("submit", (e) => {
+
   if (empCurrentPw.value === memberPw.value) {
     e.preventDefault();
     alert("동일한 비밀번호로 변경하실 수 없습니다");
     return;
   }
+
   for (let key in checkObj) {
     if (!checkObj[key]) {
-      console.log(key);
-      alert("입력 사항을 올바르게 입력 후 눌러주세요!");
-      e.preventDefault(); // 클릭 이벤트 중단
 
+      let str;
+
+      switch(key){
+        case "empCurrentPw": str = "기존 비밀번호가 일치하지 않습니다"; break;
+        case "memberPw" : str = "새 비밀번호를 정확히 입력해주세요"; break;
+        case "memberPwConfirm" : str = "새 비밀빈호와 비밀번호확인이 일치하지 않습니다"; break;
+      }
+
+      e.preventDefault();
+
+      alert(str);
       document.getElementById(key).focus(); // 초점 이동
 
       return;
     }
   }
 });
+
