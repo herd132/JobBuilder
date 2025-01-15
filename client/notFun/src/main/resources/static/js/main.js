@@ -43,6 +43,7 @@ function resetAutoSlide() {
 
 // 초기화
 document.addEventListener('DOMContentLoaded', () => {
+	if (!carousel) return;
     updateCarousel();
     startAutoSlide();
 

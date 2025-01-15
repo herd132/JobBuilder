@@ -21,4 +21,6 @@ public class Brand {
 	private String latestPaymentDate;
 	private int paymentRank;
 	private String businessImgUrl;
+	
+	// 
 }
