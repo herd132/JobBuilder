@@ -22,7 +22,8 @@ const categorySelections = {
   // 대분류4도 필요 시 확장
   category41: [],
   category42: [],
-  category43: []
+  category43: [],
+  category44: [],
 };
 
 // (3) 선택 상태(배열 넣기 전)
@@ -51,7 +52,7 @@ async function ca() {
       headers: { "Content-Type": "application/json" }
     });
     const data = await response.json();
-    console.log("서버에서 받은 데이터:", data);
+    console.log("소/중분류 서버에서 받은 데이터:", data);
 
     // 1) 초기화
     mockSubcategories = {};
@@ -129,28 +130,24 @@ async function ca() {
     //    여기서는 '전체' 버튼/슬라이스 없음
 
     // 대분류3: 중분류 예시 - "근무기간", "근무요일"
-    mockSubcategories[3] = ["근무기간", "근무요일","테스트"];
+    mockSubcategories[3] = ["근무기간", "근무요일","근무시간"];
     // - "근무기간" 소분류: 서버에서 받은 data.refinePeriod2 연결
     //   ex) data.refinePeriod2 = [{ periodName: "3개월", periodCode: "P01" }, ...]
-    //   사용자가 원하는 key(예: "periodName")를 매핑해 아래 push
-
-    mockMinorCategories["근무기간"] = data.refinePeriod2.map((obj) => obj.periodName);
-  
+    //   원하는 key(예: "periodName")를 push
+    
     // - "근무요일" 소분류: 임시 하드코딩 (필요에 맞게 수정)
+    mockMinorCategories["근무기간"] = data.refinePeriod2.map((obj) => obj.periodName);
     mockMinorCategories["근무요일"] = data.refineDays2.map((obj) => obj.daysName);
+    mockMinorCategories["근무시간"] = data.refineTime2.map((obj) => obj.timeName);
 
-    // 대분류4: 중분류 예시 - "근무패턴" 등
-    mockSubcategories[4] = ["근무패턴"];
-    // - "근무패턴" 소분류: 서버에서 받을 수도 있고, 하드코딩도 가능
-    //   지금은 주석 예시
-    // mockMinorCategories["근무패턴"] = data.refineEtc3.map((obj) => obj.etcMinorName);
-    // TODO: 필요시 다른 소분류 추가
-    mockMinorCategories["근무패턴"] = ["3교대", "주말근무", "격주휴무"]; 
-    // ↑ 임의 하드코딩 예시
+   
+    mockSubcategories[4] = ["근무형태", "학력", "복리후생", "우대사항"];
 
-    console.log("mockSubcategories:", mockSubcategories);
-    console.log("mockMinorCategories:", mockMinorCategories);
-    console.log("subCatNameToCodeMap:", subCatNameToCodeMap);
+    mockMinorCategories["근무형태"] = data.refineJobType2.map((obj) => obj.jobtypeName);
+    mockMinorCategories["학력"] = data.refineGrade2.map((obj) => obj.gradeName);
+    mockMinorCategories["복리후생"] = data.refineSupport2.map((obj) => obj.supportCategory);
+    mockMinorCategories["우대사항"] = data.refinePreferred2.map((obj) => obj.preferredCategory);
+   
 
     // 4) UI 초기화 실행
     init();
@@ -410,7 +407,6 @@ function updateSelectedList() {
     // 대분류3
     else if (category === 3) {
       // 예: 근무형태 -> category31, 근무요일 -> category32, ...
-      // 간단히 subName으로 분기. (하드코딩 예시)
       if (subName === "근무기간") {
         categorySelections.category31.push(codeForServer);
       } 
@@ -418,19 +414,23 @@ function updateSelectedList() {
         categorySelections.category32.push(codeForServer);
       } 
       else {
-        // 다른 중분류가 더 있다면 category33.. etc
         categorySelections.category33.push(codeForServer);
       }
     }
     // 대분류4
     else if (category === 4) {
       // 예: 근무패턴 -> category41 ...
-      if (subName === "근무패턴") {
+      if (subName === "근무형태") {
         categorySelections.category41.push(codeForServer);
-      } 
-      else {
-        // 확장
+      }
+      else if (subName === "학력") {
         categorySelections.category42.push(codeForServer);
+      }
+      else if (subName === "복리후생") {
+        categorySelections.category43.push(codeForServer);
+      }
+      else {
+        categorySelections.category44.push(codeForServer);
       }
     }
   });
@@ -503,10 +503,11 @@ function updateCount() {
   const cat3Count = categorySelections.category31.length
                   + categorySelections.category32.length
                   + categorySelections.category33.length;
-  // 대분류4 -> category41, category42, category43
+  // 대분류4 -> category41, category42, category43, category44
   const cat4Count = categorySelections.category41.length
                   + categorySelections.category42.length
-                  + categorySelections.category43.length;
+                  + categorySelections.category43.length
+                  + categorySelections.category44.length;
 
   // 예시로 HTML에 <span id="selection-count-1">0/10</span> 형식이라면:
   const sc1 = document.getElementById("selection-count-1");
@@ -571,7 +572,6 @@ ca(); // 서버 혹은 Mock 데이터 로딩 → init();
 
 
 const changeServer = async () => {
-  console.log("changeServer 호출됨");
   const urlParams = new URLSearchParams(window.location.search);
   const currentPage = parseInt(urlParams.get("cp")) || 1;
  
@@ -591,7 +591,7 @@ window.history.replaceState(
       body: JSON.stringify({ categorySelections }),
     });
     const data = await response.json();
-    console.log("서버에서 받은 데이터:", data);
+    console.log("변경 (보내고 받은):", data);
 
     const recruitment = data.recruitment || [];
     const itemsPerPage = 10;
@@ -700,7 +700,7 @@ window.history.replaceState(
       // body: JSON.stringify({}), // 검색조건없는 전체조회로 바꿨기 때문에 바디로 보낼게 없어짐 (생략)
     });
     const data = await response.json();
-    console.log("서버에서 받은 데이터:", data);
+    console.log("공고리스트 서버에서 받은 데이터:", data);
 
     const recruitment = data.recruitment || [];
     const itemsPerPage = 10; // 한 페이지당 항목 수
@@ -729,7 +729,6 @@ const updateUI = (recruitment) => {
   recruitmentBody.innerHTML = "";
 
   if (!recruitment || recruitment.length === 0) {
-    console.log("updateUI: 빈 데이터입니다.");
     const noDataRow = document.createElement("tr");
     noDataRow.innerHTML = '<td colspan="7">공고가 존재하지 않습니다.</td>';
     recruitmentBody.appendChild(noDataRow);
@@ -766,7 +765,6 @@ const updateUI = (recruitment) => {
 // 페이지네이션 로직
 const createPagination = (data, paginationContainer) => {
   if (!Array.isArray(data) || data.length === 0) {
-    console.log("페이지네이션: 빈 데이터로 호출됨");
     return;
   }
 

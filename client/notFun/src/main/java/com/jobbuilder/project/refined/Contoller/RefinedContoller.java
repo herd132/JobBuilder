@@ -82,9 +82,26 @@ public class RefinedContoller {
 		List<Refined> refineJob1 = service.refineJob1();
 		List<Refined> refineJob2 = service.refineJob2();
 		
+		// 근무기간 소분류 조회
 		List<Refined> refinePeriod2 = service.refinePeriod2();
+		
+		// 근무요일 소분류 조회
 		List<Refined> refineDays2 = service.refineDays2();
 		
+		// 근무시간 소분류 조회
+		List<Refined> refineTime2 = service.refineTime2();
+		
+		// 근무형태 소분류 조회
+		List<Refined> refineJobType2 = service.refineJobType2();
+		
+		// 학력 소분류 조회
+		List<Refined> refineGrade2 = service.refineGrade2();
+		
+		// 복리후생 소분류 조회
+		List<Refined> refineSupport2 = service.refineSupport2();
+		
+		// 우대사항 소분류 조회
+		List<Refined> refinePreferred2 = service.refinePreferred2();
 		
 		response.put("refinedAddress1", refinedAddress1);
 		response.put("refinedAddress2", refinedAddress2);
@@ -92,6 +109,11 @@ public class RefinedContoller {
 		response.put("refineJob2", refineJob2);
 		response.put("refinePeriod2", refinePeriod2);
 		response.put("refineDays2", refineDays2);
+		response.put("refineTime2", refineTime2);
+		response.put("refineJobType2", refineJobType2);
+		response.put("refineGrade2", refineGrade2);
+		response.put("refineSupport2", refineSupport2);
+		response.put("refinePreferred2", refinePreferred2);
 	
 		return response;
 	}

@@ -180,6 +180,74 @@
 		    )
 		</if>	
 		
+		<if test="category32 != null and category32.size > 0">
+		    AND A.DAYS_NO IN (
+		        SELECT B.DAYS_NO
+		        FROM WORKCOND_DAYS B
+		        WHERE 
+		        <foreach item="item" collection="category32" separator=" OR ">
+		            B.DAYS_NAME LIKE #{item}
+		        </foreach>
+		    )
+		</if>	
+		
+		<if test="category33 != null and category33.size > 0">
+		    AND A.TIME_NO IN (
+		        SELECT B.TIME_NO
+		        FROM WORKCOND_TIME B
+		        WHERE 
+		        <foreach item="item" collection="category33" separator=" OR ">
+		            B.TIME_NAME LIKE #{item}
+		        </foreach>
+		    )
+		</if>	
+		
+		<if test="category41 != null and category41.size > 0">
+		    AND A.JOBTYPE_NO IN (
+		        SELECT B.JOBTYPE_NO
+		        FROM JOBTYPE B
+		        WHERE 
+		        <foreach item="item" collection="category41" separator=" OR ">
+		            B.JOBTYPE_NAME LIKE #{item}
+		        </foreach>
+		    )
+		</if>	
+		
+		<if test="category42 != null and category42.size > 0">
+		    AND A.GRADE_NO IN (
+		        SELECT B.GRADE_NO
+		        FROM GRADE B
+		        WHERE 
+		        <foreach item="item" collection="category42" separator=" OR ">
+		            B.GRADE_NAME LIKE #{item}
+		        </foreach>
+		    )
+		</if>
+		
+		<if test="category43 != null and category43.size > 0">
+		    AND A.RECRUITMENT_NO IN (
+		        SELECT DISTINCT B.RECRUITMENT_NO
+		        FROM RECRUITMENT_SUPPORT B
+		        JOIN SUPPORT C ON B.SUPPORT_NO = C.SUPPORT_NO
+		        WHERE 
+		        <foreach item="item" collection="category43" separator=" OR ">
+		            C.SUPPORT_CATEGORY LIKE #{item}
+		        </foreach>
+		    )
+		</if>
+		
+		<if test="category44 != null and category44.size > 0">
+		    AND A.RECRUITMENT_NO IN (
+		        SELECT DISTINCT B.RECRUITMENT_NO
+		        FROM RECRUITMENT_PREFERRED B
+		        JOIN PREFERRED C ON B.PREFERRED_NO = C.PREFERRED_NO
+		        WHERE 
+		        <foreach item="item" collection="category44" separator=" OR ">
+		            C.PREFERRED_CATEGORY LIKE #{item}
+		        </foreach>
+		    )
+		</if>
+		
 		
 		ORDER BY A.WRITE_DATE DESC
     </select>
@@ -224,6 +292,35 @@
 		ORDER BY 1
 	</select>
 	
+	<select id="refineTime2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT TIME_NO,TIME_NAME
+		FROM WORKCOND_TIME
+		ORDER BY 1
+	</select>
+	
+	<select id="refineJobType2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT JOBTYPE_NO,JOBTYPE_NAME
+		FROM JOBTYPE
+		ORDER BY 1
+	</select>
+	
+	<select id="refineGrade2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT GRADE_NO,GRADE_NAME
+		FROM GRADE
+		ORDER BY 1
+	</select>
+	
+	<select id="refineSupport2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT SUPPORT_NO,SUPPORT_CATEGORY
+		FROM SUPPORT
+		ORDER BY 1
+	</select>
+		
+	<select id="refinePreferred2" parameterType="Refined" resultMap="refinedResultMap">
+		SELECT PREFERRED_NO,PREFERRED_CATEGORY
+		FROM PREFERRED
+		ORDER BY 1
+	</select>
 	
 	
 </mapper>

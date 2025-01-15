@@ -25,19 +25,15 @@ public interface RefinedService {
 	
 	List<Refined> refineDays2();
 
-	
-	
-	
-	
-	/*
-	List<ResumeWorkType> resumeWorkType(int recruitmentNo);
+	List<Refined> refineTime2();
 
-	List<String> resumeJobTypeList(int recruitmentNo);
+	List<Refined> refineJobType2();
 
-	List<ResumeDaysTime> resumeDaysTime(int recruitmentNo);
-	
-	List<String> workcondAddressTypeInfo(int recruitmentNo);
-*/
+	List<Refined> refineGrade2();
+
+	List<Refined> refineSupport2();
+
+	List<Refined> refinePreferred2();
 	
 
 }

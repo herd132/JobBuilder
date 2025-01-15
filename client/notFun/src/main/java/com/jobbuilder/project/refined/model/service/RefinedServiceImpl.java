@@ -60,30 +60,30 @@ public class RefinedServiceImpl implements RefinedService {
 		return mapper.refineDays2();
 	}
 	
-	/*
 	@Override
-	public List<ResumeDaysTime> resumeDaysTime(int recruitmentNo) {
-		return mapper.resumeDaysTime(recruitmentNo);
+	public List<Refined> refineTime2() {
+		return mapper.refineTime2();
 	}
 	
 	@Override
-	public List<String> resumeJobTypeList(int recruitmentNo) {
-		return mapper.resumeJobTypeList(recruitmentNo);
+	public List<Refined> refineJobType2() {
+		return mapper.refineJobType2();
 	}
 	
 	@Override
-	public List<ResumeWorkType> resumeWorkType(int recruitmentNo) {
-		return mapper.resumeWorkType(recruitmentNo);
+	public List<Refined> refineGrade2() {
+		return mapper.refineGrade2();
 	}
 	
 	@Override
-	public List<String> workcondAddressTypeInfo(int recruitmentNo) {
-		return mapper.workcondAddressTypeInfo(recruitmentNo);
+	public List<Refined> refineSupport2() {
+		return mapper.refineSupport2();
 	}
-	*/
 	
-	
-	
+	@Override
+	public List<Refined> refinePreferred2() {
+		return mapper.refinePreferred2();
+	}
 	
 	
 	
