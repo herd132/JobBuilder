@@ -1,16 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
-  <link rel="stylesheet" href="/css/myPageEmployer/promoteBusiness.css">
+  
+  <th:block th:replace="~{common/common}"></th:block>
 </head>
-
 <body>
-  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+  <th:block th:replace="~{common/main-header}"></th:block>
+
   <h3>회사 소개입니다.</h3>
   <h1> ex - 잡코리아 </h1>
   <table>
@@ -37,7 +36,6 @@
     </th:block>
   </table>
 
-  <!-- 모달 영역 -->
   <div class="modal-container hidden">
     <div class="modal-area">
       <div class="btn-area">
@@ -98,9 +96,31 @@
   </section>
 
 
-  </div>
-  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
-</body>
-<script src="/js/myPageEmployer/promoteBusiness.js"></script>
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  <th:block th:replace="~{common/main-footer}"></th:block>
+</body>
 </html>

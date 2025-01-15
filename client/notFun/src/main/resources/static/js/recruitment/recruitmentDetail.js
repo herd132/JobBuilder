@@ -462,3 +462,10 @@ function toiletMarkers(Y, X) {
     }
   });
 }
+
+// 사업장 홍보 페이지 보여주기
+const showPromoteBusiness = document.querySelector(".showPromoteBusiness");
+showPromoteBusiness.addEventListener("click", () => { 
+    const urlParams = new URLSearchParams(location.search);
+    location.href = "/myPageEmp/showPromoteBusiness";  
+});
