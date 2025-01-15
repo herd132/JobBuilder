@@ -172,7 +172,6 @@
 		    SEQ_MEMBERSHIP_NO.NEXTVAL, 
 		    #{membershipType}, 
 		    SYSDATE,
-		    SYSDATE,
 		    NVL(( 
 		        SELECT MEMBERSHIP_END_DATE
 		        FROM MEMBERSHIP
@@ -184,6 +183,7 @@
 		        WHEN #{durationUnit} = 'MONTH' THEN 30 * #{membershipDateValue}
 		        WHEN #{durationUnit} = 'DAY' THEN #{membershipDateValue}
 		    END,
+		    SYSDATE,
 		    'N', 
 		    #{employerNo}
 		)
