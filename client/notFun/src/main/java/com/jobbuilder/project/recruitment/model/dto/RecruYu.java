@@ -10,15 +10,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-
 @Getter
 @Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Recruitment {
-
+public class RecruYu {
 	/* ***** RECRUITMENT TABLE ***** */
 	private int recruitmentNo;				// 공고번호(PK)
 	private String recruitmentTitle;		// 채용공고 제목
@@ -35,21 +33,9 @@ public class Recruitment {
 	private int salaryMount;				// 급여수준(ex 시급 : 10300, 월급 : 3000000)
 	
 	// 새로 추가한 컬럼(250101~)
-	private String writeDate;				// 공고글 작성날짜
-	private String updateDate;				// 공고글 수정날짜
-	private String recruitmentDelFl;		// 공고글 삭제여부(Y/N)
-	private int memberNo;					// 회원번호(FK)
-	private String recruitCompleteFl;		// 구인 완료여부(FK)
-	private String recruitmentProfile;		// 공고 이미지(선택사항)
 	private String workcondAddressTypeNo;	// 근무지역번호
 	
 	/* ***** FK 관련 TABLE ***** */
-	private String jobtypeName;				// JOBTYPE, 근무형태
-	private String salaryName;				// RECRUITMENT_SALARY, 시급/월급 
-	private String gradeName;				// GRADE, 학력
-	private String periodName;				// WORKCOND_PERIOD, 근무 기간
-	private String daysName;				// WORKCOND_DAYS, 근무 요일
-	private String timeName;				// WORKCOND_TIME, 근무 시간
 	private String businessNickname;		// 지점명
 	// 새로 추가한 컬럼(250101~)
 	private String businessName;			// 회사명
@@ -63,6 +49,5 @@ public class Recruitment {
 	private List<BusinessWorktype> businessWorktypeList;// 업직종 테이블 DTO List
 	private List<RecruitmentPreferred> preferredList;	// 우대사항 테이블 DTO List
 	private List<RecruitmentSupport> supportList;		// 복리후생 테이블 DTO List
-	
 	
 }

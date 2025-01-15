@@ -137,6 +137,9 @@ public interface RecruitmentService {
 	 */
 	int getLatestTopBrandRecruitments(int employerNo);
 
+	// 공고에 맞는 employNo 조회
+	Recruitment showPromoteEmploy(int recruitmentNo);
+
 
 
 

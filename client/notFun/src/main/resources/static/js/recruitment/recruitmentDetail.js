@@ -466,6 +466,8 @@ function toiletMarkers(Y, X) {
 // 사업장 홍보 페이지 보여주기
 const showPromoteBusiness = document.querySelector(".showPromoteBusiness");
 showPromoteBusiness.addEventListener("click", () => { 
-    const urlParams = new URLSearchParams(location.search);
-    location.href = "/myPageEmp/showPromoteBusiness";  
+
+  let path = window.location.pathname;
+  path = path.substring(path.lastIndexOf('/') + 1, path.length);
+    location.href = "/recruitment/showPromoteBusiness?recruitmentNo=" + path;  
 });
