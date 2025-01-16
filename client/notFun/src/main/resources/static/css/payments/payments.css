@@ -48,6 +48,7 @@
   background: #f0bb78;
   height: 0.5rem;
   border: 0;
+  
 }
 
 /* 상단 부제목 */
@@ -61,7 +62,7 @@
   margin-top: 0.5rem;
   background: #f0bb78;
   height: 2px;
-  width: 50%;
+  width: 300px;
   border: 0;
 }
 
@@ -261,4 +262,36 @@
   justify-content: space-between;
   margin-left: 9.5rem;
   margin-right: 9.5rem;
+}
+
+
+/* Flex 컨테이너 설정 */
+.flex-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px; /* 간격 조정 */
+}
+
+/* 선택된 점포 박스 */
+.selected-business {
+  display: flex;
+  align-items: center;
+  gap: 10px; /* 텍스트와 버튼 간격 */
+}
+
+
+
+/* 버튼 스타일 */
+.change-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.change-button:hover {
+  background-color: #e0e0e0;
 }

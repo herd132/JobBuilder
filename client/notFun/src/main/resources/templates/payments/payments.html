@@ -8,7 +8,7 @@
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/payments/payments.css">
   <link rel="stylesheet" href="/css/payments/testpay.css">
-  <meta name="employerNo" th:content="${session.loginEmployer != null ? session.loginEmployer.employerNo : ''}">
+ 
 </head>
 
 <body>
@@ -17,7 +17,13 @@
   <div class="payments-background-gray">
     <div class="payments-background-white" id="background">
       <h1 class="payments-title">맴버십 혜택 안내 <hr></h1>
-      <h3 class="payments-subtitle">상세 등급별 혜택 <hr></h3>
+      <div class="flex-container">
+        <h3 class="payments-subtitle">상세 등급별 혜택 <hr></h3>
+        <div class="selected-business">
+            <span>선택된 점포 : <h3 id="businessName"></h3></span>
+            <button class="change-button"  style="display: none;">변경하기</button>
+        </div>
+      </div>
 
       <div class="payments-background-outside">
         <div class="payments-background-inside">

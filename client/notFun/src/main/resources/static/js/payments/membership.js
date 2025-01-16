@@ -1,31 +1,73 @@
 // 데이터를 캐싱할 전역 변수
 let globalMembershipList = [];
 
-// employerNo 가져오기
-const getEmployerNo = () => {
-  const employerNoMeta = document.querySelector('meta[name="employerNo"]');
-  return employerNoMeta?.content || null;
+// URL에서 employerNo 가져오기
+const getEmployerNoFromURL = () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get('no'); // 쿼리 스트링에서 'no' 값 가져오기
 };
 
-const employerNo = getEmployerNo();
+const employerNo = getEmployerNoFromURL();
 
-
-async function getEmployer() {
-  try {
-    // 데이터 요청 (서버와 통신)
-    const response = await fetch("/payments/getEmployerNo", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" }
-    });
-    const data = await response.json();
-
-    
-  } catch (error) {
-    console.error("오류:", error);
-  }
+// 가져온 employerNo 확인
+if (employerNo) {
+  console.log(`Employer No from URL: ${employerNo}`);
+} else {
+  console.log("No Employer No found in URL.");
 }
 
-console.log
+async function fetchEmployerData() {
+  try {
+      const response = await fetch('/payments/data'); // 서버에 GET 요청
+
+      if (!response.ok) {
+          throw new Error('Failed to fetch data');
+      }
+
+      const data = await response.json(); // JSON 데이터 파싱
+      console.log("Employer Data:", data); // 공통적으로 데이터를 콘솔에 출력
+
+      // URL에 쿼리 스트링이 있는지 확인
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.has('no')) {
+         
+          return; // 이미 리다이렉트된 상태, 추가 동작 안 함
+      }
+
+      // 조건 처리
+      if (data.length === 1) {
+        // 데이터가 1개일 경우 employerNo를 쿼리 스트링에 추가하여 리다이렉트
+        const employerNo = data[0].employerNo;
+        const businessName = data[0].businessName; // 서버에서 가져온 businessName
+    
+        console.log('아아',businessName);
+
+        // selected-business 요소의 display 속성을 보이도록 설정
+        const selectedBusinessDiv = document.querySelector('.selected-business');
+        if (selectedBusinessDiv) {
+          selectedBusinessDiv.style.removeProperty('display'); // display 스타일 제거
+      }
+        // businessName 값을 h3 태그에 추가
+        const businessNameElement = document.getElementById('businessName');
+        businessNameElement.textContent = businessName; // businessName 설정
+    
+        // 쿼리 스트링으로 리다이렉트
+        const redirectUrl = `/payments?no=${employerNo}`;
+        console.log(`Redirecting to: ${redirectUrl}`);
+        window.location.href = redirectUrl; // 리다이렉트 실행
+    } else if (data.length > 1) {
+            // 데이터가 여러 개일 경우 대기
+            console.log("Multiple results found. Waiting for further action.");
+        }
+    } catch (error) {
+        console.error('Error fetching employer data:', error);
+    }
+}
+
+// 페이지 로드 시 데이터 가져오기
+fetchEmployerData();
+
+
 
 // 데이터 캐싱 함수
 async function fetchAndCacheMembershipData(employerNo) {

@@ -11,12 +11,13 @@
 	    <result property="remainingDays" column="REMAINING_DAYS"/>
 	    <result property="membershipName" column="MEMBERSHIP_NAME"/>
 	    <result property="membershipDelFl" column="MEMBERSHIP_DEL_FL"/>
+	    <result property="businessName" column="BUSINESS_NAME"/>
 	</resultMap>
 	
 	<select id="getEmployerNo" resultMap="membershipResultMap">
 	   SELECT BUSINESS_NAME,EMPLOYER_NO
 	   FROM EMPLOYER
-	   WHERE MEMBER_NO = #{membershipNo}
+	   WHERE MEMBER_NO = #{memberNo}
 	   AND BUSINESS_DEL_FL ='N'
 	</select>
 	
