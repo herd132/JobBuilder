@@ -399,9 +399,10 @@ if (recommendSelect !== null) {
 let coordinateX;
 let coordinateY;
 let map;
-let markers = new Array();
-let infoWindows = new Array();
+let markers = [];
+let infoWindows = [];
 let isPanToTriggered = false;
+let markerCluster;
 
 document.addEventListener("DOMContentLoaded", () => {
   const mapElement = document.querySelector("#map");
@@ -482,7 +483,7 @@ function workplace(Y, X) {
     zoom: 17,
   });
 
-  map.setOptions('minZoom', 12);
+  map.setOptions('minZoom', 14);
 }
 
 // 도착지 마커
@@ -527,6 +528,27 @@ const toiletMarkers = (range) => {
       naver.maps.Event.addListener(map, "click", ClickMap(i));
       naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
     }
+
+    // // 클러스터링 초기화
+    // if (!markerCluster) {
+    //   markerCluster = new MarkerClustering({
+    //     minClusterSize: 3,
+    //     maxZoom: 18,
+    //     map: map,
+    //     markers: markers,
+    //     disableClickZoom: true,
+    //     gridSize: 120,
+    //     icons: [htmlMarker1, htmlMarker2, htmlMarker3, htmlMarker4, htmlMarker5],
+    //     indexGenerator: [10, 100, 200, 500, 1000],
+    //     stylingFunction: function(clusterMarker, count) {
+    //       const test = clusterMarker.getElement().querySelector("div");
+    //       test.innerHTML = count;
+    //     }
+    //   });
+    // } else {
+    //   // 마커가 업데이트된 경우 클러스터링 재설정
+    //   markerCluster.setMarkers(markers);
+    // }
   })
 }
 
@@ -579,6 +601,7 @@ showPromoteBusiness.addEventListener("click", () => {
   location.href = "/recruitment/showPromoteBusiness?recruitmentNo=" + path + "&businessNickname=" + businessNickname;  
 });
 
+// 길찾기 클릭시 이벤트
 document.getElementById('navigate').addEventListener('click', function () {
 
   const mapElement = document.querySelector("#map");
@@ -601,3 +624,30 @@ document.getElementById('navigate').addEventListener('click', function () {
     window.open(url, '_blank'); // 새 창에서 열기
   });
 });
+
+// 클러스터 초기화
+// var htmlMarker1 = {
+//   content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/images/cluster-marker-1.png);background-size:contain;"></div>',
+//   size: N.Size(40, 40),
+//   anchor: N.Point(20, 20)
+// },
+// htmlMarker2 = {
+//   content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/images/cluster-marker-2.png);background-size:contain;"></div>',
+//   size: N.Size(40, 40),
+//   anchor: N.Point(20, 20)
+// },
+// htmlMarker3 = {
+//   content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/images/cluster-marker-3.png);background-size:contain;"></div>',
+//   size: N.Size(40, 40),
+//   anchor: N.Point(20, 20)
+// },
+// htmlMarker4 = {
+//   content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/images/cluster-marker-4.png);background-size:contain;"></div>',
+//   size: N.Size(40, 40),
+//   anchor: N.Point(20, 20)
+// },
+// htmlMarker5 = {
+//   content: '<div style="cursor:pointer;width:40px;height:40px;line-height:42px;font-size:10px;color:white;text-align:center;font-weight:bold;background:url(/images/cluster-marker-5.png);background-size:contain;"></div>',
+//   size: N.Size(40, 40),
+//   anchor: N.Point(20, 20)
+// };
