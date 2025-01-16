@@ -13,12 +13,12 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.jobbuilder.project.common.util.Utility;
+import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.recruitment.model.dto.PaginationRecruitment;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
 import com.jobbuilder.project.recruitment.model.mapper.RecruitmentMapper;
-import com.jobbuilder.project.resume.model.dto.Resume;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -378,9 +378,31 @@ public class RecruitmentServiceImpl implements RecruitmentService{
 	 *
 	 */
 	@Override
-	public Recruitment showPromoteEmploy(int recruitmentNo) {
-		log.debug( "으응" + mapper.showPromoteEmploy(recruitmentNo));
-		return mapper.showPromoteEmploy(recruitmentNo);
+	public Recruitment showPromoteEmploy(String recruitmentNo, String businessNickname) {
+		
+		Map<String, Object> paramMap = new HashMap<>();
+		paramMap.put("recruitmentNo", recruitmentNo);
+		paramMap.put("businessNickname", businessNickname);
+		
+		log.debug( "으응" + mapper.showPromoteEmploy(paramMap));
+		return mapper.showPromoteEmploy(paramMap);
 	}
 	
+	@Override
+	public Employer getBusiness(int empNo) {
+		log.debug("empNO는" + empNo);
+		Employer business = mapper.getBusiness(empNo);
+		List<BusinessWorktype> businessWorktypeList = mapper.getBusinessWorktype(empNo);
+		String thumbnail = mapper.selectThumbNail(business.getEmployerNo());
+		
+		String businessWorktype = "";
+		for(int i=0; i<businessWorktypeList.size(); i++) {
+			if(i != 0) businessWorktype += ", ";
+			businessWorktype += businessWorktypeList.get(i).getWorktypeCategory();
+		}
+		
+		business.setThumbnail(thumbnail);
+		business.setBusinessWorktype(businessWorktype);
+		return business;
+	}
 }
