@@ -51,7 +51,7 @@
 	<!-- 사업장 정보 얻어오기 -->
 	<select id="getBusiness" resultMap="recru_rm">
 		SELECT EMPLOYER_NO, BUSINESS_REGISTRATION_NUMBER, BUSINESS_NAME, BUSINESS_ADDRESS, 
-			e.MEMBER_NO, BUSINESS_NICKNAME, BUSINESS_TEL, MEMBER_NAME
+			e.MEMBER_NO, BUSINESS_NICKNAME, BUSINESS_TEL, MEMBER_NAME, BUSINESS_CONTENT
 		FROM "EMPLOYER" e
 		JOIN "MEMBER" m ON (e.MEMBER_NO = m.MEMBER_NO)
 		WHERE e.EMPLOYER_NO = ${employerNo}
@@ -297,7 +297,7 @@
 	<insert id="addBusiness">
 		INSERT INTO "EMPLOYER"
 		VALUES(SEQ_EMPLOYER_NO.NEXTVAL, #{businessRegistrationNumber}, #{businessName}, #{businessAddress},
-			${memberNo}, #{optionalAgreeFl}, #{businessNickname}, #{businessTel}, DEFAULT)
+			${memberNo}, #{optionalAgreeFl}, #{businessNickname}, #{businessTel}, DEFAULT, #{businessContent})
 		<selectKey resultType="_int" keyProperty="employerNo" order="AFTER">
 			SELECT SEQ_EMPLOYER_NO.CURRVAL FROM DUAL
 		</selectKey>
