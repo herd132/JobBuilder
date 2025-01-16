@@ -403,6 +403,7 @@ public class RecruitmentController {
 		
 		model.addAttribute("recruitment", recruitment);
 		model.addAttribute("employer", employer);
+		log.debug("이미지리스트 들어왔나확인" + employer.getBusinessImgList());
 		return "recruitment/showPromoteBusiness";
 	}
 	
