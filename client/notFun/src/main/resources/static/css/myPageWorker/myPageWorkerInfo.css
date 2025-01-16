@@ -51,10 +51,10 @@
 
 .info-container-background {
   background-color: #f0bb78;
-  width: 1000px;
+  width: 1200px;
   height: 450px;
   border-radius: 20px;
-  margin-bottom: 500px;
+  margin-bottom: 100px;
   display: flex; /* Flexbox 사용 */
   justify-content: space-between; /* 왼쪽과 오른쪽으로 나누기 */
 }
@@ -64,8 +64,7 @@
   display: flex; /* Flexbox로 컨테이너 정렬 */
   flex-direction: row; /* 가로 정렬 */
   align-items: flex-start; /* 상단 정렬 */
-
- width: 950px;
+ width: 1162px;
  height: 410px;
  margin-left: 18px;
  margin-top: 20px;
@@ -77,10 +76,10 @@
 }
 
 .form-field > *{
-font-size: 25px;
+font-size: 26px;
 margin-left: 20px;
 margin-bottom: 20px;
-line-height: 2.3;
+line-height: 2.6;
 }
 
 .workerAddress2{

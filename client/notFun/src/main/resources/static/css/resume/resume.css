@@ -12,11 +12,12 @@
 
 /*--------------- 흰색배경영역(안쪽) ---------------*/
 .resume-background-white {
-  width: 45%;
+  width: 80%;
   padding: 2rem;
   background-color: white;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  text-align: left;
+  text-align: center;
+  
 }
 
 /*--------------- 본문 배경영역(in, outside) ---------------*/

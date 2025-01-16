@@ -79,61 +79,61 @@ public class PaymentController {
         return response;
     }
     
-    // 결제 완료후
-    @PostMapping("/complete")
-    public ResponseEntity<Map<String, Object>> completePayment(@RequestBody Map<String, Object> paymentData) {
-        try {
-        	 log.debug("Received paymentData: {}", paymentData);
-            // 입력값 매핑
-            String impUid = (String) paymentData.get("imp_uid"); // 결제번호
-            String merchantUid = (String) paymentData.get("merchantUid"); // 주문번호
-            int amount = (int) paymentData.get("amount"); // 결제금액 
-            List<Integer> validMembershipNumbers = (List<Integer>) paymentData.get("validMembershipNumbers"); // 선택한 상품의 맴버십번호 (기존 상품 구분용)
-            int emptyMembershipCount = (int) paymentData.get("emptyMembershipCount"); // 빈 슬롯 카운트 (신규를 의미)
-            List<Map<String, Object>> memberships = (List<Map<String, Object>>) paymentData.get("memberships"); // 유저가 선택한 상품 배열
-            int employerNo = (int) paymentData.get("employerNo"); // 사업주 회원번호
-            String paymentProduct = (String) paymentData.get("paymentProduct"); // 결제한 상품명
-
-            // DTO 변환
-            List<Membership> membershipList = memberships.stream() // DTO로 변환
-            	    .map(detail -> Membership.builder()
-            	        .membershipType((int) detail.get("membershipType"))
-            	        .membershipDateValue((int) detail.get("membershipDateValue"))
-            	        .durationUnit((String) detail.get("durationUnit"))
-            	        .membershipAmount((int) detail.get("membershipAmount")) 
-            	        .membershipProduct((String) detail.get("membershipProduct"))
-            	        .employerNo(employerNo)
-            	        .build())
-            	    .collect(Collectors.toList());
-
-
-            // Payment 객체 생성
-            Payment payment = Payment.builder()
-                    .impUid(impUid)
-                    .merchantUid(merchantUid)
-                    .paymentAmount(amount)
-                    .paymentStatus("승인")
-                    .employerNo(employerNo)
-                    .paymentProduct(paymentProduct)
-                    .build();
-
-            // 서비스 호출
-            service.savePayment(payment, validMembershipNumbers, emptyMembershipCount, membershipList); // 빈 슬롯을 카운트로 대체
-
-            // 성공 응답
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", true);
-            response.put("message", "결제가 성공적으로 완료되었습니다.");
-            return ResponseEntity.ok(response);
-        } catch (Exception e) {
-            // 오류 처리
-            log.error("Error processing payment: {}", e.getMessage(), e);
-            Map<String, Object> response = new HashMap<>();
-            response.put("success", false);
-            response.put("message", "결제 처리 중 오류가 발생했습니다.");
-            return ResponseEntity.status(500).body(response);
-        }
-    }
+//    // 결제 완료후
+//    @PostMapping("/complete")
+//    public ResponseEntity<Map<String, Object>> completePayment(@RequestBody Map<String, Object> paymentData) {
+//        try {
+//        	 log.debug("Received paymentData: {}", paymentData);
+//            // 입력값 매핑
+//            String impUid = (String) paymentData.get("imp_uid"); // 결제번호
+//            String merchantUid = (String) paymentData.get("merchantUid"); // 주문번호
+//            int amount = (int) paymentData.get("amount"); // 결제금액 
+//            List<Integer> validMembershipNumbers = (List<Integer>) paymentData.get("validMembershipNumbers"); // 선택한 상품의 맴버십번호 (기존 상품 구분용)
+//            int emptyMembershipCount = (int) paymentData.get("emptyMembershipCount"); // 빈 슬롯 카운트 (신규를 의미)
+//            List<Map<String, Object>> memberships = (List<Map<String, Object>>) paymentData.get("memberships"); // 유저가 선택한 상품 배열
+//            int employerNo = (int) paymentData.get("employerNo"); // 사업주 회원번호
+//            String paymentProduct = (String) paymentData.get("paymentProduct"); // 결제한 상품명
+//
+//            // DTO 변환
+//            List<Membership> membershipList = memberships.stream() // DTO로 변환
+//            	    .map(detail -> Membership.builder()
+//            	        .membershipType((int) detail.get("membershipType"))
+//            	        .membershipDateValue((int) detail.get("membershipDateValue"))
+//            	        .durationUnit((String) detail.get("durationUnit"))
+//            	        .membershipAmount((int) detail.get("membershipAmount")) 
+//            	        .membershipProduct((String) detail.get("membershipProduct"))
+//            	        .employerNo(employerNo)
+//            	        .build())
+//            	    .collect(Collectors.toList());
+//
+//
+//            // Payment 객체 생성
+//            Payment payment = Payment.builder()
+//                    .impUid(impUid)
+//                    .merchantUid(merchantUid)
+//                    .paymentAmount(amount)
+//                    .paymentStatus("승인")
+//                    .employerNo(employerNo)
+//                    .paymentProduct(paymentProduct)
+//                    .build();
+//
+//            // 서비스 호출
+//            service.savePayment(payment, validMembershipNumbers, emptyMembershipCount, membershipList); // 빈 슬롯을 카운트로 대체
+//
+//            // 성공 응답
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("success", true);
+//            response.put("message", "결제가 성공적으로 완료되었습니다.");
+//            return ResponseEntity.ok(response);
+//        } catch (Exception e) {
+//            // 오류 처리
+//            log.error("Error processing payment: {}", e.getMessage(), e);
+//            Map<String, Object> response = new HashMap<>();
+//            response.put("success", false);
+//            response.put("message", "결제 처리 중 오류가 발생했습니다.");
+//            return ResponseEntity.status(500).body(response);
+//        }
+//    }
 
 
 

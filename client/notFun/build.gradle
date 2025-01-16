@@ -51,6 +51,10 @@ dependencies {
     
 }
 
+dependencies {
+    implementation 'com.oracle.database.jdbc:ojdbc8:19.8.0.0'
+}
+
 tasks.named('test') {
 	useJUnitPlatform()
 }
