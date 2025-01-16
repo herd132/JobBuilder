@@ -40,7 +40,14 @@ public interface ResumeListMapper {
 
 	// 고용주 유효성 검사
 	Map<String, Object> getEmployercheck(Map<String, Object> params);
-	
+
+	/** 고용주 유효성 검사2(특정 공고에 제출된 이력서로 보려는 경우)
+	 * @param params(resumeNo, recruitmentNo, memberNo)
+	 * @return
+	 */
+	Map<String, Object> getRecruitmentResumeCheck(Map<String, Object> params);
+
+
 	// 업데이트 자기소개 예제
 	int updateResumeContent(Map<String, Object> requestBody);
 
@@ -51,6 +58,7 @@ public interface ResumeListMapper {
 	int getRecommendationsCount(int resumeNo);
 
 	Map<String, Object> selectResumeList(int resumeNo, RowBounds rowBounds);
+
 
 	
 

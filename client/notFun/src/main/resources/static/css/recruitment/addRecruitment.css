@@ -140,8 +140,8 @@
 }
 
 .option-container ul {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
   gap: 10px;
   padding: 0;
   list-style: none;
@@ -149,25 +149,96 @@
 }
 
 .option-container li {
-  background-color: white;
-  padding: 8px;
-  border-radius: 5px;
-  font-size: 14px;
-  border: 1px solid #e0e0e0;
-  text-align: center;
+  display: inline-block;
+  padding: 8px 16px;
+  margin: 5px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 20px;
+  transition: all 0.2s ease-in-out;
   cursor: pointer;
 }
 
 .option-container li:hover {
-  background-color: #f0f0f0;
+  background-color: #e9ecef;
+  cursor: pointer;
 }
 
-/* 선택된 영역 스타일링 */
+/* 기존 selected-preferred-area 스타일을 변경 */
 .selected-preferred-area,
 .selected-support-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
   min-height: 50px;
-  margin-bottom: 10px;
-  padding: 10px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+
+.selected-preferred-area li,
+.selected-support-area li {
+  display: flex;
+  align-items: center;
+  background-color: #fff8f0;
+  border: 1px solid #ffd8a8;
+  padding: 6px 12px;
+  border-radius: 15px;
+}
+
+.selected-preferred-area .select-preferred,
+.selected-support-area .select-support {
+  border: none;
+  background: transparent;
+  margin-right: 5px;
+  cursor: default;
+  /* input 태그의 테두리와 배경을 완전히 없애기 위한 추가 속성들 */
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  padding: 0;
+  width: auto;
+}
+
+.selected-preferred-area .preferred-delete,
+.selected-support-area .support-delete {
+  color: #ff6b6b;
+  margin-left: 5px;
+  font-weight: bold;
+}
+
+/* 기존 subSupportUl 스타일을 subWorkType 스타일로 변경 */
+#subSupportUl,
+#subWorkType {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 15px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-top: 10px;
+}
+
+#subWorkType li,
+#subSupportUl li {
+  padding: 8px 16px;
+  background-color: #f1f3f5;
+  border-radius: 15px;
+  transition: all 0.2s ease-in-out;
+}
+
+#subWorkType li:hover,
+#subSupportUl li:hover {
+  background-color: #e9ecef;
+  transform: translateY(-2px);
+}
+
+/* 기존 selected 스타일을 동일하게 유지 */
+.selected {
+  background-color: #fff4e6 !important;
+  border-color: #ffd8a8 !important;
 }
 
 /* 버튼 영역 스타일링 */
@@ -202,3 +273,74 @@
 
 /* ***** 선호 조건 영역 ***** */
 /* 기존 CSS는 유지하고 선호조건 관련 스타일만 수정 */
+/* selected-preferred-area와 selected-support-area의 div 스타일 수정 */
+.selected-preferred-area div,
+.selected-support-area div {
+  display: inline-flex;  /* inline-flex로 변경 */
+  align-items: center;   /* 세로 중앙 정렬 */
+  background-color: #fff8f0;
+  border: 1px solid #ffd8a8;
+  padding: 6px 12px;
+  border-radius: 15px;
+  margin: 5px;
+}
+
+/* x 버튼 스타일 조정 */
+.preferred-delete,
+.support-delete {
+  color: #ff6b6b;
+  margin-left: 5px;
+  cursor: pointer;
+  display: inline-block;
+}
+
+/* input 스타일 조정 */
+.select-preferred,
+.select-support {
+  border: none;
+  background: transparent;
+  margin-right: 5px;
+  padding: 0;
+  display: inline-block;
+  width: auto;
+}
+
+/* 컨테이너 자체의 스타일 수정 */
+.selected-preferred-area,
+.selected-support-area {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 15px;
+  min-height: 50px;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  align-items: center;  /* 세로 중앙 정렬 추가 */
+}
+
+.selected-preferred-area .select-preferred,
+.selected-support-area .select-support {
+  border: none !important;
+  background: transparent !important;
+  margin-right: 5px;
+  cursor: default;
+  outline: none !important;
+  -webkit-appearance: none !important;
+  -moz-appearance: none !important;
+  appearance: none !important;
+  padding: 0;
+  width: auto;
+  box-shadow: none !important;
+  /* 추가: input 포커스 시에도 테두리가 나타나지 않도록 */
+  text-decoration: none !important;
+  box-sizing: border-box !important;
+}
+
+/* 포커스 상태에서도 테두리가 나타나지 않도록 추가 */
+.selected-preferred-area .select-preferred:focus,
+.selected-support-area .select-support:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
