@@ -275,7 +275,7 @@ public class MyPageEmployerController {
 	}
 	
 	
-	/** 내가 쓴 글 페이지 이동(get) 아직 작성 안함
+	/** 내가 쓴 글 페이지 이동(get)
 	 * @return myPageEmployer/myWrite.html
 	 * @author JWJ
 	 */
