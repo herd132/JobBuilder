@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.jobbuilder.project.main.model.mapper.MainMapper">
 	
+	<!-- 누적 결제금액이 가장 큰 10순위 사업장 조회 -->
 	<select id="selectTopBrand">
 	<![CDATA[ 
 		WITH PaymentSum AS (
@@ -48,4 +49,55 @@
 		]]>
 	</select>
 
+	<!-- SYSDATE를 기준으로 종료일이 지나지 않았고, 
+		삭제되지 않은 
+		플래티넘 멤버십을 가진 사업장의 
+		가장최근 공고만 조회 -->
+	<select id="selectPlatinumList">
+		WITH LatestRecruitment AS (
+		    SELECT 
+		        r.RECRUITMENT_NO,
+		        r.RECRUITMENT_TITLE,
+		        r.EMPLOYER_NO,
+		    	r.WORKCOND_ADDRESS_TYPE_NO,
+		    	r.RECRUITMENT_DEL_FL,
+		    	r.SALARY_MOUNT,
+		    	r.SALARY_NO,
+		        ROW_NUMBER() OVER (PARTITION BY r.EMPLOYER_NO ORDER BY r.WRITE_DATE DESC) AS RN
+		    FROM RECRUITMENT r
+		)
+		SELECT 
+		    E.EMPLOYER_NO,
+		    E.BUSINESS_NAME, 
+		    E.BUSINESS_NICKNAME,
+		    CONCAT(BI.BUSINESS_IMG_PATH, BI.BUSINESS_IMG_RENAME) AS BUSINESS_IMG_URL,
+		    LR.RECRUITMENT_NO,
+		    LR.RECRUITMENT_TITLE,
+		   	WAT.WORKCOND_ADDRESS_TYPE_INFO,
+		   	S.SALARY_NAME,
+		   	LR.SALARY_MOUNT
+		FROM MEMBERSHIP M
+		JOIN PAYMENT_MEMBERSHIP PM ON M.MEMBERSHIP_NO = PM.MEMBERSHIP_NO
+		JOIN EMPLOYER E ON E.EMPLOYER_NO = M.EMPLOYER_NO
+		JOIN LatestRecruitment LR ON LR.EMPLOYER_NO = E.EMPLOYER_NO AND LR.RN = 1 -- 가장 최근 공고만 조인/공고없으면 조인 X
+		LEFT JOIN BUSINESS_IMG BI ON E.EMPLOYER_NO = BI.EMPLOYER_NO AND BI.BUSINESS_IMG_ORDER = 0 -- 이미지가 없어도 조인
+		LEFT JOIN WORKCOND_ADDRESS_TYPE WAT ON WAT.WORKCOND_ADDRESS_TYPE_NO = LR.WORKCOND_ADDRESS_TYPE_NO
+		JOIN SALARY s ON s.SALARY_NO = LR.SALARY_NO
+		WHERE M.MEMBERSHIP_END_DATE >= SYSDATE
+		  AND M.MEMBERSHIP_TYPE = 3
+		  AND LR.RECRUITMENT_DEL_FL = 'N'
+		GROUP BY 
+		    E.EMPLOYER_NO, 
+		    E.BUSINESS_NAME, 
+		    E.BUSINESS_NICKNAME, 
+		    BI.BUSINESS_IMG_PATH, 
+		    BI.BUSINESS_IMG_RENAME,
+		    LR.RECRUITMENT_NO,
+		    LR.RECRUITMENT_TITLE,
+		    LR.WORKCOND_ADDRESS_TYPE_NO,
+		    WAT.WORKCOND_ADDRESS_TYPE_INFO,
+		    S.SALARY_NAME,
+		   	LR.SALARY_MOUNT
+		ORDER BY MAX(M.MEMBERSHIP_END_DATE) DESC
+	</select>
 </mapper>

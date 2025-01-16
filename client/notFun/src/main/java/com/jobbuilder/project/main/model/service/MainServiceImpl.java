@@ -24,9 +24,9 @@ public class MainServiceImpl implements MainService{
 		return mapper.selectTopBrand();
 	}
 	
+	// 플래티넘 공고 조회
 	@Override
 	public List<Brand> selectPlatinumList() {
-		// TODO Auto-generated method stub
-		return null;
+		return mapper.selectPlatinumList();
 	}
 }
