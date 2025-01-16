@@ -241,7 +241,13 @@ public interface RecruitmentMapper {
 	
 
 	// 공고에 맞는 employNo 조회하기
-	Recruitment showPromoteEmploy(int recruitmentNo);
+	Recruitment showPromoteEmploy(Map<String, Object> paramMap);
+	// 사업장 조회
+	Employer getBusiness(int empNo);
+	// 사업장 직종 타입 조회
+	List<BusinessWorktype> getBusinessWorktype(int empNo);
+	// 썸네일 조회하기 ( 로고 )
+	String selectThumbNail(int employerNo);
 
 
 
