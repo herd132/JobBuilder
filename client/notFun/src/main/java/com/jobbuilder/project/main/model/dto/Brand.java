@@ -32,6 +32,10 @@ public class Brand {
 	private String salaryName;
 	private int salaryMount;
 	private String formatSalaryMount; // 원화단위로 포맷팅
+	
+	// 가장최근공고용
+	private String timeName;
+	
 
 
 }

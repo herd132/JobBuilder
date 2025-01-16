@@ -17,7 +17,6 @@
 	<!-- 로고 및 검색바 로그인 -->
 	<th:block th:replace="~{common/main-header}"></th:block>
 
-	<!-- 주의사항 디자인을 위해 th문 안 넣었습니다 th문은 알아서!!!! -->
 	<main>
 
 		<!-- 지역 및 급구 알바 알림판 -->
@@ -44,12 +43,10 @@
 			</button>
 			<div class="page-buttons">
 				<div class="carousel-container" id="carousel">
-					<div class="carousel-slide" th:each="chunk : ${chunkedTopBrandList}">
-						<div class="carousel-item" th:each="brand : ${chunk}">
-							<button class="top-brand-logo-btn" th:onclick="|fowardRecruitment('${brand.employerNo}')|">
-								<img th:src="${brand.businessImgUrl}" class="top-brand-logo">
-							</button>
-						</div>
+					<div class="carousel-slide" th:each="brand : ${topBrandList}">
+						<button class="top-brand-logo-btn" th:onclick="|fowardRecruitment('${brand.employerNo}')|">
+							<img th:src="${brand.businessImgUrl}" class="top-brand-logo">
+						</button>
 					</div>
 				</div>
 			</div>
@@ -60,7 +57,21 @@
 
 		<!-- 플래티넘멤버십 공고 -->
 		<section class="vip-listings">
-			<p class="job-card-list-title">플래티넘 - VIP 알바</p>
+			<section class="title-section">
+				<p class="job-card-list-title">
+					<span>플</span>
+					<span>래</span>
+					<span>티</span>
+					<span>넘</span>
+					<span>&nbsp;</span>
+					<span>V</span>
+					<span>I</span>
+					<span>P</span>
+					<span>알</span>
+					<span>바</span>
+				</p>
+				<a href="/payments">신청하기 <i class="fa-solid fa-chevron-right"></i></a>
+			</section>
 			<div class="job-flex">
 
 				<div th:each="brand : ${platinumBrandList}" class="job-card"
@@ -86,56 +97,66 @@
 
 		<!-- 골드멤버십 공고 최대 12개 -->
 		<section class="regular-listings">
-			<p class="job-card-list-title">스페셜 알바</p>
+			<section class="title-section">
+				<p class="job-card-list-title">
+					<span>F</span>
+					<span>o</span>
+					<span>c</span>
+					<span>u</span>
+					<span>s</span>
+					<span>&nbsp;</span>
+					<span>알</span>
+					<span>바</span>
+				</p>
+				<section>
+					<a href="/payments">신청하기 <i class="fa-solid fa-chevron-right"></i></a>					
+					&nbsp;
+					<a href="/employer/employerSignUp">입점안내 <i class="fa-solid fa-chevron-right"></i></a>
+				</section>
+			</section>
+
 			<div class="job-flex">
-				<div class="job-card">
+
+				<div th:each="brand : ${goldBrandList}" class="job-card"
+					th:onclick="|fowardRecruitment('${brand.employerNo}')|">
 					<div class="company-logo">
-						<img src="/images/brand-logo1.png" alt="회사 로고" class="logo-image">
+						<img th:src="${brand.businessImgUrl != null ? brand.businessImgUrl : '/images/sample-logo1.png'}"
+							th:alt="${brand.businessName}+${brand.businessNickname}+로고" class="logo-image">
 					</div>
 					<div class="job-info">
-						<h3>프리미엄 공고</h3>
-						<p>지역: 대구</p>
+						<h3 th:text="${brand.recruitmentTitle}" class="recruitment-title-h3">공고제목</h3>
+						<section class="region-mount-section">
+							<span
+								th:text="${brand.workcondAddressTypeInfo != null ? brand.workcondAddressTypeInfo : '전국'}">지역</span>
+							·
+							<span th:text="${brand.salaryName}">타입</span>
+							<span th:text="${brand.salaryMount != 0 ? brand.formatSalaryMount : ''}">금액</span>
+						</section>
 					</div>
 				</div>
+
 			</div>
 		</section>
 
-		<!-- 클루드가 짜준 타입리프문 혹시라도 사용할일을 대비해 여기 둡니다 또한 클래스명 타임리프문은 알아서 바꾸기! -->
-		<!-- <section class="job-navigation">
-            <button class="nav-prev">◀</button>
-            <div class="page-buttons">
-                <button th:each="page : ${#numbers.sequence(1, 10)}" 
-                        class="page-btn" 
-                        th:classappend="${currentPage == page ? 'active' : ''}"
-                        th:text="'공고'"></button>
-            </div>
-            <button class="nav-next">▶</button>
-        </section>
-
-        <section class="vip-listings">
-            <div class="job-grid">
-                <div th:each="job : ${vipJobs}" class="job-card" th:classappend="${job.sample ? 'sample' : ''}">
-                    <div th:if="${job.sample}" class="sample-stamp">SAMPLE</div>
-                    <h3 th:text="${job.title}">VIP 공고</h3>
-                    <p th:if="${job.location}" th:text="|지역: ${job.location}|">지역: 서울, 경기</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="regular-listings">
-            <div class="job-grid">
-                <div th:each="job : ${regularJobs}" class="job-card">
-                    <h3 th:text="${job.title}">브랜드 알바</h3>
-                </div>
-            </div>
-        </section> -->
-
-		<!-- 공고게시글 리스트 의도는 10개정도? 게시글 띄우기 -->
+		<!-- 최근 공고게시글 리스트 10개 -->
 		<section class="recruitment-list">
-			<h2>채용 공고</h2>
+			<p class="job-card-list-title">
+				<span>S</span>
+				<span>p</span>
+				<span>e</span>
+				<span>c</span>
+				<span>i</span>
+				<span>a</span>
+				<span>l</span>
+				<span>&nbsp;</span>
+				<span>알</span>
+				<span>바</span>
+			</p>
+
 			<table>
 				<thead>
 					<tr>
+						<th>기업명</th>
 						<th>공고제목</th>
 						<th>근무시간</th>
 						<th>근무지역</th>
@@ -143,22 +164,25 @@
 					</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>카페 바리스타</td>
-						<td>09:00 - 18:00</td>
-						<td>서울 강남구</td>
-						<td>10,000원/시간</td>
+					<!-- Thymeleaf 반복문으로 동적 데이터 출력 -->
+					<tr th:each="recruitment : ${recentRecruitmentList}">
+						<td th:text="${recruitment.businessName}+' '+${recruitment.businessNickname}">기업명</td>
+						<td class="single-line">
+							<a th:href="@{/recruitment/detail/{id}(id=${recruitment.recruitmentNo})}"
+								th:text="${recruitment.recruitmentTitle}">상세보기</a>
+						</td>
+						<td th:text="${recruitment.timeName}">근무시간</td>
+						<td
+							th:text="${recruitment.workcondAddressTypeInfo != null ? recruitment.workcondAddressTypeInfo : '전체'}">
+							근무지역</td>
+						<td
+							th:text="${ (recruitment.salaryMount != 0 ? recruitment.formatSalaryMount + ' / ' : '') + recruitment.salaryName}">
+							급여</td>
 					</tr>
-					<tr>
-						<td>편의점 아르바이트</td>
-						<td>22:00 - 06:00</td>
-						<td>부산 해운대구</td>
-						<td>12,000원/시간</td>
-					</tr>
-					<!-- 추가 공고는 여기에 -->
 				</tbody>
 			</table>
 		</section>
+
 
 		<!-- 공지사항 및 게시글은 대충 해둔겁니다  -->
 		<!-- 공지사항 및 게시글 -->

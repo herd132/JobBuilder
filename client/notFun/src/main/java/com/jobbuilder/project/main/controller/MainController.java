@@ -32,28 +32,55 @@ public class MainController {
 		List<Brand> topBrandList = mainService.selectTopBrand();
 		
 		// 5개씩 묶은 리스트 생성
-        List<List<Brand>> chunkedList = new ArrayList<>();
-        for (int i = 0; i < topBrandList.size(); i += 5) {
-            int end = Math.min(i + 5, topBrandList.size());
-            chunkedList.add(topBrandList.subList(i, end));
-        }
+//        List<List<Brand>> chunkedList = new ArrayList<>();
+//        for (int i = 0; i < topBrandList.size(); i += 5) {
+//            int end = Math.min(i + 5, topBrandList.size());
+//            chunkedList.add(topBrandList.subList(i, end));
+//        }
 
         // chunkedList를 모델에 추가
-        model.addAttribute("chunkedTopBrandList", chunkedList);
+        model.addAttribute("topBrandList", topBrandList);
+        
+        //-------------------------
         
         // 플래티넘 공고 조회
-        List<Brand> platinumBrandList = mainService.selectPlatinumList();
-        model.addAttribute("platinumBrandList", platinumBrandList);
+        List<Brand> platinumBrandList = mainService.selectMembershipList(3); // 플래티넘 3
         
+        // 한화단위로 변경
         platinumBrandList.forEach(brand -> {
             NumberFormat formatter = NumberFormat.getInstance(Locale.KOREA);
             brand.setFormatSalaryMount(formatter.format(brand.getSalaryMount()) + "원");
         });
         
+        model.addAttribute("platinumBrandList", platinumBrandList);
+        
+        //-------------------------
+        
         // 골드 공고 조회
+        List<Brand> goldBrandList = mainService.selectMembershipList(2);  // 골드 2
         
+        // 한화단위로 변경
+        goldBrandList.forEach(brand -> {
+            NumberFormat formatter = NumberFormat.getInstance(Locale.KOREA);
+            brand.setFormatSalaryMount(formatter.format(brand.getSalaryMount()) + "원");
+        });
         
-        //log.debug("platinumBrandList {}", platinumBrandList);
+        model.addAttribute("goldBrandList", goldBrandList);
+        
+        //-------------------------
+        
+        // 가장 최근 공고 10개 조회
+        List<Brand> recentRecruitmentList = mainService.selectRecentRecruitments();
+        
+        // 한화단위로 변경
+        recentRecruitmentList.forEach(brand -> {
+            NumberFormat formatter = NumberFormat.getInstance(Locale.KOREA);
+            brand.setFormatSalaryMount(formatter.format(brand.getSalaryMount()) + "원");
+        });
+        
+        model.addAttribute("recentRecruitmentList", recentRecruitmentList);
+        
+        //log.debug("recentRecruitmentList {}", recentRecruitmentList);
 		return "main";
 	}
 	

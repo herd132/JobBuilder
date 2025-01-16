@@ -1,16 +1,23 @@
 /* Main Content */
 @font-face {
-    font-family: 'Pretendard-Regular';
-    src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
+	font-family: 'Pretendard-Regular';
+	src: url('https://fastly.jsdelivr.net/gh/Project-Noonnu/noonfonts_2107@1.1/Pretendard-Regular.woff') format('woff');
+	font-weight: 400;
+	font-style: normal;
 }
 
 * {
 	font-family: 'Pretendard-Regular';
 }
 
-p, h1, h2, h3, h4, h5, h6, span {
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+span {
 	color: #171717;
 }
 
@@ -21,9 +28,13 @@ main {
 	max-width: 1200px;
 	margin: 2rem auto;
 	padding: 2rem;
-	background-color: var(--background-orange);
-	border-radius: 40px;
+	
 }
+
+.vip-listings {
+	margin-top: 50px;
+}
+
 
 .job-filter {
 	background-color: white;
@@ -72,95 +83,79 @@ main {
 	margin-left: 1.5rem;
 }
 
-/* Navigation */
+/* 누적금액큰거 */
+
 .job-navigation {
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	margin: 2rem 0;
+  position: relative;
+  width: 100%;
+  margin: 2rem auto;
+  overflow: hidden;
 }
 
 .page-buttons {
-	display: flex;
-	gap: 0.5rem;
-}
-
-.job-navigation {
-	position: relative;
-	width: 80%;
-	margin: 2rem auto;
-	overflow: hidden;
-}
-
-.page-buttons {
-	overflow: hidden;
-	margin: 0 50px;
+  overflow: hidden;
+  margin: 0 50px;
 }
 
 .carousel-container {
-	display: flex;
-	transition: transform 0.5s ease;
+  display: flex;
+  transition: transform 0.3s ease;
 }
 
 .carousel-slide {
-	display: flex;
-	flex: 0 0 100%;
+  flex: 0 0 10%; /* 한 번에 5개씩 보이도록 20% 설정 */
+  padding: 0 10px;
 }
 
-.carousel-item {
-	flex: 1;
-	padding: 0 10px;
+.top-brand-logo-btn {
+  width: 100%;
+  height: 72px;
+  display: flex;
+  background-color: #fff;
+  margin-right: 22.8px;
+  border-radius: 38px;
+  border: 1px solid #e8e8e8;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.top-brand-logo {
+  width: 90%;
+  height: auto;
+  object-fit: contain;
 }
 
 .nav-prev,
 .nav-next {
-	position: absolute;
-	top: 50%;
-	transform: translateY(-50%);
-	background: none;
-	border: none;
-	font-size: 24px;
-	cursor: pointer;
-	z-index: 2;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  z-index: 2;
 }
 
 .nav-prev {
-	left: 0;
-	color: var(--border-bold);
+  left: 0;
+  color: var(--border-bold);
 }
 
 .nav-next {
-	right: 0;
-	color: var(--border-bold);
-}
-
-.top-brand-logo-btn {
-	width: 100%;
-	height: 60px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	background-color: #fff;
-	border: 1px solid #e8e8e8;
-	border-radius: 38px;
-	overflow: hidden;
-	cursor: pointer;
-}
-
-.top-brand-logo {
-	max-width: 85%;
-	max-height: 100%;
-	object-fit: contain;
+  right: 0;
+  color: var(--border-bold);
 }
 
 /* 플래티넘 공고 */
 .recruitment-title-h3 {
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: normal;
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: normal;
 	min-height: 50px;
 	margin-bottom: 10px;
 	line-height: 1.5;
@@ -215,12 +210,100 @@ main {
 	flex: 1;
 }
 
+.title-section {
+	display: flex;
+	justify-content: space-between;
+}
+
+.title-section a {
+	text-decoration: none;
+	color: #171717;	
+	cursor: pointer;
+}
+
 .job-card-list-title {
 	font-size: 1.2rem;
-	letter-spacing: -.005em;
+	letter-spacing: -.1em;
 	line-height: 26px;
 	font-weight: 500;
 	margin-bottom: 20px;
+}
+
+.job-card-list-title span {
+	display: inline-block;
+	text-shadow: 1px 2px 1px #d2d2d2;
+	animation: dropIn 3s infinite;
+	/* 무한 반복을 위해 infinite 추가 */
+}
+
+/* 각 글자별로 애니메이션 시작 시간을 다르게 설정 */
+.job-card-list-title span:nth-child(1) {
+	animation-delay: 0.1s;
+}
+
+.job-card-list-title span:nth-child(2) {
+	animation-delay: 0.2s;
+}
+
+.job-card-list-title span:nth-child(3) {
+	animation-delay: 0.3s;
+}
+
+.job-card-list-title span:nth-child(4) {
+	animation-delay: 0.4s;
+}
+
+.job-card-list-title span:nth-child(5) {
+	animation-delay: 0.5s;
+}
+
+.job-card-list-title span:nth-child(6) {
+	animation-delay: 0.6s;
+}
+
+.job-card-list-title span:nth-child(7) {
+	animation-delay: 0.7s;
+}
+
+.job-card-list-title span:nth-child(8) {
+	animation-delay: 0.8s;
+}
+
+.job-card-list-title span:nth-child(9) {
+	animation-delay: 0.9s;
+}
+
+.job-card-list-title span:nth-child(10) {
+	animation-delay: 1s;
+}
+
+@keyframes dropIn {
+	0% {
+		transform: translateY(-15px);
+		opacity: 0;
+	}
+
+	30% {
+		transform: translateY(5px);
+		opacity: 0.7;
+	}
+
+	40% {
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	90% {
+		/* 글자가 잠시 머무는 구간 추가 */
+		transform: translateY(0);
+		opacity: 1;
+	}
+
+	100% {
+		/* 다시 위로 올라가면서 사라짐 */
+		transform: translateY(-15px);
+		opacity: 0;
+	}
 }
 
 .region-mount-section {
@@ -228,7 +311,7 @@ main {
 }
 
 .region-mount-section span {
-	color: #9e9e9e;	
+	color: #9e9e9e;
 }
 
 .region-mount-section span:nth-child(2) {
@@ -239,6 +322,24 @@ main {
 	font-weight: bold;
 }
 
+.single-line {
+	white-space: nowrap;
+	max-width: 400px;
+	display: inline-block;
+}
+
+.single-line a {
+	text-decoration: none;
+	color: #171717;
+	padding: 10px 20px;
+	display: inline-block;
+	width: 100%;
+	
+
+	line-height: 35px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
 
 /* 브랜드 알바 리스트 섹션 스타일 */
 .regular-listings {
@@ -259,33 +360,30 @@ main {
 }
 
 .recruitment-list {
-	min-width: 1140px;
-	margin: 2rem 0;
-	background-color: white;
-	padding: 1.5rem 3rem;
-	border-radius: 12px;
-	box-shadow: 0 2px 8px rgba(255, 152, 56, 0.1);
-}
-
-.recruitment-list h2 {
-	color: var(--primary-orange);
-	padding: 0.75rem 2rem;
+	margin: 100px 0;
 }
 
 .recruitment-list table {
+	min-width: 1140px;
+	padding: 1.5rem 3rem;
+	background-color: white;
 	width: 100%;
 	border-collapse: collapse;
-	border-radius: 20px;
+	box-shadow: 0 2px 8px rgba(255, 152, 56, 0.1);
 }
 
 .recruitment-list tr {
-	border-bottom: 2px solid var(--primary-orange);
+	border-bottom: 1px solid #d2d2d2;
 }
 
-.recruitment-list th,
-.recruitment-list td {
+.recruitment-list th {
 	padding: 0.75rem;
 	text-align: center;
+}
+
+.recruitment-list td {
+	text-align: center;
+	padding: 0 0.75rem;
 }
 
 .recruitment-list th {
@@ -293,27 +391,31 @@ main {
 	color: white;
 }
 
+
 .recruitment-list td:nth-child(1) {
-	transition: color 0.1s;
-	width: 40%;
-	text-align: left;
-	padding: 0.75rem 2rem;
+	width: 20%;
 }
 
-.recruitment-list td:nth-child(1):hover {
+
+.recruitment-list td:nth-child(2) {
+	width: 100%;
+	text-align: left;
+}
+
+.recruitment-list td:nth-child(2):hover {
 	color: var(--primary-orange);
 	cursor: pointer;
 }
 
-.recruitment-list td:nth-child(2) {
+.recruitment-list td:nth-child(3) {
 	width: 30%;
 }
 
-.recruitment-list td:nth-child(3) {
+.recruitment-list td:nth-child(4) {
 	width: 10%;
 }
 
-.recruitment-list td:nth-child(4) {
+.recruitment-list td:nth-child(5) {
 	width: 20%;
 }
 

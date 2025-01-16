@@ -24,9 +24,15 @@ public class MainServiceImpl implements MainService{
 		return mapper.selectTopBrand();
 	}
 	
-	// 플래티넘 공고 조회
+	// 타입별 멤버십 공고 조회
 	@Override
-	public List<Brand> selectPlatinumList() {
-		return mapper.selectPlatinumList();
+	public List<Brand> selectMembershipList(int type) {
+		return mapper.selectMembershipList(type);
+	}
+	
+	// 가장 최근 공고 10개 조회
+	@Override
+	public List<Brand> selectRecentRecruitments() {
+		return mapper.selectRecentRecruitments();
 	}
 }
