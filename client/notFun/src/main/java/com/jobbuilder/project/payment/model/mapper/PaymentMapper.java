@@ -16,7 +16,7 @@ public interface PaymentMapper {
 	
 
 	// 맴버십 조회
-	List<Membership> selectMembershipDetails(int employerNo);
+	List<Membership> getMembershipDetails(int employerNo);
 	
 	// 결제 결과 조회
 	List<Payment> getPaymentList(int employerNo);

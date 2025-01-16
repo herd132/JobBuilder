@@ -30,7 +30,7 @@ public class PaymentServiceImpl implements PaymentService {
     @Override
     public List<Membership> getMembershipDetails(int employerNo) {
         log.debug("Fetching membership details for employerNo: {}", employerNo);
-        return mapper.selectMembershipDetails(employerNo);
+        return mapper.getMembershipDetails(employerNo);
     }
     
     @Override
