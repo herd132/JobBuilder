@@ -7,9 +7,6 @@ const selectedBusinessDiv = document.querySelector('.selected-business');
 const businessNameElement = document.getElementById('businessName');
 const employerNoInput = document.getElementById('employerNoInput'); // 히든 인풋
 
-// 커스텀 이벤트 생성
-const employerNoSetEvent = new Event('employerNoSet');
-
 // 패치 요청 함수
 async function fetchEmployerData() {
     try {
@@ -38,9 +35,6 @@ async function fetchEmployerData() {
             if (employerNoInput) {
                 employerNoInput.value = employerNoFromData; // 히든 인풋 값 설정
                 employerNo = employerNoFromData; // 전역 변수 업데이트
-
-                // 히든 인풋 값이 제대로 설정되었는지 로그 출력
-                console.log("No emplo333.", employerNoInput.value);
             } else {
                 throw new Error("Hidden input '#employerNoInput' not found.");
             }
@@ -49,14 +43,10 @@ async function fetchEmployerData() {
             if (businessNameElement) {
                 businessNameElement.textContent = businessName;
             }
-
-            // employerNo 설정 완료 후 이벤트 발송
-            document.dispatchEvent(employerNoSetEvent);
-
         } else if (data.length > 1) {
             console.log("Multiple employers found. Allow user to select one.");
-            // 여러 개의 고용주 처리 로직 추가
-            createEmployerSelectionUI(data);
+            // 여러 개의 고용주 처리 로직 추가 가능
+            // 예: UI를 통해 사용자가 선택할 수 있도록 구현
         } else {
             console.log("No employer data found.");
         }
@@ -64,47 +54,10 @@ async function fetchEmployerData() {
         console.error('Error fetching employer data:', error.message);
     }
 }
-
-// 다중 고용주 선택 UI 생성 함수
-function createEmployerSelectionUI(employers) {
-    // 기존 UI 초기화 (예: 이전 버튼 제거)
-    selectedBusinessDiv.innerHTML = ''; // 기존 내용을 비움
-
-    // 예시: 간단한 선택 버튼 생성
-    employers.forEach(employer => {
-        const button = document.createElement('button');
-        button.textContent = employer.businessName;
-        button.dataset.employerNo = employer.employerNo;
-        button.style.display = 'block'; // 버튼을 블록 요소로 표시
-        button.style.margin = '5px 0'; // 버튼 간 간격 추가
-
-        button.addEventListener('click', () => {
-            // 선택된 고용주 설정
-            employerNo = employer.employerNo;
-            if (employerNoInput) {
-                employerNoInput.value = employerNo; // 히든 인풋 값 설정
-
-                // 히든 인풋 값이 제대로 설정되었는지 로그 출력
-                console.log("No emplo333.", employerNoInput.value);
-            }
-            if (businessNameElement) {
-                businessNameElement.textContent = employer.businessName;
-            }
-
-            // 선택된 고용주 UI 업데이트 (예: 선택 UI 숨기기)
-            selectedBusinessDiv.style.display = 'none'; // 선택 UI 숨김
-
-            // employerNo 설정 완료 후 이벤트 발송
-            document.dispatchEvent(employerNoSetEvent);
-        });
-        selectedBusinessDiv.appendChild(button);
-    });
-
-    // 선택 UI 표시
-    selectedBusinessDiv.style.display = 'block';
-}
-
+console.log("No emplo333.","employerNoInput.value);
 // 데이터 캐싱 함수
+
+
 async function fetchAndCacheMembershipData(employerNo) {
     if (globalMembershipList.length > 0) {
         // 이미 데이터가 저장되어 있다면 이를 반환
@@ -133,36 +86,6 @@ async function fetchAndCacheMembershipData(employerNo) {
         return [];
     }
 }
-
-// 다른 비동기 작업들이 employerNo를 사용하도록 설정
-function initializeOtherAsyncTasks() {
-    if (!employerNo) {
-        console.error("employerNo가 설정되지 않았습니다.");
-        return;
-    }
-
-    // 예: 멤버십 데이터 가져오기
-    fetchAndCacheMembershipData(employerNo).then(membershipData => {
-        console.log("Membership Data:", membershipData);
-        // 추가적인 처리 로직
-    });
-
-    // 다른 비동기 작업들 추가 가능
-}
-
-// 이벤트 리스너 등록
-document.addEventListener('employerNoSet', initializeOtherAsyncTasks);
-
-// 초기 데이터 페치 호출
-fetchEmployerData();
-
-// 추가적인 콘솔 로그 예시
-console.log("employerNo1:", employerNo); // 이 시점에서는 아직 null일 가능성 있음
-fetchEmployerData().then(() => {
-    console.log("employerNo2:", employerNo); // fetch 완료 후 값 확인 가능
-});
-console.log("employerNo3:", employerNo);
-
 
 // 초기화 함수
 async function init() {
