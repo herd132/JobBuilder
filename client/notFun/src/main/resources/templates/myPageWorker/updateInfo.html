@@ -47,7 +47,7 @@
             <div class="form-group">
                 <label for="workerNickname">닉네임</label>
                 <div class="nickname-input-area">
-                    <input type="text" name="workerNickname" maxlength="20" id="workerNickname" th:value="${session.loginWorker.workerNickname}" disabled>
+                    <input type="text" name="workerNickname" maxlength="10" id="workerNickname" th:value="${session.loginWorker.workerNickname}" disabled>
                     <button type="button" id="checkNickname" class="info-button" disabled>중복확인</button>
                 </div>
                 <span class="signUp-message" id="nicknameMessage"></span>
@@ -94,13 +94,13 @@
                     <button type="button" class="search-button">검색</button>
                 </div>
                 <input type="text" placeholder="도로명 지번 주소" id="address" name="workerAddress" class="full-width" readonly>
-                <input type="text" placeholder="상세주소" id="detailAddress" name="workerAddress">
+                <input type="text" placeholder="상세주소" id="detailAddress" name="workerAddress" maxlength="15">
             </div>
 
             <div class="button-group">
                 <button type="submit" class="submit-button">등록</button>
                 <button type="button" class="cancel-button"
-                    onclick="location.href='http://localhost/myPageWorkee/myPageWorkerInfo'";>취소</button>
+                    onclick="location.href = 'myPageWorkerInfo'">취소</button>
             </div>
             
             <!-- 프로필 이미지가 변경되지 않으면 -1, x를 눌러 삭제되면 0, 새 이미지 선택되면 1 -->

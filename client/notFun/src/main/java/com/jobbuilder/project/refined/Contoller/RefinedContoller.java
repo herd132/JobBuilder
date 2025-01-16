@@ -21,7 +21,6 @@ import lombok.extern.slf4j.Slf4j;
 @Controller
 @RequestMapping("refined")
 @RequiredArgsConstructor
-@Slf4j
 @SessionAttributes({ "loginEmployer", "loginWorker" })
 public class RefinedContoller {
 

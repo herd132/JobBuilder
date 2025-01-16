@@ -1,74 +1,50 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>이력서 관리</title>
-  <!-- CSS, font awesome 라이브러리-->
-  <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/resume/resumeList.css">
-  <link rel="stylesheet" href="/css/resume/resume.css">
-
-  
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>이력서 관리</title>
+    <th:block th:replace="~{common/common}"></th:block>
+    <link rel="stylesheet" href="/css/resume/resumeList.css">
+    <link rel="stylesheet" href="/css/resume/resume.css">
 </head>
-
-
 <body>
+    <th:block th:replace="~{common/myPageWorker-header}"></th:block>
 
-  <!-- header (홈버튼, 홈페이지 이름, 로그인버튼, 네비바, 검색창)-->
-  <th:block th:replace="~{common/myPageWorker-header}"></th:block>
+    <div class="resume-background-gray">
+        <div class="resume-background-white">
+            <h1 class="resume-title">이력서 관리<hr></h1>
 
+            <div class="resume-t-background-outside" id="finalResult">
+                <div class="resume-t-background-inside">
+                    <div id="resultp">
+                        <table class="resume-table">
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>이력서 제목</th>
+                                    <th>최종 수정일</th>
+                                    <th>경력</th>
+                                    <th>공개 여부</th>
+                                    <th>맞춤 알바</th>
+                                    <th>관리</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resumeTableBody">
+                                <!-- JavaScript로 동적 추가될 내용 -->
+                            </tbody>
+                        </table>
+                    </div>
 
-
-  <!--회색배경영역(제일끝)-->
-  <div class="resume-background-gray">
-
-    <!-- 흰색배경영역(안쪽)  -->
-    <div class="resume-background-white">
-
-      <!-- 상단 제목 스타일 -->
-      <h1 class="resume-title">이력서 관리
-        <hr>
-      </h1>
-
-      <div class="resume-t-background-outside" id="finalResult">
-        <div class="resume-t-background-inside">
-          <div id="resultp">
-            <div class="resultp">
-            <h2>등록된 이력서가 없습니다!</h2>
-            <p>이력서가 없으면 지원에 제한이 있을수 있습니다.</p>
-           </div>
-          </div>
-
-          <div class="resume-t-write">
-            <button id="writeBtn" class="resume-t-btn-after"
-              style="cursor:pointer;">이력서 작성</button>
-          </div>
-
+                    <div class="resume-t-write">
+                        <button id="writeBtn" class="resume-t-btn-after">이력서 작성</button>
+                    </div>
+                </div>
+            </div>
         </div>
-      </div>
-
-
-
-
-
-
     </div>
 
-
-
-  </div> <!-- 흰색부분 -->
-  </div> <!-- 회색부분 -->
-
-
-  <!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
-  <th:block th:replace="~{common/main-footer}"></th:block>
-
-
-
-
-  <script src="/js/resume/resumeList.js"></script>
+    <th:block th:replace="~{common/main-footer}"></th:block>
+    <script src="/js/resume/resumeList.js"></script>
 </body>
-
 </html>
