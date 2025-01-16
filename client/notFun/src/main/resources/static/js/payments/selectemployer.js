@@ -1,153 +1,200 @@
-// fetchEmployerData.js
-
 (async () => {
-  // 전역 변수 선언
-  window.employerNo = null;
-  window.globalMembershipList = []; // 캐싱을 위한 전역 변수
+    // 전역 변수 선언
+    window.employerNo = null;
+    window.globalMembershipList = [];
+    let isModalOpen = false; // 모달 상태 확인용 변수
 
-  // DOM 요소 선택
-  const selectedBusinessDiv = document.querySelector('.selected-business');
-  const businessNameElement = document.getElementById('businessName');
-  const employerNoInput = document.getElementById('employerNoInput'); // 히든 인풋
+    // DOM 요소 선택
+    const businessNameElement = document.getElementById('businessName');
+    const employerNoInput = document.getElementById('employerNoInput');
+    const changeButton = document.querySelector('.change-button');
+    const modal = document.getElementById("employerModal");
+    const closeButton = modal.querySelector(".close-button");
+    const employerList = document.getElementById("employerList");
 
-  // 다른 스크립트 로딩 함수
-  function loadOtherScripts() {
-      const scriptsToLoad = ['/js/payments/membership.js']; // 다른 스크립트 파일 경로들
+    // 모달 열기 함수
+    const openModal = () => {
+        if (isModalOpen) return; // 이미 열려 있으면 중단
+        console.log("모달 열기");
+        modal.style.display = "block";
+        isModalOpen = true;
+    };
 
-      // 스크립트를 순차적으로 로드하기 위한 함수
-      const loadScriptSequentially = (scripts, index = 0) => {
-          if (index >= scripts.length) return Promise.resolve();
-          return new Promise((resolve, reject) => {
-              const script = document.createElement('script');
-              script.src = scripts[index];
-              script.async = false; // 순서를 보장하기 위해 async=false 설정
-              script.onload = () => {
-                  console.log(`${scripts[index]} 로드 완료`);
-                  resolve(loadScriptSequentially(scripts, index + 1));
-              };
-              script.onerror = () => {
-                  console.error(`${scripts[index]} 로드 실패`);
-                  reject(new Error(`${scripts[index]} 로드 실패`));
-              };
-              document.body.appendChild(script);
-          });
-      };
+    // 모달 닫기 함수
+    const closeModalFunc = () => {
+        if (!isModalOpen) return; // 이미 닫혀 있으면 중단
+        console.log("모달 닫기");
+        modal.style.display = "none";
+        isModalOpen = false;
+    };
 
-      loadScriptSequentially(scriptsToLoad)
-          .then(() => {
-              console.log("모든 스크립트 로드 완료");
-              // 추가 초기화 로직이 필요하다면 여기에 작성
-          })
-          .catch(error => {
-              console.error("스크립트 로딩 중 에러 발생:", error);
-          });
-  }
+    // 닫기 버튼 클릭 시 모달 닫기
+    closeButton.addEventListener("click", closeModalFunc);
 
-  // 패치 요청 함수
-  async function fetchEmployerData() {
-      try {
-          const response = await fetch('/payments/data'); // 서버에 GET 요청
+    // 모달 외부 클릭 시 모달 닫기
+    window.addEventListener("click", (event) => {
+        if (event.target === modal) {
+            closeModalFunc();
+        }
+    });
 
-          if (!response.ok) {
-              throw new Error('Failed to fetch data');
-          }
+    // membership.js 로딩 함수
+    function loadMembershipScript(forceReload = false) {
+        return new Promise((resolve, reject) => {
+            if (window.membershipScriptLoaded && !forceReload) {
+                console.log("membership.js는 이미 로드되었습니다.");
+                resolve();
+                return;
+            }
 
-          const data = await response.json(); // JSON 데이터 파싱
-          console.log("서버에서 받은 데이터", data); // 서버에서 받은 데이터 로그 출력
+            // 기존 스크립트 제거 (강제 재로드 시)
+            if (forceReload) {
+                const existingScript = document.querySelector('script[src="/js/payments/membership.js"]');
+                if (existingScript) {
+                    existingScript.remove();
+                    console.log("기존 membership.js 스크립트 제거 완료");
+                }
+            }
 
-          // 데이터 처리
-          if (data.length === 1) {
-              const employerNoFromData = data[0]?.employerNo;
-              const businessName = data[0]?.businessName;
+            const script = document.createElement('script');
+            script.src = '/js/payments/membership.js';
+            script.async = false;
+            script.onload = () => {
+                console.log("membership.js 로드 완료");
+                window.membershipScriptLoaded = true;
+                resolve();
+            };
+            script.onerror = () => {
+                console.error("membership.js 로드 실패");
+                reject(new Error("membership.js 로드 실패"));
+            };
+            document.body.appendChild(script);
+        });
+    }
 
-              // 데이터 유효성 확인
-              if (!employerNoFromData || !businessName) {
-                  throw new Error("Invalid data: Missing employerNo or businessName");
-              }
+    // 고용주 정보 설정 함수
+    function setEmployerInfo(employerNo, businessName, memberNo) {
+        window.employerNo = employerNo;
+        if (employerNoInput) employerNoInput.value = window.employerNo;
+        if (businessNameElement) businessNameElement.textContent = businessName;
+        sessionStorage.setItem('selectedEmployerNo', employerNo);
+        sessionStorage.setItem('selectedBusinessName', businessName);
+        sessionStorage.setItem('selectedMemberNo', memberNo);
+        console.log("sessionStorage에 고용주 정보 저장됨:", { employerNo, businessName, memberNo });
+    }
 
-              console.log('1개의 사업주', { employerNoFromData, businessName });
+    // 고용주 정보 초기화 함수
+    function clearEmployerInfo() {
+        window.employerNo = null;
+        if (employerNoInput) employerNoInput.value = '';
+        if (businessNameElement) businessNameElement.textContent = '사업주 정보가 없습니다';
+        sessionStorage.removeItem('selectedEmployerNo');
+        sessionStorage.removeItem('selectedBusinessName');
+        sessionStorage.removeItem('selectedMemberNo');
+        if (changeButton) changeButton.style.display = "none";
+        console.log("sessionStorage 초기화됨");
+    }
 
-              // 히든 인풋에 값을 저장
-              if (employerNoInput) {
-                  employerNoInput.value = employerNoFromData; // 히든 인풋 값 설정
-                  window.employerNo = employerNoFromData; // 전역 변수 업데이트
+    // 패치 요청 함수: 서버에서 고용주 데이터를 가져옴
+    async function fetchEmployerData(openModalAfterFetch = false) {
+        console.log("fetchEmployerData 호출됨. openModalAfterFetch:", openModalAfterFetch);
+        try {
+            const response = await fetch('/payments/data');
+            if (!response.ok) throw new Error('Failed to fetch data');
 
-                  // 히든 인풋 값이 제대로 설정되었는지 로그 출력
-                  console.log("패치안에서", employerNoInput.value);
-              } else {
-                  throw new Error("Hidden input '#employerNoInput' not found.");
-              }
+            const data = await response.json();
+            console.log("서버에서 받은 데이터", data);
 
-              // businessName 업데이트 (UI 처리 예시)
-              if (businessNameElement) {
-                  businessNameElement.textContent = businessName;
-              }
+            const storedMemberNo = sessionStorage.getItem('selectedMemberNo');
 
-              // employerNo 설정 완료 후 다른 스크립트 로드
-              loadOtherScripts();
+            if (data.length === 0) {
+                console.log("사업주 없음");
+                clearEmployerInfo();
+                await loadMembershipScript(true); // 강제로 재로드
+                if (window.updateMembershipData) {
+                    window.updateMembershipData(null, null);
+                }
+                return;
+            }
 
-          } else if (data.length > 1) {
-              console.log("여러개 사업주");
-              // 여러 개의 고용주 처리 로직 추가
-              await createEmployerSelectionUI(data);
-              // 사용자가 선택한 후 다른 스크립트 로드
-              loadOtherScripts();
-          } else {
-              console.log("사업주 없음");
-              // employerNo가 없을 경우, 필요에 따라 다른 스크립트 로드 또는 에러 처리
-          }
-      } catch (error) {
-          console.error('Error fetching employer data:', error.message);
-          // 에러 발생 시, 필요에 따라 다른 스크립트 로드 또는 에러 처리
-      }
-  }
+            const matchedEmployer = data.find(emp => String(emp.memberNo) === String(storedMemberNo));
+            if (matchedEmployer) {
+                setEmployerInfo(matchedEmployer.employerNo, matchedEmployer.businessName, matchedEmployer.memberNo);
+                if (changeButton) changeButton.style.display = "inline-block"; // 버튼 표시
 
-  // 다중 고용주 선택 UI 생성 함수
-  function createEmployerSelectionUI(employers) {
-      return new Promise((resolve, reject) => {
-          // 기존 UI 초기화 (예: 이전 버튼 제거)
-          selectedBusinessDiv.innerHTML = ''; // 기존 내용을 비움
+                // membership.js 로드 및 데이터 전달
+                await loadMembershipScript();
+                if (window.updateMembershipData) {
+                    console.log("membership.js에 데이터 전달:", {
+                        employerNo: matchedEmployer.employerNo,
+                        businessName: matchedEmployer.businessName,
+                    });
+                    window.updateMembershipData(matchedEmployer.employerNo, matchedEmployer.businessName);
+                }
+            } else {
+                console.log("memberNo가 일치하지 않음. 모달 열기");
+                clearEmployerInfo();
+                if (openModalAfterFetch) {
+                    await createEmployerSelectionUI(data);
+                    openModal();
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching employer data:', error.message);
+            clearEmployerInfo();
+        }
+    }
 
-          // 예시: 간단한 선택 버튼 생성
-          employers.forEach(employer => {
-              const button = document.createElement('button');
-              button.textContent = employer.businessName;
-              button.dataset.employerNo = employer.employerNo;
-              button.style.display = 'block'; // 버튼을 블록 요소로 표시
-              button.style.margin = '5px 0'; // 버튼 간 간격 추가
+    // 다중 고용주 선택 UI 생성 함수
+    async function createEmployerSelectionUI(employers) {
+        employerList.innerHTML = '';
 
-              button.addEventListener('click', () => {
-                  // 선택된 고용주 설정
-                  window.employerNo = employer.employerNo;
-                  if (employerNoInput) {
-                      employerNoInput.value = window.employerNo; // 히든 인풋 값 설정
+        if (employers.length === 0) {
+            employerList.innerHTML = '<p>등록된 사업주가 없습니다.</p>';
+            return;
+        }
 
-                      // 히든 인풋 값이 제대로 설정되었는지 로그 출력
-                      console.log("히든인풋", employerNoInput.value);
-                  }
-                  if (businessNameElement) {
-                      businessNameElement.textContent = employer.businessName;
-                  }
+        employers.forEach(employer => {
+            const button = document.createElement('button');
+            button.textContent = employer.businessName;
+            button.dataset.employerNo = employer.employerNo;
+            button.classList.add('employer-button');
+            button.addEventListener('click', async () => {
+                setEmployerInfo(employer.employerNo, employer.businessName, employer.memberNo);
+                if (changeButton) changeButton.style.display = "inline-block";
+                closeModalFunc();
+                await loadMembershipScript(true); // 강제 재로드
+                if (window.updateMembershipData) {
+                    window.updateMembershipData(employer.employerNo, employer.businessName);
+                }
+            });
+            employerList.appendChild(button);
+        });
 
-                  // 선택된 고용주 UI 업데이트 (예: 선택 UI 숨기기)
-                  selectedBusinessDiv.style.display = 'none'; // 선택 UI 숨김
+        openModal();
+    }
 
-                  // 선택 완료 후 Promise 해제
-                  resolve();
-              });
-              selectedBusinessDiv.appendChild(button);
-          });
+    // "변경하기" 버튼 클릭 이벤트 핸들러
+    if (changeButton) {
+        changeButton.addEventListener("click", async () => {
+            console.log("변경하기 버튼 클릭됨");
+            const response = await fetch('/payments/data');
+            const data = await response.json();
+            await createEmployerSelectionUI(data);
+            openModal(); // 무조건 모달 호출
+        });
+    }
 
-          // 선택 UI 표시
-          selectedBusinessDiv.style.display = 'block';
-      });
-  }
+    // 초기화 로직
+    const storedMemberNo = sessionStorage.getItem('selectedMemberNo');
 
+    if (storedMemberNo) {
+        console.log("sessionStorage에서 memberNo 정보를 가져옴:", { storedMemberNo });
+        await fetchEmployerData(); // 섹션 정보와 서버 데이터 비교
+    } else {
+        console.log("sessionStorage에 memberNo 정보가 없으므로 데이터를 패치합니다.");
+        await fetchEmployerData(true);
+    }
 
-  // fetchEmployerData를 호출하여 값을 설정하고 기다림
-  await fetchEmployerData();
-
-  // employerNo가 설정된 후의 코드
-  console.log("다나와서:", window.employerNo);
-
+    console.log("최종 employerNo:", window.employerNo);
 })();

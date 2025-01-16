@@ -1,5 +1,6 @@
 package com.jobbuilder.project.payment.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,9 +47,12 @@ public class PaymentController {
     	
         Employer loginEmployer = (Employer) session.getAttribute("loginEmployer");
 
+        if (loginEmployer == null) {
+            return ResponseEntity.ok(Collections.emptyList()); // 빈 리스트 반환
+        }
         // 데이터 조회
         List<Employer> result = service.getEmployerNo(loginEmployer.getMemberNo());
-        if (result == null || result.isEmpty()) {
+        if (result == null || result.isEmpty() || loginEmployer == null) {
             // 데이터가 없으면 HTTP 404 상태 반환
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found");
         }
