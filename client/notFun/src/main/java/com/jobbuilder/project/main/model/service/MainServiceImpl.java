@@ -5,8 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.main.model.dto.Brand;
 import com.jobbuilder.project.main.model.mapper.MainMapper;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 
 import lombok.RequiredArgsConstructor;
 
@@ -33,5 +35,17 @@ public class MainServiceImpl implements MainService{
 	@Override
 	public List<Brand> selectRecentRecruitments() {
 		return mapper.selectRecentRecruitments();
+	}
+	
+	// 최근 공지사항 3개 조회
+	@Override
+	public List<ServiceCenter> selectRecentNotice() {
+		return mapper.selectRecentNotice();
+	}
+	
+	// 최신 알바게시글 3개 조회
+	@Override
+	public List<Board> selectRecentBoard() {
+		return mapper.selectRecentBoard();
 	}
 }

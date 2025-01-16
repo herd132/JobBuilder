@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.main.model.dto.Brand;
 import com.jobbuilder.project.main.model.service.MainService;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -79,6 +81,14 @@ public class MainController {
         });
         
         model.addAttribute("recentRecruitmentList", recentRecruitmentList);
+        
+        // -----------------------
+        // 최신 공지사항 3개 조회 , 최신 알바게시글 3개 조회
+        List<ServiceCenter> noticeList = mainService.selectRecentNotice();
+        List<Board> boardList = mainService.selectRecentBoard();
+        
+        model.addAttribute("noticeList", noticeList);
+        model.addAttribute("boardList", boardList);
         
         //log.debug("recentRecruitmentList {}", recentRecruitmentList);
 		return "main";

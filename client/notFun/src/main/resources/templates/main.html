@@ -14,6 +14,12 @@
 </head>
 
 <body>
+	<!-- 배너 X 클릭 시 쿠키에 hideTopBanner=true 생성(하루동안 안보임) -->
+	<section class="top-banner-box" id="top-banner">
+		<img src="/images/top-banner.png">
+		<img src="/images/close_top_banner.svg" id="top-banner-close-btn">
+	</section>
+
 	<!-- 로고 및 검색바 로그인 -->
 	<th:block th:replace="~{common/main-header}"></th:block>
 
@@ -109,7 +115,7 @@
 					<span>바</span>
 				</p>
 				<section>
-					<a href="/payments">신청하기 <i class="fa-solid fa-chevron-right"></i></a>					
+					<a href="/payments">신청하기 <i class="fa-solid fa-chevron-right"></i></a>
 					&nbsp;
 					<a href="/employer/employerSignUp">입점안내 <i class="fa-solid fa-chevron-right"></i></a>
 				</section>
@@ -140,18 +146,23 @@
 
 		<!-- 최근 공고게시글 리스트 10개 -->
 		<section class="recruitment-list">
-			<p class="job-card-list-title">
-				<span>S</span>
-				<span>p</span>
-				<span>e</span>
-				<span>c</span>
-				<span>i</span>
-				<span>a</span>
-				<span>l</span>
-				<span>&nbsp;</span>
-				<span>알</span>
-				<span>바</span>
-			</p>
+			<section class="title-section">
+				<p class="job-card-list-title">
+					<span>S</span>
+					<span>p</span>
+					<span>e</span>
+					<span>c</span>
+					<span>i</span>
+					<span>a</span>
+					<span>l</span>
+					<span>&nbsp;</span>
+					<span>알</span>
+					<span>바</span>
+				</p>
+				<section>
+					<a href="/recruitment/list">전체보기 <i class="fa-solid fa-chevron-right"></i></a>
+				</section>
+			</section>
 
 			<table>
 				<thead>
@@ -164,7 +175,6 @@
 					</tr>
 				</thead>
 				<tbody>
-					<!-- Thymeleaf 반복문으로 동적 데이터 출력 -->
 					<tr th:each="recruitment : ${recentRecruitmentList}">
 						<td th:text="${recruitment.businessName}+' '+${recruitment.businessNickname}">기업명</td>
 						<td class="single-line">
@@ -175,37 +185,59 @@
 						<td
 							th:text="${recruitment.workcondAddressTypeInfo != null ? recruitment.workcondAddressTypeInfo : '전체'}">
 							근무지역</td>
-						<td
-							th:text="${ (recruitment.salaryMount != 0 ? recruitment.formatSalaryMount + ' / ' : '') + recruitment.salaryName}">
-							급여</td>
+						<td>
+							<span
+								th:text="${recruitment.salaryMount != 0 ? recruitment.formatSalaryMount : ''}">급여</span>
+							<span th:class="${recruitment.salaryMount != 0 ? 'salary-type-badge' : ''}"
+								th:classappend="${recruitment.salaryName == '시급' ? 'salary-hourly' : ''}"
+								th:text="${recruitment.salaryName}">급여타입</span>
+						</td>
 					</tr>
 				</tbody>
 			</table>
 		</section>
 
-
-		<!-- 공지사항 및 게시글은 대충 해둔겁니다  -->
 		<!-- 공지사항 및 게시글 -->
 		<section class="announcements-posts">
-			<div class="announcements">
-				<h3>공지사항</h3>
-				<ul>
-					<li>신규 채용 공고 업데이트</li>
-					<li>명절 휴무 관련 안내</li>
-				</ul>
+			<div class="posts-box">
+				<section class="title-section">
+					<h3>공지사항</h3>
+					<a href="/serviceCenter/notice" style="color:#6a6a6a">전체보기 ></a>
+				</section>
+				<table>
+					<tbody>
+						<tr th:each="notice : ${noticeList}">
+							<td>
+								<a th:href="@{/serviceCenter/notice/{id}(id=${notice.serviceCenterNo})}"
+									th:text="'· ' + ${notice.serviceCenterTitle}">공지제목</a>
+							</td>
+							<td th:text="${notice.serviceCenterWriteDate}">작성일</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
-			<div class="posts">
-				<h3>종합 게시글</h3>
-				<ul>
-					<li>알바 꿀팁 공유</li>
-					<li>추천 근무지 리스트</li>
-				</ul>
+			<div class="posts-box">
+				<section class="title-section">
+					<h3>알바게시판</h3>
+					<a href="/board/2" style="color:#6a6a6a">전체보기 ></a>
+				</section>
+				<table>
+					<tbody>
+						<tr th:each="board : ${boardList}">
+							<td>
+								<a th:href="@{/board/{code}/{id}(code=${board.boardCode},id=${board.boardNo})}"
+									th:text="'· ' + ${board.boardTitle}">게시글제목</a>
+							</td>
+							<td th:text="${board.boardWriteDate}">작성일</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</section>
 
 	</main>
 
-	<!-- footer 우선 갖다가 쓰는겁니다 잊지말고 바꿔야해요 -->
+	<button id="topButton">TOP</button>
 	<th:block th:replace="~{common/main-footer}"></th:block>
 </body>
 
