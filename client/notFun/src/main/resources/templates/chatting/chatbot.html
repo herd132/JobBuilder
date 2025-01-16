@@ -5,7 +5,226 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="/css/chatting/chatbot.css">
+  <style>
+    /* *********** header ************ */
+    :root {
+    --primary-orange: #FF9838;
+    --secondary-orange: #FFB876;
+    --background-orange: #FFF4EA;
+    --text-dark: #333333;
+    --text-gray: #666666;
+    --button: #543A14;
+    --border-light: #FFE4CC;
+    --border-bold: #FF9838;
+    }
+
+    * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    }
+
+    body {
+    font-family: 'Arial', sans-serif;
+    /* min-height: 100vh; */
+    background-color: #fff0dc6b;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+
+
+    /* 챗봇 관련 */
+    .chatbot-modal {
+    /* position: fixed;
+    right: 20px;
+    bottom: 20px; */
+    width: 100%;
+    height: 100%;
+    background: white;
+    box-shadow: 0 5px 20px rgba(255, 152, 56, 0.2);
+    display: none;
+    flex-direction: column;
+    z-index: 1000;
+    /* 드래그 관련 속성 추가 */
+    position: fixed;
+    user-select: none;
+    }
+
+    .chatbot-modal.active {
+    display: flex;
+    }
+
+    .chatbot-header {
+    background: var(--primary-orange);
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default; /* 커서 스타일 변경 */
+    user-select: none; /* 텍스트 선택 방지 */
+    }
+
+    .chatbot-modal.dragging {
+    opacity: 0.9;
+    transition: none;
+    }
+
+    .drag-handle {
+    flex: 1;
+    color: white;
+    }
+
+    .bot-status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 500;
+    }
+
+    .status-dot {
+    width: 8px;
+    height: 8px;
+    background: #4CAF50;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+    }
+
+    .close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0 5px;
+    }
+
+    .chatbot-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    }
+
+    .chat-messages {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    } 
+
+    .chat-messages::-webkit-scrollbar {
+    width: 10px;
+    }
+
+    .chat-messages::-webkit-scrollbar-thumb{
+    background-color: var(--border-bold);
+    border-radius: 10px;
+    }
+
+    .chat-messages::-webkit-scrollbar-track {
+    background-color: white;
+    border-radius: 10px;
+    }
+
+
+
+    .message {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+    }
+
+    .user {
+    justify-content: flex-end;
+    }
+
+    .message-avatar {
+    width: 35px;
+    height: 35px;
+    background: var(--background-orange);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-orange);
+    }
+
+    .message-content {
+    background: var(--background-orange);
+    padding: 12px;
+    border-radius: 15px;
+    word-break: break-all;
+    max-width: 80%;
+    font-size: 0.9rem;
+    }
+
+    .quick-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+    }
+
+    .quick-buttons button {
+    background: white;
+    border: 1px solid var(--primary-orange);
+    color: var(--primary-orange);
+    padding: 6px 9px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.7rem;
+    }
+
+    .quick-buttons button:hover {
+    background: var(--primary-orange);
+    color: white;
+    }
+
+    .chat-input {
+    padding: 15px;
+    border-top: 1px solid var(--border-light);
+    display: flex;
+    gap: 10px;
+    }
+
+    .chat-input input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid var(--border-light);
+    border-radius: 20px;
+    outline: none;
+    }
+
+    .chat-input input:focus {
+    border-color: var(--primary-orange);
+    }
+
+    .send-btn {
+    background: var(--primary-orange);
+    border: none;
+    color: white;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    }
+
+    .send-btn:hover {
+    background: var(--secondary-orange);
+    }
+
+  </style>
 </head>
 <body>
   <!-- 고객센터 채팅봇 모달 -->

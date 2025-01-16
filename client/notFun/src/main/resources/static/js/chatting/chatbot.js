@@ -125,8 +125,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fetch("/chat/chatBotMessgeList")
   .then(resp => resp.json())
   .then(chatMessages => {
-    console.log(chatMessages);
-
     const messageBot = document.querySelector(".message");
 
     let str = `
