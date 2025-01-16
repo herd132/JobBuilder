@@ -1,10 +1,12 @@
 package com.jobbuilder.project.payment.model.service;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.payment.model.dto.Payment;
 import com.jobbuilder.project.payment.model.mapper.PaymentMapper;
@@ -19,6 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentMapper mapper;
+    
+	@Override
+	public List<Employer> getEmployerNo(int memberNo) {
+		return mapper.getEmployerNo(memberNo);
+	}
     
     @Override
     public List<Membership> getMembershipDetails(int employerNo) {

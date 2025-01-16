@@ -27,16 +27,20 @@ public interface RefinedMapper {
 	List<Refined> refinePeriod2();
 
 	List<Refined> refineDays2();
+
+	List<Refined> refineTime2();
+
+	List<Refined> refineJobType2();
+
+	List<Refined> refineGrade2();
+
+	List<Refined> refineSupport2();
+
+	List<Refined> refinePreferred2();
+
+	List<Refined> refineSalary2();
 	
 	
-
-	/*
-	List<ResumeDaysTime> resumeDaysTime(int recruitmentNo);
-
-	List<String> resumeJobTypeList(int recruitmentNo);
-
-	List<ResumeWorkType> resumeWorkType(int recruitmentNo);
-
-	List<String> workcondAddressTypeInfo(int recruitmentNo);
-	*/
+	
+	
 }
