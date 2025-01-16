@@ -41,8 +41,7 @@ body {
   
 }
 
-.checkbox-label {
-  display: block;
+.chk {
   margin-bottom: 10px;
   cursor: pointer;
 }
