@@ -6,8 +6,10 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,7 @@ import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.payment.model.dto.Payment;
 import com.jobbuilder.project.payment.model.service.PaymentService;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -36,8 +39,25 @@ public class PaymentController {
     // 기본 페이지
     @GetMapping("")
     public String showPaymentsPage() {
-        return "payments/payments";
+    	return "/payments/payments";
     }
+    
+    @GetMapping("/data")
+    public ResponseEntity<?> fetchEmployerData(HttpSession session) {
+        Employer loginEmployer = (Employer) session.getAttribute("loginEmployer");
+
+        // 데이터 조회
+        List<Employer> result = service.getEmployerNo(loginEmployer.getMemberNo());
+        if (result == null || result.isEmpty()) {
+            // 데이터가 없으면 HTTP 404 상태 반환
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found");
+        }
+
+        // 정상적으로 JSON 데이터 반환
+        return ResponseEntity.ok(result);
+    }
+
+    
     
     @GetMapping("testpay")
     public String showTestPage() {
@@ -68,6 +88,20 @@ public class PaymentController {
         return response;
     }
 
+    // 맴버십 정보 받아오기
+    @PostMapping("/getEmployerNo")
+    @ResponseBody
+    public Map<String, Object> getEmployerNo(@SessionAttribute("loginEmployer") Employer loginEmployer) {
+        Map<String, Object> response = new HashMap<>();
+        
+		int emploterNo = loginEmployer.getEmployerNo();
+		response.put("emploterNo", emploterNo);
+		
+        List<Employer> getEmployerNo = service.getEmployerNo(loginEmployer.getMemberNo());
+        response.put("getEmployerNo", getEmployerNo);
+        return response;
+    }
+    
     
     // 맴버십 정보 받아오기
     @PostMapping("/details")

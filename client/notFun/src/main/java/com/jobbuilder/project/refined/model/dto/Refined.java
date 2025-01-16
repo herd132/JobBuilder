@@ -114,4 +114,19 @@ public class Refined {
     private List<String> category2;
     private List<String> category3;
     private List<String> category4;
+    
+    
+	/* ***** RECRUITMENT_SUPPORT ***** */
+	private int recruitmentSupportNo;
+	private String SupportNo;
+
+	private String supportCategory;
+	
+	
+	/* ***** RECRUITMENT_PREFERRED ***** */
+	private int recruitmentPreferredNo;
+	private String preferredNo;
+	
+	/* ***** PREFERRED ***** */
+	private String preferredCategory;
 }

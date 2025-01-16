@@ -39,4 +39,6 @@ public class Membership {
     private int paymentTypeNo;          // 상세 결제 번호
     private int paymentNo;              // 결제 번호 (연동)
 
+    private String businessName;
+    
 }

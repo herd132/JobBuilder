@@ -1,5 +1,4 @@
 console.log("recruitmentDetail.js 와 연결됨");
-
 const newEl = (tag, attr, cls) => {
   const el = document.createElement(tag); // 요소 생성
   for (let key in attr) {
@@ -573,10 +572,11 @@ function getClickHandler(seq) {
 // 사업장 홍보 페이지 보여주기
 const showPromoteBusiness = document.querySelector(".showPromoteBusiness");
 showPromoteBusiness.addEventListener("click", () => { 
-
+  console.log(typeof recruitmentNo);
+  
   let path = window.location.pathname;
   path = path.substring(path.lastIndexOf('/') + 1, path.length);
-    location.href = "/recruitment/showPromoteBusiness?recruitmentNo=" + path;  
+  location.href = "/recruitment/showPromoteBusiness?recruitmentNo=" + path + "&businessNickname=" + businessNickname;  
 });
 
 document.getElementById('navigate').addEventListener('click', function () {

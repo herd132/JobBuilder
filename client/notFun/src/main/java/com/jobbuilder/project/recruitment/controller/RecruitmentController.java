@@ -382,16 +382,27 @@ public class RecruitmentController {
 	 * @return
 	 */
 	@GetMapping("showPromoteBusiness")
-	public String showPromoteBusiness(@RequestParam("recruitmentNo") int recruitmentNo,
-									@SessionAttribute(value="loginEmployer", required = false) Employer loginEmployer,
-									@SessionAttribute(value="loginWorker", required=false) Worker loginWorker, Model model
-									) {		
+	public String showPromoteBusiness(@RequestParam("recruitmentNo") String recruitmentNo,
+									  @RequestParam("businessNickname") String businessNickname,
+									  @SessionAttribute(value="loginEmployer", required = false) Employer loginEmployer,
+									  @SessionAttribute(value="loginWorker", required=false) Worker loginWorker, Model model
+									  ) {		
 		
-		Recruitment recruitment = service.showPromoteEmploy(recruitmentNo);	
-		log.debug("채용컨트롤러" + recruitmentNo );
+		
+		Recruitment recruitment = service.showPromoteEmploy(recruitmentNo, businessNickname);	
+
+		int empNo = (recruitment.getEmployerNo());
+		Employer employer = service.getBusiness(empNo);
+		
+		String[] arr = employer.getBusinessAddress().split("\\^\\^\\^");
+		if(arr.length > 2) {
+			String businessAddress = arr[1] + ", " + arr[2];
+			employer.setBusinessAddress(businessAddress);
+		} 
+		log.debug("임플로이어" + employer);
 		
 		model.addAttribute("recruitment", recruitment);
-		
+		model.addAttribute("employer", employer);
 		return "recruitment/showPromoteBusiness";
 	}
 	

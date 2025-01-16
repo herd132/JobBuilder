@@ -1,7 +1,9 @@
 package com.jobbuilder.project.payment.model.service;
 
 import java.util.List;
+import java.util.Map;
 
+import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.payment.model.dto.Payment;
 
@@ -13,6 +15,10 @@ public interface PaymentService {
 			List<Membership> membershipList);
 
 	List<Payment> getPaymentList(int employerNo);
+
+	List<Employer> getEmployerNo(int memberNo);
+
+	
 
 
 
