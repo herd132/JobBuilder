@@ -64,7 +64,7 @@
             <div class="form-group">
                 <label for="memberEmail">이메일</label>
                 <div class="email-input-area">
-                    <input type="email" id="memberEmail" name="memberEmail" th:value="${session.loginWorker.memberEmail}" disabled>
+                    <input type="email" id="memberEmail" name="memberEmail" th:value="${session.loginWorker.memberEmail}" disabled maxlength="50">
                     <span class="email-input-message"></span>
                     <button type="button" id="sendAuthKeyBtn" class="btn-secondary" disabled>인증번호 받기</button>
                 </div>
