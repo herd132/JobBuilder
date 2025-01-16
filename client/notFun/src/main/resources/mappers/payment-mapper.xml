@@ -24,7 +24,7 @@
 	
 	
 	<!-- employerNo로 맴버십 조회 -->
-	<select id="selectMembershipDetails" resultMap="membershipResultMap">
+	<select id="getMembershipDetails" resultMap="membershipResultMap">
 	    SELECT 
 	        A.EMPLOYER_NO AS EMPLOYER_NO,
 	        B.MEMBERSHIP_NO AS MEMBERSHIP_NO,

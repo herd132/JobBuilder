@@ -13,9 +13,14 @@
 
 <body>
   <th:block th:replace="~{common/main-header}"></th:block>
-
+  <input id="employerNoInput" value="">
   <div class="payments-background-gray">
     <div class="payments-background-white" id="background">
+      <div id="employerList" style="display: none;">
+        <!-- 다중 선택 UI -->
+    </div>
+
+
       <h1 class="payments-title">맴버십 혜택 안내 <hr></h1>
       <div class="flex-container">
         <h3 class="payments-subtitle">상세 등급별 혜택 <hr></h3>
@@ -24,6 +29,8 @@
             <button class="change-button"  style="display: none;">변경하기</button>
         </div>
       </div>
+     
+
 
       <div class="payments-background-outside">
         <div class="payments-background-inside">
