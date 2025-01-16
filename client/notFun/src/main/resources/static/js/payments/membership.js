@@ -1,12 +1,12 @@
-// 전역 변수 선언
-let employerNo = null;
+/*
 let globalMembershipList = []; // 캐싱을 위한 전역 변수
 
 // DOM 요소 선택
 const selectedBusinessDiv = document.querySelector('.selected-business');
 const businessNameElement = document.getElementById('businessName');
 const employerNoInput = document.getElementById('employerNoInput'); // 히든 인풋
-
+// 전역 변수 선언
+let employerNo = null;
 // 패치 요청 함수
 async function fetchEmployerData() {
     try {
@@ -57,7 +57,32 @@ async function fetchEmployerData() {
 console.log("No emplo333.","employerNoInput.value);
 // 데이터 캐싱 함수
 
+// 초기화 함수
+async function init() {
+    await fetchEmployerData(); // 고용주 데이터 가져오기
 
+    if (employerNo) {
+        console.log("employerNo initialized:", employerNo);
+        // employerNo가 필요한 다른 비동기 작업들 호출
+        const membershipData = await fetchAndCacheMembershipData(employerNo);
+        console.log("Membership Data:", membershipData);
+        // 추가적인 초기화 작업 수행
+    } else {
+        console.error("employerNo가 초기화되지 않았습니다.");
+        // employerNo가 없을 경우의 처리 로직
+    }
+
+    // 여기에 다른 초기화 로직을 추가할 수 있습니다.
+    // 예: 이벤트 리스너 설정, UI 초기화 등
+}
+
+// 즉시 실행 함수 (IIFE)를 사용하여 초기화 시작
+(async () => {
+    await init();
+    // 초기화가 완료된 후 실행할 추가 코드가 있다면 여기서 호출
+    // 예: 다른 모듈 초기화, 사용자 인터랙션 설정 등
+})();
+*/
 async function fetchAndCacheMembershipData(employerNo) {
     if (globalMembershipList.length > 0) {
         // 이미 데이터가 저장되어 있다면 이를 반환
@@ -87,31 +112,6 @@ async function fetchAndCacheMembershipData(employerNo) {
     }
 }
 
-// 초기화 함수
-async function init() {
-    await fetchEmployerData(); // 고용주 데이터 가져오기
-
-    if (employerNo) {
-        console.log("employerNo initialized:", employerNo);
-        // employerNo가 필요한 다른 비동기 작업들 호출
-        const membershipData = await fetchAndCacheMembershipData(employerNo);
-        console.log("Membership Data:", membershipData);
-        // 추가적인 초기화 작업 수행
-    } else {
-        console.error("employerNo가 초기화되지 않았습니다.");
-        // employerNo가 없을 경우의 처리 로직
-    }
-
-    // 여기에 다른 초기화 로직을 추가할 수 있습니다.
-    // 예: 이벤트 리스너 설정, UI 초기화 등
-}
-
-// 즉시 실행 함수 (IIFE)를 사용하여 초기화 시작
-(async () => {
-    await init();
-    // 초기화가 완료된 후 실행할 추가 코드가 있다면 여기서 호출
-    // 예: 다른 모듈 초기화, 사용자 인터랙션 설정 등
-})();
 
 
 // 모든 버튼 초기화 함수
