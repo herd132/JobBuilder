@@ -212,7 +212,7 @@ public class MyPageWorkerController {
 
 		ra.addFlashAttribute("message", message);
 
-		return "redirect:/";
+		return "redirect:myPageWorkerInfo";
 
 	}
 }
