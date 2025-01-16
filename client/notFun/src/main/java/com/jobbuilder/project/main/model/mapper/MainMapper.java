@@ -5,7 +5,9 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.main.model.dto.Brand;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 
 @Mapper
 public interface MainMapper {
@@ -24,5 +26,15 @@ public interface MainMapper {
 	 * @return
 	 */
 	List<Brand> selectRecentRecruitments();
+
+	/** 최신 공지사항 3개 조회
+	 * @return
+	 */
+	List<ServiceCenter> selectRecentNotice();
+
+	/** 최신 알바게시글 3개 조회
+	 * @return
+	 */
+	List<Board> selectRecentBoard();
 
 }

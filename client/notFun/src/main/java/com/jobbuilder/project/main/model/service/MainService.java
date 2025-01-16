@@ -3,7 +3,9 @@ package com.jobbuilder.project.main.model.service;
 import java.util.List;
 import java.util.Map;
 
+import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.main.model.dto.Brand;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 
 public interface MainService {
 
@@ -21,5 +23,15 @@ public interface MainService {
 	 * @return
 	 */
 	List<Brand> selectRecentRecruitments();
+
+	/** 최근 공지사항 3개 조회
+	 * @return
+	 */
+	List<ServiceCenter> selectRecentNotice();
+
+	/** 최신 알바게시글 3개 조회
+	 * @return
+	 */
+	List<Board> selectRecentBoard();
 
 }
