@@ -5,6 +5,17 @@ body {
   line-height: 1.6;
 }
 
+.error {
+  color: #ff4d4f;
+  font-size: 1rem;
+}
+
+.confirm {
+  color: #52c41a;
+  font-size: 1rem;
+}
+
+
 .signup-container {
   max-width: 700px;
   margin: 40px auto;
