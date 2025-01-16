@@ -210,6 +210,12 @@ ul {
   outline: none;
 }
 
+#businessContent {
+  height: 170px;
+  width: 450px;
+  resize: none;
+}
+
 /* 버튼 스타일링 */
 button {
   padding: 0.8rem 1.5rem;

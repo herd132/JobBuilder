@@ -29,6 +29,7 @@ public class Employer {
 	private String businessTel;					// 사업장 전화번호
 	// 새로 추가
 	private String businessDelFl;				// 사업장 삭제여부(Y/N)
+	private String businessContent;				// 사업장 소개글
 	
 	private String membershipLevel;				// 멤버십 등급
 	private String membershipName;				// 멤버십 이름

@@ -171,6 +171,9 @@
 
       <h3>상세 요강</h3>
       <div>
+        <th:block th:if="*{recruitmentProfile}">
+          <img th:src="*{recruitmentProfile}" alt="" style="width: 100%;">
+        </th:block>
         <pre th:text="*{recruitmentContent}" id="recruitmentContent"></pre>
       </div>
 
@@ -204,6 +207,7 @@
         </th:block>
         <button id="goToRecruitmentListBtn" type="button" onclick="window.history.back()"> 목록으로 </button>
       </div>
+
     </main>
   </div>
 
