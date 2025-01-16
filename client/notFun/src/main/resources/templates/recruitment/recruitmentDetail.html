@@ -163,7 +163,10 @@
 
       <h3>근무지역</h3>
       <div>
-        <div id="map" style="width: 100%; height: 500px; border: 1px solid black;" th:chat-no="${recruitment.businessAddress}"></div>
+        <div id="map" style="width: 100%; height: 500px; border: 1px solid black; position: relative;" th:address="${recruitment.businessAddress}">
+          <button id="navigate" style="position: absolute; top: 10px; right: 10px; z-index: 1; width: 60px; height: 30px; cursor: pointer;
+                                      border-radius: 6px; background-color: rgb(82, 82, 255); color: white; border: none;">길찾기</button>
+        </div>
       </div>
 
       <h3>상세 요강</h3>

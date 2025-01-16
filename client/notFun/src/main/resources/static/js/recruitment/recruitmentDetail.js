@@ -399,18 +399,21 @@ if (recommendSelect !== null) {
 let coordinateX;
 let coordinateY;
 let map;
+let markers = new Array();
+let infoWindows = new Array();
+let isPanToTriggered = false;
 
 document.addEventListener("DOMContentLoaded", () => {
   const mapElement = document.querySelector("#map");
-  const chatNo = mapElement?.getAttribute("chat-no");
+  const beforeAddress = mapElement?.getAttribute("address");
+  const address = beforeAddress.split("^^^");
 
-  if (!chatNo) {
-    console.error("chat-no 속성을 찾을 수 없습니다.");
+  if (!address) {
+    console.error("address 속성을 찾을 수 없습니다.");
     return;
   }
 
-  const address = chatNo.split("^^^");
-
+  // 네이버 맵 API 설정
   naver.maps.Service.geocode({ query: address[1] }, function (status, response) {
     if (status === naver.maps.Service.Status.ERROR) {
       return alert("Something wrong!");
@@ -422,23 +425,67 @@ document.addEventListener("DOMContentLoaded", () => {
     coordinateX = items[0].x;
     coordinateY = items[0].y;
 
-    // 지도 초기화 및 마커 생성
     workplace(coordinateY, coordinateX);
+    // 지도 초기화 및 마커 생성
     setTimeout(() => {
       addressMarkers(coordinateY, coordinateX);
       // toiletMarkers('37.7087662', '126.7817724');
     }, 100); // 약간의 딜레이 추가
+
+    const bounds = map.getBounds();
+    currentBounds = bounds;
+
+    const range = {
+        swLat: bounds._sw._lat,
+        neLat: bounds._ne._lat,
+        swLng: bounds._sw._lng,
+        neLng: bounds._ne._lng
+    }
+
+    toiletMarkers(range);
+    
+    //지도 이동 이벤트
+    naver.maps.Event.addListener(map, 'idle', function() {
+
+      const center = map.getCenter();
+      map.setCenter(center);
+      
+      if (isPanToTriggered) {
+        // panTo로 인해 발생한 idle이면 무시
+        isPanToTriggered = false;
+        return;
+      }
+      
+
+      const bounds = map.getBounds();
+      currentBounds = bounds;
+
+      const range = {
+          swLat: bounds._sw._lat,
+          neLat: bounds._ne._lat,
+          swLng: bounds._sw._lng,
+          neLng: bounds._ne._lng
+      }
+
+      removeAllMarkers();
+      toiletMarkers(range);
+    });
   });
+
+  
 });
 
 // 지도 초기화
 function workplace(Y, X) {
   map = new naver.maps.Map("map", {
     center: new naver.maps.LatLng(Y, X),
-    zoom: 16,
+    zoom: 17,
   });
+
+  map.setOptions('minZoom', 12);
 }
 
+// 도착지 마커
 function addressMarkers(Y, X) {
   new naver.maps.Marker({
     position: new naver.maps.LatLng(Y, X),
@@ -451,15 +498,75 @@ function addressMarkers(Y, X) {
 }
 
 // 화장실 마커 함수
-function toiletMarkers(Y, X) {
-  new naver.maps.Marker({
-    position: new naver.maps.LatLng(Y, X),
-    map: map,
-    icon: {
-      url: '/images/toilet.png',
-      scale: 0.5, // 50% 크기로 축소
-    }
+function toiletMarkersCreate(toilet) {
+  const marker = new naver.maps.Marker({
+    position: new naver.maps.LatLng(toilet.latitude, toilet.longitude),
+    map: map
   });
+
+  const infoWindow = new naver.maps.InfoWindow({
+    content: '<div class="info" style="width:200px;text-align: center;padding: 10px"><b>' + toilet.toiletName +
+        '</b></br>' + toilet.roadName + '</div>'
+  });
+
+  markers.push(marker);
+  infoWindows.push(infoWindow);
+}
+
+// 화장실 마커 fetch 정보 가져오기
+const toiletMarkers = (range) => {
+  fetch("/toilet/find?" + new URLSearchParams(range).toString())
+  .then(resp => resp.json())
+  .then(toiletList => {
+    
+    for(let toilet of toiletList) {
+      toiletMarkersCreate(toilet);
+    }
+    
+    for (let i=0; i<markers.length; i++) {
+      naver.maps.Event.addListener(map, "click", ClickMap(i));
+      naver.maps.Event.addListener(markers[i], 'click', getClickHandler(i));
+    }
+  })
+}
+
+// 모든 마커 삭제
+function removeAllMarkers() {
+  for (let i = 0; i < markers.length; i++) {
+    markers[i].setMap(null); // 지도에서 마커 제거
+  }
+  markers = [];
+
+  for (let i = 0; i < infoWindows.length; i++) {
+      infoWindows[i].close();
+  }
+  infoWindows = [];
+}
+
+// 다른 곳 클릭 시 infoWindow 닫기
+function ClickMap(seq) {
+  return function () {
+    if(infoWindows[seq] ) {
+      infoWindows[seq].close();
+    }
+  }
+}
+
+// 마커 클릭 이벤트
+function getClickHandler(seq) {
+  return function () {
+    const marker = markers[seq],
+    infoWindow = infoWindows[seq];
+
+    if (infoWindow.getMap()) {
+      infoWindow.close();
+    } else {
+      infoWindow.open(map, marker);
+      const position = marker.getPosition();
+      isPanToTriggered = true; // panTo로 인해 idle 이벤트가 발생할 것임을 표시
+      map.panTo(position); // 부드럽게 이동
+    }
+  }
 }
 
 // 사업장 홍보 페이지 보여주기
@@ -469,6 +576,28 @@ showPromoteBusiness.addEventListener("click", () => {
   
   let path = window.location.pathname;
   path = path.substring(path.lastIndexOf('/') + 1, path.length);
-  
   location.href = "/recruitment/showPromoteBusiness?recruitmentNo=" + path + "&businessNickname=" + businessNickname;  
+});
+
+document.getElementById('navigate').addEventListener('click', function () {
+
+  const mapElement = document.querySelector("#map");
+  const beforeAddress = mapElement?.getAttribute("address");
+  const address = beforeAddress.split("^^^");
+
+  const destination = address[1].replace(/ /g, "%20"); // 도착지 주소
+
+  naver.maps.Service.geocode({ query: address[1] }, function(status, response) {
+    if (status === naver.maps.Service.Status.ERROR) {
+      return alert('Something wrong!');
+    }
+  
+    // 성공 시의 response 처리
+    var result = response.v2,
+    items = result.addresses;
+
+    const url = `https://map.naver.com/v5/directions/-/${items[0].x},${items[0].y},${destination},,/-/transit?c=${items[0].x},${items[0].y},15,0,0,0,dh`;
+    // setMarkers(items[0].y, items[0].x);
+    window.open(url, '_blank'); // 새 창에서 열기
+  });
 });
