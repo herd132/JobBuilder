@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/recruitment/showPromoteBusiness.css">
+</head>
+
+<body>
+  <th:block th:replace="~{common/main-header}"></th:block>
+
+  <h1>회사 소개입니다.</h1>
+  <table>
+    <th:block th:object="${recruitment}">
+      <h1 th:text="*{businessName}"> </h1>
+      <tr>
+        <th>대표자명 :</th>
+        <td th:text="*{memberName}"> 대표자명</td>
+      </tr>
+      <tr>
+        <th>설립일 : </th>
+        <td th:text="*{enrollDate}"></td>
+      </tr>
+      <tr>
+        <th>대표 전화번호 : </th>
+        <td th:text="*{memberTel}"></td>
+      </tr>
+      <tr>
+        <!-- <th>사업내용 : </th>
+        <td th:text="*{businessWorktype}"></td> -->
+      </tr>
+      <tr>
+        <th> 사업장 소개</th>
+      </tr>
+    </th:block>
+  </table>
+  </section>
+
+  <section class="business-info-container">
+
+    <th:block th:object="${employer}">
+
+      <div class="business-image-area">
+        <span> 사업장 대표 이미지 : </span>
+        <img th:if="*{thumbnail}" th:src="*{thumbnail}">
+        <span th:unless="*{thumbnail}"> 등록된 이미지가 존재하지 않습니다.</span>
+      </div>
+      <div>
+        <span>사업장위치 : </span>
+        <span th:text="*{businessNickname}"></span>
+      </div>
+      <div>
+        <span>사업장 연락처 : </span>
+        <span th:if="*{businessTel}" th:text="*{businessTel}"></span>
+        <span th:unless="*{businessTel}">미입력 상태입니다.</span>
+      </div>
+      <!-- 사업장 소개 컬럼 ( update 삽입시 th:if문 이용해서 삽입 )-->
+      <div> 사업장 개요 </div>
+      <div th:text="사업장소개글임시칸"> 임시 사업장 소개글칸칸</div>
+      <div>
+        <span>사업장 주소 : </span>
+        <span th:if="*{businessAddress}" th:text="*{businessAddress}"></span>
+        <span th:unless="*{businessAddress}">미입력 상태입니다.</span>
+      </div>
+
+      <div>
+        <span>업직종 : </span>
+        <span th:if="*{#strings.length(businessWorktype)== 0 }">업직종 미입력</span>
+        <span th:if="*{#strings.length(businessWorktype)!= 0 }" th:text="*{businessWorktype}"></span>
+      </div>
+      <div>사업장 소개 이미지 : </div>
+      <div></div>
+
+      <!-- 이미지 출력 구문  
+      <th:block th:if="${ #lists.size(employer.imageList) > 0}">      
+
+        <th:block th:if="${#lists.size(employer.imageList) > start}">
+
+          <h5>업로드한 이미지</h5>
+          <th:block th:each="i : ${#numbers.sequence(start, #lists.size(employer.imageList) - 1)}">
+            <div class="img-box">
+              <div class="boardImg">
+
+                <img th:src="|${employer.imageList[i].boardImgPath}${employer.imageList[i].boardImgRename}|">
+              </div>
+            </div>
+          </th:block>
+        </th:block>
+
+      </th:block>-->
+    </th:block>
+
+  </section>
+
+  <th:block th:replace="~{common/main-footer}"></th:block>
+
+  <script th:inline="javascript">
+    const businessNickname = /*[[${recruitment.businessNickname}]]*/"";
+  </script>
+  <script src="/js/recruitment/showPromoteBusiness.js"></script>
+</body>
+
+</html>

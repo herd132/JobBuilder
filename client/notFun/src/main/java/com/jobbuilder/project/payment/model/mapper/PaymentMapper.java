@@ -1,14 +1,19 @@
 package com.jobbuilder.project.payment.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
+import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.payment.model.dto.Payment;
 
 @Mapper
 public interface PaymentMapper {
+	
+	// 사업주 조회
+	
 
 	// 맴버십 조회
 	List<Membership> selectMembershipDetails(int employerNo);
@@ -36,6 +41,10 @@ public interface PaymentMapper {
     
     // 3-1 단계 신규 MEMBERSHIP 생성
 	void newMembership(Membership membership);
+
+	List<Employer> getEmployerNo(int memberNo);
+
+
 	
 	// 3-2는 2-1과 동일
 	// void connectionPayment(Payment payment);

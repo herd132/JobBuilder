@@ -1,63 +1,104 @@
 let currentIndex = 0;
 let autoSlideInterval;
-const slideInterval = 5000; // 5초
-const carousel = document.getElementById('carousel');
+const slideInterval = 3000; // 3초
+let isTransitioning = false;
 
-// 슬라이드 이동 함수
-function moveSlide(direction) {
+function setupInfiniteCarousel() {
+    const carousel = document.getElementById('carousel');
     const slides = document.querySelectorAll('.carousel-slide');
-    if (!slides.length) return;
+    if (!carousel || !slides.length) return;
 
-    currentIndex = (currentIndex + direction + slides.length) % slides.length;
-    updateCarousel();
+    // 처음과 마지막에 보이는 아이템 수만큼 복제
+    const visibleItems = 10;
+    for (let i = 0; i < visibleItems; i++) {
+        // 앞에 마지막 아이템들 추가
+        const lastItem = slides[slides.length - 1 - i].cloneNode(true);
+        lastItem.classList.add('clone');
+        carousel.insertBefore(lastItem, carousel.firstChild);
+        
+        // 뒤에 처음 아이템들 추가
+        const firstItem = slides[i].cloneNode(true);
+        firstItem.classList.add('clone');
+        carousel.appendChild(firstItem);
+    }
+
+    // 초기 위치 설정
+    currentIndex = visibleItems;
+    updateCarousel(false);
+}
+
+function moveSlide(direction) {
+    if (isTransitioning) return;
     
-    // 수동으로 슬라이드 이동 시 자동 슬라이드 타이머 재설정
+    isTransitioning = true;
+    const slides = document.querySelectorAll('.carousel-slide:not(.clone)');
+    const totalSlides = slides.length;
+    
+    currentIndex += direction;
+    updateCarousel(true);
+
+    // transition 종료 후 위치 조정
+    setTimeout(() => {
+        const visibleItems = 10;
+        if (currentIndex <= visibleItems - 1) {
+            // 앞쪽 끝에 도달
+            currentIndex = totalSlides + (visibleItems - 1);
+            updateCarousel(false);
+        } else if (currentIndex >= totalSlides + visibleItems) {
+            // 뒤쪽 끝에 도달
+            currentIndex = visibleItems;
+            updateCarousel(false);
+        }
+        isTransitioning = false;
+    }, 300);
+
     resetAutoSlide();
 }
 
-// 캐러셀 업데이트 함수
-function updateCarousel() {
+function updateCarousel(withTransition = true) {
+    const carousel = document.getElementById('carousel');
     if (!carousel) return;
-    carousel.style.transform = `translateX(-${currentIndex * 100}%)`;
+    
+    const slideWidth = 10; // 각 슬라이드가 20%의 너비를 차지
+    carousel.style.transition = withTransition ? 'transform 0.5s ease' : 'none';
+    carousel.style.transform = `translateX(-${currentIndex * slideWidth}%)`;
 }
 
-// 자동 슬라이드 시작 함수
 function startAutoSlide() {
     autoSlideInterval = setInterval(() => {
-        moveSlide(1); // 1은 다음 슬라이드로 이동
+        moveSlide(1);
     }, slideInterval);
 }
 
-// 자동 슬라이드 중지 함수
 function stopAutoSlide() {
     if (autoSlideInterval) {
         clearInterval(autoSlideInterval);
     }
 }
 
-// 자동 슬라이드 재설정 함수
 function resetAutoSlide() {
     stopAutoSlide();
     startAutoSlide();
 }
 
-// 초기화
 document.addEventListener('DOMContentLoaded', () => {
-    updateCarousel();
+    setupInfiniteCarousel();
     startAutoSlide();
 
-    // 마우스가 캐러셀 위에 있을 때 자동 슬라이드 중지
-    carousel.addEventListener('mouseenter', stopAutoSlide);
-    
-    // 마우스가 캐러셀을 벗어날 때 자동 슬라이드 재시작
-    carousel.addEventListener('mouseleave', startAutoSlide);
+    const carousel = document.getElementById('carousel');
+    if (carousel) {
+        carousel.addEventListener('mouseenter', stopAutoSlide);
+        carousel.addEventListener('mouseleave', startAutoSlide);
+    }
 });
 
-// 페이지 벗어날 때 인터벌 정리
+window.addEventListener('resize', () => {
+    updateCarousel(false);
+});
+
 window.addEventListener('beforeunload', () => {
     stopAutoSlide();
 });
-
 //------------
 
 // 탑브랜드로고 클릭 시

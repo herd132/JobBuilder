@@ -520,6 +520,47 @@ signUpEmpForm.addEventListener("submit", e => {
     }
   }
 })
+
+
+// 모달영역
+// 모달 관련 요소들
+const serviceAgreeBtn = document.getElementById('serviceAgree');
+const privateInfoAgreeBtn = document.getElementById('privateInfoAgree');
+const recommendAgreeBtn = document.getElementById('recommendAgree');
+const modalService = document.getElementById('modalService');
+const modalPrivateInfo = document.getElementById('modalPrivateInfo');
+const modalRecommend = document.getElementById('modalRecommend');
+const closeButtons = document.querySelectorAll('.modal span');
+
+// 모달을 열기 위한 이벤트
+serviceAgreeBtn.addEventListener('click', () => openModal(modalService));
+privateInfoAgreeBtn.addEventListener('click', () => openModal(modalPrivateInfo));
+recommendAgreeBtn.addEventListener('click', () => openModal(modalRecommend));
+
+// 모달 닫기 함수
+closeButtons.forEach(button => {
+  button.addEventListener('click', () => closeModal(button.closest('.modal')));
+});
+
+// ESC 키로 모달 닫기
+document.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') {
+    const openModal = document.querySelector('.modal[style="display: flex;"]');
+    if (openModal) closeModal(openModal);
+  }
+});
+
+// 모달을 여는 함수
+function openModal(modal) {
+  modal.style.display = 'flex';
+}
+
+// 모달을 닫는 함수
+function closeModal(modal) {
+  modal.style.display = 'none';
+}
+
+
 // 회사명/점포명 입력안 된 경우 제출 막기
 // 사업장 주소 입력안 된 경우 제출 막기
 

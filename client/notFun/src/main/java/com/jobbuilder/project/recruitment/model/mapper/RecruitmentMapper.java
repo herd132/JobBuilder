@@ -1,6 +1,7 @@
 package com.jobbuilder.project.recruitment.model.mapper;
 
 import java.util.List;
+
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -236,6 +237,17 @@ public interface RecruitmentMapper {
 	 * @return
 	 */
 	int getLatestTopBrandRecruitments(int employerNo);
+	
+	
+
+	// 공고에 맞는 employNo 조회하기
+	Recruitment showPromoteEmploy(Map<String, Object> paramMap);
+	// 사업장 조회
+	Employer getBusiness(int empNo);
+	// 사업장 직종 타입 조회
+	List<BusinessWorktype> getBusinessWorktype(int empNo);
+	// 썸네일 조회하기 ( 로고 )
+	String selectThumbNail(int employerNo);
 
 
 

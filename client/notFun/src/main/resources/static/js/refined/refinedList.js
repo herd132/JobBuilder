@@ -1,353 +1,573 @@
-// 중분류/소분류를 화면에 그려줄 때 쓰는 Mock
+/************************************************
+ * 전역 데이터 구조
+ ************************************************/
 let mockSubcategories = {};
 let mockMinorCategories = {};
 
-// 대분류별 “일반/전체” 선택 상태를 담는 객체
-// 예: category1 / category11, category2 / category22 ...
 const categorySelections = {
-  category1: [],  // 대분류 1 (일반 소분류)
-  category11: [], // 대분류 1 (전체)
-  category2: [],  // 대분류 2 (일반 소분류)
-  category22: [], // 대분류 2 (전체)
-  category3: [],
-  category33: [],
-  category4: [],
-  category44: []
-  // 새로운 대분류가 필요하면 category5, category55 식으로 확장
+  category1: [],  category11: [],
+  category2: [],  category22: [],
+  // 대분류3
+  category31: [], category32: [], category33: [],
+  // 대분류4
+  category41: [], category42: [], category43: [], category44: [],
+  // 대분류5
+  category51: [],
+  category52: {} // 배열에서 객체로 변경
 };
 
-// selectedMinorCategories는 “배열에 담기 전 임시 관리”를 위한 객체.
-//  - key: 실제 표시되는 소분류명 or “전체” 임시 구분값
-//  - value: { category, isEntire, displayName, codeForServer, … } 등
 let selectedMinorCategories = {};
 
-// ‘중분류 이름 → 코드’ 매핑 (대분류별 관리)
-const subCatNameToCodeMap = {};
+let subCatNameToCodeMap = {
+  1: {},
+  2: {},
+  3: {},
+  4: {},
+  5: {}
+};
 
-/************************************
- * 서버 연동
- ************************************/
-const ca = async () => {
+let currentSubcategoryMap = {};
+let currentCategory = 1;
+
+// 대분류별 최대 선택 수
+const categoryLimits = {
+  category1: 10, // 대분류1: 최대 10개 (요청에 따라 변경 가능)
+  category2: 10, // 대분류2: 최대 10개
+  category3: 10, // 대분류3: 최대 10개
+  category4: 10, // 대분류4: 최대 10개
+  category5: 1   // 대분류5: 최대 1개
+};
+
+/************************************************
+ * 숫자 포맷 함수
+ ************************************************/
+function formatNumber(n) {
+  return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+/************************************************
+ * 데이터 가져오기
+ ************************************************/
+async function ca() {
   try {
+    // 데이터 요청 (서버와 통신)
     const response = await fetch("/refined/categories", {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { "Content-Type": "application/json" }
     });
     const data = await response.json();
-    console.log("서버에서 받은 데이터:", data);
 
     // 초기화
     mockSubcategories = {};
     mockMinorCategories = {};
-    for (const key in subCatNameToCodeMap) {
-      delete subCatNameToCodeMap[key];
-    }
+    subCatNameToCodeMap = { 1: {}, 2: {}, 3: {}, 4: {}, 5: {} };
 
-    // 대분류 별 세팅
+    // 대분류1,2 처리
     const categoryMappings = [
       {
+        mainCategory: 1,
         refinedSub: data.refinedAddress1,
         refinedMinor: data.refinedAddress2,
-        mainCategory: 1,
         parentKey: "workcondAddressTypeInfo",
         childKey: "workcondAddressTypeNo"
       },
       {
+        mainCategory: 2,
         refinedSub: data.refineJob1,
         refinedMinor: data.refineJob2,
-        mainCategory: 2,
         parentKey: "worktypeCategory",
         childKey: "worktypeNo"
-      },
+      }
     ];
 
-    // mockSubcategories, mockMinorCategories 구성
-    categoryMappings.forEach(({ refinedSub, refinedMinor, mainCategory, parentKey, childKey }) => {
-      // 대분류별 subCatNameToCodeMap 초기화
-      if (!subCatNameToCodeMap[mainCategory]) {
-        subCatNameToCodeMap[mainCategory] = {};
-      }
+    categoryMappings.forEach(({ mainCategory, refinedSub, refinedMinor, parentKey, childKey }) => {
+      if (!refinedSub) return;
 
-      // 1) 중분류
-      if (refinedSub) {
-        refinedSub.forEach((item) => {
-          const subName = item[parentKey];  // 예: "서울"
-          const subCode = item[childKey];   // 예: "0100"
-          if (!subName || !subCode) return;
+      // 중분류
+      refinedSub.forEach((item) => {
+        const subName = item[parentKey];
+        const subCode = item[childKey];
+        if (!subName || !subCode) return;
 
-          if (!mockSubcategories[mainCategory]) {
-            mockSubcategories[mainCategory] = [];
-          }
-          mockSubcategories[mainCategory].push(subName);
+        if (!mockSubcategories[mainCategory]) {
+          mockSubcategories[mainCategory] = [];
+        }
+        mockSubcategories[mainCategory].push(subName);
 
-          subCatNameToCodeMap[mainCategory][subName] = subCode;
-        });
-      }
+        if (!subCatNameToCodeMap[mainCategory]) {
+          subCatNameToCodeMap[mainCategory] = {};
+        }
+        subCatNameToCodeMap[mainCategory][subName] = subCode;
+      });
 
-      // 2) 소분류
-      if (refinedMinor && refinedSub) {
+      // 소분류
+      if (refinedMinor) {
         refinedMinor.forEach((item) => {
           const rawMinorCode = item[childKey] || "";
-          const parent2 = rawMinorCode.slice(0, 2); // 앞2자리
-          // 해당 parentCode를 갖는 중분류를 찾아 subName 얻기
-          const parentName = refinedSub.find((p) => p[childKey]?.slice(0,2) === parent2)?.[parentKey];
-          if (!parentName) return;
+          const parentCode = rawMinorCode.slice(0, 2);
+          const parentObj = refinedSub.find((p) => p[childKey]?.slice(0, 2) === parentCode);
+          if (!parentObj) return;
 
+          const parentName = parentObj[parentKey];
           if (!mockMinorCategories[parentName]) {
             mockMinorCategories[parentName] = [];
           }
-          mockMinorCategories[parentName].push(item[parentKey]); // 예: "강남구"
+          mockMinorCategories[parentName].push(item[parentKey]);
         });
       }
     });
 
-    console.log("mockSubcategories:", mockSubcategories);
-    console.log("mockMinorCategories:", mockMinorCategories);
-    console.log("subCatNameToCodeMap:", subCatNameToCodeMap);
+    // 대분류3
+    mockSubcategories[3] = ["근무기간", "근무요일", "근무시간"];
+    mockMinorCategories["근무기간"] = data.refinePeriod2.map((obj) => obj.periodName);
+    mockMinorCategories["근무요일"] = data.refineDays2.map((obj) => obj.daysName);
+    mockMinorCategories["근무시간"] = data.refineTime2.map((obj) => obj.timeName);
 
-    // UI 초기화
+    // 대분류4
+    mockSubcategories[4] = ["근무형태", "학력", "복리후생", "우대사항"];
+    mockMinorCategories["근무형태"] = data.refineJobType2.map((obj) => obj.jobtypeName);
+    mockMinorCategories["학력"] = data.refineGrade2.map((obj) => obj.gradeName);
+    mockMinorCategories["복리후생"] = data.refineSupport2.map((obj) => obj.supportCategory);
+    mockMinorCategories["우대사항"] = data.refinePreferred2.map((obj) => obj.preferredCategory);
+
+    // 대분류5
+    mockSubcategories[5] = ["급여형태", "직접입력"];
+    mockMinorCategories["급여형태"] = data.refineSalary2.map((obj) => obj.salaryName);
+    mockMinorCategories["직접입력"] = ["시급\u00A0", "월급\u00A0"];
+
     init();
   } catch (error) {
-    console.error("요청 오류:", error);
+    console.error("오류:", error);
   }
-};
+}
 
-// 실행
-ca();
+/************************************************
+ * 초기화
+ ************************************************/
+function init() {
+  // 대분류 버튼 클릭 로직
+  document.querySelectorAll(".category-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      document.querySelectorAll(".category-btn").forEach((el) => el.classList.remove("active"));
+      btn.classList.add("active");
+      const catId = parseInt(btn.dataset.category, 10);
+      changeMainCategory(catId);
+    });
+  });
 
-// 현재 선택된 대분류
-let currentCategory = null;
+  document.getElementById("reset-btn").addEventListener("click", resetFilters);
 
-// 대분류 변경
+  // 기본 대분류=1
+  currentCategory = 1;
+  changeMainCategory(currentCategory);
+}
 
+/************************************************
+ * 대분류 변경
+ ************************************************/
 function changeMainCategory(categoryId) {
   currentCategory = categoryId;
   renderSubcategories(categoryId);
-  renderMinorCategories(categoryId);
 
-  // 기존 선택 상태 UI 갱신
+  const storedSub = currentSubcategoryMap[categoryId];
+  if (storedSub) {
+    renderMinorCategories(categoryId, storedSub);
+    const ul = document.getElementById("subcategories-list");
+    const li = Array.from(ul.querySelectorAll("li")).find((x) => x.dataset.id === storedSub);
+    if (li) li.classList.add("active");
+  } else {
+    renderMinorCategories(categoryId, null);
+  }
+
+  // 대분류5일 경우 소분류를 2줄로 렌더링하기 위한 CSS 클래스 추가
+  if (categoryId === 5) {
+    document.getElementById("minorcategories-list").classList.add("two-columns");
+  } else {
+    document.getElementById("minorcategories-list").classList.remove("two-columns");
+  }
+
   updateSelectedList();
 }
 
-// 중분류 목록 렌더링
+/************************************************
+ * 중분류 렌더링
+ ************************************************/
 function renderSubcategories(categoryId) {
-  const subcategoriesList = document.getElementById("subcategories-list");
-  subcategoriesList.innerHTML = "";
+  const container = document.getElementById("subcategories-list");
+  container.innerHTML = "";
 
-  (mockSubcategories[categoryId] || []).forEach((subcategory) => {
+  (mockSubcategories[categoryId] || []).forEach((subName) => {
     const li = document.createElement("li");
-    li.textContent = subcategory;
-    li.dataset.id = subcategory;
+    li.textContent = subName;
+    li.dataset.id = subName;
 
-    li.addEventListener("click", () => {
-      document.querySelectorAll("#subcategories-list li").forEach((el) => el.classList.remove("active"));
-      li.classList.add("active");
-      renderMinorCategories(categoryId, subcategory);
-    });
-
-    subcategoriesList.appendChild(li);
-  });
-}
-
-//소분류 목록 렌더링
-function renderMinorCategories(categoryId, subcategory = null) {
-  const minorcategoriesList = document.getElementById("minorcategories-list");
-  minorcategoriesList.innerHTML = "";
-
-  if (!subcategory) return;
-
-  // 1) '전체' 항목
-  const entireLi = document.createElement("li");
-  entireLi.textContent = `${subcategory} 전체`;
-  entireLi.dataset.id = `${subcategory}_entire`;
-
-  // 이미 선택된 상태라면 active
-  // -> selectedMinorCategories에서 key를 찾되, isEntire = true && category = categoryId
-  const entireKey = getEntireKey(categoryId, subcategory);
-  if (selectedMinorCategories[entireKey]) {
-    entireLi.classList.add("active");
-  }
-
-  entireLi.addEventListener("click", () => {
-    toggleEntire(categoryId, subcategory);
-  });
-  minorcategoriesList.appendChild(entireLi);
-
-  // 2) 개별 소분류
-  (mockMinorCategories[subcategory] || []).forEach((minorCategory) => {
-    const li = document.createElement("li");
-    li.textContent = minorCategory;
-    li.dataset.id = minorCategory;
-
-    // 이미 선택되었다면 active
-    // -> selectedMinorCategories에 "minorCategory" key가 있고, category 일치하는지
-    if (selectedMinorCategories[minorCategory] && 
-        selectedMinorCategories[minorCategory].category === categoryId) {
+    if (currentSubcategoryMap[categoryId] === subName) {
       li.classList.add("active");
     }
 
     li.addEventListener("click", () => {
-      toggleMinorCategory(categoryId, minorCategory, subcategory);
+      container.querySelectorAll("li").forEach((el) => el.classList.remove("active"));
+      li.classList.add("active");
+      currentSubcategoryMap[categoryId] = subName;
+      renderMinorCategories(categoryId, subName);
     });
-    minorcategoriesList.appendChild(li);
+
+    container.appendChild(li);
   });
 }
 
-// 전체 토글
-function toggleEntire(categoryId, subName) {
-  // 1) 같은 중분류 소분류 전부 해제
+/************************************************
+ * 소분류 렌더링
+ ************************************************/
+function renderMinorCategories(categoryId, subName = null) {
+  const container = document.getElementById("minorcategories-list");
+  container.innerHTML = "";
+  if (!subName) return;
+
+  // 대분류1,2 -> '전체' 버튼
+  if (categoryId === 1 || categoryId === 2) {
+    const entireLi = document.createElement("li");
+    entireLi.textContent = `${subName} 전체`;
+    entireLi.dataset.id = `${subName}_entire`;
+    const entireKey = getEntireKey(categoryId, subName);
+    if (selectedMinorCategories[entireKey]) {
+      entireLi.classList.add("active");
+    }
+    entireLi.addEventListener("click", () => toggleEntire(categoryId, subName));
+    container.appendChild(entireLi);
+  }
+
   (mockMinorCategories[subName] || []).forEach((minor) => {
+    const li = document.createElement("li");
+    li.textContent = minor;
+    li.dataset.id = minor;
+
+    // 활성화 상태 확인
+    if (categoryId === 5 && subName === "직접입력") {
+      // 직접입력 소분류의 경우 고유 키로 활성화 상태 확인
+      const uniqueKey = `${minor.trim()}_이상`;
+      if (selectedMinorCategories[uniqueKey] && selectedMinorCategories[uniqueKey].category === categoryId) {
+        li.classList.add("active");
+      }
+    } else {
+      if (selectedMinorCategories[minor] && selectedMinorCategories[minor].category === categoryId) {
+        li.classList.add("active");
+      }
+    }
+
+    li.addEventListener("click", () => toggleMinorCategory(categoryId, minor, subName));
+    container.appendChild(li);
+  });
+}
+
+/************************************************
+ * '전체' 토글 (대분류1,2)
+ ************************************************/
+function toggleEntire(categoryId, subName) {
+  // 같은 중분류 소분류 모두 해제
+  (mockMinorCategories[subName] || []).forEach((m) => {
+    if (selectedMinorCategories[m] && selectedMinorCategories[m].category === categoryId) {
+      delete selectedMinorCategories[m];
+      document.querySelector(`[data-id="${m}"]`)?.classList.remove("active");
+    }
+  });
+
+  const entireKey = getEntireKey(categoryId, subName);
+  if (selectedMinorCategories[entireKey]) {
+    // 해제
+    delete selectedMinorCategories[entireKey];
+    document.querySelector(`[data-id="${subName}_entire"]`)?.classList.remove("active");
+  } else {
+    // 대분류5 제외, 최대 선택 수 확인
+    const countInCat = countInCategory(categoryId);
+    if (countInCat >= categoryLimits[`category${categoryId}`]) {
+      alert(`대분류${categoryId}는 최대 ${categoryLimits[`category${categoryId}`]}개까지 선택 가능합니다.`);
+      return;
+    }
+
+    let codeForServer = "";
+    if (subCatNameToCodeMap[categoryId] && subCatNameToCodeMap[categoryId][subName]) {
+      const rawCode = subCatNameToCodeMap[categoryId][subName];
+      codeForServer = rawCode.slice(0, 2) + "%";
+    } else {
+      codeForServer = subName; 
+    }
+
+    selectedMinorCategories[entireKey] = {
+      category: categoryId,
+      isEntire: true,
+      displayName: `${subName} 전체`,
+      codeForServer,
+      subName
+    };
+    document.querySelector(`[data-id="${subName}_entire"]`)?.classList.add("active");
+  }
+
+  updateSelectedList();
+  changeServer();
+}
+
+/************************************************
+ * 소분류 토글
+ ************************************************/
+function toggleMinorCategory(categoryId, minor, subName) {
+  // 대분류5의 소분류 처리
+  if (categoryId === 5) {
+    // "직접입력" 소분류인 경우
+    if (subName === "직접입력" && (minor === "시급\u00A0" || minor === "월급\u00A0")) {
+      // 고유 키 생성 (예: 시급_이상, 월급_이상)
+      const uniqueKey = `${minor.trim()}_이상`;
+
+      if (selectedMinorCategories[uniqueKey]) {
+        // 이미 선택된 경우 해제
+        delete selectedMinorCategories[uniqueKey];
+        document.querySelector(`[data-id="${minor}"]`)?.classList.remove("active");
+        updateSelectedList();
+        changeServer();
+        return;
+      }
+
+      // 최대 선택 수 확인 (대분류5는 최대 1개)
+      const countInCat = countInCategory(categoryId);
+      if (countInCat >= categoryLimits[`category${categoryId}`]) {
+        alert("대분류5는 최대 1개만 선택 가능합니다.");
+        return;
+      }
+
+      // 금액 입력 받기
+      let userInput = prompt(`${minor.trim()} 금액을 입력하세요 (1원 이상):`);
+
+      if (userInput === null) {
+        // 취소
+        return;
+      }
+      userInput = userInput.trim();
+
+      if (userInput === "") {
+        alert("금액을 입력해야 합니다.");
+        return;
+      }
+
+      // 천 단위 구분 기호 제거 후 숫자 변환
+      const amountNum = parseInt(userInput.replace(/,/g, ''), 10);
+      if (isNaN(amountNum)) {
+        alert("숫자만 입력 가능합니다.");
+        return;
+      }
+      if (amountNum < 1) {
+        alert("1원 이상 입력해야 합니다.");
+        return;
+      }
+
+      // 선택 영역에 표시 (1000 단위마다 , 추가)
+      const displayText = `${minor.trim()} ${formatNumber(amountNum)}원 이상`;
+
+      // codeForServer = { salaryNo: number, salaryMount: number }
+      const salaryNo = (minor === "시급\u00A0") ? 1 : 2;
+      const codeForServer = {
+        salaryNo: salaryNo,       // int
+        salaryMount: amountNum    // int
+      };
+
+      selectedMinorCategories[uniqueKey] = {
+        category: categoryId,
+        isEntire: false,
+        displayName: displayText,
+        codeForServer: codeForServer,
+        subName
+      };
+      document.querySelector(`[data-id="${minor}"]`)?.classList.add("active");
+
+      updateSelectedList();
+      changeServer();
+      return;
+    }
+
+    // "급여형태" 소분류인 경우
+    if (subName === "급여형태") {
+      if (selectedMinorCategories[minor] && selectedMinorCategories[minor].category === categoryId) {
+        // 이미 선택된 경우 해제
+        delete selectedMinorCategories[minor];
+        document.querySelector(`[data-id="${minor}"]`)?.classList.remove("active");
+        updateSelectedList();
+        changeServer();
+        return;
+      }
+
+      // 최대 선택 수 확인 (대분류5는 최대 1개)
+      const countInCat = countInCategory(categoryId);
+      if (countInCat >= categoryLimits[`category${categoryId}`]) {
+        alert("대분류5는 최대 1개만 선택 가능합니다.");
+        return;
+      }
+
+      // 일반 선택
+      selectedMinorCategories[minor] = {
+        category: categoryId,
+        isEntire: false,
+        displayName: minor,
+        codeForServer: minor,
+        subName
+      };
+      document.querySelector(`[data-id="${minor}"]`)?.classList.add("active");
+
+      updateSelectedList();
+      changeServer();
+      return;
+    }
+  } else {
+    // 대분류1,2,3,4의 일반 소분류 처리
+
+    // 이미 선택된 소분류라면 해제
     if (selectedMinorCategories[minor] && selectedMinorCategories[minor].category === categoryId) {
       delete selectedMinorCategories[minor];
       document.querySelector(`[data-id="${minor}"]`)?.classList.remove("active");
-    }
-  });
-
-  // 2) '전체' key
-  const entireKey = getEntireKey(categoryId, subName);
-
-  // 이미 선택돼 있으면 해제
-  if (selectedMinorCategories[entireKey]) {
-    delete selectedMinorCategories[entireKey];
-    document.querySelector(`[data-id="${subName}_entire"]`)?.classList.remove("active");
-  } else {
-    // 선택 가능 체크
-    if (Object.keys(selectedMinorCategories).length < 10) {
-      // '전체' 코드: 앞2자리 + '%'
-      const rawCode = subCatNameToCodeMap[categoryId]?.[subName] || "";
-      const entireCode = rawCode.slice(0,2) + "%"; 
-
-      selectedMinorCategories[entireKey] = {
-        category: categoryId,
-        isEntire: true,
-        displayName: `${subName} 전체`,
-        codeForServer: entireCode
-      };
-      document.querySelector(`[data-id="${subName}_entire"]`)?.classList.add("active");
-    } else {
-      alert("최대 10개까지 선택 가능합니다.");
+      updateSelectedList();
+      changeServer();
       return;
     }
-  }
 
-  updateSelectedList();
-  changeServer();
-}
+    // 대분류1,2 -> '전체' 해제
+    if (categoryId === 1 || categoryId === 2) {
+      const entireKey = getEntireKey(categoryId, subName);
+      if (selectedMinorCategories[entireKey]) {
+        delete selectedMinorCategories[entireKey];
+        document.querySelector(`[data-id="${subName}_entire"]`)?.classList.remove("active");
+      }
+    }
 
-//개별 소분류 토글
-function toggleMinorCategory(categoryId, minorCategory, subName) {
-  // 만약 '전체'가 선택돼 있으면 해제
-  const entireKey = getEntireKey(categoryId, subName);
-  if (selectedMinorCategories[entireKey]) {
-    delete selectedMinorCategories[entireKey];
-    document.querySelector(`[data-id="${subName}_entire"]`)?.classList.remove("active");
-  }
-
-  
-  if (selectedMinorCategories[minorCategory] && 
-      selectedMinorCategories[minorCategory].category === categoryId) {
-    // 해제
-    delete selectedMinorCategories[minorCategory];
-    document.querySelector(`[data-id="${minorCategory}"]`)?.classList.remove("active");
-  } else {
-    // 추가
-    if (Object.keys(selectedMinorCategories).length < 10) {
-      selectedMinorCategories[minorCategory] = {
-        category: categoryId,
-        isEntire: false,
-        displayName: minorCategory,
-        codeForServer: minorCategory 
-      };
-      document.querySelector(`[data-id="${minorCategory}"]`)?.classList.add("active");
-    } else {
-      alert("최대 10개까지 선택 가능합니다.");
+    // 다른 대분류는 최대 선택 수 확인
+    const countInCat = countInCategory(categoryId);
+    if (countInCat >= categoryLimits[`category${categoryId}`]) {
+      alert(`더이상 추가할 수 없습니다.`);
       return;
     }
-  }
 
-  updateSelectedList();
-  changeServer();
+    // 일반 선택
+    let codeForServer = minor;
+    selectedMinorCategories[minor] = {
+      category: categoryId,
+      isEntire: false,
+      displayName: minor,
+      codeForServer,
+      subName
+    };
+    document.querySelector(`[data-id="${minor}"]`)?.classList.add("active");
+
+    updateSelectedList();
+    changeServer();
+  }
 }
 
-/************************************
- * '전체' key 생성
- *  - categoryId + subName + "_entire" 형태로 고유화
- ************************************/
+/************************************************
+ * 대분류별 현재 선택된 항목 수
+ ************************************************/
+function countInCategory(catId) {
+  if (catId === 5) {
+    // 대분류5는 category51.length + (category52 has selection ? 1 : 0)
+    let count = categorySelections.category51.length;
+    if (categorySelections.category52.salaryNo !== undefined && categorySelections.category52.salaryMount !== undefined) {
+      count += 1;
+    }
+    return count;
+  }
+  return Object.values(selectedMinorCategories).filter(v => v.category === catId).length;
+}
+
+/************************************************
+ * '전체' key
+ ************************************************/
 function getEntireKey(categoryId, subName) {
   return `entire_${categoryId}_${subName}`;
 }
 
-/************************************
- * 선택 목록 UI 렌더링
- *  - categorySelections에 담아주어야 함
- ************************************/
+/************************************************
+ * 선택 목록 UI
+ ************************************************/
 function updateSelectedList() {
   const selectedList = document.getElementById("selected-list");
   selectedList.innerHTML = "";
 
-  // 1) categorySelections 초기화
+  // 초기화
   Object.keys(categorySelections).forEach((k) => {
-    categorySelections[k] = [];
+    if (k === "category52") {
+      categorySelections[k] = {}; // 객체로 초기화
+    } else {
+      categorySelections[k] = [];
+    }
   });
 
-  // 2) selectedMinorCategories -> categorySelections
-  //    - isEntire: true -> category11,22,...
-  //    - isEntire: false -> category1,2,...
+  // selectedMinorCategories -> categorySelections
   Object.keys(selectedMinorCategories).forEach((key) => {
     const info = selectedMinorCategories[key];
-    const catId = info.category;
-    const isEntire = info.isEntire;
-    const codeForServer = info.codeForServer; // "01%" or 소분류명 등
+    const { category, isEntire, codeForServer, subName } = info;
 
-    if (catId === 1) {
-      if (isEntire) {
-        // 대분류1 전체 -> category11
-        categorySelections.category11.push(codeForServer);
-      } else {
-        // 대분류1 일반 -> category1
-        categorySelections.category1.push(codeForServer);
-      }
-    } else if (catId === 2) {
-      if (isEntire) {
-        categorySelections.category22.push(codeForServer);
-      } else {
-        categorySelections.category2.push(codeForServer);
-      }
-    } 
-    // 필요 시 catId 3,4도 else if 로 추가
-  });
-
-  const groupMap = {
-    1: [], 2: [], 3: [], 4: []
-  };
-
-  // selectedMinorCategories를 순회하여 displayName을 분류
-  Object.keys(selectedMinorCategories).forEach((k) => {
-    const { category, displayName } = selectedMinorCategories[k];
-    if (!groupMap[category]) {
-      groupMap[category] = [];
+    if (category === 1) {
+      if (isEntire) categorySelections.category11.push(codeForServer);
+      else categorySelections.category1.push(codeForServer);
     }
-    groupMap[category].push({ key: k, displayName });
+    else if (category === 2) {
+      if (isEntire) categorySelections.category22.push(codeForServer);
+      else categorySelections.category2.push(codeForServer);
+    }
+    else if (category === 3) {
+      if (subName === "근무기간") categorySelections.category31.push(codeForServer);
+      else if (subName === "근무요일") categorySelections.category32.push(codeForServer);
+      else categorySelections.category33.push(codeForServer);
+    }
+    else if (category === 4) {
+      if (subName === "근무형태") categorySelections.category41.push(codeForServer);
+      else if (subName === "학력") categorySelections.category42.push(codeForServer);
+      else if (subName === "복리후생") categorySelections.category43.push(codeForServer);
+      else categorySelections.category44.push(codeForServer);
+    }
+    // 대분류5
+    else if (category === 5) {
+      if (subName === "급여형태") {
+        // 예) "정규직" 등
+        categorySelections.category51.push(codeForServer);
+      } else {
+        // 직접입력 => codeForServer = { salaryNo: int, salaryMount: int }
+        // category52은 객체로 저장
+        categorySelections.category52.salaryNo = codeForServer.salaryNo;
+        categorySelections.category52.salaryMount = codeForServer.salaryMount;
+      }
+    }
   });
 
-  // 렌더링
+  // UI 그리기
+  const groupMap = { 1: [], 2: [], 3: [], 4: [], 5: [] };
+  Object.entries(selectedMinorCategories).forEach(([k, v]) => {
+    const cat = v.category;
+    groupMap[cat].push({ key: k, info: v });
+  });
+
   Object.entries(groupMap).forEach(([catId, items]) => {
     if (!items || items.length === 0) return;
-
     const groupDiv = document.createElement("div");
     groupDiv.classList.add("category-group");
-    groupDiv.dataset.category = `category${catId}`;
+    groupDiv.dataset.category = catId;
 
     const ul = document.createElement("ul");
-    items.forEach(({ key, displayName }) => {
+    items.forEach(({ key, info }) => {
       const li = document.createElement("li");
-      li.textContent = `${displayName} X`;
+      li.textContent = info.displayName + " X";
       li.dataset.id = key;
 
-      // X 버튼 -> 선택 해제
+      // X 클릭 -> 해제
       li.addEventListener("click", () => {
         delete selectedMinorCategories[key];
         document.querySelector(`[data-id="${key}"]`)?.classList.remove("active");
+
+        if (info.subName) {
+          const stillSelected = Object.values(selectedMinorCategories).some(
+            (val) => val.category === info.category && val.subName === info.subName
+          );
+          if (!stillSelected && currentSubcategoryMap[info.category] === info.subName) {
+            currentSubcategoryMap[info.category] = null;
+          }
+        }
+
         updateSelectedList();
         changeServer();
       });
@@ -361,71 +581,107 @@ function updateSelectedList() {
     }
   });
 
-  console.log("categorySelections:", categorySelections);
   updateCount();
 }
 
-//카운트 업데이트
+/************************************************
+ * 카운트 업데이트
+ ************************************************/
 function updateCount() {
-  const count = Object.keys(selectedMinorCategories).length;
-  document.getElementById("selection-count").textContent = `${count}/10`;
+  const cat1Count = categorySelections.category1.length + categorySelections.category11.length;
+  const cat2Count = categorySelections.category2.length + categorySelections.category22.length;
+  const cat3Count = categorySelections.category31.length
+                  + categorySelections.category32.length
+                  + categorySelections.category33.length;
+  const cat4Count = categorySelections.category41.length
+                  + categorySelections.category42.length
+                  + categorySelections.category43.length
+                  + categorySelections.category44.length;
+  const cat5Count = categorySelections.category51.length
+                  + (categorySelections.category52.salaryMount !== undefined ? 1 : 0);
 
-  // 대분류별 카운트
-  const categoryCounts = {};
-  Object.keys(selectedMinorCategories).forEach((k) => {
-    const c = selectedMinorCategories[k].category;
-    categoryCounts[c] = (categoryCounts[c] || 0) + 1;
-  });
+  // 예: <span id="selection-count-1">0/10</span>
+  const sc1 = document.getElementById("selection-count-1");
+  const sc2 = document.getElementById("selection-count-2");
+  const sc3 = document.getElementById("selection-count-3");
+  const sc4 = document.getElementById("selection-count-4");
+  const sc5 = document.getElementById("selection-count-5");
 
-  // category-btn 배지 표시
+  if (sc1) sc1.textContent = `${cat1Count}/10`;
+  if (sc2) sc2.textContent = `${cat2Count}/10`;
+  if (sc3) sc3.textContent = `${cat3Count}/10`;
+  if (sc4) sc4.textContent = `${cat4Count}/10`;
+  if (sc5) sc5.textContent = `${cat5Count}/1`;
+
+  // 버튼 배지(name="category-count") 처리
   document.querySelectorAll(".category-btn").forEach((btn) => {
-    const cat = parseInt(btn.dataset.category, 10);
-    const countBadge = btn.querySelector(".count-badge");
-    if (categoryCounts[cat]) {
-      countBadge.textContent = categoryCounts[cat];
-      countBadge.classList.add("visible");
+    const catId = parseInt(btn.dataset.category, 10);
+    const badge = btn.querySelector('[name="category-count"]');
+    if (!badge) return;
+
+    let cCount = 0;
+    if (catId === 1) cCount = cat1Count;
+    else if (catId === 2) cCount = cat2Count;
+    else if (catId === 3) cCount = cat3Count;
+    else if (catId === 4) cCount = cat4Count;
+    else if (catId === 5) cCount = cat5Count;
+
+    if (cCount > 0) {
+      badge.textContent = cCount;
+      badge.classList.add("visible");
     } else {
-      countBadge.textContent = "";
-      countBadge.classList.remove("visible");
+      badge.textContent = "";
+      badge.classList.remove("visible");
     }
   });
 }
 
+/************************************************
+ * reset & 서버 동기화
+ ************************************************/
 function resetFilters() {
   selectedMinorCategories = {};
-  document.querySelectorAll(".active").forEach((el) => el.classList.remove("active"));
-  updateSelectedList();
-  defaultServer(); // 서버와 동기화
-}
+  currentSubcategoryMap = {};
 
-function init() {
-  currentCategory = 1;
-  changeMainCategory(currentCategory);
-
-  document.querySelectorAll(".category-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document.querySelectorAll(".category-btn").forEach((el) => el.classList.remove("active"));
-      btn.classList.add("active");
-
-      changeMainCategory(parseInt(btn.dataset.category, 10));
-    });
+  // 현재 대분류 버튼은 유지하고, 소분류 active 해제
+  document.querySelectorAll(".active").forEach((el) => {
+    if (!el.classList.contains("category-btn")) {
+      el.classList.remove("active");
+    }
   });
 
-  document.getElementById("reset-btn").addEventListener("click", resetFilters);
+  updateSelectedList();
+  defaultServer();
 }
 
-// 실행
-init();
 
+ca(); // 데이터를 로딩한 후 init();
 
-
+/************************************************
+ * CSS 추가 (대분류5의 소분류를 2줄로 렌더링하기 위해)
+ ************************************************/
+(function addTwoColumnsCSS() {
+  const style = document.createElement('style');
+  style.innerHTML = `
+    .two-columns {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+    /* 추가적인 CSS 스타일링을 원하시면 여기에 작성하세요 */
+    #minorcategories-list.two-columns li {
+      /* 예시: 가운데 정렬 */
+      text-align: center;
+    }
+  `;
+  document.head.appendChild(style);
+})();
 
 
 
 
 
 const changeServer = async () => {
-  console.log("changeServer 호출됨");
   const urlParams = new URLSearchParams(window.location.search);
   const currentPage = parseInt(urlParams.get("cp")) || 1;
  
@@ -445,7 +701,6 @@ window.history.replaceState(
       body: JSON.stringify({ categorySelections }),
     });
     const data = await response.json();
-    console.log("서버에서 받은 데이터:", data);
 
     const recruitment = data.recruitment || [];
     const itemsPerPage = 10;
@@ -460,21 +715,6 @@ window.history.replaceState(
     console.error("요청 오류:", error);
   }
 };
-
-
-document.addEventListener("DOMContentLoaded", () => {
-    const testButton = document.getElementById("test-btn");
-  
-    if (testButton) {
-      testButton.addEventListener("click", () => {
-        console.log("버튼 클릭됨");
-        changeServer(); // changeServer 호출
-      });
-    } else {
-      console.error("test-btn 버튼이 존재하지 않습니다.");
-    }
-});
-
 
 
 // 경력 변환
@@ -529,7 +769,7 @@ const formatSalary = (salaryNo, salaryAmount, salaryName = "") => {
   } else if (salaryNo === 3 || salaryNo === 4) {
     return `${salaryName}`;
   } else {
-    return "급여 정보 없음";
+    return "";
   }
 };
 
@@ -554,7 +794,6 @@ window.history.replaceState(
       // body: JSON.stringify({}), // 검색조건없는 전체조회로 바꿨기 때문에 바디로 보낼게 없어짐 (생략)
     });
     const data = await response.json();
-    console.log("서버에서 받은 데이터:", data);
 
     const recruitment = data.recruitment || [];
     const itemsPerPage = 10; // 한 페이지당 항목 수
@@ -583,7 +822,6 @@ const updateUI = (recruitment) => {
   recruitmentBody.innerHTML = "";
 
   if (!recruitment || recruitment.length === 0) {
-    console.log("updateUI: 빈 데이터입니다.");
     const noDataRow = document.createElement("tr");
     noDataRow.innerHTML = '<td colspan="7">공고가 존재하지 않습니다.</td>';
     recruitmentBody.appendChild(noDataRow);
@@ -605,7 +843,7 @@ const updateUI = (recruitment) => {
         </ul>
       </td>
       <td>
-        <span>${item.salaryMount ? `${formatSalaryAmount(item.salaryMount)} 원` : "급여 정보 없음"}</span>
+        <span>${item.salaryMount ? `${formatSalaryAmount(item.salaryMount)} 원` : ""}</span>
         <span>${item.salaryName || "값 없음"}</span>
       </td>
       <td>${item.timeName || "값 없음"}</td>
@@ -620,7 +858,6 @@ const updateUI = (recruitment) => {
 // 페이지네이션 로직
 const createPagination = (data, paginationContainer) => {
   if (!Array.isArray(data) || data.length === 0) {
-    console.log("페이지네이션: 빈 데이터로 호출됨");
     return;
   }
 
@@ -688,3 +925,9 @@ const createPagination = (data, paginationContainer) => {
   // >> : 제일 마지막으로 이동
   paginationContainer.appendChild(createLink(">>", totalPages));
 };
+
+
+
+
+
+

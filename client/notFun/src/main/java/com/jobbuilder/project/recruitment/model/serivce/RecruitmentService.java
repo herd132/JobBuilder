@@ -137,6 +137,11 @@ public interface RecruitmentService {
 	 */
 	int getLatestTopBrandRecruitments(int employerNo);
 
+	// 홍보페이지 조회
+	Recruitment showPromoteEmploy(String recruitmentNo, String businessNickname);
+	// 사업장 조회
+	Employer getBusiness(int empNo);
+
 
 
 

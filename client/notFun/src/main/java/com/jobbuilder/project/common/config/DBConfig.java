@@ -1,5 +1,7 @@
 package com.jobbuilder.project.common.config;
 
+import java.util.Properties;
+
 import javax.sql.DataSource;
 
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -10,11 +12,19 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
+
+import jakarta.persistence.EntityManagerFactory;
 
 /*
  * @Configuration
@@ -47,6 +57,7 @@ import com.zaxxer.hikari.HikariDataSource;
 
 @Configuration
 @PropertySource("classpath:/config.properties")
+@EnableJpaRepositories(basePackages = "com.jobbuilder.project.**.repository") // JPA 레포지토리 경로
 public class DBConfig {
 	
 	
@@ -153,22 +164,35 @@ public class DBConfig {
 	
 	// DataSourceTransactionManager : 트랜잭션 매니저
 	@Bean
+	@Primary
 	public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}
 	
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
+	// JPA EntityManagerFactory 설정
+    @Bean
+    public LocalContainerEntityManagerFactoryBean entityManagerFactory(DataSource dataSource) {
+        LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
+        em.setDataSource(dataSource);
+        em.setPackagesToScan("com.jobbuilder.project.**.entity"); // JPA 엔티티 패키지 경로
+        em.setJpaVendorAdapter(new HibernateJpaVendorAdapter());
+
+        // Hibernate 추가 설정
+        Properties properties = new Properties();
+        properties.setProperty("hibernate.ddl-auto", "none");
+        properties.setProperty("hibernate.dialect", "org.hibernate.dialect.OracleDialect");
+        properties.setProperty("hibernate.show-sql", "true");
+        em.setJpaProperties(properties);
+
+        return em;
+    }
+
+    // JPA 트랜잭션 매니저 설정
+    @Bean
+    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+        return new JpaTransactionManager(entityManagerFactory);
+    }
 
 }

@@ -33,6 +33,7 @@ public class Recruitment {
 	private int timeNo;						// 근무시간 번호(FK)
 	private int employerNo;					// 고용주 번호(FK)
 	private int salaryMount;				// 급여수준(ex 시급 : 10300, 월급 : 3000000)
+	
 	// 새로 추가한 컬럼(250101~)
 	private String writeDate;				// 공고글 작성날짜
 	private String updateDate;				// 공고글 수정날짜
@@ -55,6 +56,9 @@ public class Recruitment {
 	private String businessAddress;			// 지점명주소
 	private String thumbnail;				// 대표이미지(경로 저장용)
 	private String workcondAddressTypeInfo;	// 근무지역명
+	private String memberName;				// 사업자명
+	private String enrollDate;				// 등록일
+	private String memberTel;				// 대표자전화번호
 	
 	private List<BusinessWorktype> businessWorktypeList;// 업직종 테이블 DTO List
 	private List<RecruitmentPreferred> preferredList;	// 우대사항 테이블 DTO List

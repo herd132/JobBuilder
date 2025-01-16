@@ -183,6 +183,9 @@ const updateUI = (
   const periodName = resume.periodName;
   document.getElementById("periodName").innerHTML = `${periodName}`;
 
+  const gradeName = resume.gradeName;
+  document.getElementById("gradeName").innerHTML = `${gradeName}`;
+
   // 근무요일 배열
   const dayList = document.getElementById("dayList");
   resumeDaysTime.forEach((item, index) => {

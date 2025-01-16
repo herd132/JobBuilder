@@ -45,6 +45,24 @@ public interface MyPageEmployerService {
 	 */
 	Employer checkPw(Map<String, String> bodyMap);
 	
+	/** 대표자명 변경(기본정보 수정페이지 내)
+	 * @param bodyMap(memberNo, memberName)
+	 * @return
+	 */
+	int changeMemberName(Map<String, String> bodyMap);
+	
+	/** 대표자 연락처 변경(기본정보 수정페이지 내)
+	 * @param bodyMap(memberNo, memberTel)
+	 * @return
+	 */
+	int changeMemberTel(Map<String, String> bodyMap);
+	
+	/** 선택약관 동의여부 변경(기본정보 수정페이지 내)
+	 * @param bodyMap(memberNo, agree)
+	 * @return
+	 */
+	int changeOptionalAgree(Map<String, String> bodyMap);
+	
 	
 	
 	/* ********** 비밀번호 변경 페이지 관련 ********** */
@@ -209,10 +227,14 @@ public interface MyPageEmployerService {
 	RecruitmentResume viewRecruitResume(int recruitmentNo, int resumeNo);
 
 
-
-
 	
 	/* ********** 회원탈퇴 페이지 관련 ********** */
 	
-	
+	/** 회원 탈퇴
+	 * @param memberNo
+	 * @return
+	 */
+	int secession(int memberNo);
+
+
 }

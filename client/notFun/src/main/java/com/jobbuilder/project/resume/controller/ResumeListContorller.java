@@ -91,7 +91,9 @@ public class ResumeListContorller {
 
 	// 이력서디테일 페이지로 이동 (유효성검사)
 	@GetMapping("/resumeDetail")
-	public String resumeDetail(@RequestParam("resumeNo") int resumeNo, Model model, HttpSession session) {
+	public String resumeDetail(@RequestParam("resumeNo") int resumeNo,
+							@RequestParam(value="recruitmentNo", required=false) int recruitmentNo,
+							Model model, HttpSession session) {
 		
 		// 근로자 유효성 검사
 		Worker loginWorker = (Worker) session.getAttribute("loginWorker");
@@ -108,6 +110,12 @@ public class ResumeListContorller {
 	    Employer loginEmployer = (Employer) session.getAttribute("loginEmployer");
 	    if (loginEmployer != null) {
 	        Map<String, Object> result = service.getEmployercheck(resumeNo, loginEmployer.getMemberNo());
+	        
+	        // 욱재 추가(공고에 제출된 이력서 보기, 1.16.)
+	        if (result == null) {
+	        	result = service.getRecruitmentResumeCheck(resumeNo, recruitmentNo, loginEmployer.getMemberNo());
+	        }
+	        
 	        if (result == null) return "error/error"; 
 	        model.addAttribute("resumeNo", result.get("RESUME_NO"));
 	        return "resume/resumeDetail";

@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
-    
+
   <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
   <th:block th:replace="~{common/common}"></th:block>
 
   <link rel="stylesheet" href="/css/refined/refinedList.css">
 
 </head>
+
 <body>
-  
+
   <th:block th:replace="~{common/main-header}"></th:block>
 
 
@@ -21,26 +23,38 @@
   <div class="recruitmentList-gray">
     <main class="recruitmentList-white">
       <h2>맞춤 공고 목록</h2>
-      
-      
+
       <div id="main-container">
         <!-- 대분류 -->
-        <div id="category-container">
-          <button class="category-btn active" data-category="1">지역별 <span name="category-count" class="count-badge"></span></button>
-          <button class="category-btn" data-category="2">업직종 <span name="category-count" class="count-badge"></span></button>
-          <button class="category-btn" data-category="3">대분류3 <span name="category-count" class="count-badge"></span></button>
-          <button class="category-btn" data-category="4">대분류4 <span name="category-count" class="count-badge"></span></button>
+        <div class="main-container-top">
+          <div id="category-container">
+            <button class="category-btn active" data-category="1">지역별 <span name="category-count"
+                class="count-badge"></span></button>
+            <button class="category-btn" data-category="2">업직종 <span name="category-count"
+                class="count-badge"></span></button>
+            <button class="category-btn" data-category="3">근무기간 <span name="category-count"
+                class="count-badge"></span></button>
+            <button class="category-btn" data-category="4">상세정보 <span name="category-count"
+                class="count-badge"></span></button>
+            <button class="category-btn" data-category="5">희망급여 <span name="category-count"
+                class="count-badge"></span></button>
+          </div>
+
+          <div id="count-row">
+            <span id="selection-count-1">0/10</span>
+            <span id="selection-count-2">0/10</span>
+            <span id="selection-count-3">0/10</span>
+            <span id="selection-count-4">0/10</span>
+            <span id="selection-count-5">0/1</span>
+          </div>
+
         </div>
-      
-        
 
         <!-- 내부 뼈대 -->
         <div id="content-container">
           <!-- 첫 번째 줄: 카운트 -->
-          <div id="count-row">
-            <span id="selection-count">0/10</span>
-          </div>
-      
+
+
           <!-- 두 번째 줄: 중분류/소분류 -->
           <div id="filter-row">
             <div id="subcategories-container">
@@ -50,30 +64,28 @@
               <ul id="minorcategories-list"></ul>
             </div>
           </div>
-      
-        <!-- 세 번째 줄: 선택된 소분류 -->
-        <div id="selected-minorcategories">
-          <!-- 기존 구조 유지 -->
-          <ul id="selected-list">
-            <!-- 여기에 선택된 항목이 기존 방식대로 추가 -->
-          </ul>
-        </div>
-      
+
+          <!-- 세 번째 줄: 선택된 소분류 -->
+          <div id="selected-minorcategories">
+            <!-- 기존 구조 유지 -->
+            <ul id="selected-list">
+              <!-- 여기에 선택된 항목이 기존 방식대로 추가 -->
+            </ul>
+          </div>
+
           <!-- 초기화 및 임시 제출 버튼 -->
           <div id="action-buttons">
-            <button id="reset-btn">초기화</button>
-          </div>
-          <div id="action-buttons">
-            <button id="test-btn">테스트</button>
+            <button id="reset-btn"><i class="fas fa-sync-alt"></i>초기화</button>
           </div>
         </div>
       </div>
+
+
       
       
-      
-      
-      
-      
+
+
+
 
       <div class="list-wrapper">
         <table class="list-table">

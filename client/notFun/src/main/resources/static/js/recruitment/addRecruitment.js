@@ -149,3 +149,28 @@ const addSubSupport = (liSubSupportLi) => {
 const backToRecruitmentList = () => {
   location.href = "/myPageEmp/recruitmentList";
 }
+
+
+
+// salaryNo와 salaryMount 컨테이너 가져오기
+const salaryNo = document.getElementById('salaryNo');
+const salaryInputContainer = document.getElementById('salary-input-container');
+const salaryMount = document.getElementById('salaryMount');
+
+// salaryNo 값 변경 이벤트
+salaryNo.addEventListener('change', () => {
+  const selectedValue = salaryNo.value;
+
+  // 값이 3 또는 4일 경우
+  if (selectedValue === '3' || selectedValue === '4') {
+    salaryMount.value = 0; // 값 초기화 (0원)
+    salaryMount.disabled = true; // 입력 비활성화
+    salaryInputContainer.style.visibility = 'hidden'; // 인풋 필드와 "원" 텍스트 숨기기
+  } 
+  // 값이 1 또는 2일 경우
+  else if (selectedValue === '1' || selectedValue === '2') {
+    salaryMount.disabled = false; // 입력 활성화
+    salaryMount.value = ''; // 값을 비움
+    salaryInputContainer.style.visibility = 'visible'; // 인풋 필드와 "원" 텍스트 보이기
+  }
+});

@@ -12,4 +12,14 @@ public interface MainService {
 	 */
 	List<Brand> selectTopBrand();
 
+	/** 타입별 멤버십 공고 조회
+	 * @return
+	 */
+	List<Brand> selectMembershipList(int type);
+
+	/** 가장 최근 공고 10개 조회
+	 * @return
+	 */
+	List<Brand> selectRecentRecruitments();
+
 }

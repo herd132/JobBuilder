@@ -39,6 +39,9 @@ public interface ResumeListService {
 	// 고용주 유효성 검사
 	Map<String, Object> getEmployercheck(int resumeNo, int memberNo);
 
+	// 고용주 유효성 검사2(특정 공고에 제출된 이력서로 보려는 경우)
+	Map<String, Object> getRecruitmentResumeCheck(int resumeNo, int recruitmentNo, int memberNo);
+
 	
 
 	
