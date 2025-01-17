@@ -298,6 +298,17 @@
 		RESUME_CAREER VALUES (#{resumeNo}, #{careerNo})
 	</insert>
 
-
+	<!-- 이력서 총 카운트 -->
+	<select id="getResumeTotalListCount">
+		SELECT COUNT(*) FROM RESUME R
+		LEFT JOIN WORKER W ON (R.WORKER_NO  = W.WORKER_NO)
+		LEFT JOIN "MEMBER" M ON (W.MEMBER_NO  = M.MEMBER_NO)
+		WHERE RESUME_DEL_FL = 'N'
+		AND RESUME_HIDE_FL = 'N'
+		AND MEMBER_DEL_FL = 'N'
+	</select>
+	
+	<!-- 인재 정보 이력서 리스트  -->
+	<select id="resumeTotalList"></select>
 
 </mapper>

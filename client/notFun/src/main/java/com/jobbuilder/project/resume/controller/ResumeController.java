@@ -121,7 +121,7 @@ public class ResumeController {
 			@RequestParam("jobTypeNo") List<Integer> jobTypeNoList, // 근무형태 list
 			@RequestParam(value = "careerInfoList", required = false) String careerInfoListJson, // 경력사항 JSON
 			@RequestParam("daysTimeList") String daysTimeListJson, // 요일날짜 JSON
-			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException {
+			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException { 
 
 		log.debug("resume {}", resume); // gradeNo, periodNo, salaryNo, salaryAmount
 		log.debug("희망업종 workTypeList {}", workTypeList);
@@ -129,7 +129,7 @@ public class ResumeController {
 		log.debug("희망급여 salAmount {} ", salAmount);
 		log.debug("careerInfoListJson {}", careerInfoListJson);
 		log.debug("희망 근무지 addressList {}", addressList);
-		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson);
+		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson); 
 
 		List<CareerInfo> careerInfoList = null;
 		if (careerInfoListJson != null) {
@@ -294,7 +294,23 @@ public class ResumeController {
 		
 	}
 	
-	
+	/** 인재 정보 리스트
+	 * @param cp
+	 * @param model
+	 * @return
+	 * @author 신동국
+	 */
+	@GetMapping("resumeTotal")
+	public String resumeTotalList(@RequestParam(value="cp", required = false, defaultValue = "1") int cp,
+									Model model) {
+		
+		// 조회 서비스 호출 후 결과 반환
+		Map<String, Object> map = service.resumeTotalList(cp);
+		
+		model.addAttribute("pagination", map.get("pagination"));
+		
+		return "resume/resumeTotal";
+	}
 	
 
 }

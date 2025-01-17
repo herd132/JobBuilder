@@ -42,15 +42,12 @@ public class ChatWebSocketHandler extends TextWebSocketHandler{
 	public void afterConnectionEstablished(WebSocketSession session) throws Exception {
 		// TODO Auto-generated method stub
 		sessions.add(session);
-		log.info("{} 연결됨", session.getId());
 	} 
 	
 	@Override
 	public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
 		// TODO Auto-generated method stub
 		sessions.remove(session);
-		log.info("{} 연결끊김", session.getId());
-		// 
 		session.close(status);
 		
 	}

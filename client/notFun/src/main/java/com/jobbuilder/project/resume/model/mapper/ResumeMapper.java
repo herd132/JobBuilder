@@ -4,10 +4,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.session.RowBounds;
 
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.Resume;
 import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 
 @Mapper
 public interface ResumeMapper {
@@ -116,6 +118,18 @@ public interface ResumeMapper {
 	int updateCareerInfo(CareerInfo careerInfo);
 
 	int updateResumeCareer(Map<String, Integer> resumeCareerMap);
+
+	
+	/** 이력서 정보 카운트
+	 * @return
+	 */
+	int getResumeTotalListCount();
+
+	/** 페이지네이션 + 이력서 리스트
+	 * @param rowBounds
+	 * @return
+	 */
+	List<ServiceCenter> resumeTotalList(RowBounds rowBounds);
 	
 	
 

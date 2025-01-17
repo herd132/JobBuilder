@@ -116,5 +116,12 @@ public class ChattingServiceImpl implements ChattingService{
 		// TODO Auto-generated method stub
 		return mapper.chatBotMessgeList(authority);
 	}
+	
+	// 채팅방 이용
+	@Override
+	public int enterReadFlag(int chattingRoomNo) {
+		// TODO Auto-generated method stub
+		return mapper.enterReadFlag(chattingRoomNo);
+	}
  
 }

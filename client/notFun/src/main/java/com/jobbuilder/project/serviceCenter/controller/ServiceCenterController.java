@@ -48,9 +48,7 @@ public class ServiceCenterController {
 						Model model) {
 		
 		// 조회 서비스 호출 후 결과 반환
-		Map<String, Object> map = null;
-		
-		map = service.serviceCenterList(1, cp);
+		Map<String, Object> map = service.serviceCenterList(1, cp);
 		
 		// model에 반환 받은 값을 등록
 		model.addAttribute("serviceCenterList", map.get("serviceCenterList"));
@@ -60,6 +58,7 @@ public class ServiceCenterController {
 		return "serviceCenter/notice";
 	}
 	
+	// 공지사항 상세조회
 	@GetMapping("notice/{serviceCenterNo:[0-9]+}")
 	public String noticeSelect( @PathVariable("serviceCenterNo") int serviceCenterNo,
 							  Model model,
@@ -151,7 +150,7 @@ public class ServiceCenterController {
 			path ="serviceCenter/detail"; // boardDetail.html로 forward
 			
 			// board - 게시글 일반 내용 + imageList + commentList
-			model.addAttribute("serviceCenter", serviceCenter); log.debug("serviceCenter : " + serviceCenter);
+			model.addAttribute("serviceCenter", serviceCenter);
 			
 		}
 		

@@ -57,4 +57,10 @@ public interface ChattingService {
 	 */
 	List<Map<String, String>> chatBotMessgeList(int authority);
 
+	/** 채팅방 입장 상담 완료 여부 변경
+	 * @param paramMap
+	 * @return
+	 */
+	int enterReadFlag(int chattingRoomNo);
+
 }

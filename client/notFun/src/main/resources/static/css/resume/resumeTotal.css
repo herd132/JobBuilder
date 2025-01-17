@@ -1,0 +1,37 @@
+/* Board container styles */
+.board-container {
+  max-width: 1200px;
+  margin: 5rem auto;
+  padding: 20px;
+}
+
+/* Board header styles */
+.board-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.board-title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-left: 2rem;
+}
+
+
+/* Board list styles */
+.board-list {
+  border-top: 2px solid #614B38;
+}
+
+.post-item {
+  padding: 15px 10px;
+  padding-left: 3rem;
+  transition: background-color 0.2s;
+  height: 500px;
+  width: 100%;
+  text-align: center;
+  line-height: 500px;
+  border-top: 2px solid #614B38;
+}

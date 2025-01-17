@@ -42,7 +42,7 @@ public class ChattingController {
 		return "chatting/chatbot";
 	}
 	
-	@GetMapping("/main")
+	@GetMapping("main")
 	public String chattingMain(@SessionAttribute(name = "loginCounselor", required = false) Counselor loginCounselor,
 							Model model) {
 		
@@ -77,7 +77,6 @@ public class ChattingController {
         return service.updateReadFlag(paramMap);
     }
     
-    
     /** 채팅봇 이용 유저 판가름 하기 위해 작성 로그인후 이용 가능할겁니다.
      * @param request
      * @return
@@ -111,6 +110,7 @@ public class ChattingController {
         
         // 채팅방번호 체크 서비스 호출 및 반환(기존 생성된 방이 있는지)
         int chattingRoomNo = service.checkChattingRoomNo(map);
+        service.enterReadFlag(chattingRoomNo);
 
     	log.debug("chattingRoomNo : " + chattingRoomNo);
         // 반환받은 채팅방번호가 0(없다)이라면 생성하기
@@ -131,6 +131,10 @@ public class ChattingController {
     	return service.counselingEnd(map);
     }
     
+    /** 챗봇 메세지
+     * @param request
+     * @return
+     */
     @GetMapping("chatBotMessgeList")
     @ResponseBody
     public List<Map<String, String>> chatBotMessgeList(HttpServletRequest request) {
