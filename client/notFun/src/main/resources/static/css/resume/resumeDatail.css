@@ -402,24 +402,56 @@ input[name="salAmount"] {
 }
 
 
+.profile-info .contact-info span {
+    word-break: break-word; /* 긴 텍스트 줄바꿈 */
+}
+
+/* 테이블 반응형 처리 */
+.career-container {
+    overflow-x: auto; /* 가로 스크롤 추가 */
+    max-width: 100%;
+}
+
+/* 서브아이템 컨테이너 개선 */
+.subitem-container {
+    display: flex;
+    flex-wrap: wrap; /* 긴 내용 줄바꿈 */
+    gap: 10px;
+    max-width: 100%;
+}
+
+/* 폼 섹션 내부 요소들의 최대 너비 제한 */
+.form-section * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-	body {
-		padding: 10px;
-	}
+  .resume-background-white {
+      width: 95%;
+      padding: 1rem;
+  }
 
-	.form-section {
-		padding: 15px;
-	}
+  .profile-container {
+      flex-direction: column;
+      align-items: center;
+  }
 
-	#select-container {
-		flex-direction: column;
-	}
+  .profile-info {
+      width: 100%;
+  }
 
-	#select-container select {
-		width: 100%;
-	}
+  .contact-info {
+      grid-template-columns: 1fr; /* 모바일에서 한 줄로 표시 */
+  }
+
+  /* 테이블 반응형 */
+  table {
+      display: block;
+      overflow-x: auto;
+      white-space: nowrap;
+  }
 }
 
 

@@ -82,6 +82,7 @@ const telArea = document.querySelector(".tel-area");
 const addressArea = document.querySelector(".address-area");
 const worktypeArea = document.querySelector(".worktype-area");
 const modalRecruitmentContent = document.querySelector(".modal-recruitment-content");
+const membershipBtn = document.querySelector(".membership-btn");
 
 const businessDetailModal = async (employerNo) => {
   const modalContainer = document.querySelector('.modal-container');
@@ -164,12 +165,19 @@ const businessDetailModal = async (employerNo) => {
   // 버튼에 employerNo 설정
   updateBusinessBtn.setAttribute("data-employer-no", employerNo);
   deleteBusinessBtn.setAttribute("data-employer-no", employerNo);
+  membershipBtn.setAttribute("data-employer-no", employerNo);
 };
 
 // 수정하기 버튼 클릭 시 수정 페이지로 이동
 updateBusinessBtn.addEventListener("click", () => {
   const employerNo = updateBusinessBtn.getAttribute("data-employer-no");
   window.location.href = `updateBusiness/${employerNo}`;
+});
+
+membershipBtn.addEventListener("click", () => {
+  const employerNo = membershipBtn.getAttribute("data-employer-no");
+  sessionStorage.setItem('employerNo',employerNo);
+  window.location.href = "/payments/testpay2";
 });
 
 deleteBusinessBtn.addEventListener("click", () => {

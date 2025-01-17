@@ -151,11 +151,16 @@ const formatTime = (dateString) => {
 
 // 경력 포맷팅
 const formatCareer = (totalCareer) => {
+    console.log(totalCareer);
     if (!totalCareer || totalCareer <= 0) return "신입";
-    const totalMonths = Math.floor(totalCareer / 30);
-    const years = Math.floor(totalMonths / 12);
-    const months = totalMonths % 12;
-    return `${years ? `${years}년 ` : ""}${months ? `${months}개월` : ""}`.trim();
+    if (totalCareer >= 30) {
+        const totalMonths = Math.floor(totalCareer / 30);
+        const years = Math.floor(totalMonths / 12);
+        const months = totalMonths % 12;
+        return `${years ? `${years}년 ` : ""}${months ? `${months}개월` : ""}`.trim();
+    } else {
+        return "1개월 미만";
+    }
 };
 
 // 페이지 로드시 초기화

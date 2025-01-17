@@ -230,7 +230,7 @@ public class ResumeController {
 		
 		ra.addFlashAttribute("message", message);
 
-		return "redirect:/" + currentUrl;
+		return "redirect:" + currentUrl;
 	}
 
 	@PostMapping("/updateTitle")
@@ -283,14 +283,13 @@ public class ResumeController {
 		if (currentUrl.startsWith(",")) {
 			currentUrl = currentUrl.substring(1); // 첫 번째 문자를 잘라냄
 
-			if (currentUrl.startsWith("http://localhost")) {
-				currentUrl = currentUrl.substring("http://localhost/".length());
+			if (currentUrl.startsWith("http://13.124.153.205")) {
+				currentUrl = currentUrl.substring("http://13.124.153.205/".length());
 			}
 		}
-		
 		ra.addFlashAttribute("message", message);
 		
-		return "redirect:/" + currentUrl;
+		return "redirect:" + currentUrl;
 		
 	}
 	
