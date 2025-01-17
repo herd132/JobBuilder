@@ -80,10 +80,12 @@ public class PaymentController {
     
     @PostMapping("/paymentlist")
     @ResponseBody
-    public Map<String, Object> getPaymentList(@SessionAttribute("loginEmployer") Employer loginEmployer) {
+    public Map<String, Object> getPaymentList(@SessionAttribute("loginEmployer") Employer loginEmployer,
+    		@RequestBody int employerNo) {
+    	log.debug("employerNo :"+ employerNo);
         Map<String, Object> response = new HashMap<>();
         try {
-            List<Payment> paymentList = service.getPaymentList(loginEmployer.getEmployerNo());
+            List<Payment> paymentList = service.getPaymentList(employerNo);
             response.put("paymentList", paymentList);
         } catch (Exception e) {
             e.printStackTrace();  // 로그에 오류를 출력

@@ -39,7 +39,8 @@ public interface MyPageWorkerService {
 	 * @return
 	 */
 	int secession(Worker loginWorker);
-
+	int secessionResume(Worker loginWorker);
+	
 	/** 업데이트
 	 * @param loginWorker
 	 * @param imageInput
@@ -53,6 +54,8 @@ public interface MyPageWorkerService {
 	 * @return
 	 */
 	List<Board> writeView(int memberNo, int cp);
+
+	
 
 
 

@@ -2,15 +2,14 @@
 let globalMembershipList = [];
 
 const employerNo = sessionStorage.getItem('employerNo');
-console.log(employerNo);
 
 // 데이터 요청 및 캐싱
-async function fetchAndCacheMembershipData(employerNo) {
+async function fetchAndCacheMembershipData() {
   try {
     const response = await fetch(`/payments/paymentlist`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ employerNo }),
+      body: employerNo
     });
 
     if (!response.ok) {
