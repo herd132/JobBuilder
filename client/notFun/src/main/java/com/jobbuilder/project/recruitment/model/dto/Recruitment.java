@@ -59,6 +59,7 @@ public class Recruitment {
 	private String memberName;				// 사업자명
 	private String enrollDate;				// 등록일
 	private String memberTel;				// 대표자전화번호
+	private String businessContent;
 	
 	private List<BusinessWorktype> businessWorktypeList;// 업직종 테이블 DTO List
 	private List<RecruitmentPreferred> preferredList;	// 우대사항 테이블 DTO List

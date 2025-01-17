@@ -17,24 +17,25 @@
       <h1>개인 회원가입</h1>
     </div>
     <form action="/worker/workerSignUp" method="post">
-      <div class="checkbox-container">
-        <label class="checkAll">
-          <input type="checkbox" id="checkAll"> 전체 동의하기
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" class="chk" required> (필수) 서비스 이용약관동의
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" class="chk" required> (필수) 개인정보 취급 이용약관동의
-        </label>
-        <label class="checkbox-label">
-          <input type="checkbox" class="chk" required> (필수) 결제 관련 이용약관 동의
-        </label>
+      <div class="checkbox-container">       
+          <input type="checkbox" id="checkAll"> 
+          <label for="checkAll">전체 동의하기 </label>
+        <div>
+          <input type="checkbox" id="essentialAge" class="chk" required>
+          <label for="essentialAge">(필수) 만 20세 이상입니다.</label>
+        </div>
+        <div>
+          <input type="checkbox" id="essentialService" class="chk" required>
+          <label for="essentialService">(필수) 서비스 이용약관 동의</label>
+        </div>
+        <div>
+          <input type="checkbox" id="essentialPersonalInfo" class="chk" required>
+          <label for="essentialPersonalInfo">(필수) 개인정보 수집 및 이용 동의</label>
+        </div>
       </div>
 
-
       <div class="form-group">
-        <label>이메일</label>
+        <div>이메일</div>
         <div style="display: flex; ">
           <input type="email" id="memberEmail" name="memberEmail" required>
           <button type="button" class="verification-btn" id="sendAuthKeyBtn">인증번호 받기</button>
@@ -46,7 +47,7 @@
 
 
       <div class="form-group">
-        <label>인증번호</label>
+        <div>인증번호</div>
         <div style="display: flex; gap: 10px;">
           <input type="text" id="authKey" name="authKey" required>
           <button type="button" class="verification-btn" id="checkAuthKeyBtn">인증번호 확인</button>
@@ -55,7 +56,7 @@
       </div>
 
       <div class="form-group">
-        <label> 아이디 </label>
+        <div> 아이디 </div>
         <div style="display: flex; gap: 10px;">
           <input type="text" id="workerId" name="workerId" required>
           <button type="button" class="verification-btn" id="checkWorkerIdBtn">아이디 중복확인</button>
@@ -64,18 +65,18 @@
       </div>
 
       <div class="form-group">
-        <label>비밀번호</label>
+        <div>비밀번호</div>
         <input type="password" id="memberPw" name="memberPw" required>
       </div>
 
       <div class="form-group">
-        <label>비밀번호 확인</label>
+        <div>비밀번호 확인</div>
         <input type="password" id="memberPwConfirm" required>
         <span id="pwMessage"> 비밀번호가 일치하는지 확인해주세요.</span>
       </div>
 
       <div class="form-group">
-        <label>생년월일</label>
+        <div>생년월일</div>
         <input type="text" id="workerBirthDate" name="workerBirthDate" required placeholder="ex ) 19981104">
         <span id="workerBirthDateMsg"> 생년월일을 확인해주세요</span>
       </div>
@@ -100,24 +101,24 @@
 
 
       <div class="form-group">
-        <label>닉네임</label>
+        <div>닉네임</div>
         <input type="text" id="workerNickname" name="workerNickname" placeholder="한글, 영어, 숫자로 10글자까지 가능합니다." required>
         <span id="nickMessage"> 유효하지 않은 닉네임 형식입니다. </span>
       </div>
 
       <div class="form-group">
-        <label>이름</label>
+        <div>이름</div>
         <input type="text" id="memberName" name="memberName" required>
       </div>
 
       <div class="form-group">
-        <label>전화번호</label>
+        <div>전화번호</div>
         <input type="tel" id="memberTel" name="memberTel" placeholder="-를 제외하고 11자로 입력해 주세요" maxlength="11" required >
         <span id="telMessage"> 전화번호를 입력해 주세요</span>
       </div>
 
       <div class="form-group">
-        <label for="workerAddress">주소</label>
+        <div for="workerAddress">주소</div>
         <div class="signUp-input-area">
           <div style="display: flex; gap: 10px;">
             <input type="text" name="workerAddress" placeholder="우편번호" maxlength="6" id="postcode">

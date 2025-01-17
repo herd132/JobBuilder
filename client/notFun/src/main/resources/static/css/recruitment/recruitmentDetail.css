@@ -11,6 +11,16 @@
   justify-content: center;
   align-items: center;
 }
+.showPromoteBusiness {
+  border: 3px solid var(--secondary-orange);
+  border-radius: 20px;
+  padding: 4px 8px;
+  background-color: white;  
+  color: var(--secondary-orange);
+  font-size: 1rem;
+  font-weight: bolder;
+  cursor: pointer;
+};
 
 .modal-area {
   position: relative;
