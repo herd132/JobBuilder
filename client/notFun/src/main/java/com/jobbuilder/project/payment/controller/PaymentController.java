@@ -37,9 +37,9 @@ public class PaymentController {
 	
 
     // 기본 페이지
-    @GetMapping("")
+    @GetMapping("membership")
     public String showPaymentsPage() {
-    	return "/payments/payments";
+    	return "/payments/membership";
     }
     
     @GetMapping("/data")
