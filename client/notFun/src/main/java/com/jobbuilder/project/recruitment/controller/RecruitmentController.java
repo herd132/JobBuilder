@@ -144,7 +144,7 @@ public class RecruitmentController {
 	@GetMapping("list")
 	public String recruitmentList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
 							@RequestParam(value="query", required=false) String query,
-							@RequestParam(value="type", required = false) String type,
+							@RequestParam(value="type", required = false, defaultValue="") String type,
 							Model model) {
 		
 		Map<String, Object> map = null;
@@ -155,8 +155,10 @@ public class RecruitmentController {
 		model.addAttribute("paginationRecruitment", map.get("paginationRecruitment"));
 		model.addAttribute("recruitmentList", map.get("recruitmentList"));
 		
-		if(type.equals("deadline")) model.addAttribute("type", "deadline");
-		if(type.equals("region")) model.addAttribute("type", "region");
+		if(!type.equals("")) {
+			if(type.equals("deadline")) model.addAttribute("type", "deadline");
+			if(type.equals("region")) model.addAttribute("type", "region");
+		}
 		
 		return "recruitment/recruitmentList";
 	}

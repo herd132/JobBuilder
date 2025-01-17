@@ -230,7 +230,7 @@ confirmByBusinessRegistrationNumberBtn.addEventListener("click", async () => {
   const findEmail = await resp.text();
 
   findPasswordContainer.innerHTML = `
-    <div class="success-message">사업자 등록번호를 통해 찾은 이메일은 다음과 같습니다.</div>
+    <div class="success-message">해당 이메일에 대한 비밀번호를 새로 입력해주세요.</div>
     <div class="result">${findEmail}</div>
     <div>
       <span>새 비밀번호 입력 : </span>
