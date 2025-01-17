@@ -1,6 +1,9 @@
 package com.jobbuilder.project.main.model.service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -47,5 +50,11 @@ public class MainServiceImpl implements MainService{
 	@Override
 	public List<Board> selectRecentBoard() {
 		return mapper.selectRecentBoard();
+	}
+	
+	// 곧 마감되는 알바 조회
+	@Override
+	public List<Map<String, Object>> selectUpcomingDeadlineJobs() {
+		return mapper.selectUpcomingDeadlineJobs();
 	}
 }

@@ -49,53 +49,148 @@ main {
 	margin-top: 50px;
 }
 
-
+/* 디데이공고 부분 */
 .job-filter {
-	background-color: white;
-	min-width: 1140px;
-	display: flex;
-
-	height: 110px;
-	padding: 1.5rem;
-	border-radius: 12px;
-	margin-bottom: 1.5rem;
-	box-shadow: 0 3px 8px rgba(0, 0, 0, .1);
+  background: linear-gradient(to bottom, #ffffff, #fff9f5);
+  min-width: 1000px;
+  height: 200px;
+  display: flex;
+  padding: 1rem;
+  border-radius: 16px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 8px 20px rgba(255, 184, 118, 0.3);
+  transition: all 0.3s ease;
 }
 
-.job-filter div {
-	width: 50%;
-}
-
+/* 필터 옵션 영역 */
 .filter-options {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	color: var(--text-gray);
-
-	border-right: 1px solid #FFB876;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-right: 2rem;
+  border-right: 2px solid rgba(255, 184, 118, 0.3);
 }
 
+.filter-options span {
+  color: #666;
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.filter-options span:first-child {
+  font-weight: 600;
+  color: #333;
+}
+
+/* 통계 영역 */
 .date-stats {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-between;
-	color: var(--text-dark);
-}
-
-.date-stats div {
-	width: 100%;
-}
-
-.stat-numbers span {
-	margin-left: 1.5rem;
-	color: var(--primary-orange);
-	font-weight: 300;
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+  padding-left: 1rem;
 }
 
 .stat-item {
-	width: 100%;
-	margin-left: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 16px;
+    font-weight: 600;
+    padding: 0.5rem 1rem;
+    border-radius: 8px;
+	margin-bottom: 5px;
 }
+
+.stat-item span {
+	color: #FF8A3D;
+	animation: colorChange 3s infinite;
+}
+
+
+@keyframes colorChange {
+    0% { color: #FF4B2B; }
+    50% { color: #FF8A3D; }
+    100% { color: #FF4B2B; }
+}
+/* 테이블 기본 스타일 */
+.deadline-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+/* 헤더 스타일 */
+.deadline-table thead th {
+    padding: 5px 10px;
+    text-align: left;
+    font-weight: 600;
+    color: #495057;
+    border-bottom: 2px solid #e9ecef;
+	text-align: center;
+}
+
+/* 셀 공통 스타일 */
+.deadline-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid #e9ecef;
+	text-align: center;
+	font-size: 14px;
+}
+
+
+/* 공고 수 강조 스타일 */
+.deadline-table .count-highlight {
+    font-weight: 700;
+    color: #FF8A3D;
+    font-size: 14px;
+
+	cursor: pointer;
+}
+
+.deadline-table .count-highlight:hover{
+	background-color: rgba(255, 184, 118, 0.3);
+}
+
+.deadline-table tbody .d-day {
+	font-weight: 800;
+	color: red;
+}
+
+
+/* 마지막 행의 테두리 제거 */
+.deadline-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* 색상 변경 애니메이션 */
+@keyframes colorChange {
+  0% { color: #ffb876; }
+  25% { color: #FF5733; }
+  50% { color: #00b0a6; }
+  75% { color: #FF5733; }
+  100% { color:#ffb876}
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+  .job-filter {
+    min-width: 100%;
+    flex-direction: column;
+    height: auto;
+  }
+  
+  .filter-options, .date-stats {
+    width: 100%;
+    padding: 1rem 0;
+  }
+  
+  .filter-options {
+    border-right: none;
+    border-bottom: 2px solid rgba(255, 184, 118, 0.3);
+  }
+}
+
 
 /* 누적금액큰거 */
 
@@ -132,6 +227,7 @@ main {
   align-items: center;
   justify-content: center;
   overflow: hidden;
+  cursor: pointer;
 }
 
 .top-brand-logo {
@@ -455,7 +551,7 @@ main {
 
 .salary-hourly {
 	border-color: #00b0a6 !important;
-	color: #00b0a6;
+	color: #00b0a6 !important;
 }
 
 /* 공지사항 및 게시글 섹션 스타일 */

@@ -102,6 +102,14 @@ window.addEventListener('beforeunload', () => {
 
 //------------
 
+// 마감임박공고 클릭 시
+function fetchDeadlineJob(event) {
+	const query = event.target.getAttribute('data-test-no');
+	location.href = `/recruitment/list?query=${query}&deadline=true`;
+}
+
+//-----------------
+
 // 탑브랜드로고 클릭 시
 function fowardRecruitment(empNo) {
 	const employerNo = Number(empNo);
@@ -168,6 +176,10 @@ if (topButton) {
 		});
 	});
 }
+
+
+
+
 // ----------------
 
 const navMypage = document.querySelector(".nav-mypage");
