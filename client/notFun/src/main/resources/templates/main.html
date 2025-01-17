@@ -28,17 +28,38 @@
 		<!-- 지역 및 급구 알바 알림판 -->
 		<section class="job-filter">
 			<div class="filter-options">
-				<span>지역별</span>
-				<span>전체 /서울 / 경기 / 인천<span>
+				<p>지역별</p>
+				<section>
+					<span onclick="fetchRegionJob('')">전체</span>
+					<span onclick="fetchRegionJob('01')">서울</span>
+					<span onclick="fetchRegionJob('02')">인천</span>
+					<span onclick="fetchRegionJob('03')">경기</span>
+				</section>
 			</div>
 			<div class="date-stats">
-				<div class="stat-item">급구 알바(오늘기준 마감날짜 기간이 일주일 이내)</div>
-				<div class="stat-numbers">
-					<span>D-0 : 5곳</span>
-					<span>D-1 : 10곳</span>
-					<span>D-2 : 15곳</span>
-					<span>D-3 : 5곳</span>
+				<div class="stat-item">
+					<span><i class="fa-solid fa-hourglass-end"></i></span>
+					<span>마감 임박 공고</span>
 				</div>
+				<table class="deadline-table">
+					<thead>
+						<tr>
+							<th>마감일</th>
+							<th>남은 기간</th>
+							<th>공고 수</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="deadlineJob : ${upcomingDeadlineJobs}">
+							<td th:text="${deadlineJob.recruitmentDeadline}">날짜</td>
+							<td th:text="'D-'+${deadlineJob.remainingDays == 0 ? 'Day' : deadlineJob.remainingDays}"
+								th:classappend="${deadlineJob.remainingDays == 0} ? 'd-day' : ''">디데이</td>
+							<td class="count-highlight" th:text="${deadlineJob.totalCount}" 
+							th:data-test-no="${deadlineJob.recruitmentDeadline}"
+							onclick="fetchDeadlineJob(event)">공고수</td>
+						</tr>
+					</tbody>
+				</table>
 			</div>
 		</section>
 
@@ -92,7 +113,8 @@
 							<span
 								th:text="${brand.workcondAddressTypeInfo != null ? brand.workcondAddressTypeInfo : '전국'}">지역</span>
 							·
-							<span th:text="${brand.salaryName}">타입</span>
+							<span th:text="${brand.salaryName}"
+								th:classappend="${brand.salaryName == '시급' ? 'salary-hourly' : ''}">타입</span>
 							<span th:text="${brand.salaryMount != 0 ? brand.formatSalaryMount : ''}">금액</span>
 						</section>
 					</div>
@@ -135,7 +157,8 @@
 							<span
 								th:text="${brand.workcondAddressTypeInfo != null ? brand.workcondAddressTypeInfo : '전국'}">지역</span>
 							·
-							<span th:text="${brand.salaryName}">타입</span>
+							<span th:text="${brand.salaryName}"
+								th:classappend="${brand.salaryName == '시급' ? 'salary-hourly' : ''}">타입</span>
 							<span th:text="${brand.salaryMount != 0 ? brand.formatSalaryMount : ''}">금액</span>
 						</section>
 					</div>

@@ -37,4 +37,9 @@ public interface MainMapper {
 	 */
 	List<Board> selectRecentBoard();
 
+	/** 곧 마감되는 알바 조회
+	 * @return
+	 */
+	List<Map<String, Object>> selectUpcomingDeadlineJobs();
+
 }

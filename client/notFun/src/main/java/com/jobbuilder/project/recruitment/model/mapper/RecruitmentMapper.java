@@ -249,6 +249,34 @@ public interface RecruitmentMapper {
 	// 썸네일 조회하기 ( 로고 )
 	String selectThumbNail(int employerNo);
 
+	/** 마감공고 갯수 조회
+	 * @author mihyun
+	 * @param query
+	 * @return
+	 */
+	int getDeadLineJobsCount(String query);
+
+	/**  마감공고 리스트 조회
+	 * @author mihyun
+	 * @param query
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Recruitment> selectDeadlineJobList(String query, RowBounds rowBounds);
+
+	/** 지역별 공고 갯수
+	 * @param query
+	 * @return
+	 */
+	int getRegionJobsCount(String query);
+ 
+	/** 지역별 공고 리스트 조회
+	 * @param query
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Recruitment> selectRegionJobList(String query, RowBounds rowBounds);
+
 
 
 

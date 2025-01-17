@@ -2,110 +2,114 @@
 <html lang="ko">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/css/common/multiLogin.css">
-  <th:block th:replace="~{common/common}"></th:block>
-  <script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
-    integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka"
-    crossorigin="anonymous"></script>
-  <script>
-    // 초기화: 본인의 JavaScript 키 사용
-    Kakao.init('420e37e2eb7b21d415137a0ef5b387a2');
-    console.log(Kakao.isInitialized()); // true가 나오면 초기화 성공
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="/css/common/multiLogin.css">
+	<th:block th:replace="~{common/common}"></th:block>
+	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
+		integrity="sha384-DKYJZ8NLiK8MN4/C5P2dtSmLQ4KwPaoqAfyA/DfmEc1VDxu4yyC7wy6K1Hs90nka"
+		crossorigin="anonymous"></script>
+	<script>
+		// 초기화: 본인의 JavaScript 키 사용
+		Kakao.init('420e37e2eb7b21d415137a0ef5b387a2');
+		console.log(Kakao.isInitialized()); // true가 나오면 초기화 성공
 
 
-  </script>
+	</script>
 
 
 </head>
 
 <body>
 
-  <th:block th:replace="~{common/main-header}"></th:block>
+	<th:block th:replace="~{common/main-header}"></th:block>
 
-  <div class="multiLogin-gray">
-    <main class="multiLogin-white">
+	<div>
+		<main>
 
-      <div class="header">
-        <span class="logo">
-          <a href="/"><img src="/images/logo.png" alt="로고" class="logo-img" href="/"></a>
-        </span>
-        <div class="title">취업빌드는 잡빌드!</div>
-      </div>
+			<div class="signup-header">
+				<span class="logo-container">
+					<img src="/images/logo.png" alt="로고" class="logo-img" />
+				</span>
+				<span class="tagline">
+					취업빌드는
+					<hr class="divider" />
+					잡빌드!
+				</span>
+			</div>
 
-      <div class="login-container">
-        <div class="tab-container">
-          <button type="button" class="tab active" id="workerSelectBtn">개인회원</button>
-          <button type="button" class="tab" id="employerSelectBtn">기업회원</button>
-        </div>
+			<div class="login-container">
+				<div class="tab-container">
+					<button type="button" class="tab active" id="workerSelectBtn">개인회원</button>
+					<button type="button" class="tab" id="employerSelectBtn">기업회원</button>
+				</div>
 
-        <!-- 알바생 로그인 -->
-        <div class="worker-login-container">
-          <form action="/worker/workerLogin" method="post" id="workerLoginForm">
+				<!-- 알바생 로그인 -->
+				<div class="worker-login-container">
+					<form action="/worker/workerLogin" method="post" id="workerLoginForm">
 
-            <div class="input-container">
-              <input type="text" placeholder="ID를 입력해 주세요" name="workerId">
-              <input type="password" placeholder="PW를 입력해 주세요" name="memberPw">
-            </div>
+						<div class="input-container">
+							<input type="text" placeholder="ID를 입력해 주세요" name="workerId">
+							<input type="password" placeholder="PW를 입력해 주세요" name="memberPw">
+						</div>
 
-            <div class="login-options">
-              <div class="checkbox-container">
-                <input type="checkbox" name="saveWorkerId" id="saveWorkerId">
-                <label for="saveWorkerId">아이디저장</label>
-              </div>
-            </div>
+						<div class="login-options">
+							<div class="checkbox-container">
+								<input type="checkbox" name="saveWorkerId" id="saveWorkerId">
+								<label for="saveWorkerId">아이디저장</label>
+							</div>
+						</div>
 
-            <button type="submit" class="login-button">로그인</button>
+						<button type="submit" class="login-button">로그인</button>
 
-            <div class="help-links">
-              <a href="/worker/workerFindEmail"> 아이디 찾기</a>
-              <a href="/worker/workerSignUp">회원가입</a>
-              <a href="/worker/workerFindPw">비밀번호 찾기</a>
-            </div>
+						<div class="help-links">
+							<a href="/worker/workerFindEmail"> 아이디 찾기</a>
+							<a href="/worker/workerSignUp">회원가입</a>
+							<a href="/worker/workerFindPw">비밀번호 찾기</a>
+						</div>
 
-            <div class="text-center">
-              <a id="kakao-login-btn" href="javascript:loginWithKakao()">
-                <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" width="222"
-                  alt="카카오 로그인 버튼">
-              </a>
-            </div>
+						<div class="text-center">
+							<a id="kakao-login-btn" href="javascript:loginWithKakao()">
+								<img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg"
+									width="222" alt="카카오 로그인 버튼">
+							</a>
+						</div>
 
-          </form>
-        </div>
+					</form>
+				</div>
 
-        <!-- 고용주 로그인-->
-        <div class="employer-login-container">
-          <form action="/employer/employerLogin" method="post" id="employerLoginForm">
+				<!-- 고용주 로그인-->
+				<div class="employer-login-container">
+					<form action="/employer/employerLogin" method="post" id="employerLoginForm">
 
-            <div class="input-container">
-              <input type="text" placeholder="이메일을 입력해 주세요" name="memberEmail">
-              <input type="password" placeholder="PW를 입력해 주세요" name="memberPw">
-            </div>
+						<div class="input-container">
+							<input type="text" placeholder="이메일을 입력해 주세요" name="memberEmail">
+							<input type="password" placeholder="PW를 입력해 주세요" name="memberPw">
+						</div>
 
-            <div class="login-options">
-              <div class="checkbox-container">
-                <input type="checkbox" id="saveEmployerEmail">
-                <label for="saveEmployerEmail">이메일 저장</label>
-              </div>
-            </div>
+						<div class="login-options">
+							<div class="checkbox-container">
+								<input type="checkbox" id="saveEmployerEmail">
+								<label for="saveEmployerEmail">이메일 저장</label>
+							</div>
+						</div>
 
-            <button type="submit" class="login-button">로그인</button>
+						<button type="submit" class="login-button">로그인</button>
 
-            <div class="help-links">
-              <a href="/employer/employerFindEmail"> 이메일 찾기</a>
-              <a href="/employer/employerSignUp">회원가입</a>
-              <a href="/employer/employerFindPw">비밀번호 찾기</a>
-            </div>
-          </form>
-        </div>
+						<div class="help-links">
+							<a href="/employer/employerFindEmail"> 이메일 찾기</a>
+							<a href="/employer/employerSignUp">회원가입</a>
+							<a href="/employer/employerFindPw">비밀번호 찾기</a>
+						</div>
+					</form>
+				</div>
 
-      </div>
+			</div>
 
-    </main>
-  </div>
+		</main>
+	</div>
 
-  <!-- <form action="/worker/workerLogin" method="post" id="loginForm">
+	<!-- <form action="/worker/workerLogin" method="post" id="loginForm">
     <main>
       <div class="header">
         <span class="logo">
@@ -151,9 +155,9 @@
     </main>
   </form> -->
 
-  <th:block th:replace="~{common/main-footer}"></th:block>
-  <script src="/js/worker/workerLogin.js"></script>
-  <script src="/js/multiLogin.js"></script>
+	<th:block th:replace="~{common/main-footer}"></th:block>
+	<script src="/js/worker/workerLogin.js"></script>
+	<script src="/js/multiLogin.js"></script>
 </body>
 
 </html>

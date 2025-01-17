@@ -75,10 +75,11 @@ public interface RecruitmentService {
 	
 	/** 공고글 목록 검색결과 조회
 	 * @param query
+	 * @param type 조회타입
 	 * @param cp
 	 * @return
 	 */
-	Map<String, Object> selectSearchRecruitmentList(String query, int cp);
+	Map<String, Object> selectSearchRecruitmentList(String query, String type, int cp);
 
 	
 	/* ********** 공고 상세 페이지 이동 관련 ********** */
@@ -141,6 +142,14 @@ public interface RecruitmentService {
 	Recruitment showPromoteEmploy(String recruitmentNo, String businessNickname);
 	// 사업장 조회
 	Employer getBusiness(int empNo);
+
+
+	/** 마감임박(해당날짜) 공고 조회
+	 * @param cp
+	 * @param day
+	 * @return
+	 */
+	Map<String, Object> selectDeadlineJobs(int cp, String day);
 
 
 

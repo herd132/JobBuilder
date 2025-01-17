@@ -144,17 +144,19 @@ public class RecruitmentController {
 	@GetMapping("list")
 	public String recruitmentList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
 							@RequestParam(value="query", required=false) String query,
+							@RequestParam(value="type", required = false) String type,
 							Model model) {
 		
 		Map<String, Object> map = null;
 		
 		if(query == null) map = service.selectRecruitmentList(cp);
-		else map = service.selectSearchRecruitmentList(query, cp);
+		else map = service.selectSearchRecruitmentList(query, type, cp);
 		
 		model.addAttribute("paginationRecruitment", map.get("paginationRecruitment"));
 		model.addAttribute("recruitmentList", map.get("recruitmentList"));
 		
-		log.debug("paginationRecruitment : " + map.get("paginationRecruitment"));
+		if(type.equals("deadline")) model.addAttribute("type", "deadline");
+		if(type.equals("region")) model.addAttribute("type", "region");
 		
 		return "recruitment/recruitmentList";
 	}
@@ -358,6 +360,7 @@ public class RecruitmentController {
 	// -------------
 	
 	/** 탑브랜드 최신공고번호 조회 및 디테일 조회 메서드 리다이렉트
+	 * @author mihyun
 	 * @return
 	 */
 	@GetMapping("latestTopBrandRecruitment")
@@ -406,6 +409,6 @@ public class RecruitmentController {
 		log.debug("이미지리스트 들어왔나확인" + employer.getBusinessImgList());
 		return "recruitment/showPromoteBusiness";
 	}
-	
+
 	
 }
