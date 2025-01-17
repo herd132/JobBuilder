@@ -92,28 +92,24 @@ public class PaymentController {
         return response;
     }
 
-    // 맴버십 정보 받아오기
-    @PostMapping("/getEmployerNo")
-    @ResponseBody
-    public Map<String, Object> getEmployerNo(@SessionAttribute("loginEmployer") Employer loginEmployer) {
-        Map<String, Object> response = new HashMap<>();
-        
-		int emploterNo = loginEmployer.getEmployerNo();
-		response.put("emploterNo", emploterNo);
-		
-        List<Employer> getEmployerNo = service.getEmployerNo(loginEmployer.getMemberNo());
-        response.put("getEmployerNo", getEmployerNo);
-        return response;
-    }
+   
     
     
+ 
     // 맴버십 정보 받아오기
     @PostMapping("/details")
     @ResponseBody
-    public Map<String, Object> getMembershipDetails(@SessionAttribute("loginEmployer") Employer loginEmployer) {
+    public Map<String, Object> getMembershipDetails(@RequestBody Map<String, Integer> request) {
+        Integer employerNo = request.get("employerNo");
         Map<String, Object> response = new HashMap<>();
-        List<Membership> membershipDetails = service.getMembershipDetails(loginEmployer.getEmployerNo());
-        response.put("membershipDetails", membershipDetails);
+        try {
+            // employerNo를 기반으로 맴버십 상세 정보 가져오기
+            List<Membership> membershipDetails = service.getMembershipDetails(employerNo);
+            response.put("membershipDetails", membershipDetails);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("error", "맴버십 정보를 가져오는 중 오류가 발생했습니다.");
+        }
         return response;
     }
     
