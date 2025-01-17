@@ -28,8 +28,13 @@
 		<!-- 지역 및 급구 알바 알림판 -->
 		<section class="job-filter">
 			<div class="filter-options">
-				<span>지역별</span>
-				<span>전체 /서울 / 경기 / 인천<span>
+				<p>지역별</p>
+				<section>
+					<span onclick="fetchRegionJob('')">전체</span>
+					<span onclick="fetchRegionJob('01')">서울</span>
+					<span onclick="fetchRegionJob('02')">인천</span>
+					<span onclick="fetchRegionJob('03')">경기</span>
+				</section>
 			</div>
 			<div class="date-stats">
 				<div class="stat-item">

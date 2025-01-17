@@ -182,13 +182,17 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 	}
 
 	@Override // 공고글 목록 검색결과 조회
-	public Map<String, Object> selectSearchRecruitmentList(String query, boolean isDeadline, int cp) {
+	public Map<String, Object> selectSearchRecruitmentList(String query, String type, int cp) {
 
 		int listCount = 0;
 
-		if (isDeadline) { // 마감공고조회라면
+		if (type.equals("deadline")) { // 마감공고조회라면
 			listCount = mapper.getDeadLineJobsCount(query);
-		} else {
+			
+		} else if(type.equals("region")){ // 지역별공고조회라면
+			listCount = mapper.getRegionJobsCount(query);
+			
+		} else { // 그외 일반검색
 			listCount = mapper.getSearchCount(query);
 		}
 
@@ -201,9 +205,13 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 
 		List<Recruitment> recruitmentList = null;
 
-		if (isDeadline) { // 마감공고조회라면
+		if (type.equals("deadline")) { // 마감공고조회라면
 			recruitmentList = mapper.selectDeadlineJobList(query, rowBounds);
-		} else {
+			
+		} else if(type.equals("region")){ // 지역별공고조회라면
+			recruitmentList = mapper.selectRegionJobList(query, rowBounds);
+			
+		} else { // 그외 일반검색
 			recruitmentList = mapper.selectSearchRecruitmentList(query, rowBounds);
 		}
 		

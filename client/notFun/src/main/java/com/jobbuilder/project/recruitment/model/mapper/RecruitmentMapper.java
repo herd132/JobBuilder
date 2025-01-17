@@ -264,6 +264,19 @@ public interface RecruitmentMapper {
 	 */
 	List<Recruitment> selectDeadlineJobList(String query, RowBounds rowBounds);
 
+	/** 지역별 공고 갯수
+	 * @param query
+	 * @return
+	 */
+	int getRegionJobsCount(String query);
+ 
+	/** 지역별 공고 리스트 조회
+	 * @param query
+	 * @param rowBounds
+	 * @return
+	 */
+	List<Recruitment> selectRegionJobList(String query, RowBounds rowBounds);
+
 
 
 

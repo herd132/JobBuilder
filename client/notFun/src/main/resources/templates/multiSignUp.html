@@ -2,48 +2,55 @@
 <html lang="ko">
 
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="/css/common/multiSignup.css">
-  <th:block th:replace="~{common/common}"></th:block>
+	<meta charset="UTF-8">
+	<link rel="stylesheet" href="/css/common/multiSignup.css">
+	<th:block th:replace="~{common/common}"></th:block>
 </head>
 
 <body>
-  <th:block th:replace="~{common/main-header}"></th:block>
+	<th:block th:replace="~{common/main-header}"></th:block>
 
-  <div class="header">
-    <span href="/">
-      <img src="/images/logo.png" alt="로고" class="logo-img" href="/">
-    </span>
-    <span style=" text-align: center; color: black;  ">취업빌드는 <hr> 잡빌드!</span>
-  </div>
+	<main>
+		<div class="signup-header">
+		    <span class="logo-container">
+		        <img src="/images/logo.png" alt="로고" class="logo-img" />
+		    </span>
+		    <span class="tagline">
+		        취업빌드는
+		        <hr class="divider" />
+		        잡빌드!
+		    </span>
+		</div>
 
-  <div class="container">
-    <div class="card">
-      <h2>개인회원</h2>
-      <a href="/worker/workerSignUp">
-        <button class="button">개인 회원 가입</button>
-      </a>
+		<div class="container">
+			<div class="card">
+				<h2>개인회원</h2>
+				<a href="/worker/workerSignUp">
+					<button class="button">개인 회원 가입</button>
+				</a>
 
-      <button class="chat-button">
-        <a>
-          <span>카카오톡으로 가입하기 ›</span>
-        </a>
-      </button>
-    </div>
+				<button class="chat-button">
+					<a>
+						<span>카카오톡으로 가입하기 ›</span>
+					</a>
+				</button>
+			</div>
 
-    <div class="card">
-      <h2>기업회원</h2>
-      <a href="/employer/employerSignUp">
-        <button class="button">기업 회원 가입</button>
-      </a>
+			<div class="card">
+				<h2>기업회원</h2>
+				<a href="/employer/employerSignUp">
+					<button class="button">기업 회원 가입</button>
+				</a>
 
-    </div>
-  </div>
+			</div>
+		</div>
 
-  <div class="footer-text">
-    이미 가입하셨다면, 이곳 로그인을 클릭해 <a href="/multiLogin">로그인</a> 하면으로 이동해 주세요
-  </div>
-  <th:block th:replace="~{common/main-footer}"></th:block>
+		<div class="footer-text">
+			이미 가입하셨다면, 이곳 로그인을 클릭해 <a href="/multiLogin">로그인</a> 하면으로 이동해 주세요
+		</div>
+
+	</main>
+	<th:block th:replace="~{common/main-footer}"></th:block>
 </body>
 
 </html>

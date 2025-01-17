@@ -144,18 +144,19 @@ public class RecruitmentController {
 	@GetMapping("list")
 	public String recruitmentList(@RequestParam(value="cp", required=false, defaultValue="1") int cp,
 							@RequestParam(value="query", required=false) String query,
-							@RequestParam(value="deadline", required = false) boolean isDeadline,
+							@RequestParam(value="type", required = false) String type,
 							Model model) {
 		
 		Map<String, Object> map = null;
 		
 		if(query == null) map = service.selectRecruitmentList(cp);
-		else map = service.selectSearchRecruitmentList(query, isDeadline, cp);
+		else map = service.selectSearchRecruitmentList(query, type, cp);
 		
 		model.addAttribute("paginationRecruitment", map.get("paginationRecruitment"));
 		model.addAttribute("recruitmentList", map.get("recruitmentList"));
 		
-		if(isDeadline) model.addAttribute("deadline", "true");
+		if(type.equals("deadline")) model.addAttribute("type", "deadline");
+		if(type.equals("region")) model.addAttribute("type", "region");
 		
 		return "recruitment/recruitmentList";
 	}

@@ -105,7 +105,13 @@ window.addEventListener('beforeunload', () => {
 // 마감임박공고 클릭 시
 function fetchDeadlineJob(event) {
 	const query = event.target.getAttribute('data-test-no');
-	location.href = `/recruitment/list?query=${query}&deadline=true`;
+	location.href = `/recruitment/list?query=${query}&type=deadline`;
+}
+
+// 지역별 공고 클릭 시
+function fetchRegionJob(query) {
+	//const query = event.target.getAttribute('data-test-no');
+	location.href = `/recruitment/list?query=${query}&type=region`;
 }
 
 //-----------------

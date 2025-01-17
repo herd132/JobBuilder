@@ -75,11 +75,11 @@ public interface RecruitmentService {
 	
 	/** 공고글 목록 검색결과 조회
 	 * @param query
-	 * @param isDeadline 마감공고조회인지
+	 * @param type 조회타입
 	 * @param cp
 	 * @return
 	 */
-	Map<String, Object> selectSearchRecruitmentList(String query, boolean isDeadline, int cp);
+	Map<String, Object> selectSearchRecruitmentList(String query, String type, int cp);
 
 	
 	/* ********** 공고 상세 페이지 이동 관련 ********** */

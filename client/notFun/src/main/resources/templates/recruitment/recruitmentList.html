@@ -19,7 +19,7 @@
 
 	<div class="recruitmentList-gray">
 		<main class="recruitmentList-white">
-			<h2>등록된 알바목록입니다</h2>
+			<p th:text="'총 '+${paginationRecruitment.listCount}+' 건'"></p>
 			<div class="list-wrapper">
 				<table class="list-table">
 
@@ -115,10 +115,10 @@
 				<!-- 검색 한 경우-->
 				<ul class="paginationRecruitment" th:if="${param.query}" th:object="${paginationRecruitment}">
 					
-					<!-- 마감공고 검색인 경우 -->
-					<th:block th:if="${param.deadline}">
-						<li><a th:href="@{/recruitment/list (cp=1, query=${param.query}, deadline=${param.deadline})}">&lt;&lt;</a></li>
-						<li><a th:href="@{/recruitment/list (cp=*{prevPage}, query=${param.query}, deadline=${param.deadline})}">&lt;</a></li>
+					<!-- 마감/지역별 공고 검색인 경우 -->
+					<th:block th:if="${param.type}">
+						<li><a th:href="@{/recruitment/list (cp=1, query=${param.query}, type=${param.type})}">&lt;&lt;</a></li>
+						<li><a th:href="@{/recruitment/list (cp=*{prevPage}, query=${param.query}, type=${param.type})}">&lt;</a></li>
 
 						<!-- 특정 페이지로 이동 -->
 						<th:block th:if="*{startPage lt endPage}"
@@ -131,7 +131,7 @@
 
 							<!-- 보고있지 않은 페이지 -->
 							<li th:unless="${i} == *{currentPage}">
-								<a th:href="@{/recruitment/list (cp=${i}, query=${param.query}, deadline=${param.deadline})}" th:text="${i}">이동할
+								<a th:href="@{/recruitment/list (cp=${i}, query=${param.query}, type=${param.type})}" th:text="${i}">이동할
 									페이지</a>
 							</li>
 						</th:block>
@@ -143,12 +143,12 @@
 							</li>
 						</th:block>
 
-						<li><a th:href="@{/recruitment/list (cp=*{nextPage}, query=${param.query}, deadline=${param.deadline})}">&gt;</a></li>
-						<li><a th:href="@{/recruitment/list (cp=*{maxPage}, query=${param.query}, deadline=${param.deadline})}">&gt;&gt;</a></li>
+						<li><a th:href="@{/recruitment/list (cp=*{nextPage}, query=${param.query}, type=${param.type})}">&gt;</a></li>
+						<li><a th:href="@{/recruitment/list (cp=*{maxPage}, query=${param.query}, type=${param.type})}">&gt;&gt;</a></li>
 					</th:block>
 					
-					<!-- 마감공고 검색이 아닌경우 -->
-					<th:block th:unless="${param.deadline}">
+					<!-- 일반 검색인경우 -->
+					<th:block th:unless="${param.type}">
 
 						<li><a th:href="@{/recruitment/list (cp=1, query=${param.query})}">&lt;&lt;</a></li>
 						<li><a th:href="@{/recruitment/list (cp=*{prevPage}, query=${param.query})}">&lt;</a></li>
