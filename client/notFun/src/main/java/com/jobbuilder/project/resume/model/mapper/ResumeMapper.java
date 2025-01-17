@@ -125,16 +125,10 @@ public interface ResumeMapper {
 	 */
 	int getResumeTotalListCount();
 
-	/** 페이지네이션 + 이력서 리스트
+	/** 페이지네이션 적용 이력서 리스트
 	 * @param rowBounds
 	 * @return
 	 */
-	List<ServiceCenter> resumeTotalList(RowBounds rowBounds);
-	
-	
-
-
-
-
+	List<Map<String, Object>> resumeTotalList(RowBounds rowBounds);
 
 }

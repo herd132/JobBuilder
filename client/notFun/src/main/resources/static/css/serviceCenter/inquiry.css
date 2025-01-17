@@ -102,7 +102,7 @@ select:disabled {
   margin-top: 4px;
 }
 
-button[type="submit"] {
+.submit {
   width: 100%;
   padding: 14px;
   background-color: var(--primary-orange);
@@ -115,7 +115,7 @@ button[type="submit"] {
   transition: background-color 0.2s;
 }
 
-button[type="submit"]:hover {
+.submit:hover {
   background-color: #ffb168;
 }
 

@@ -284,12 +284,12 @@ public class ResumeServiceImpl implements ResumeService {
 		int offset = (cp - 1 ) * limit;
 		RowBounds rowBounds = new RowBounds(offset, limit);
 		
-//		List<ServiceCenter> serviceCenterList = mapper.resumeTotalList(rowBounds); 
+		List<Map<String, Object>> resumeTotalList = mapper.resumeTotalList(rowBounds); 
 		
 		Map<String, Object> map = new HashMap<>();
 		
 		map.put("pagination", pagination);
-//		map.put("serviceCenterList", serviceCenterList);
+		map.put("resumeTotalList", resumeTotalList);
 		
 		return map;
 	}

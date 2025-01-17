@@ -309,6 +309,67 @@
 	</select>
 	
 	<!-- 인재 정보 이력서 리스트  -->
-	<select id="resumeTotalList"></select>
+	<select id="resumeTotalList">
+		WITH
+			BASE_DATA AS 
+			
+			(
+				SELECT DISTINCT 
+				
+					R.RESUME_NO AS "resumeNo", M.MEMBER_EMAIL AS "memberEmail", M.MEMBER_NAME AS "memberName", W.PROFILE_IMG AS "profileImg", W.WORKER_MBTI AS "workerMbti", R.MODIFICATION_DATE, R.REGISTRATION_DATE,
+					SUBSTR(M.MEMBER_TEL, 1, 3) || '-' || SUBSTR(M.MEMBER_TEL, 4, 4) || '-' || SUBSTR(M.MEMBER_TEL, 8, 4) "memberTel",
+					SUBSTR(W.WORKER_ADDRESS, INSTR(W.WORKER_ADDRESS, '^^^') + 3, (INSTR(W.WORKER_ADDRESS, ' ', 1, 2) - (INSTR(W.WORKER_ADDRESS, '^^^') + 3))) "memberAddress",
+					'만 ' || FLOOR(MONTHS_BETWEEN(TRUNC(SYSDATE), W.WORKER_BIRTHDATE) / 12) || '세' AS "age",
+					TO_CHAR(W.WORKER_BIRTHDATE, 'YYYY') || '년생' AS "workerBirthDate",
+					
+					LISTAGG(CI.COMPANY_NAME || '-' || CI.CAREER_DESCRIPTION || <![CDATA[ '&&&' ]]> ||
+					CASE 
+					    -- END_DATE가 NULL인 경우
+					    WHEN END_DATE IS NULL THEN 
+					        '근무중(' || 
+					        CASE 
+					            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) > 0 
+					                AND TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) > 0 THEN 
+					                FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) || '년 ' || 
+					                TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) || '개월)'
+					            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) > 0 THEN 
+					                FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) || '년)'
+					            WHEN TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) > 0 THEN 
+					                TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) || '개월)'
+					            ELSE '1개월 미만)'
+					        END
+					    -- END_DATE가 NULL이 아닌 경우
+					    WHEN FLOOR(MONTHS_BETWEEN(END_DATE, START_DATE) / 12) > 0 
+					         AND TRUNC(MOD(MONTHS_BETWEEN(END_DATE, START_DATE), 12)) > 0 THEN 
+					        FLOOR(MONTHS_BETWEEN(END_DATE, START_DATE) / 12) || '년 ' || 
+					        TRUNC(MOD(MONTHS_BETWEEN(END_DATE, START_DATE), 12)) || '개월'
+					    WHEN FLOOR(MONTHS_BETWEEN(END_DATE, START_DATE) / 12) > 0 THEN 
+					        FLOOR(MONTHS_BETWEEN(END_DATE, START_DATE) / 12) || '년'
+					    WHEN TRUNC(MOD(MONTHS_BETWEEN(END_DATE, START_DATE), 12)) > 0 THEN 
+					        TRUNC(MOD(MONTHS_BETWEEN(END_DATE, START_DATE), 12)) || '개월'
+					    ELSE '1개월 미만'
+					END
+				    , '^^^') WITHIN GROUP (ORDER BY CI.COMPANY_NAME || '-' || CI.CAREER_DESCRIPTION) OVER(PARTITION BY R.RESUME_NO) AS "carrerStr"
+					
+				FROM RESUME R
+				LEFT JOIN WORKER W ON (R.WORKER_NO = W.WORKER_NO)
+				LEFT JOIN "MEMBER" M ON (W.MEMBER_NO = M.MEMBER_NO)
+				LEFT JOIN RESUME_CAREER RCA ON (R.RESUME_NO = RCA.RESUME_NO)
+				LEFT JOIN CAREER_INFO CI ON (RCA.CAREER_NO = CI.CAREER_NO)
+				ORDER BY 
+				CASE 
+			        WHEN R.MODIFICATION_DATE IS NOT NULL THEN R.MODIFICATION_DATE
+			        ELSE R.REGISTRATION_DATE
+			    END DESC
+			)
+			
+			SELECT DISTINCT 
+				R.*,
+			    LISTAGG(EW.WORKTYPE_CATEGORY, ' / ') WITHIN GROUP(ORDER BY EW.WORKTYPE_CATEGORY) OVER(PARTITION BY "resumeNo") AS "workCategory"
+			    
+			FROM BASE_DATA R 
+			JOIN RESUME_WORKTYPE RW ON (RW.RESUME_NO = R."resumeNo")
+			JOIN EMPLOYER_WORKTYPE EW ON (EW.WORKTYPE_NO = RW.WORKTYPE_NO)	
+</select>
 
 </mapper>
