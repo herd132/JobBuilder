@@ -147,9 +147,6 @@ public class RecruitmentController {
 							@RequestParam(value="deadline", required = false) boolean isDeadline,
 							Model model) {
 		
-		log.debug("query {}", query);
-		log.debug("deadline {}", isDeadline);
-		
 		Map<String, Object> map = null;
 		
 		if(query == null) map = service.selectRecruitmentList(cp);
@@ -158,7 +155,7 @@ public class RecruitmentController {
 		model.addAttribute("paginationRecruitment", map.get("paginationRecruitment"));
 		model.addAttribute("recruitmentList", map.get("recruitmentList"));
 		
-		log.debug("paginationRecruitment : " + map.get("paginationRecruitment"));
+		if(isDeadline) model.addAttribute("deadline", "true");
 		
 		return "recruitment/recruitmentList";
 	}
