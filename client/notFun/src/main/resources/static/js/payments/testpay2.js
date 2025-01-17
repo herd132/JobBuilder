@@ -1,13 +1,8 @@
 // 전역 변수
 let globalMembershipList = [];
 
-// employerNo 가져오기
-const getEmployerNo = () => {
-  const employerNoMeta = document.querySelector('meta[name="employerNo"]');
-  return employerNoMeta?.content || null;
-};
-
-const employerNo = getEmployerNo();
+const employerNo = sessionStorage.getItem('employerNo');
+console.log(employerNo);
 
 // 데이터 요청 및 캐싱
 async function fetchAndCacheMembershipData(employerNo) {

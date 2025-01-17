@@ -20,7 +20,6 @@ import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.myPageWorker.model.service.MyPageWorkerService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -155,7 +154,7 @@ public class MyPageWorkerController {
 	
 	@GetMapping("secession")
 	public String secession(@SessionAttribute("loginWorker") Worker loginWorker,
-							HttpSession session,
+							SessionStatus status,
 							RedirectAttributes ra) {
 		
 		int result = service.secession(loginWorker);
@@ -164,7 +163,7 @@ public class MyPageWorkerController {
 		
 		if(result > 0) { 
 			
-			session.invalidate();				
+			status.setComplete();				
 			message = "회원탈퇴 되었습니다. 그동안 이용해 주셔서 감사합니다.";
 			
 		}

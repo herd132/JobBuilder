@@ -26,7 +26,7 @@ public class EmailController {
 	@PostMapping("signup")
 	public int signup(@RequestBody String email) {
 		
-	String authKey = service.sendEmail("signupWor", email);
+	String authKey = service.sendEmail("signUpWor", email);
 		
 		if(authKey != null) { // 인증번호가 반환되어 돌아옴 == 이메일 보내기 성공
 						return 1;
