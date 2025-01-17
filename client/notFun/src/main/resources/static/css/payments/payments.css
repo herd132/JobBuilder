@@ -297,3 +297,87 @@
 .change-button:hover {
   background-color: #e0e0e0;
 }
+
+
+/* modal.css */
+
+/* 모달의 기본 스타일 */
+.modal {
+  display: none; /* 기본적으로 숨김 */
+  position: fixed; /* 고정 위치 */
+  z-index: 1000; /* 다른 요소 위에 표시 */
+  left: 0;
+  top: 0;
+  width: 100%; /* 전체 너비 */
+  height: 100%; /* 전체 높이 */
+  overflow: auto; /* 필요시 스크롤 */
+  background-color: rgba(0, 0, 0, 0.5); /* 반투명 배경 */
+}
+
+/* 모달 콘텐츠 박스 */
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto; /* 수직 및 수평 중앙 정렬 */
+  padding: 20px;
+  border: 1px solid #888;
+  width: 50%; /* 너비 조절 */
+  border-radius: 8px; /* 둥근 모서리 */
+  box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+  animation: fadeIn 0.3s;
+}
+
+/* 닫기 버튼 */
+.close-button {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.close-button:hover,
+.close-button:focus {
+  color: #000;
+  text-decoration: none;
+}
+
+/* 고용주 리스트 버튼 */
+.employer-list button {
+  width: 100%;
+  padding: 10px;
+  margin: 8px 0;
+  border: none;
+  background-color: #4CAF50; /* 초록색 배경 */
+  color: white;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.employer-list button:hover {
+  background-color: #45a049; /* 호버 시 색상 변경 */
+}
+
+/* 애니메이션 */
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+/* "변경하기" 버튼 스타일 (선택사항) */
+.change-button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #2196F3; /* 파란색 배경 */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.change-button:hover {
+  background-color: #0b7dda; /* 호버 시 색상 변경 */
+}

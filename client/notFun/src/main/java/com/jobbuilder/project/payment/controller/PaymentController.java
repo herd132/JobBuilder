@@ -1,5 +1,6 @@
 package com.jobbuilder.project.payment.controller;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -9,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,9 +47,12 @@ public class PaymentController {
     	
         Employer loginEmployer = (Employer) session.getAttribute("loginEmployer");
 
+        if (loginEmployer == null) {
+            return ResponseEntity.ok(Collections.emptyList()); // 빈 리스트 반환
+        }
         // 데이터 조회
         List<Employer> result = service.getEmployerNo(loginEmployer.getMemberNo());
-        if (result == null || result.isEmpty()) {
+        if (result == null || result.isEmpty() || loginEmployer == null) {
             // 데이터가 없으면 HTTP 404 상태 반환
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("No data found");
         }
@@ -89,28 +92,24 @@ public class PaymentController {
         return response;
     }
 
-    // 맴버십 정보 받아오기
-    @PostMapping("/getEmployerNo")
-    @ResponseBody
-    public Map<String, Object> getEmployerNo(@SessionAttribute("loginEmployer") Employer loginEmployer) {
-        Map<String, Object> response = new HashMap<>();
-        
-		int emploterNo = loginEmployer.getEmployerNo();
-		response.put("emploterNo", emploterNo);
-		
-        List<Employer> getEmployerNo = service.getEmployerNo(loginEmployer.getMemberNo());
-        response.put("getEmployerNo", getEmployerNo);
-        return response;
-    }
+   
     
     
+ 
     // 맴버십 정보 받아오기
     @PostMapping("/details")
     @ResponseBody
-    public Map<String, Object> getMembershipDetails(@SessionAttribute("loginEmployer") Employer loginEmployer) {
+    public Map<String, Object> getMembershipDetails(@RequestBody Map<String, Integer> request) {
+        Integer employerNo = request.get("employerNo");
         Map<String, Object> response = new HashMap<>();
-        List<Membership> membershipDetails = service.getMembershipDetails(loginEmployer.getEmployerNo());
-        response.put("membershipDetails", membershipDetails);
+        try {
+            // employerNo를 기반으로 맴버십 상세 정보 가져오기
+            List<Membership> membershipDetails = service.getMembershipDetails(employerNo);
+            response.put("membershipDetails", membershipDetails);
+        } catch (Exception e) {
+            e.printStackTrace();
+            response.put("error", "맴버십 정보를 가져오는 중 오류가 발생했습니다.");
+        }
         return response;
     }
     

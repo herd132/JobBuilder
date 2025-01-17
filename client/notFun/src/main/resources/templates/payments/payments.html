@@ -16,16 +16,27 @@
   <input id="employerNoInput" value="">
   <div class="payments-background-gray">
     <div class="payments-background-white" id="background">
-      <div id="employerList" style="display: none;">
-        <!-- 다중 선택 UI -->
+
+
+  <!-- 모달 창 HTML -->
+  <div id="employerModal" class="modal">
+    <div class="modal-content">
+      <span class="close-button">&times;</span>
+      <h2>사업주 선택</h2>
+      <div id="employerList" class="employer-list">
+        <!-- 고용주 버튼이 여기에 동적으로 추가됩니다 -->
+      </div>
     </div>
+  </div>
+
+
 
 
       <h1 class="payments-title">맴버십 혜택 안내 <hr></h1>
       <div class="flex-container">
         <h3 class="payments-subtitle">상세 등급별 혜택 <hr></h3>
         <div class="selected-business">
-            <span>선택된 점포 : <h3 id="businessName"></h3></span>
+            <span>사업장 명 : <h3 id="businessName"></h3></span>
             <button class="change-button"  style="display: none;">변경하기</button>
         </div>
       </div>
@@ -131,8 +142,8 @@
               </div>
             </div>
             <div class="payments-plussitem-bottom">
-              <div id="plus1"></div>
-              <div id="plus2"></div>
+              <div id="plus1" name="gradeStatus"></div>
+              <div id="plus2" name="gradeStatus"></div>
             </div>
           </div>
         </div>
@@ -154,7 +165,8 @@
   <th:block th:replace="~{common/main-footer}"></th:block>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-  <script src="/js/payments/membership.js"></script>
+  <script src="/js/payments/selectemployer.js"></script>
+  <!-- <script src="/js/payments/membership.js"></script> -->
   <script src="/js/payments/payments.js"></script>
  
 
