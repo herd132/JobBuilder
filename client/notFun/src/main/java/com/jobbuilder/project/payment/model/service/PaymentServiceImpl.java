@@ -42,7 +42,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void savePayment(Payment payment, List<Integer> validMembershipNumbers, int emptyMembershipCount,
-            List<Membership> membershipList) {
+            List<Membership> membershipList, List<Membership> oldMembershipList, List<Membership> newMembershipList) {
         // 1단계: 결제 정보 저장
         log.info("Saving payment: {}", payment);
         mapper.savePayment(payment); // paymentNo 설정
@@ -65,7 +65,7 @@ public class PaymentServiceImpl implements PaymentService {
             // 2-2단계: 기존맴버십일 경우 결제 상세정보 테이블에 정보를 담음
          	for (i = 0; i < validMembershipNumbers.size(); i++) {
          		log.info("Linking2 paymentNo {}: {}", payment.getPaymentNo(), payment);
-           	 Membership membership = membershipList.get(i); 
+           	 Membership membership = oldMembershipList.get(i); 
            	 membership.setPaymentNo(payment.getPaymentNo()); // 1단계실시한 결제번호 부여
            	 mapper.connectionPaymentType(membership); // PAYMENT_Type 연결
            	}
@@ -74,7 +74,7 @@ public class PaymentServiceImpl implements PaymentService {
          	// 2-3단계: 기존맴버십일 경우 업데이트
             for (Integer membershipNo : validMembershipNumbers) {
                 log.info("Linking3 existing membershipNo {} to paymentNo {}: {}", membershipNo, payment.getPaymentNo(), payment);
-                Membership membership = membershipList.get(i); 
+                Membership membership = oldMembershipList.get(i); 
                 i++;
                 // 기존 멤버십 연결
                 membership.setMembershipNo(membershipNo);
@@ -88,7 +88,7 @@ public class PaymentServiceImpl implements PaymentService {
         if (emptyMembershipCount > 0) {
             processed = true; // 처리 상태 기록
             for (int i = 0; i < emptyMembershipCount; i++) {
-                Membership membership = membershipList.get(i); // 신규 멤버십 정보 가져오기
+                Membership membership = newMembershipList.get(i); // 신규 멤버십 정보 가져오기
                 log.info("Creating new membership: {}", membership);
 
                 // 3-1 단계 신규 MEMBERSHIP 생성

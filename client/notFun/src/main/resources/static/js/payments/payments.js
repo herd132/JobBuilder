@@ -9,6 +9,8 @@ const getMembershipDetailsByType = (type) => {
 
 
 var sumResult = 0;
+var newMemberships = [];
+var oldMemberships = [];
 var memberships = []; // 멤버십 세부 정보를 담을 배열
 var validMembershipNumbers = []; // 기존 멤버십 번호
 var emptyMembershipCount  = 0;
@@ -500,79 +502,89 @@ const updateMembershipContainer = () => {
   const productItems = document.querySelectorAll(".product-addpart .item");
 
   // 기존 DOM 초기화
-  beforeMembershipContainer.textContent = "";
-  productExpenseContainer.textContent = ""; // 새로운 영역 초기화
-  memberships = []; // 초기화
-  validMembershipNumbers = [];
-  emptyMembershipCount  = 0;
-  paymentProduct = "";
+beforeMembershipContainer.textContent = "";
+productExpenseContainer.textContent = ""; // 새로운 영역 초기화
+memberships = []; // 초기화
+newMemberships = [];
+oldMemberships = [];
+validMembershipNumbers = [];
+emptyMembershipCount = 0;
+paymentProduct = "";
 
-  // 상품 정보 배열 생성
-  const membershipList = Array.from(productItems).map((item) => {
-    const selectedValue = item.querySelector(".showItem").value;
-    const productDateElement = item.querySelector(".showDate");
-    const customDuration = Number(
-      productDateElement.getAttribute("data-custom-value")
-    );
-    const selectedDuration =
-      customDuration || Number(productDateElement.value) || 0; // 숫자로 변환 및 기본값 처리
-    const membership = membershipOptions.find(
-      (option) => option.value === selectedValue
-    );
+// 상품 정보 배열 생성
+const membershipList = Array.from(productItems).map((item) => {
+  const selectedValue = item.querySelector(".showItem").value;
+  const productDateElement = item.querySelector(".showDate");
+  const customDuration = Number(
+    productDateElement.getAttribute("data-custom-value")
+  );
+  const selectedDuration =
+    customDuration || Number(productDateElement.value) || 0; // 숫자로 변환 및 기본값 처리
+  const membership = membershipOptions.find(
+    (option) => option.value === selectedValue
+  );
 
-    // 선택된 멤버십 번호 저장
-    if (selectedValue !== "none") {
-      const membershipDetail = getMembershipDetailsByType(Number(selectedValue));
-      if (membershipDetail) {
-          validMembershipNumbers.push(membershipDetail.membershipNo); // 기존 멤버십
-      } else {
-          emptyMembershipCount++; // 빈 슬롯 카운트 증가
-      }
-    
-      var answer = "";
-      var value = Number(selectedValue); // 타입 명시적 변환
-      
-      switch (value) {
-        case 1: 
-          answer = "기본";
-          break;
-        case 2:
-          answer = "골드 이용권";
-          break;
-        case 3:
-          answer = "플래티넘 이용권";
-          break;
-        case 4:
-          answer = "급구 이용권"; 
-          break;
-        case 5:
-          answer = "Hot 이용권"; 
-          break;
-        default:
-          answer = "Unknown"; // 예상치 못한 값 처리
-          break;
-      }
-      
-      memberships.push({
-        membershipType: value,
-        membershipDateValue: selectedDuration,
-        durationUnit: value >= 4 ? "DAY" : "MONTH",
-        membershipProduct: answer,
-        membershipAmount: membership.price * selectedDuration,
-        membershipCount:productDateElement,
-      });
-      
-      if (memberships && memberships.length > 0) {
-        const firstProduct = memberships[0].membershipProduct;
-        paymentProduct =
-            memberships.length > 1
-                ? `${firstProduct} 외 ${memberships.length - 1}건`
-                : firstProduct;
+  if (selectedValue !== "none") {
+    const membershipDetail = getMembershipDetailsByType(Number(selectedValue));
+    let answer = "";
+    const value = Number(selectedValue); // 타입 명시적 변환
+
+    switch (value) {
+      case 1:
+        answer = "기본";
+        break;
+      case 2:
+        answer = "골드 이용권";
+        break;
+      case 3:
+        answer = "플래티넘 이용권";
+        break;
+      case 4:
+        answer = "급구 이용권";
+        break;
+      case 5:
+        answer = "Hot 이용권";
+        break;
+      default:
+        answer = "Unknown"; // 예상치 못한 값 처리
+        break;
+    }
+
+    // 공통 데이터 생성
+    const membershipData = {
+      membershipType: value,
+      membershipDateValue: selectedDuration,
+      durationUnit: value >= 4 ? "DAY" : "MONTH",
+      membershipProduct: answer,
+      membershipAmount: membership.price * selectedDuration,
+      membershipCount: productDateElement,
+    };
+
+    // 조건에 따라 oldMemberships 또는 newMemberships에 푸쉬
+    if (membershipDetail) {
+      validMembershipNumbers.push(membershipDetail.membershipNo); // 기존 멤버십
+      oldMemberships.push(membershipData); // 기존 멤버십 데이터 추가
+    } else {
+      emptyMembershipCount++; // 빈 슬롯 카운트 증가
+      newMemberships.push(membershipData); // 새로운 멤버십 데이터 추가
+    }
+
+    // 공통 memberships 배열에 추가
+    memberships.push(membershipData);
+
+    // paymentProduct 설정
+    if (memberships && memberships.length > 0) {
+      const firstProduct = memberships[0].membershipProduct;
+      paymentProduct =
+        memberships.length > 1
+          ? `${firstProduct} 외 ${memberships.length - 1}건`
+          : firstProduct;
     }
   }
 
-    return { membership, selectedValue, selectedDuration };
-  });
+  return { membership, selectedValue, selectedDuration };
+});
+
 
   // 정렬: defaultType 기준 오름차순
   membershipList.sort(
@@ -743,6 +755,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 validMembershipNumbers: validMembershipNumbers,
                 emptyMembershipCount: Number(emptyMembershipCount),
                 memberships: memberships,
+                newMemberships: newMemberships,
+                oldMemberships: oldMemberships,
                 employerNo: Number(employerNo),
                 paymentProduct: paymentProduct,
               };

@@ -127,6 +127,8 @@ public class PaymentController {
             List<Integer> validMembershipNumbers = (List<Integer>) paymentData.get("validMembershipNumbers"); // 선택한 상품의 맴버십번호 (기존 상품 구분용)
             int emptyMembershipCount = (int) paymentData.get("emptyMembershipCount"); // 빈 슬롯 카운트 (신규를 의미)
             List<Map<String, Object>> memberships = (List<Map<String, Object>>) paymentData.get("memberships"); // 유저가 선택한 상품 배열
+            List<Map<String, Object>> newMemberships = (List<Map<String, Object>>) paymentData.get("newMemberships"); // 유저가 선택한 상품 배열
+            List<Map<String, Object>> oldMemberships = (List<Map<String, Object>>) paymentData.get("oldMemberships"); // 유저가 선택한 상품 배열
             int employerNo = (int) paymentData.get("employerNo"); // 사업주 회원번호
             String paymentProduct = (String) paymentData.get("paymentProduct"); // 결제한 상품명
 
@@ -142,7 +144,31 @@ public class PaymentController {
             	        .build())
             	    .collect(Collectors.toList());
 
+            List<Membership> newMembershipList = newMemberships.stream() // DTO로 변환
+            	    .map(detail -> Membership.builder()
+            	        .membershipType((int) detail.get("membershipType"))
+            	        .membershipDateValue((int) detail.get("membershipDateValue"))
+            	        .durationUnit((String) detail.get("durationUnit"))
+            	        .membershipAmount((int) detail.get("membershipAmount")) 
+            	        .membershipProduct((String) detail.get("membershipProduct"))
+            	        .employerNo(employerNo)
+            	        .build())
+            	    .collect(Collectors.toList());
 
+            List<Membership> oldMembershipList = oldMemberships.stream() // DTO로 변환
+            	    .map(detail -> Membership.builder()
+            	        .membershipType((int) detail.get("membershipType"))
+            	        .membershipDateValue((int) detail.get("membershipDateValue"))
+            	        .durationUnit((String) detail.get("durationUnit"))
+            	        .membershipAmount((int) detail.get("membershipAmount")) 
+            	        .membershipProduct((String) detail.get("membershipProduct"))
+            	        .employerNo(employerNo)
+            	        .build())
+            	    .collect(Collectors.toList());
+
+            
+            
+            
             // Payment 객체 생성
             Payment payment = Payment.builder()
                     .impUid(impUid)
@@ -154,7 +180,7 @@ public class PaymentController {
                     .build();
 
             // 서비스 호출
-            service.savePayment(payment, validMembershipNumbers, emptyMembershipCount, membershipList); // 빈 슬롯을 카운트로 대체
+            service.savePayment(payment, validMembershipNumbers, emptyMembershipCount, membershipList, oldMembershipList, newMembershipList ); // 빈 슬롯을 카운트로 대체
 
             // 성공 응답
             Map<String, Object> response = new HashMap<>();
