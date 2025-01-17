@@ -42,7 +42,7 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public void savePayment(Payment payment, List<Integer> validMembershipNumbers, int emptyMembershipCount,
-            List<Membership> membershipList, List<Membership> oldMembershipList, List<Membership> newMembershipList) {
+             List<Membership> oldMembershipList, List<Membership> newMembershipList) {
         // 1단계: 결제 정보 저장
         log.info("Saving payment: {}", payment);
         mapper.savePayment(payment); // paymentNo 설정

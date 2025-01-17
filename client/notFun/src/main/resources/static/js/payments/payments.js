@@ -27,14 +27,14 @@ const membershipOptions = [
     value: "2",
     label: "골드 이용권",
     content:
-      "✔ 공고 일일 100건 등록<br>✔ 이력서 열람 300건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람",
+      "✔ 공고 일일 100건 등록<br>✔ 이력서 열람 300건<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람<br>✔ 공고 상단 등록",
     price: 30000,
   },
   {
     value: "3",
     label: "플래티넘 이용권",
     content:
-      "✔ 공고 일일 300건 등록<br>✔ 이력서 열람 무제한<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람<br>✔ 공고 즉시 등록<br>✔ 이력서 추천 기능",
+      "✔ 공고 일일 300건 등록<br>✔ 이력서 열람 무제한<br>✔ 키워드 이력서 검색<br>✔ 이력서 상세 정보 열람<br>✔ 공고 최상단 등록<br>✔ 이력서 추천 기능",
     price: 50000,
   },
   {
@@ -79,7 +79,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // 스크롤을 최상단으로 이동
       window.scrollTo({
         top: 0,
-        behavior: "auto", // 부드럽게 이동
+        behavior: "auto", 
       });
     });
   });
@@ -108,7 +108,7 @@ const renderPaymentPage = (defaultType) => {
         );
 
         return `
-        <div class="membership-item">
+        <div class="membership-item3">
           <h3>${membership.membershipName}</h3>
           <p>${matchedOption ? matchedOption.content : "내용 없음"}</p>
           <p>남은 기간: ${membership.remainingDays}일</p>
@@ -154,7 +154,7 @@ const renderPaymentPage = (defaultType) => {
                     <button id="payBtn" class="payments-t-btn-after" style="cursor:pointer;" >결제하기</button>
                 </div>
                 <div class="payments-t-inside-middle-item">
-                    <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments/membership';"
+                    <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments';"
                         style="cursor:pointer;">취소하기</button>
                 </div>
             </div>
@@ -625,7 +625,7 @@ const membershipList = Array.from(productItems).map((item) => {
 
     // 컨테이너 생성
     const container = document.createElement("div");
-    container.classList.add("membership-item");
+    container.classList.add("membership-item3");
 
     // 라벨 및 내용 추가 함수
     const addContent = (labelText, showContent = false) => {
@@ -767,8 +767,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 data: JSON.stringify(data),
                 contentType: "application/json; charset=utf-8",
                 dataType: "json",
-                success: function (result) {
-                  window.location.href = "/payments/testpay";
+                success: function () {
+                  initializeMembershipData(employerNo);
                 },
                 error: function (result) {
                   alert(result.responseText);
@@ -795,3 +795,72 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
+
+
+const fetchAndCacheMembershipData = async (employerNo) => {
+  try {
+    const response = await fetch(`/payments/paymentlist`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: employerNo.toString(),
+    });
+
+    if (!response.ok) {
+      throw new Error("데이터를 가져오는 데 실패했습니다.");
+    }
+
+    const data = await response.json();
+    return data.paymentList || [];
+  } catch (error) {
+    console.error("에러:", error);
+    return [];
+  }
+};
+
+const renderMembershipUI = (data) => {
+  window.scrollTo({
+    top: 0,
+    behavior: "auto", 
+  });
+  if (data.length > 0) {
+    const firstMembership = data[0];
+    const formattedPaymentAmount = firstMembership.paymentAmount
+      ? firstMembership.paymentAmount.toLocaleString()
+      : "N/A";
+
+    return `
+      <div class="payment-summary-content">
+        <p class="payment-summary-item"><span class="payment-label">결제일 : </span>${firstMembership.paymentDate || "N/A"}</p>
+        <p class="payment-summary-item"><span class="payment-label">상품명 : </span>${firstMembership.paymentProduct || "N/A"}</p>
+        <p class="payment-summary-item"><span class="payment-label">결제금액 : </span>${formattedPaymentAmount}원</p>
+        <p class="payment-summary-item"><span class="payment-label">결제상태 : </span>${firstMembership.paymentStatus || "N/A"}</p>
+      </div>
+    `;
+    
+  } else {
+    return "<p>맴버십 데이터가 없습니다.</p>";
+  }
+};
+
+const updateBackgroundHTML = (content) => {
+  const backgroundElement = document.querySelector("#background");
+  backgroundElement.innerHTML = `
+    <h1 class="payments-title">결제 결과
+      <hr>
+    </h1>
+    <div style="height: 300px;" id="finalResult">
+      <div class="resultp" id="resultp">${content}</div>
+      <div class="payments-t-inside-middle-item">
+        <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments';"
+          style="cursor:pointer;">돌아가기</button>
+      </div>
+    </div>
+  `;
+};
+
+// 실행 함수
+const initializeMembershipData = async (employerNo) => {
+  const resultList = await fetchAndCacheMembershipData(employerNo);
+  const resultContent = renderMembershipUI(resultList);
+  updateBackgroundHTML(resultContent);
+};

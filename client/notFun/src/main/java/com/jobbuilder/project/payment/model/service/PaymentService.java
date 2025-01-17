@@ -18,7 +18,7 @@ public interface PaymentService {
 	List<Employer> getEmployerNo(int memberNo);
 
 	void savePayment(Payment payment, List<Integer> validMembershipNumbers, int emptyMembershipCount,
-			List<Membership> membershipList, List<Membership> oldMembershipList, List<Membership> newMembershipList);
+			List<Membership> oldMembershipList, List<Membership> newMembershipList);
 
 	
 

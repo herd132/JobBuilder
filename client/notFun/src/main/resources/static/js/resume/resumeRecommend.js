@@ -230,42 +230,39 @@ const updateUI = (
   ) {
     const noDataRow = document.createElement("tr");
     noDataRow.innerHTML =
-      '<td></td><th colspan="7">공고가 존재하지 않습니다.</th>';
+      '<td><td><td></td><th colspan="7">공고가 존재하지 않습니다.</th>';
     recruitmentBody.appendChild(noDataRow);
   } else {
     // 배열 값 만큼 반복
-    recommendations.forEach((i) => {
+    recommendations.forEach((item) => {
       const row = document.createElement("tr");
-
-      // 각 열(td) 생성 및 데이터 추가
       row.innerHTML = `
-      <td>${i.recruitmentNo || "값 없음"}</td>
-      <td>${i.businessAddress || "값 없음"}</td>
-      <td>
-        <ul recruitmentNo="${
-          i.recruitmentNo || "값 없음"
-        }" style="cursor: pointer;" 
-            onclick="location.href='/recruitment/detail/${
-              i.recruitmentNo
-            }'">
-          <li>${i.recruitmentTitle || "값 없음"}</li>
-          <li>${i.businessName || "값 없음"}</li>
-        </ul>
-      </td>
-      <td>
-        <span>${
-          formatSalaryAmount(i.salaryMount) + " 원" || "값 없음"
-        }</span>
-        <span>${i.salaryName || "값 없음"}</span>
-      </td>
-      <td>${i.timeName || "값 없음"}</td>
-      <td>${formatTime(i.writeDate) || "값 없음"}</td>
-      <td>${
-        formatDeadline(i.recruitmentDeadline) || "값 없음"
-      }</td>
-    `;
-
-      // 생성된 행을 부모 요소에 추가
+        <td>${item.recruitmentNo || "값 없음"}</td>
+        <td>${item.businessAddress || "값 없음"}</td>
+        <td>
+          <ul recruitmentNo="${
+            item.recruitmentNo || "값 없음"
+          }" style="cursor: pointer;"
+              onclick="location.href='/recruitment/detail/${
+                item.recruitmentNo || "#"
+              }'">
+            <li>${item.recruitmentTitle || "값 없음"}</li>
+            <li>${item.businessName || "값 없음"}</li>
+          </ul>
+        </td>
+        <td>
+          <span>${
+            item.salaryMount ? `${formatSalaryAmount(item.salaryMount)} 원` : ""
+          }</span>
+          <span 
+            class="${item.salaryMount !== 0 ? "salary-type-badge" : ""} ${item.salaryMount !== 0 && item.salaryName === "시급" ? "salary-hourly" : ""}">
+            ${item.salaryName || "값 없음"}
+          </span>
+        </td>
+        <td>${item.timeName || "값 없음"}</td>
+        <td>${formatTime(item.writeDate) || "작성 시간 없음"}</td>
+        <td>${formatDeadline(item.recruitmentDeadline) || "값 없음"}</td>
+      `;
       recruitmentBody.appendChild(row);
     });
   }
@@ -276,7 +273,8 @@ const createPagination = (data, paginationContainer) => {
   if (!recommendationsData || !Array.isArray(recommendationsData) || recommendationsData.length === 0) {
     return;
   }
-
+  const listCountElement = document.getElementById("listCount");
+  listCountElement.textContent = data.length;
   const itemsPerPage = 5; // 한 페이지당 항목 수
   const pagesPerGroup = 10; // 페이지 그룹당 페이지 수
   const totalPages = Math.ceil(data.length / itemsPerPage);

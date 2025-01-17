@@ -7,40 +7,39 @@
   <title>맴버십 안내</title>
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/payments/payments.css">
-  <link rel="stylesheet" href="/css/payments/testpay.css">
- 
+
 </head>
 
 <body>
   <th:block th:replace="~{common/main-header}"></th:block>
-  <input id="employerNoInput" value="">
+
   <div class="payments-background-gray">
     <div class="payments-background-white" id="background">
 
-
-  <!-- 모달 창 HTML -->
-  <div id="employerModal" class="modal">
-    <div class="modal-content">
-      <span class="close-button">&times;</span>
-      <h2>사업주 선택</h2>
-      <div id="employerList" class="employer-list">
-        <!-- 고용주 버튼이 여기에 동적으로 추가됩니다 -->
-      </div>
-    </div>
-  </div>
-
-
-
-
-      <h1 class="payments-title">맴버십 혜택 안내 <hr></h1>
-      <div class="flex-container">
-        <h3 class="payments-subtitle">상세 등급별 혜택 <hr></h3>
-        <div class="selected-business">
-            <span>사업장 명 : <h3 id="businessName"></h3></span>
-            <button class="change-button"  style="display: none;">변경하기</button>
+      <!-- 모달 창 HTML -->
+      <div id="employerModal" class="modal">
+        <div class="modal-content">
+          <span class="close-button">&times;</span>
+          <h2>사업주 선택</h2>
+          <div id="employerList" class="employer-list">
+            <!-- 고용주 버튼이 여기에 동적으로 추가됩니다 -->
+          </div>
         </div>
       </div>
-     
+
+      <h1 class="payments-title">맴버십 혜택 안내
+        <hr>
+      </h1>
+      <div class="flex-container">
+        <h3 class="payments-subtitle">상세 등급별 혜택
+          <hr>
+        </h3>
+        <div class="selected-business">
+          <span>사업장 명 : <h3 id="businessName"></h3></span>
+          <button class="change-button" style="display: none;">변경하기</button>
+        </div>
+      </div>
+
 
 
       <div class="payments-background-outside">
@@ -49,76 +48,77 @@
 
             <!-- Basic Membership -->
             <div class="membership-item2">
-                <div class="payments-inside-top-item">
-                  <div class="payments-inside-box1">부담없이 무료로</div>
-                  <h3>FREE</h3>
-                  <h3 class="payments-price1">무료</h3>
-                  <div class="payments-inside-content">
-                    ✔ 공고 일일 30건 등록<br>
-                    ✔ 이력서 열람 100건<br>
-                    ✔ 키워드 이력서 검색<br>
-                    ✔ 이력서 상세 정보 열람
-                  </div>
-                  <div class="payments-inside-box2">
-                    <h4>무제한</h4>
-                    <p>로그인시 무제한으로 이력서 탐색</p>
-                  </div>
+              <div class="payments-inside-top-item">
+                <div class="payments-inside-box1">부담없이 무료로</div>
+                <h3>FREE</h3>
+                <h3 class="payments-price1">무료</h3>
+                <div class="payments-inside-content">
+                  ✔ 공고 일일 30건 등록<br>
+                  ✔ 이력서 열람 100건<br>
+                  ✔ 키워드 이력서 검색<br>
+                  ✔ 이력서 상세 정보 열람
                 </div>
-                <div class="grade">
-                  <div class="payments-btn-now"> 기본 상품 입니다</div>
+                <div class="payments-inside-box2">
+                  <h4>무제한</h4>
+                  <p>로그인시 무제한으로 이력서 탐색</p>
                 </div>
+              </div>
+              <div class="grade">
+                <div class="payments-btn-now"> 기본 상품 입니다</div>
+              </div>
             </div>
 
             <!-- Gold Membership -->
             <div class="membership-item" id="goldMembershipContainer" name="paymentsClick" data-default-type="2">
-                <div class="payments-inside-top-item">
-                  <div class="payments-inside-box1">
-                    <p class="payments-title-gold">향상된 맴버십 기능</p>
-                  </div>
-                  <h3 class="payments-title-gold">골드</h3>
-                  <h3 class="payments-price1">월 30,000원</h3>
-                  <div class="payments-inside-content">
-                    ✔ 공고 일일 100건 등록<br>
-                    ✔ 이력서 열람 300건<br>
-                    ✔ 키워드 이력서 검색<br>
-                    ✔ 이력서 상세 정보 열람
-                  </div>
-                  <div class="payments-inside-box2">
-                    <h4>할인</h4>
-                    <p>1년 구독시 10% 할인</p>
-                    <p style="text-decoration:line-through">360,000원</p> <b>330,000원</b>
-                  </div>
+              <div class="payments-inside-top-item">
+                <div class="payments-inside-box1">
+                  <p class="payments-title-gold">향상된 맴버십 기능</p>
                 </div>
-                <div class="grade">
-                  <div id="gold" class="payments-btn-now" name="gradeStatus"> 로딩 중...</div>
+                <h3 class="payments-title-gold">골드</h3>
+                <h3 class="payments-price1">월 30,000원</h3>
+                <div class="payments-inside-content">
+                  ✔ 공고 일일 100건 등록<br>
+                  ✔ 이력서 열람 300건<br>
+                  ✔ 키워드 이력서 검색<br>
+                  ✔ 이력서 상세 정보 열람<br>
+                  ✔ 공고 상단 등록
                 </div>
+                <div class="payments-inside-box2">
+                  <h4>할인</h4>
+                  <p>정기 구독시 10% 할인</p>
+                  <p style="text-decoration:line-through">30,000원</p> <b>27,000원</b>
+                </div>
+              </div>
+              <div class="grade">
+                <div id="gold" class="payments-btn-now" name="gradeStatus"> 로딩 중...</div>
+              </div>
             </div>
 
             <!-- Platinum Membership -->
             <div class="membership-item" id="platinumMembershipContainer" name="paymentsClick" data-default-type="3">
-                <div class="payments-inside-top-item">
-                  <div class="payments-inside-box1">
-                    <p class="payments-title-platinum">더욱 향상된 맴버십</p>
-                  </div>
-                  <h3 class="payments-title-platinum">플레티넘</h3>
-                  <h3 class="payments-price1">월 50,000원</h3>
-                  <div class="payments-inside-content">
-                    ✔ 공고 일일 300건 등록<br>
-                    ✔ 이력서 열람 무제한<br>
-                    ✔ 키워드 이력서 검색<br>
-                    ✔ 이력서 상세 정보 열람<br>
-                    ✔ 공고 즉시 등록<br>
-                    ✔ 이력서 추천 기능<br>
-                  </div>
-                  <div class="payments-inside-box2">
-                    <h4>할인</h4>
-                    <p>1년 구독시 20% 할인</p>
-                    <p style="text-decoration:line-through">600,000원</p> <b>500,000원</b>
-                  </div>
+              <div class="payments-inside-top-item">
+                <div class="payments-inside-box1">
+                  <p class="payments-title-platinum">더욱 향상된 맴버십</p>
                 </div>
-                <div class="grade">
-                  <div id="platinum" class="payments-btn-now" name="gradeStatus"> 로딩 중...</div>
+                <h3 class="payments-title-platinum">플레티넘</h3>
+                <h3 class="payments-price1">월 50,000원</h3>
+                <div class="payments-inside-content">
+                  ✔ 공고 일일 300건 등록<br>
+                  ✔ 이력서 열람 무제한<br>
+                  ✔ 키워드 이력서 검색<br>
+                  ✔ 이력서 상세 정보 열람<br>
+                  ✔ 공고 최상단 등록<br>
+                  ✔ 이력서 추천 기능<br>
                 </div>
+                <div class="payments-inside-box2">
+                  <h4>할인</h4>
+                  <p>정기 구독시 20% 할인</p>
+                  <p style="text-decoration:line-through">50,000원</p> <b>40,000원</b>
+                </div>
+              </div>
+              <div class="grade">
+                <div id="platinum" class="payments-btn-now" name="gradeStatus"> 로딩 중...</div>
+              </div>
             </div>
 
           </div>
@@ -126,35 +126,40 @@
           <div class="payments-plussitem">
             <h4 class="payments-inside-bottom-font">맴버십 외 플러스 아이템</h4>
             <div class="payments-mainbtn-area">
-              <div class="payments-bottom-item" name="paymentsClick" data-default-type="4">
-                <h3 class="payments-semifont">급구<br></h3>
-                <p>급구 알바 페이지 상단 노출<br>
-                  공고 즉시 게시<br>
-                  7일 이상 구매 시 20% 할인<br></p>
-                <h3 class="payments-semifont">1일당 3,000원</h3>
+              <div class="payments-item-group" name="paymentsClick" data-default-type="4">
+                <div class="payments-bottom-item">
+                  <h3 class="payments-semifont">급구</h3>
+                  <p>급구 알바 페이지 상단 노출<br>공고 즉시 게시</p>
+                  <h3 class="payments-semifont">1일당 3,000원</h3>
+                </div>
+                <div class="payments-plussitem-bottom">
+                  <div id="plus1" name="gradeStatus">92일 남음</div>
+                </div>
               </div>
-              <div class="payments-bottom-item" name="paymentsClick" data-default-type="5">
-                <h3 class="payments-semifont">HOT<br></h3>
-                공고에 HOT 표시를 붙여 노출<br>
-                공고 즉시 게재<br>
-                7일 이상 구매 시 20% 할인<br></p>
-                <h3 class="payments-semifont">1일당 3,000원</h3>
+              
+              <div class="payments-item-group" name="paymentsClick" data-default-type="5">
+                <div class="payments-bottom-item">
+                  <h3 class="payments-semifont">HOT</h3>
+                  <p>공고에 HOT 표시를 붙여 노출<br>공고 즉시 게재</p>
+                  <h3 class="payments-semifont">1일당 3,000원</h3>
+                </div>
+                <div class="payments-plussitem-bottom">
+                  <div id="plus2" name="gradeStatus">93일 남음</div>
+                </div>
               </div>
-            </div>
-            <div class="payments-plussitem-bottom">
-              <div id="plus1" name="gradeStatus"></div>
-              <div id="plus2" name="gradeStatus"></div>
-            </div>
+               </div>     
           </div>
         </div>
       </div>
 
-      <h3 class="payments-subtitle">추가 안내사항 <hr></h3>
+      <h3 class="payments-subtitle">추가 안내사항
+        <hr>
+      </h3>
       <div class="payments-background-outside">
         <div class="payments-background-inside">
           <ul class="payments-bottom-extra">
             <li>유료상품을 이용 중이신 경우, 공고를 조기 마감하더라도 남은 기간에 대한 차액은 환불 되지 않습니다.</li>
-            <li>단, 공고가 게재되지 않았거나 공고가 게재된 시점으로부터 1시간 이내 취소를 원하시는 경우 고객센터로 문의주시기 바랍니다.</li>
+            <li>공고가 게재되지 않았거나 공고가 게재된 시점으로부터 1시간 이내 취소를 원하시는 경우 고객센터로 문의주시기 바랍니다.</li>
             <li>등록당일무료는 결제한 유료상품 최소 구매일수 이상 사용한 경우에만 제공됩니다.</li>
           </ul>
         </div>
@@ -165,10 +170,10 @@
   <th:block th:replace="~{common/main-footer}"></th:block>
   <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
   <script src="https://cdn.iamport.kr/v1/iamport.js"></script>
-  <script src="/js/payments/selectemployer.js"></script>
-  <!-- <script src="/js/payments/membership.js"></script> -->
+  <script src="/js/payments/membership.js"></script>
   <script src="/js/payments/payments.js"></script>
- 
+
 
 </body>
+
 </html>

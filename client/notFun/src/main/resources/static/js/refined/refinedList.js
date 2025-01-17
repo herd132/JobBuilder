@@ -986,7 +986,7 @@ recruitmentBody.innerHTML = "";
 
 if (!recruitment || recruitment.length === 0) {
   const noDataRow = document.createElement("tr");
-  noDataRow.innerHTML = '<td><td colspan="7">공고가 존재하지 않습니다.</td>';
+  noDataRow.innerHTML = '<td><td><td><td colspan="7">공고가 존재하지 않습니다.</td>';
   recruitmentBody.appendChild(noDataRow);
   return;
 }
@@ -1011,14 +1011,21 @@ recruitment.forEach((item) => {
       <span>${
         item.salaryMount ? `${formatSalaryAmount(item.salaryMount)} 원` : ""
       }</span>
-      <span>${item.salaryName || "값 없음"}</span>
+      <span 
+        class="${item.salaryMount !== 0 ? "salary-type-badge" : ""} ${item.salaryMount !== 0 && item.salaryName === "시급" ? "salary-hourly" : ""}">
+        ${item.salaryName || "값 없음"}
+      </span>
     </td>
     <td>${item.timeName || "값 없음"}</td>
     <td>${formatTime(item.writeDate) || "작성 시간 없음"}</td>
     <td>${formatDeadline(item.recruitmentDeadline) || "값 없음"}</td>
   `;
+
   recruitmentBody.appendChild(row);
 });
+
+
+
 };
 
 // 페이지네이션 로직
@@ -1028,7 +1035,8 @@ if (!Array.isArray(data) || data.length === 0) {
   paginationContainer.innerHTML = ""; // 기존 페이지네이션 초기화
   return;
 }
-
+const listCountElement = document.getElementById("listCount");
+listCountElement.textContent = data.length;
 const itemsPerPage = 10; // 한 페이지당 항목 수
 const pagesPerGroup = 10; // 페이지 그룹당 페이지 수
 const totalPages = Math.ceil(data.length / itemsPerPage);
