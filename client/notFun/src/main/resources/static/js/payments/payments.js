@@ -69,14 +69,20 @@ const generateOptionTags = (defaultType) => {
 
 // 페이지 렌더링 초기화
 document.addEventListener("DOMContentLoaded", () => {
-
   document.querySelectorAll('[name="paymentsClick"]').forEach((element) => {
     element.addEventListener("click", () => {
       const defaultType = Number(element.getAttribute("data-default-type")); // 기본 타입 가져오기
       payment(defaultType); // 초기값 렌더링
+
+      // 스크롤을 최상단으로 이동
+      window.scrollTo({
+        top: 0,
+        behavior: "auto", // 부드럽게 이동
+      });
     });
   });
 });
+
 
 // Payment 처리 함수
 const payment = (defaultType) => {
@@ -120,14 +126,12 @@ const renderPaymentPage = (defaultType) => {
       <h3 class="payments-t-subtitle">상세 정보<hr></h3>
       <div class="details-container">
           <div>
-              <p>기존</p><br>
               <div class="afteremembership" id="after-membership">
                   ${membershipDetailsHtml} <!-- 로그인된 사용자 정보 -->
               </div>
           </div>
           →
           <div>
-              <p>변경</p><br>
               <div class="beforemembership" id="beforemembership">
                   <!-- 동적으로 추가될 영역 -->
               </div>
@@ -148,7 +152,7 @@ const renderPaymentPage = (defaultType) => {
                     <button id="payBtn" class="payments-t-btn-after" style="cursor:pointer;" >결제하기</button>
                 </div>
                 <div class="payments-t-inside-middle-item">
-                    <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments';"
+                    <button id="cancelBtn" class="payments-t-btn-after" onclick="location.href='/payments/membership';"
                         style="cursor:pointer;">취소하기</button>
                 </div>
             </div>
@@ -170,6 +174,7 @@ const initializeDefaultProduct = (defaultType) => {
   setupDynamicProductButtons();
   updateMembershipContainer();
 };
+// 상품 그룹 생성 함수
 // 상품 그룹 생성 함수
 const createProductGroup = (defaultType, id, isDefault = false) => {
   const productGroup = document.createElement("div");
@@ -214,30 +219,30 @@ const createProductGroup = (defaultType, id, isDefault = false) => {
   const productTitleElement = productGroup.querySelector(`#productTitle-${id}`);
   const productDateElement = productGroup.querySelector(`#productDate-${id}`);
 
+  // **1. productTitleElement의 값을 명시적으로 설정**
+  if (defaultType !== null && defaultType !== "none") {
+    productTitleElement.value = String(defaultType);
+  }
+
+  // **2. change 이벤트 핸들러 설정**
   const addCustomInput = (productDateElement, productTitleElement, id) => {
     const customInputId = `custom-date-${id}`;
-    const existingCustomInput = document.querySelector(`#${customInputId}`);
+    const existingCustomInput = productGroup.querySelector(`#${customInputId}`);
 
     if (productDateElement.value === "custom" && !existingCustomInput) {
       const customInput = document.createElement("input");
       customInput.type = "number";
       customInput.placeholder =
-        productTitleElement.value >= 4 ? "직접 입력 (일)" : "직접 입력 (개월)";
+        Number(productTitleElement.value) >= 4 ? "직접 입력 (일)" : "직접 입력 (개월)";
       customInput.id = customInputId;
       customInput.setAttribute("data-id", id);
 
       customInput.addEventListener("input", () => {
-        productDateElement.setAttribute("data-custom-value", customInput.value);
-      });
-
-      // 입력값 변화 시 업데이트 및 즉시 반영
-      customInput.addEventListener("input", (e) => {
-        const value = e.target.value ? Number(e.target.value) : 0; // 숫자로 변환
+        const value = customInput.value ? Number(customInput.value) : 0;
         productDateElement.setAttribute("data-custom-value", value);
         updateMembershipContainer(); // 실시간 상태 업데이트
       });
 
-      // Enter 키 입력 시 즉시 업데이트
       customInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
           e.preventDefault(); // 기본 동작 방지
@@ -248,6 +253,7 @@ const createProductGroup = (defaultType, id, isDefault = false) => {
       productDateElement.parentNode.appendChild(customInput);
     } else if (productDateElement.value !== "custom" && existingCustomInput) {
       existingCustomInput.remove();
+      productDateElement.removeAttribute("data-custom-value"); // 기존 값 초기화
     }
   };
 
@@ -257,11 +263,79 @@ const createProductGroup = (defaultType, id, isDefault = false) => {
   });
 
   productTitleElement.addEventListener("change", () => {
-    updateMembershipContainer(); // 상품 변경 시 상태 업데이트
+    const selectedValue = Number(productTitleElement.value);
+
+    if (!productTitleElement.value || productTitleElement.value === "none") {
+      // 상품이 선택되지 않은 경우 기본 개월수 옵션으로 설정
+      productDateElement.innerHTML = `
+        <option value="none">=== 선택 ===</option>
+        ${Array.from(
+          { length: 12 },
+          (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
+        ).join("")}
+        <option value="24">24개월</option>
+        <option value="36">36개월</option>
+        <option value="custom">직접입력</option>
+      `;
+      addCustomInput(productDateElement, productTitleElement, id);
+      updateMembershipContainer();
+      return;
+    }
+
+    if (selectedValue >= 4) {
+      // 일수 옵션으로 변경
+      productDateElement.innerHTML = `
+        <option value="none">=== 선택 ===</option>
+        ${Array.from(
+          { length: 10 },
+          (_, i) => `<option value="${i + 1}">${i + 1}일</option>`
+        ).join("")}
+        <option value="20">20일</option>
+        <option value="30">30일</option>
+        <option value="custom">직접입력</option>
+      `;
+    } else if (selectedValue >= 2 && selectedValue <= 3) {
+      // 개월수 옵션으로 변경
+      productDateElement.innerHTML = `
+        <option value="none">=== 선택 ===</option>
+        ${Array.from(
+          { length: 12 },
+          (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
+        ).join("")}
+        <option value="24">24개월</option>
+        <option value="36">36개월</option>
+        <option value="custom">직접입력</option>
+      `;
+    } else {
+      // 기본 선택으로 리셋
+      productDateElement.innerHTML = `
+        <option value="none">=== 선택 ===</option>
+        ${Array.from(
+          { length: 12 },
+          (_, i) => `<option value="${i + 1}">${i + 1}개월</option>`
+        ).join("")}
+        <option value="24">24개월</option>
+        <option value="36">36개월</option>
+        <option value="custom">직접입력</option>
+      `;
+    }
+
+    // 직접입력 옵션 처리
+    addCustomInput(productDateElement, productTitleElement, id);
+    updateMembershipContainer(); // 상태 업데이트
   });
+
+  // **3. change 이벤트 트리거**
+  if (defaultType !== null && defaultType !== "none") {
+    // setTimeout을 사용하여 이벤트가 제대로 트리거되도록 약간의 지연을 추가
+    setTimeout(() => {
+      productTitleElement.dispatchEvent(new Event('change'));
+    }, 0);
+  }
 
   return productGroup;
 };
+
 
 // 동적 버튼 및 조건 처리 함수
 const setupDynamicProductButtons = () => {

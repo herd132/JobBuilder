@@ -207,6 +207,11 @@
             button.classList.add("payments-btn-after");
             button.innerHTML = "시작하기";
         });
+
+        const goldContainer = document.querySelector("#goldMembershipContainer");
+        if (goldContainer) {
+          goldContainer.style.pointerEvents = "auto";
+        }
     };
 
     const updateMembershipUI = () => {
