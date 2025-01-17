@@ -38,5 +38,8 @@ public interface ChattingMapper {
 	// 챗봇 메세지 가져오기
 	List<Map<String, String>> chatBotMessgeList(int authority);
 
+	// 채팅방 완료 여부 N 표시
+	int enterReadFlag(int chattingRoomNo);
+
 
 }

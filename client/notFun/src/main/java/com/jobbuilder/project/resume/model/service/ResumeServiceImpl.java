@@ -4,13 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.RowBounds;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.jobbuilder.project.board.model.dto.Pagination;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
 import com.jobbuilder.project.resume.model.dto.Resume;
 import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
 import com.jobbuilder.project.resume.model.mapper.ResumeMapper;
+import com.jobbuilder.project.serviceCenter.model.dto.ServiceCenter;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
 import lombok.RequiredArgsConstructor;
@@ -267,5 +270,27 @@ public class ResumeServiceImpl implements ResumeService {
 		}
 
 		return result;
+	}
+	
+	// 인재정보 리스트
+	@Override
+	public Map<String, Object> resumeTotalList(int cp) {
+		
+		int listCount = mapper.getResumeTotalListCount();
+		
+		Pagination pagination = new Pagination(cp, listCount, 14, 5);
+		
+		int limit = pagination.getLimit();
+		int offset = (cp - 1 ) * limit;
+		RowBounds rowBounds = new RowBounds(offset, limit);
+		
+//		List<ServiceCenter> serviceCenterList = mapper.resumeTotalList(rowBounds); 
+		
+		Map<String, Object> map = new HashMap<>();
+		
+		map.put("pagination", pagination);
+//		map.put("serviceCenterList", serviceCenterList);
+		
+		return map;
 	}
 }

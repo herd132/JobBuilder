@@ -1,4 +1,7 @@
 let chattingSock;
+let loginMemberNo;
+let selectTargetNo;
+let selectChattingNo;
 
 const chatbotModal = document.getElementById('chatbotModal');
 const dragHandle = chatbotModal.querySelector('.chatbot-header'); // 상단 전체를 드래그 핸들로 변경
@@ -56,7 +59,7 @@ const counselorConnection = async () => {
 
   const resp = await fetch("/chat/enter")
   const chattingRoom = await resp.json();
-
+  
   if (chattingRoom == null) {
     alert("에러발생")
     return;
@@ -70,13 +73,13 @@ const counselorConnection = async () => {
   chattingSock = new SockJS("/chatSock");
 
   chattingSock.onopen = (e) => {
+    console.log("연결");
     var obj = {
       "senderNo": selectTargetNo,
       "targetNo": loginMemberNo,
       "chattingRoomNo": selectChattingNo,
-      "messageContent": '상담원 분과 연결 중에 있습니다 잠시 기다려주시기 바랍니다.',
+      "messageContent": '상담원 분과 연결 중에 있습니다 잠시 기다려주시기 바랍니다. 연결 중 채팅창을 종료 시 연결이 끊기니 그 점에 유의해주시기 바랍니다.',
     };
-
     chattingSock.send(JSON.stringify(obj));
   }
   
@@ -87,6 +90,8 @@ const counselorConnection = async () => {
     addMessage('bot', '상담을 종료합니다.');
   }
 
+  
+
   chattingSock.onmessage = (e) => {
 
     const msg = JSON.parse(e.data);
@@ -94,6 +99,7 @@ const counselorConnection = async () => {
     console.log(msg);
     const type = loginMemberNo == msg.senderNo ? 'user' : 'bot';
     addMessage(type, msg.messageContent);
+    
   }
 
   sendBtn.addEventListener('click', sendMessage);
@@ -117,6 +123,8 @@ function addMessage(type, content) {
   chatMessages.appendChild(messageDiv);
   chatMessages.scrollTo
   p = chatMessages.scrollHeight;
+
+  messageDiv.scrollTop = messageDiv.scrollHeight;
 }
 
 

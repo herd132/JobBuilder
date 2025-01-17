@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <th:block th:replace="~{common/common}"></th:block>
+  <link rel="stylesheet" href="/css/resume/resumeTotal.css">
+</head>
+<body>
+	<th:block th:replace="~{common/main-header}"></th:block>
+  
+  <main>
+    <!-- Main board container -->
+    <div class="board-container">
+      <!-- Board title -->
+      <div class="board-header">
+        <h2 class="board-title" th:text="${pagination}">인재 정보</h2>
+      </div>
+
+      <!-- th:if="${#lists.isEmpty(serviceCenterList)}" -->
+      <!-- <th:block >
+        <div class="post-item">
+            <th colspan="6">이력서가 존재하지 않습니다..</th>
+        </div>
+      </th:block> -->
+
+      <!-- th:unless="${#lists.isEmpty(serviceCenterList)}" -->
+      <th:block >
+
+      
+        <div class="loadingBox">
+          <div class="dim"></div>
+          <div class="circle"></div>
+        </div>
+
+
+        <div class="board-list">
+        </div>
+      </th:block>
+
+
+    </div>
+
+    
+  </main>
+  
+  <th:block th:replace="~{common/main-footer}"></th:block>
+</body>
+</html>

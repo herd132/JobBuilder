@@ -35,9 +35,8 @@ function roomListAddEvent() {
 
 			if (item.getAttribute("end-fl") == 'N' ) messageInput.disabled = null;
 			else messageInput.disabled = true;
-
 			// 비동기로 메세지 목록을 조회하는 함수 호출
-			selectChattingFn();
+			selectChattingFn(item.getAttribute("read-not"));
 		});
 	}
 }
@@ -48,7 +47,7 @@ function selectRoomList(){
 	fetch("/chat/roomList")
 	.then(resp => resp.json())
 	.then(roomList => { 
-
+		
 		// 채팅방 목록 출력 영역 선택
 		const chatUsers = document.querySelector("#chatUsers");
 
@@ -65,6 +64,7 @@ function selectRoomList(){
 			chatItem.setAttribute("chat-no", room.chattingRoomNo);
 			chatItem.setAttribute("target-no", room.targetNo);
 			chatItem.setAttribute("end-fl", room.chattingRoomEndFl);
+			chatItem.setAttribute("read-not", room.notReadCount);
 
 			if(room.chattingRoomNo == selectChattingNo){
 				chatItem.classList.add("active");
@@ -92,9 +92,6 @@ function selectRoomList(){
 
 			contextDiv.style.fontSize =  "0.9em";
 			sendTimeDiv.classList.add("timestamp");
-
-			const chatPreviewDiv2 = document.createElement("div");
-			chatPreviewDiv2.innerText = "!";
 
 			chatUsers.append(chatItem);
 			chatItem.append(chatPreview);
@@ -135,12 +132,12 @@ function selectRoomList(){
 
 
 // 클릭한 해당 채팅방 불러오기
-function selectChattingFn() {
+function selectChattingFn(count) {
 
 	fetch("/chat/selectMessage?" + `chattingRoomNo=${selectChattingNo}&memberNo=${loginMemberNo}`)
 		.then(resp => resp.json())
 		.then(messageList => {
-
+			console.log(count);
 			const container = document.getElementById('messageContainer');
 			container.innerHTML = ""; // 이전 내용 지우기
 
@@ -153,7 +150,7 @@ function selectChattingFn() {
 
 			container.scrollTop = container.scrollHeight;
 
-			if(endfl != 'Y') {
+			if(endfl != 'Y' && count != 0) {
 				var obj = {
 					"senderNo": loginMemberNo,
 					"targetNo": selectTargetNo,
@@ -237,7 +234,7 @@ document.querySelector(".end-btn").addEventListener("click",  () => {
 		"targetNo": selectTargetNo,
 		"chattingRoomNo": selectChattingNo,
 	};
-
+	
 	fetch("/chat/counselingEnd", {
     method: "PUT",
     headers: { "Content-Type": "application/json" },
@@ -255,6 +252,11 @@ document.querySelector(".end-btn").addEventListener("click",  () => {
 				</div>
 			`;
 		}
+
+		
+	selectChattingNo = 0; // 선택한 채팅방 번호
+	selectTargetNo = 0; // 현재 채팅 대상
+	selectTargetName = 0; // 대상의 이름
 	});
 
 	roomListAddEvent();

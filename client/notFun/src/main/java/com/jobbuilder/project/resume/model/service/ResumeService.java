@@ -68,6 +68,13 @@ public interface ResumeService {
 	 */
 	int updateGrade(Resume resume, List<CareerInfo> careerInfoList);
 
+	/** 인재 정보 리스트
+	 * @param cp
+	 * @return
+	 * @author 
+	 */
+	Map<String, Object> resumeTotalList(int cp);
+
 
 
 
