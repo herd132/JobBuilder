@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,15 +8,16 @@
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/resume/resumeTotal.css">
 </head>
+
 <body>
-	<th:block th:replace="~{common/main-header}"></th:block>
-  
+  <th:block th:replace="~{common/main-header}"></th:block>
+
   <main>
     <!-- Main board container -->
     <div class="board-container">
       <!-- Board title -->
       <div class="board-header">
-        <h2 class="board-title" th:text="${pagination}">인재 정보</h2>
+        <h2 class="board-title">인재 정보</h2>
       </div>
 
       <!-- th:if="${#lists.isEmpty(serviceCenterList)}" -->
@@ -26,25 +28,43 @@
       </th:block> -->
 
       <!-- th:unless="${#lists.isEmpty(serviceCenterList)}" -->
-      <th:block >
 
-      
+      <div class="board-list" style="height: 400px;">
         <div class="loadingBox">
           <div class="dim"></div>
           <div class="circle"></div>
         </div>
+      </div>
 
+      <!-- Pagination -->
+      <div class="pagination hidden" th:object="${pagination}">
+        <a th:href="@{/resume/resumeTotal (cp=1)}" class="page-btn">&lt;&lt;</a>
+        <a th:href="@{/resume/resumeTotal (cp=*{prevPage})}" class="page-btn">&lt;</a>
 
-        <div class="board-list">
-        </div>
-      </th:block>
+        <th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
 
+          <!-- 현재 보고있는 페이지 -->
+          <th:block th:if="${i} == *{currentPage}">
+            <a th:href="@{/resume/resumeTotal (cp=${i})}" class="page-btn active" th:text="${i}">현재페이지</a>
+          </th:block>
+
+          <!-- 보고있지 않은 페이지 -->
+          <th:block th:unless="${i} == *{currentPage}">
+            <a th:href="@{/resume/resumeTotal (cp=${i})}" th:text="${i}" class="page-btn">이동할 페이지</a>
+          </th:block>
+        </th:block>
+        <a th:href="@{/resume/resumeTotal (cp=*{nextPage})}" class="page-btn">&gt;</a>
+        <a th:href="@{/resume/resumeTotal (cp=*{maxPage})}" class="page-btn">&gt;&gt;</a>
+
+      </div>
 
     </div>
 
-    
+
   </main>
-  
+
   <th:block th:replace="~{common/main-footer}"></th:block>
+  <script src="/js/resume/resumeTotal.js"></script>
 </body>
+
 </html>

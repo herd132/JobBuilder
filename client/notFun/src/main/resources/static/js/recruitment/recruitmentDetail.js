@@ -334,7 +334,7 @@ const createRecommendResumeList = () => {
           </div>
           <div class="info-item">
             <span class="info-label">지역</span>
-            <span>${resume.memberAddress}</span>
+            <span>${resume.memberAddress == null ? 미입력 : resume.memberAddress}</span>
           </div>
           <div class="info-item">
             <span class="info-label">MBTI</span>

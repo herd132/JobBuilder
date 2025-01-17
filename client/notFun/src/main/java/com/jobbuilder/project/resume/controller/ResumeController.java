@@ -1,5 +1,6 @@
 package com.jobbuilder.project.resume.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -293,7 +294,7 @@ public class ResumeController {
 		
 	}
 	
-	/** 인재 정보 리스트
+	/** 인재 정보 리스트 페이지 이동
 	 * @param cp
 	 * @param model
 	 * @return
@@ -309,6 +310,17 @@ public class ResumeController {
 		model.addAttribute("pagination", map.get("pagination"));
 		
 		return "resume/resumeTotal";
+	}
+	
+	@GetMapping("ajax/list")
+	@ResponseBody
+	public List<Map<String, Object>> ajaxResumeTotalList(@RequestParam(value="cp", required = false, defaultValue = "1") int cp) {
+		
+		// 조회 서비스 호출 후 결과 반환
+		Map<String, Object> map = service.resumeTotalList(cp);
+		
+		List<Map<String, Object>> list = (List<Map<String, Object>>) map.get("resumeTotalList");
+		return list;
 	}
 	
 
