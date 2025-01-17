@@ -61,7 +61,7 @@ const updateUI = (
   document.getElementById("writetime").innerHTML = `${formatTime(writetime)}`;
 
   const resumeTitle = resume.resumeTitle; // 서버에서 가져온 제목
-  document.getElementById("resumeTitle").innerHTML = `제목 : ${resumeTitle}`;
+  document.getElementById("resumeTitle").innerHTML = `${resumeTitle}`;
 
   const profileImg = resume.profileImg; // 서버에서 가져온 이미지경로
   document.getElementById("profileImg").src = profileImg;

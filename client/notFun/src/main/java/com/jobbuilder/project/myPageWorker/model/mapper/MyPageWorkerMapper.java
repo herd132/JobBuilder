@@ -37,10 +37,11 @@ public interface MyPageWorkerMapper {
 	int workerChangePw(Map<String, Object> paramMap);
 
 	/** 회원탈퇴
-	 * @param loginWorker
+	 * @param memberNo
 	 * @return
 	 */
-	int secession(Worker loginWorker);
+	int secession(int memberNo);
+	int secessionResume(int workerNo);
 
 	/**  업데이트
 	 * @param loginWorker

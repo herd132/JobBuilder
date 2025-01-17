@@ -159,13 +159,17 @@ public class MyPageWorkerController {
 		
 		int result = service.secession(loginWorker);
 		
+		int result1 = service.secessionResume(loginWorker);
+		
 		String message = null;
 		
-		if(result > 0) { 
+		if(result1 > 0) { 
 			
 			status.setComplete();				
 			message = "회원탈퇴 되었습니다. 그동안 이용해 주셔서 감사합니다.";
 			
+		} else {
+			message ="탈퇴 실패";
 		}
 		
 		ra.addFlashAttribute("message", message);  

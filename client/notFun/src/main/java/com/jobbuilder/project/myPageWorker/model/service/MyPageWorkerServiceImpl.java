@@ -85,7 +85,17 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService {
 	 */
 	@Override
 	public int secession(Worker loginWorker) {
-		return mapper.secession(loginWorker);
+		int memberNo = loginWorker.getMemberNo();
+		log.debug("memberNo : " + memberNo);
+		return mapper.secession(memberNo);
+		
+	}
+	
+	@Override
+	public int secessionResume(Worker loginWorker) {
+		int workerNo = loginWorker.getWorkerNo();
+		log.debug("workerNo : " + workerNo);
+		return mapper.secessionResume(workerNo);
 	}
 
 	/**
@@ -169,6 +179,8 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService {
 		
 		return mapper.writeView(memberNo, rowBounds);
 	}
+
+
 
 
 }
