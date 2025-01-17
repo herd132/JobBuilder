@@ -52,7 +52,7 @@ public class EmailServiceImpl implements EmailService{
 			
 			// 메일 기본 정보 설정
 			helper.setTo(email); // 받는 사람 ( 수신자 ) 
-			helper.setSubject(" [jobBuilder] 회원 가입 인증번호 입니다. "); // 제목
+			helper.setSubject(" [jobBuilder] 인증번호 입니다. "); // 제목
 			helper.setText(loadHtml(authKey, htmlName), true ); // HTML 내용 설정 -> 마지막에 true안하면 false되서 텍스트값출력
 			helper.addInline("logo", new ClassPathResource("static/images/logo.png"));
 			
