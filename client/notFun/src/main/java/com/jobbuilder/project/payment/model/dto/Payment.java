@@ -39,6 +39,12 @@ public class Payment {
     private String paymentTypeCreateDate;	// 상세 날짜
     
    
+    private String productName; // 상품명
+    private double amount; // 결제 금액
+    private String currency; // 원화
+    private String status;     // 결제 상태
+    private String logDate; // 로그 생성 시간
+    private String description; // 로그 설명
 
     
 }
