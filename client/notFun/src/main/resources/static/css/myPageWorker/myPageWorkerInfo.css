@@ -124,9 +124,13 @@ line-height: 2.6;
 
 /* 프로필 이미지 스타일 */
 .profile-img {
-  width: 150px; /* 적절한 크기 조정 */
-  height: 150px;
+  width: 120px; /* 적절한 크기 조정 */
+  height: 120px;
   object-fit: cover; /* 이미지 크기 비율에 맞게 잘림 */
+  border-radius: 50%;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.212);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.637);
 }
 
 /* 프로필 이미지 컨테이너 */
