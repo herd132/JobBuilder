@@ -130,9 +130,16 @@ public class PaymentController {
             // 2. 결제 검증 서비스 호출
             boolean isVerified = service.verifyPayment(impUid, merchantUid, amount, employerNo);
 
+            
+            log.debug("paymentData: {}", paymentData);
+            log.debug("custom_data1: {}", paymentData.get("custom_data"));
+            log.debug("custom_data2: {}", paymentData.get("customdata"));
+            log.debug("custom_data3: {}", paymentData.get("customData"));
+            log.debug("custom_data4: {}", paymentData.get("custom_Data"));
+            
             if (isVerified) {
                 // 3. 기존 결제 완료 로직 실행
-                String customDataJson = (String) paymentData.get("customData");
+                String customDataJson = (String) paymentData.get("custom_data");
                 // TypeReference의 익명 클래스를 사용하여 JSON을 Map으로 변환
                 Map<String, Object> customData = new ObjectMapper().readValue(customDataJson, new TypeReference<Map<String, Object>>() {});
 

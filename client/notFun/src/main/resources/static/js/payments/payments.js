@@ -16,6 +16,7 @@ var validMembershipNumbers = []; // 기존 멤버십 번호
 var emptyMembershipCount  = 0;
 var calculatedPrice = 0; //상품정보 리스트
 var paymentProduct = "";
+var encodedCustomData = "";
 
 // defaultType을 반환하는 함수
 const getDefaultTypeValue = (defaultType, selectedValue) => {
@@ -731,6 +732,41 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log(paymentProduct);
 
         console.log("임플번호:",employerNo);
+
+
+
+        const customData = {
+          employerNo: Number(employerNo),
+          validMembershipNumbers: validMembershipNumbers,
+          emptyMembershipCount: Number(emptyMembershipCount),
+          newMemberships: newMemberships,
+          oldMemberships: oldMemberships,
+          paymentProduct: paymentProduct,
+        };
+        
+// 1. 데이터 직렬화 및 Base64 인코딩
+function encodeMerchantUid(data) {
+  const shortKeys = {
+      employerNo: "e",
+      validMembershipNumbers: "v",
+      emptyMembershipCount: "em",
+      newMemberships: "n",
+      oldMemberships: "o",
+      paymentProduct: "p",
+  };
+
+  // 키를 축약
+  const shortData = Object.fromEntries(
+      Object.entries(data).map(([key, value]) => [shortKeys[key] || key, value])
+  );
+
+  // JSON -> UTF-8 -> Base64 인코딩
+  const base64Encoded = utf8ToBase64(JSON.stringify(shortData));
+  return base64Encoded;
+}
+
+encodedCustomData = encodeMerchantUid(customData);
+
         IMP.request_pay(
           {
             storeId: "store-5b5cb483-ddb0-4a3b-a99f-eb4f7b4f4568",
@@ -739,28 +775,21 @@ document.addEventListener("DOMContentLoaded", () => {
             pay_method: "card",
             amount: sumResult, // 최종 결제 금액
             name: paymentProduct,
-            merchant_uid: `merchant_${new Date().getTime()}`, // 고유 주문 ID
-            customData: JSON.stringify({
-              employerNo: Number(employerNo),
-              validMembershipNumbers: validMembershipNumbers,
-              emptyMembershipCount: Number(emptyMembershipCount),
-              newMemberships: newMemberships,
-              oldMemberships: oldMemberships,
-            }),
+            merchant_uid: `m_${Date.now()}_${encodedCustomData}`,
           },
           function (rsp) {
             // callback
             
             if (rsp.success) {
               // 결제성공시 로직
-              let data = {
-                // request
-                imp_uid: rsp.imp_uid,
-                merchantUid: rsp.merchant_uid, // merchant_uid를 포함
-                amount: Math.round(rsp.paid_amount),
-                paymentProduct : rsp.name,
-                customData: rsp.customData,
-                employerNo: Number(employerNo),
+        
+              console.log("Response Object: ", rsp);
+              console.log("rsp Object: ", rsp.custom_data);
+              const data = {
+                  imp_uid: rsp.imp_uid,
+                  merchantUid: rsp.merchant_uid,
+                  amount: Math.round(rsp.paid_amount),
+                  paymentProduct: rsp.name,
               };
               //결제 검증
               $.ajax({
