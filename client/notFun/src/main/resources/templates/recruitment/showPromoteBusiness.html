@@ -13,10 +13,14 @@
 <body>
   <th:block th:replace="~{common/main-header}"></th:block>
 
-  <h1>.회사 소개.</h1>
   <table>
+    <tr>
+      <th colspan="2" style="font-size: 30px; text-align: center;">
+        회사 소개
+      </th>
+    </tr>
     <th:block th:object="${recruitment}">
-     
+
       <tr>
         <th> 회사명 : </th>
         <td th:text="*{businessName}"> 회사명 </td>
@@ -32,12 +36,6 @@
       <tr>
         <th>대표 전화번호 : </th>
         <td th:text="*{memberTel}"></td>
-      </tr>      
-      <tr>
-        <th> 사업장 소개</th>
-      </tr>
-      <tr>
-        <td th:text=*{businessContent}></td>
       </tr>
     </th:block>
   </table>
@@ -46,6 +44,9 @@
   <section class="business-info-container">
 
     <th:block th:object="${employer}">
+      <div>
+        <th colspan="2" style="text-align: center;"> 사업장 소개</th>
+      </div>
 
       <div class="business-image-area">
         <span> 사업장 대표 이미지 : </span>
@@ -61,9 +62,6 @@
         <span th:if="*{businessTel}" th:text="*{businessTel}"></span>
         <span th:unless="*{businessTel}">미입력 상태입니다.</span>
       </div>
-      <!-- 사업장 소개 컬럼 ( update 삽입시 th:if문 이용해서 삽입 )-->
-      <div> 사업장 개요 </div>
-      <div th:text="사업장소개글임시칸"> 임시 사업장 소개글칸칸</div>
       <div>
         <span>사업장 주소 : </span>
         <span th:if="*{businessAddress}" th:text="*{businessAddress}"></span>
@@ -74,6 +72,10 @@
         <span>업직종 : </span>
         <span th:if="*{#strings.length(businessWorktype)== 0 }">업직종 미입력</span>
         <span th:if="*{#strings.length(businessWorktype)!= 0 }" th:text="*{businessWorktype}"></span>
+      </div>
+      <div>
+        <span>사업장 비전 : </span>
+        <span th:text=*{businessContent}></span>
       </div>
       <div>사업장 소개 이미지 </div>
 
@@ -92,12 +94,15 @@
 
     </th:block>
 
+    <button id="goToListBtn"> 목록으로 돌아가기 </button>
+
   </section>
 
   <th:block th:replace="~{common/main-footer}"></th:block>
 
   <script th:inline="javascript">
     const businessNickname = /*[[${recruitment.businessNickname}]]*/"";
+    const recruitmentNo = /*[[${recruitment.recruitmentNo}]]*/"";
   </script>
   <script src="/js/recruitment/showPromoteBusiness.js"></script>
 </body>

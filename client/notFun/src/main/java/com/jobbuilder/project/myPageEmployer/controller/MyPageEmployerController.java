@@ -485,17 +485,6 @@ public class MyPageEmployerController {
 	}
 	
 	
-	
-	
-//	/** 사업장 홍보 페이지 이동(get) 아직 작성 안함
-//	 * @return myPageEmployer/promoteBusiness.html
-//	 * @author JWJ
-//	 */
-//	@GetMapping("promoteBusiness")
-//	public String MyPageEmpPromoteBusiness() {
-//		return "myPageEmployer/promoteBusiness";
-//	}
-	
 	/** 제출된 이력서 보기 페이지 이동(get) (렌더링은 이하 비동기)
 	 * @return myPageEmployer/viewRecruitments.html
 	 * @author JWJ
@@ -584,34 +573,6 @@ public class MyPageEmployerController {
 		
 		return "redirect:/" + path;
 	}
-	
-	//맨 밑에 만든 페이지 나중에 복붙
-	/** 사업자 홍보 페이지 이동(get) 아직 작성 안함
-	 * @return myPageEmployer/promoteBusiness.html
-	 * @author JWJ
-	 */
-	@GetMapping("promoteBusiness")
-	public String MyPageEmpPromoteBusiness(@SessionAttribute("loginEmployer") Employer loginEmployer, Model model) {
-		
-		
-		// 고용주 1명의 사업장 리스트 얻어오기
-			List<Employer> businessList = service.selectBusinessList(loginEmployer.getMemberNo());
-			for(Employer business : businessList) {
-			
-			String[] arr = business.getBusinessAddress().split("\\^\\^\\^");
-			
-			if(arr.length > 2) {				
-				String businessAddress = arr[1] + ", " + arr[2];
-				business.setBusinessAddress(businessAddress);
-			}
-		}
-		log.debug("login고용주" + loginEmployer);
-		log.debug("고용주" + businessList);
-		model.addAttribute("businessList" ,businessList);
-		
-		return "myPageEmployer/promoteBusiness";
-	}
-	
 	
 
 }

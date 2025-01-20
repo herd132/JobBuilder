@@ -342,7 +342,8 @@
 		UPDATE "EMPLOYER"
 		SET BUSINESS_NICKNAME = #{businessNickname},
 			BUSINESS_TEL = #{businessTel},
-			BUSINESS_ADDRESS = #{businessAddress}
+			BUSINESS_ADDRESS = #{businessAddress},
+			BUSINESS_CONTENT = #{businessContent}
 		WHERE EMPLOYER_NO = ${employerNo}
 	</update>
 	
