@@ -89,7 +89,7 @@
 	 	SELECT * FROM "WORKER"
 	 	JOIN "MEMBER" USING(MEMBER_NO)
 	 	WHERE MEMBER_EMAIL = #{memberEmail}
-	 	AND WORKER_NICKNAME = #{memberName}
+	 	AND MEMBER_NAME = #{memberName}
 	 	AND MEMBER_DEL_FL = 'N' 	
 	 </select>
 			 
