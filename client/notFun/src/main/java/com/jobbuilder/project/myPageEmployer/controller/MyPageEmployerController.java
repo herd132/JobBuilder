@@ -24,10 +24,8 @@ import com.jobbuilder.project.board.model.dto.Board;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.myPageEmployer.model.service.MyPageEmployerService;
+import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
-import com.jobbuilder.project.recruitment.model.dto.ResumeWJ;
-import com.jobbuilder.project.worker.model.dto.Worker;
-
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -96,6 +94,11 @@ public class MyPageEmployerController {
 		
 		List<Recruitment> recruitmentList = service.getRecruitmentList(empNo);
 		employer.setRecruitmentList(recruitmentList);
+		
+		
+		// 원희 추가 모달창내 맴버십정보 가져오기 
+		List<Membership> membershipList = service.getMembershipList(empNo);
+		employer.setMembershipList(membershipList);
 		
 		return employer;
 	}

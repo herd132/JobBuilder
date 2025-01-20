@@ -75,6 +75,22 @@
 			AND RECRUITMENT_DEL_FL = 'N'
 	</select>
 	
+<select id="getMembershipList" parameterType="int" resultType="Membership">
+SELECT 
+    ML.MEMBERSHIP_NAME || '(' || 'D-' || TO_CHAR(TRUNC(M.MEMBERSHIP_END_DATE - SYSDATE)) || ')' AS MEMBERSHIP_TYPE_LIST
+FROM 
+    MEMBERSHIP M
+JOIN 
+    MEMBERSHIP_LEVEL ML
+ON 
+    M.MEMBERSHIP_TYPE = ML.MEMBERSHIP_NO
+WHERE 
+    M.MEMBERSHIP_DEL_FL = 'N'
+    AND M.EMPLOYER_NO = ${empNo}
+ORDER BY MEMBERSHIP_TYPE desc
+</select>
+	
+	
 	
 <!-- 기본정보 수정 페이지 관련 -->
 	<!-- 암호화된 비밀번호 얻어오기 -->

@@ -1,5 +1,8 @@
 package com.jobbuilder.project.payment.model.service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -308,6 +311,36 @@ public class PaymentServiceImpl implements PaymentService {
 		}
 
 		log.info("Payment and membership linking completed for paymentNo: {}", payment.getPaymentNo());
+	}
+	
+	
+	@Override
+	public String getRefundMessage(int paymentNo) {
+	    try {
+	        // 쿼리에서 시간 문자열 가져오기
+	        String refundTimeString = mapper.getRefundMessage(paymentNo);
+
+	        // 문자열을 LocalDateTime으로 변환
+	        DateTimeFormatter formatter;
+	        if (refundTimeString.contains(".")) {
+	            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+	        } else {
+	            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+	        }
+	        LocalDateTime refundTime = LocalDateTime.parse(refundTimeString, formatter);
+
+	        // 현재 시간과 비교
+	        LocalDateTime currentTime = LocalDateTime.now();
+	        Duration duration = Duration.between(refundTime, currentTime);
+	        long hoursDifference = duration.toHours();
+
+	        // 24시간 이내인지 확인
+	        return hoursDifference <= 24 ? "1" : "2";
+
+	    } catch (Exception e) {
+	        e.printStackTrace(); // 로그 출력
+	        return "서버 오류가 발생했습니다.";
+	    }
 	}
 
 }

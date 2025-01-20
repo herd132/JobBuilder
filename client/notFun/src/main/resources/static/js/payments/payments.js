@@ -721,7 +721,7 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       if (!employerNo || employerNo === 0) {
-        alert("로그인을 진행해주세요.");
+        alert("로그인된 사업주만 결제 가능합니다.");
         return;
       }
 

@@ -20,10 +20,9 @@ import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
 import com.jobbuilder.project.myPageEmployer.model.mapper.MyPageEmployerMapper;
+import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.recruitment.model.dto.PaginationRecruitment;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
-import com.jobbuilder.project.recruitment.model.dto.RecruitmentPreferred;
-import com.jobbuilder.project.recruitment.model.dto.RecruitmentSupport;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
 
 import lombok.RequiredArgsConstructor;
@@ -100,6 +99,12 @@ public class MyPageEmployerServiceImpl implements MyPageEmployerService{
 	public List<Recruitment> getRecruitmentList(int empNo) {
 		return mapper.getRecruitmentList(empNo);
 	}
+	
+	@Override	// 각 사업장의 공고목록 얻어오기
+	public List<Membership> getMembershipList(int empNo) {
+		return mapper.getMembershipList(empNo);
+	}
+	
 	
 	
 	/* ********** 기본정보 수정 페이지 관련 ********** */

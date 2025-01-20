@@ -41,4 +41,6 @@ public class Membership {
 
     private String businessName;
     
+    private String membershipTypeList;
+    
 }

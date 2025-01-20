@@ -2,6 +2,7 @@ package com.jobbuilder.project.employer.model.dto;
 
 import java.util.List;
 
+import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 
 import lombok.AllArgsConstructor;
@@ -56,4 +57,6 @@ public class Employer {
 	
 	/* ***** 사업장당 공고 불러오는 경우 ***** */
 	private List<Recruitment> recruitmentList;
+	
+	private List<Membership> membershipList;
 }

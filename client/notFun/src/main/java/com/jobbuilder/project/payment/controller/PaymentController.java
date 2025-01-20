@@ -63,22 +63,11 @@ public class PaymentController {
         return ResponseEntity.ok(result);
     }
 
-    
-    
-    @GetMapping("testpay")
-    public String showTestPage() {
-        return "payments/testpay";
+    @GetMapping("history")
+    public String showhistory() {
+        return "payments/history";
     }
-    
-    @GetMapping("testpay2")
-    public String showTestPage2() {
-        return "payments/testpay2";
-    }
-    
-    @GetMapping("test3")
-    public String showTestPage3() {
-        return "payments/test3";
-    }
+
     
     @PostMapping("/paymentlist")
     @ResponseBody
@@ -96,7 +85,24 @@ public class PaymentController {
         return response;
     }
 
-   
+    
+    @PostMapping("/refund")
+    @ResponseBody
+    public String getPaymentList(@RequestBody int paymentNo) {
+
+        try {
+            // 서비스 호출: 단일 문자열 반환
+            String refundMessage = service.getRefundMessage(paymentNo);
+
+            // 반환된 문자열을 그대로 리스폰스에 전달
+            return refundMessage;
+        } catch (Exception e) {
+            e.printStackTrace(); // 오류 로그 출력
+            return "서버 오류가 발생했습니다.";
+        }
+    }
+
+
     
     
  

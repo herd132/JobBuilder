@@ -11,6 +11,7 @@ import com.jobbuilder.project.employer.model.dto.BusinessImg;
 import com.jobbuilder.project.employer.model.dto.BusinessWorktype;
 import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.myPageEmployer.model.dto.RecruitmentResume;
+import com.jobbuilder.project.payment.model.dto.Membership;
 import com.jobbuilder.project.recruitment.model.dto.Recruitment;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentPreferred;
 import com.jobbuilder.project.recruitment.model.dto.RecruitmentSupport;
@@ -63,6 +64,9 @@ public interface MyPageEmployerMapper {
 	 * @return
 	 */
 	List<Recruitment> getRecruitmentList(int empNo);
+	
+	// 원희 추가 맴버십 가져오기
+	List<Membership> getMembershipList(int empNo);
 	
 	
 	/* ********** 기본정보 수정 페이지 관련 ********** */
@@ -357,6 +361,8 @@ public interface MyPageEmployerMapper {
 	 * @return
 	 */
 	int secession(int memberNo);
+
+	
 
 
 }

@@ -81,6 +81,7 @@ const nicknameArea = document.querySelector(".nickname-area");
 const telArea = document.querySelector(".tel-area");
 const addressArea = document.querySelector(".address-area");
 const worktypeArea = document.querySelector(".worktype-area");
+const membershipArea = document.querySelector(".membership-area");
 const modalRecruitmentContent = document.querySelector(".modal-recruitment-content");
 const membershipBtn = document.querySelector(".membership-btn");
 
@@ -92,13 +93,14 @@ const businessDetailModal = async (employerNo) => {
   telArea.innerHTML = "사업장 연락처 : ";
   addressArea.innerHTML = "사업장 주소 : ";
   worktypeArea.innerHTML = "업직종 : ";
+  membershipArea.innerHTML = "맴버십 : ";
 
   const resp = await fetch("/myPageEmp/business?employerNo=" + employerNo);
 
   if(resp.status == 200){
 
     const result = await resp.json();
-
+    console.log(result);
     if(result.businessTel == null) result.businessTel = "미입력 상태입니다.";
     if(result.businessWorktype.length == 0) result.businessWorktype = "미입력 상태입니다.";
 
@@ -106,6 +108,21 @@ const businessDetailModal = async (employerNo) => {
     telArea.innerHTML += result.businessTel;
     addressArea.innerHTML += result.businessAddress;
     worktypeArea.innerHTML += result.businessWorktype;
+
+    if (result?.membershipList?.length > 0) {
+      // 문자열 결과 생성
+      const items = result.membershipList
+        .map((item, index) => {
+          const type = item.membershipTypeList?.length > 0 ? item.membershipTypeList : "없음";
+          // 마지막 항목인지 확인해 ',' 생략
+          return index === result.membershipList.length - 1 ? type : type + ", ";
+        })
+        .join(""); // 배열을 문자열로 변환
+    
+      membershipArea.innerHTML = "맴버십 : "+items; // 결과 출력
+    } else {
+      membershipArea.innerHTML = "맴버십 : 비활성상태"; // 리스트가 비어 있을 경우
+    }
 
     // 공고목록 불러와서 제목, 마감일, 인원, 완료여부 표시
     modalRecruitmentContent.innerHTML = "";
@@ -177,7 +194,7 @@ updateBusinessBtn.addEventListener("click", () => {
 membershipBtn.addEventListener("click", () => {
   const employerNo = membershipBtn.getAttribute("data-employer-no");
   sessionStorage.setItem('employerNo',employerNo);
-  window.location.href = "/payments/testpay2";
+  window.location.href = "/payments/history";
 });
 
 deleteBusinessBtn.addEventListener("click", () => {

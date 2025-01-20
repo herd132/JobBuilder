@@ -24,6 +24,10 @@ public interface PaymentService {
 
 	boolean verifyPayment(String impUid, String merchantUid, int amount, int employerNo);
 
+
+
+	String getRefundMessage(int paymentNo);
+
 	
 
 
