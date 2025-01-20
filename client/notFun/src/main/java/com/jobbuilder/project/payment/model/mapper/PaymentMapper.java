@@ -44,6 +44,10 @@ public interface PaymentMapper {
 
 	List<Employer> getEmployerNo(int memberNo);
 
+	
+	
+	
+	void insertPaymentLog(Map<String, Object> paramMap);
 
 	
 	// 3-2는 2-1과 동일

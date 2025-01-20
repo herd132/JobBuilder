@@ -53,10 +53,8 @@
       <li>인재정보</li>
       <li>게시판</li>
       <li>고객센터</li>
-
-      <th:block th:if="${session.loginEmployer}">
-        <li>멤버십</li>
-      </th:block>
+      <li>멤버십</li>
+   
     </ul>
     <div class="mega-dropdown">
       <div class="dropdown-section">
@@ -107,11 +105,10 @@
         <a href="/serviceCenter/inquiry" class="inquiry">1:1</a>
       </div>
 
-      <th:block th:if="${session.loginEmployer}">
-        <div class="dropdown-section">
-          <a href="payments">결제</a>
-        </div>
-      </th:block>
+      <div class="dropdown-section">
+        <a href="/payments">결제</a>
+      </div>
+    
 
     </div>
   </nav>

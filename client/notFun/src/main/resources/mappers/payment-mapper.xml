@@ -209,10 +209,29 @@
 
 
 	<!-- 조회 및 환불 관련 나중에 옮길거 -->
+	
 
 
+<insert id="insertPaymentLog">
+    INSERT INTO PAYMENT_LOG (
+        PAYMENT_LOG_NO, 
+        EMPLOYER_NO, 
+        PAYMENT_LOG_STATUS, 
+        PAYMENT_LOG_DATE, 
+        IMP_UID, 
+        MERCHANT_UID, 
+        AMOUNT
+    ) VALUES (
+        SEQ_PAYMENT_LOG_NO.NEXTVAL, 
+        #{employerNo}, 
+        #{status}, 
+        SYSDATE, 
+        #{impUid}, 
+        #{merchantUid}, 
+        #{amount}
+    )
 
-
+</insert>
 
 
 

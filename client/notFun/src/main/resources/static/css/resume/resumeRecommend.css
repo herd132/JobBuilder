@@ -97,12 +97,26 @@
   border: none;
 }
 
+.list-table td:nth-child(3), .list-table th:nth-child(3) {
+  padding: 0;
+  border: none;
+  width: 400px;
+}
+
+.list-table td:nth-child(4) {
+  text-align: center;
+}
+
 /* 공고 제목과 회사명 컨테이너 */
 .list-table td ul {
   margin: 0;
   padding: 0;
   list-style: none;
   min-width: 250px;
+  max-width: 100%; /* 최대 너비 설정 */
+  overflow: hidden; /* 넘치는 내용을 숨김 */
+  white-space: nowrap; /* 텍스트를 한 줄로 제한 */
+  text-overflow: ellipsis; /* 말줄임표 적용 */
 }
 
 /* 공고 제목 스타일링 */
@@ -111,13 +125,20 @@
   font-weight: bold;
   color: #333;
   margin-bottom: 4px;
+  overflow: hidden; /* 넘치는 내용을 숨김 */
+  white-space: nowrap; /* 텍스트를 한 줄로 제한 */
+  text-overflow: ellipsis; /* 말줄임표 적용 */
 }
 
 /* 회사명 스타일링 */
 .list-table td ul li:last-child {
   font-size: 13px;
   color: #666;
+  overflow: hidden; /* 넘치는 내용을 숨김 */
+  white-space: nowrap; /* 텍스트를 한 줄로 제한 */
+  text-overflow: ellipsis; /* 말줄임표 적용 */
 }
+
 
 /* 급여 정보 스타일링 */
 .list-table td:nth-child(4){
@@ -132,7 +153,6 @@
 
 .list-table td span:last-child {
   font-size: 13px;
-  color: #888;
 }
 
 /* 근무 시간 스타일링 */
@@ -286,4 +306,27 @@
   border: 1px solid #007bff;
   border-radius: 4px;
   padding: 5px 10px;
+}
+
+
+.salary-type-badge {
+	margin-left: 10px;
+	border: 1px solid #ff501b !important;
+	background-color: #fff;
+	display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px 8px;
+    border: 1px solid transparent;
+    height: 24px;
+    min-height: 24px;
+    text-align: center;
+	border-radius: 28px;
+	font-size: .75rem;
+	color: #ff501b;
+}
+
+.salary-hourly {
+	border-color: #00b0a6 !important;
+	color: #00b0a6 !important;
 }
