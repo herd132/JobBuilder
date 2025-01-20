@@ -141,7 +141,10 @@ const showModal = async (recruitmentNo, resumeNo) => {
     <p><strong>희망 근무요일 및 시간</strong> ${formatWorkingHours(result.hopeDaysTimeList)}</p>
     <p><strong>희망 근무지역 :</strong> ${result.hopeAddressList && result.hopeAddressList.length > 0 ? result.hopeAddressList.map(item => item.workcondAddressTypeInfo).join(", ") : "미제공"}</p>
     <p><strong>희망 업직종 :</strong> ${result.hopeWorkTypeList ? result.hopeWorkTypeList.map(item => item.workTypeCategory).join(", ") : "미제공"}</p>
-    <p><strong>이력서 내용 :</strong> ${result.resumeContent || "미제공"}</p>
+    <p>
+      <strong>이력서 내용 :</strong>
+      <br></br>
+      <textarea style="width: 330px; height: 110px; resize: none;" readonly>${result.resumeContent || "미제공"}</textarea></p>
     <p><a class="view-button" href="/resume/resumeDetail?resumeNo=${result.resumeNo}&recruitmentNo=${result.recruitmentNo}">이력서 보기</a></p>
   `;
   modalDetails.appendChild(workerSection);
