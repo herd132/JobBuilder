@@ -730,7 +730,6 @@ document.addEventListener("DOMContentLoaded", () => {
         console.log("emptyMembershipCount  빈횟수 :", emptyMembershipCount);
         console.log(paymentProduct);
 
-       
         console.log("임플번호:",employerNo);
         IMP.request_pay(
           {
@@ -739,8 +738,15 @@ document.addEventListener("DOMContentLoaded", () => {
             currency: "CURRENCY_KRW",
             pay_method: "card",
             amount: sumResult, // 최종 결제 금액
-            name: "선택한 멤버십 상품",
+            name: paymentProduct,
             merchant_uid: `merchant_${new Date().getTime()}`, // 고유 주문 ID
+            customData: JSON.stringify({
+              employerNo: Number(employerNo),
+              validMembershipNumbers: validMembershipNumbers,
+              emptyMembershipCount: Number(emptyMembershipCount),
+              newMemberships: newMemberships,
+              oldMemberships: oldMemberships,
+            }),
           },
           function (rsp) {
             // callback
@@ -752,13 +758,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 imp_uid: rsp.imp_uid,
                 merchantUid: rsp.merchant_uid, // merchant_uid를 포함
                 amount: Math.round(rsp.paid_amount),
-                validMembershipNumbers: validMembershipNumbers,
-                emptyMembershipCount: Number(emptyMembershipCount),
-                memberships: memberships,
-                newMemberships: newMemberships,
-                oldMemberships: oldMemberships,
+                paymentProduct : rsp.name,
+                customData: rsp.customData,
                 employerNo: Number(employerNo),
-                paymentProduct: paymentProduct,
               };
               //결제 검증
               $.ajax({

@@ -20,6 +20,10 @@ public interface PaymentService {
 	void savePayment(Payment payment, List<Integer> validMembershipNumbers, int emptyMembershipCount,
 			List<Membership> oldMembershipList, List<Membership> newMembershipList);
 
+
+
+	boolean verifyPayment(String impUid, String merchantUid, int amount, int employerNo);
+
 	
 
 
