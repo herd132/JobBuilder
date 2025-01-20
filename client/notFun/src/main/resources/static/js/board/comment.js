@@ -41,7 +41,7 @@ const selectCommentList = () => {
           if(comment.workerNickname != null) {
             nickname.innerText = comment.workerNickname;
           } else {
-            nickname.innerText = comment.businessName;
+            nickname.innerText = comment.memberName;
           }
 
           // 날짜(작성일)
@@ -71,17 +71,19 @@ const selectCommentList = () => {
           commentBtnArea.classList.add("comment-btn-area");
 
           // 답글 버튼
-          const childCommentBtn = document.createElement("button");
-          childCommentBtn.innerText = "답글";
-
-          // 답글 버튼에 onclick 이벤트 리스너 추가
-          childCommentBtn.setAttribute(
-            "onclick",
-            `showInsertComment(${comment.commentNoBoard}, this)`
-          );
-
-          // 버튼 영역에 답글 추가
-          commentBtnArea.append(childCommentBtn);
+          if(loginEmployerNo != null || loginWorkerNo != null){
+            const childCommentBtn = document.createElement("button");
+            childCommentBtn.innerText = "답글";
+  
+            // 답글 버튼에 onclick 이벤트 리스너 추가
+            childCommentBtn.setAttribute(
+              "onclick",
+              `showInsertComment(${comment.commentNoBoard}, this)`
+            );
+  
+            // 버튼 영역에 답글 추가
+            commentBtnArea.append(childCommentBtn);
+          };
 
           // 로그인한 회원 번호가 댓글 작성자 번호와 같을 때
           // 댓글 수정/삭제 버튼 출력
@@ -203,6 +205,7 @@ const showInsertComment = (parentCommentNo, btn) => {
   // 답글을 작성할 textarea 요소 생성
   const textarea = document.createElement("textarea");
   textarea.classList.add("commentInsertContent");
+  textarea.setAttribute("maxlength", 500);
 
   // 답글 버튼의 부모의 뒤쪽에 textarea 추가
   // after(요소) : 뒤쪽에 추가
@@ -371,6 +374,8 @@ const showUpdateComment = (commentNoBoard, btn) => {
   const textarea = document.createElement("textarea");
   textarea.classList.add("update-textarea");
   textarea.value = beforeContent;
+  textarea.setAttribute("maxlength", 500);
+
 
   // 6. 댓글 행에 textarea 추가
   commentRow.append(textarea);

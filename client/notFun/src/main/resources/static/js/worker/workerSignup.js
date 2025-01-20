@@ -554,7 +554,7 @@ const workerBirthDate = document.querySelector("#workerBirthDate");
 const workerBirthDateMsg = document.querySelector("#workerBirthDateMsg");
 
 workerBirthDate.addEventListener("input", (e) => {
-  let inputBirth = e.target.value;
+  const inputBirth = e.target.value;
 
   // 입력값이 비어있는 경우
   if (inputBirth.trim().length === 0) {
@@ -599,7 +599,6 @@ workerBirthDate.addEventListener("input", (e) => {
   workerBirthDateMsg.classList.add("confirm");
   workerBirthDateMsg.classList.remove("error");
   checkObj.workerBirthDate = true;
-  inputBirth = date;
 });
 
 // 휴대폰 번호 정규 표현식

@@ -109,7 +109,7 @@ public class BoardController {
 			map.put("memberNo", loginEmployer.getMemberNo());
 		}
 		board = service.selectOne(map);
-		log.debug("맵 "  + board);
+		log.debug("맵 "  + board.getCommentList());
 		
 		// 2) 서비스 호출		
 		String path = null;

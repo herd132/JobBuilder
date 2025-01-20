@@ -32,7 +32,7 @@ const selectoneTalkList = (cp = 1) => {
           if (oneTalk.workerNickname != null) {
             nickname.innerText = oneTalk.workerNickname;
           } else {
-            nickname.innerText = oneTalk.businessName;
+            nickname.innerText = oneTalk.memberName;
           }
 
           const oneTalkDate = document.createElement("span");
@@ -52,15 +52,18 @@ const selectoneTalkList = (cp = 1) => {
           const oneTalkBtnArea = document.createElement("div");
           oneTalkBtnArea.classList.add("oneTalk-btn-area");
 
-          const childoneTalkBtn = document.createElement("button");
-          childoneTalkBtn.classList.add("createBtn")
-          childoneTalkBtn.innerText = "답글";
-          childoneTalkBtn.setAttribute(
-            "onclick",
-            `showInsertoneTalk(${oneTalk.oneTalkNo}, this)`
-          );
+          if(loginEmployerNo != null || loginWorkerNo != null){
+            const childoneTalkBtn = document.createElement("button");
+            childoneTalkBtn.classList.add("createBtn")
+            childoneTalkBtn.innerText = "답글";
+            childoneTalkBtn.setAttribute(
+              "onclick",
+              `showInsertoneTalk(${oneTalk.oneTalkNo}, this)`
+            );
+  
+            oneTalkBtnArea.append(childoneTalkBtn);            
+          };
 
-          oneTalkBtnArea.append(childoneTalkBtn);
 
           if (
             (loginWorkerNo != null && loginWorkerNo == oneTalk.memberNo) ||
