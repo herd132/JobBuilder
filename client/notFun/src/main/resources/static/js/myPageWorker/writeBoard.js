@@ -99,7 +99,7 @@ function makeBoardList(boardTitles) {
 
     title.style.cursor = "pointer"; // 마우스 커서 스타일을 포인터로 변경
     title.addEventListener("click", () => {
-      window.location.href = `/board/${board.boardCode}/${board.boardNo}`;
+      window.location.href = `/board/${board.boardCode}/${board.boardNo}?stat=myPage`;
     });
 
     // 작성일 (String 형식 날짜 처리)
