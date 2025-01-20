@@ -66,6 +66,12 @@ const updateUI = (
   const profileImg = resume.profileImg; // 서버에서 가져온 이미지경로
   document.getElementById("profileImg").src = profileImg;
 
+  const defaultProfileImg = "/images/user.png";
+
+  if(profileImg == null) {
+    document.getElementById("profileImg").src = defaultProfileImg;
+  };
+
   const workerBirthDate = resume.workerBirthDate; // 서버에서 가져온 근무자 생년
   const age = resume.age; // 서버에서 가져온 나이
   document.getElementById(
@@ -1191,6 +1197,11 @@ document.addEventListener("click", (event) => {
   if (event.target.id === "saveBtn") {
     if (confirm("저장하시겠습니까?")) {
       const updatedContent = document.getElementById("updateContent").value;
+      if(updatedContent.trim() == ""){
+        alert("자기소개를 작성 해주세요");
+        return;
+      }
+
 
       // 서버로 업데이트 요청
       fetch("/resume/updateContent", {

@@ -8,7 +8,6 @@
     <!-- CSS, font awesome 라이브러리-->
     <th:block th:replace="~{common/common}"></th:block>
     <link rel="stylesheet" href="/css/resume/resumeDatail.css">
-    
 </head>
 
 
@@ -20,144 +19,141 @@
 
         <!-- 흰색배경영역(안쪽)  -->
         <div class="resume-background-white">
-            <button th:if="${session.loginEmployer}" class="cancel-btn" type="button" onclick="window.history.back()">
-                목록으로 </button>
-            <button th:if="${session.loginWorker}" class="cancel-btn" type="button"
-                onclick="location.href='resumeList'"> 목록으로 </button>
+            <button th:if="${session.loginEmployer}" class="cancel-btn" type="button" onclick="window.history.back()"> 목록으로 </button>
+            <button th:if="${session.loginWorker}" class="cancel-btn" type="button" onclick="location.href='resumeList'"> 목록으로 </button>
 
-            <div class="writetime">최종 편집 : <span id="writetime"></span></div>
-            <div class="edit-title">
-                <h2 id="resumeTitle" maxlength="100"></h2>
-                <button th:if="${session.loginWorker}" class="title-btn" type="button" id="titleBtn"> 수정 </button>
-            </div>
-
-            <section class="form-section">
-                <div class="profile-container">
-                    <!-- 프로필 사진 -->
-                    <div class="profile-photo">
-                        <img th:with="user=#{user.default.image}" th:src="${session.loginWorker.profileImg ?: user}"
-								id="profileImg" class="profile-img">
-                    </div>
-                    <!-- 프로필 정보 -->
-                    <div class="profile-info">
-                        <div class="name-age">
-                            <span class="name" id="memberName"></span>
-                            <span class="gender-age" id="workerBirthDate"></span>
-                        </div>
-                        <div class="contact-info">
-                            <div>
-                                <span>휴대폰</span>
-                                <span id="memberTel" class="phone"></span>
-                            </div>
-                            <div>
-                                <span>MBTI</span>
-                                <span id="workerMbti" class="tel"></span>
-                            </div>
-                            <div>
-                                <span>Email</span>
-                                <span id="memberEmail" class="email"></span>
-                            </div>
-                            <div>
-                                <span>주소</span>
-                                <span id="workerAddress" class="address"></span>
-                            </div>
-                        </div>
-                    </div>
+                <div class="writetime">최종 편집 : <span id="writetime"></span></div>
+                <div class="edit-title">
+                    <h2 id="resumeTitle"></h2>
+                    <button th:if="${session.loginWorker}" class="title-btn" type="button" id="titleBtn"> 수정 </button>
                 </div>
-            </section>
 
-            <div class="edit" id="gradeSection">
-                <h2>학력 및 경력</h2>
-                <button th:if="${session.loginWorker}" class="grade-btn" type="button" id="gradeBtn"> 수정 </button>
-            </div>
-            <section class="form-section" id="nowGrade">
-                <h3 id="gradeName"></h3>
-
-                <div id="career-section">
-                    <h3 id="content"></h3>
-                    <div class="career-container">
-                        <table id="data-table">
-                            <thead>
-                                <tr>
-                                    <th>회사명</th>
-                                    <th>근무기간</th>
-                                    <th>담당업무</th>
-                                </tr>
-                            </thead>
-                            <tbody id="career-tbody">
-                                <!-- 데이터는 JS에서 동적으로 추가 -->
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </section>
-
-            <div id="categoryArea">
-                <div class="edit">
-                    <h2>희망근무 조건</h2>
-
-                    <button class="category-btn" type="button" id="categoryBtn" th:if="${session.loginWorker}"> 수정
-                    </button>
-
-                </div>
-            </div>
-            <section class="form-section" name="category-section" id="category-section">
-                <h3>
-                    <div class="item">
-                        근무지역 :
-                        <div class="subitem-container" id="workcondAddressTypeInfo"></div>
-                    </div>
-                </h3>
-                <h3>
-                    <div class="item">
-                        근무직종 :
-                        <div class="subitem-container" id="resumeWorkType"></div>
-                    </div>
-                </h3>
-
-                <h3>
-                    <div class="item">
-                        근무형태 :
-                        <div class="subitem-container" id="resumeJobTypeList"></div>
-                    </div>
-                </h3>
-
-                <h3>
-                    <div class="item">
-                        근무기간 :
-                        <span class="subitem" id="periodName"></span>
-                    </div>
-                </h3>
-
-                <h3>
-                    <div class="item">
-                        근무요일 및 근무시간
-                    </div>
-                    <span class="subitem-container" id="dayList"></span> <span class="subitem-container" id="timeList"></span>
-                    
-                </h3>
-
-                <h3>
-                    <div class="item">
-                        희망급여 :
-                        <span class="subitem" id="salary"></span>
-                    </div>
-                </h3>
-
-            </section>
-
-            <div id="selfArea">
-                <div class="edit">
-                    <h2>자기소개</h2>
-
-                    <button th:if="${session.loginWorker}" class="edit-btn" type="button" id="selfBtn"> 수정 </button>
-
-                </div>
                 <section class="form-section">
-                    <div id="resumeContent"
-                        style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;"></div>
+                    <div class="profile-container">
+                        <!-- 프로필 사진 -->
+
+                        <div class="profile-photo">
+                            <img id="profileImg"  />
+                        </div>
+                        
+                        <!-- 프로필 정보 -->
+                        <div class="profile-info">
+                            <div class="name-age">
+                                <span class="name" id="memberName"></span>
+                                <span class="gender-age" id="workerBirthDate"></span>
+                            </div>
+                            <div class="contact-info">
+                                <div>
+                                    <span>휴대폰</span>
+                                    <span id="memberTel" class="phone"></span>
+                                </div>
+                                <div>
+                                    <span>MBTI</span>
+                                    <span id="workerMbti" class="tel"></span>
+                                </div>
+                                <div>
+                                    <span>Email</span>
+                                    <span id="memberEmail" class="email"></span>
+                                </div>
+                                <div>
+                                    <span>주소</span>
+                                    <span id="workerAddress" class="address"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </section>
-            </div>
+
+                <div class="edit" id="gradeSection">
+                    <h2>학력 및 경력</h2>
+                    <button th:if="${session.loginWorker}" class="grade-btn" type="button" id="gradeBtn"> 수정 </button>
+                </div>
+                <section class="form-section" id="nowGrade">
+                    <h3 id="gradeName"></h3>
+
+                    <div id="career-section">
+                        <h3 id="content"></h3>
+                        <div class="career-container">
+                            <table id="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>회사명</th>
+                                        <th>근무기간</th>
+                                        <th>담당업무</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="career-tbody">
+                                    <!-- 데이터는 JS에서 동적으로 추가 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </section>
+
+                <div id="categoryArea">
+                    <div class="edit">
+                        <h2>희망근무 조건</h2>
+
+                        <button class="category-btn" type="button" id="categoryBtn" th:if="${session.loginWorker}"> 수정 </button>
+
+                    </div>
+                </div>
+                <section class="form-section" name="category-section" id="category-section">
+                    <h3>
+                        <div class="item">
+                            근무지역 :
+                            <div class="subitem-container" id="workcondAddressTypeInfo"></div>
+                        </div>
+                    </h3>
+                    <h3>
+                        <div class="item">
+                            근무직종 :
+                            <div class="subitem-container" id="resumeWorkType"></div>
+                        </div>
+                    </h3>
+
+                    <h3>
+                        <div class="item">
+                            근무형태 :
+                            <div class="subitem-container" id="resumeJobTypeList"></div>
+                        </div>
+                    </h3>
+
+                    <h3>
+                        <div class="item">
+                            근무기간 :
+                            <span class="subitem" id="periodName"></span>
+                        </div>
+                    </h3>
+
+                    <h3>
+                        <div class="item">
+                            근무요일 및 근무시간
+                        </div>
+                        <span class="subitem-container" id="dayList"></span> <span class="subitem-container" id="timeList"></span>
+                        
+                    </h3>
+
+                    <h3>
+                        <div class="item">
+                            희망급여 :
+                            <span class="subitem" id="salary"></span>
+                        </div>
+                    </h3>
+
+                </section>
+
+                <div id="selfArea">
+                    <div class="edit">
+                        <h2>자기소개</h2>
+
+                        <button th:if="${session.loginWorker}" class="edit-btn" type="button" id="selfBtn"> 수정 </button>
+
+                    </div>
+                    <section class="form-section">
+                        <div id="resumeContent" style="white-space: pre-wrap; word-wrap: break-word; overflow-wrap: break-word;"></div>
+                    </section>
+                </div>
 
 
 

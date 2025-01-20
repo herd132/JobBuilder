@@ -128,9 +128,159 @@
 		    A.RESUME_NO = #{resumeNo}
 
 	</select>
-<!-- 이력서디테일 페이지로 이동 내 이력서 조회 끝 -->
+	
+	<!-- 고용주 유효성 검사2(특정 공고에 제출된 이력서로 보려는 경우) -->
+	<select id="getRecruitmentResumeCheck">
+		SELECT RESUME_NO
+		FROM RECRUITMENT_RESUME rr
+		JOIN RECRUITMENT r ON (rr.RECRUITMENT_NO = r.RECRUITMENT_NO)
+		WHERE RESUME_NO = ${resumeNo}
+			AND rr.RECRUITMENT_NO = ${recruitmentNo}
+			AND MEMBER_NO = ${memberNo}
+	</select>
+	
+	
+	
+	<select id="getResumeList" parameterType="Resume" resultMap="resumeResultMap">
+		SELECT 
+			    A.GRADE_NO AS GRADE_NO,
+			    A.MODIFICATION_DATE AS MODIFICATION_DATE,
+			    A.PERIOD_NO AS PERIOD_NO,
+			    A.REGISTRATION_DATE AS REGISTRATION_DATE,
+			    A.RESUME_CONTENT AS RESUME_CONTENT,
+			    A.RESUME_DEL_FL AS RESUME_DEL_FL,
+			    A.RESUME_HIDE_FL AS RESUME_HIDE_FL,
+			    A.RESUME_NO AS RESUME_NO,
+			    A.RESUME_TITLE AS RESUME_TITLE,
+			    A.SALARY_AMOUNT AS SALARY_AMOUNT,
+			    A.SALARY_NO AS SALARY_NO,
+			    A.WORKER_NO AS WORKER_NO,
+				    (
+				        SELECT 
+				            LISTAGG(D.WORKCOND_ADDRESS_TYPE_INFO, ', ') WITHIN GROUP (ORDER BY D.WORKCOND_ADDRESS_TYPE_NO)
+				        FROM 
+				            RESUME_ADDRESS B
+				        JOIN 
+				            WORKCOND_ADDRESS_TYPE D
+				        ON 
+				            B.WORKCOND_ADDRESS_TYPE_NO = D.WORKCOND_ADDRESS_TYPE_NO
+				        WHERE 
+				            B.RESUME_NO = A.RESUME_NO
+				    ) AS WORKCOND_ADDRESS_TYPE_INFO,
+					    (
+					        SELECT 
+					            NVL(SUM(
+					                CASE 
+					                    WHEN E.END_DATE IS NULL THEN TRUNC(SYSDATE) - TRUNC(E.START_DATE)
+					                    ELSE TRUNC(E.END_DATE) - TRUNC(E.START_DATE)
+					                END
+					            ), 0)
+					        FROM 
+					            RESUME_CAREER C
+					        JOIN 
+					            CAREER_INFO E
+					        ON 
+					            C.CAREER_NO = E.CAREER_NO
+					        WHERE 
+					            C.RESUME_NO = A.RESUME_NO
+					    ) AS TOTAL_CAREER,
+						    (
+								SELECT COUNT(*)
+								FROM 
+								    RECRUITMENT A
+								WHERE 
+		    -- 삭제되지 않은 공고
+		    A.RECRUITMENT_DEL_FL = 'N'
+		    AND (
+
+		        -- 1.학력 조건
+		        A.GRADE_NO = (
+		            SELECT B.GRADE_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = A.RESUME_NO)
+
+		        -- 2. 급여 조건 
+		        OR (
+		            A.SALARY_NO IN (1, 2) -- SALARY_NO가 1 또는 2일 때만 희망 금액 비교
+		            AND A.SALARY_NO = (
+		                SELECT B.SALARY_NO
+		                FROM RESUME B
+		                WHERE B.RESUME_NO = A.RESUME_NO
+		            )
+		            AND A.SALARY_MOUNT >= (
+		                SELECT B.SALARY_AMOUNT
+		                FROM RESUME B
+		                WHERE B.RESUME_NO = A.RESUME_NO
+		            )
+		        )
+
+		        OR A.SALARY_NO NOT IN (1, 2) -- SALARY_NO가 1, 2가 아닌 경우 SALARY_NO만 비교
+		        AND A.SALARY_NO = (
+		            SELECT B.SALARY_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = A.RESUME_NO
+		        )
+
+		        -- 3.근무기간 조건
+		        OR
+		        A.PERIOD_NO = (
+		            SELECT B.PERIOD_NO
+		            FROM RESUME B
+		            WHERE B.RESUME_NO = A.RESUME_NO)
+
+		        ----- 여기까진 단순비교 이후로는 1:다 ) --    
+
+		        -- 4.희망지역 조건    
+		        OR
+		        A.WORKCOND_ADDRESS_TYPE_NO IN (
+		            SELECT B.WORKCOND_ADDRESS_TYPE_NO
+		            FROM RESUME_ADDRESS B
+		            WHERE B.RESUME_NO = A.RESUME_NO)
+
+		        -- 5.근무요일 조건
+		        OR
+			        A.DAYS_NO IN (
+			        SELECT E.DAYS_NO
+			        FROM RESUME_DAYSTIME E
+			        WHERE E.RESUME_NO = A.RESUME_NO)
+
+			    -- 6.근무시간 조건
+			    OR 
+			    	A.TIME_NO IN (
+			        SELECT E.TIME_NO
+			        FROM RESUME_DAYSTIME E
+			        WHERE E.RESUME_NO = A.RESUME_NO)
+
+			    -- 7.근무형태 조건
+			    OR 
+			    	A.JOBTYPE_NO IN (
+			        SELECT F.JOBTYPE_NO
+			        FROM RESUME_JOB_TYPE F
+			        WHERE F.RESUME_NO = A.RESUME_NO)
 
 
+		        ----- 여기까진 1:다 이후로는 다:다) -- 	    
+
+
+			    -- 8.업직종 조건    
+		        OR A.EMPLOYER_NO IN (
+		            SELECT DISTINCT G.EMPLOYER_NO
+		            FROM RESUME_WORKTYPE H
+		            JOIN BUSINESS_WORKTYPE G
+		            ON H.WORKTYPE_NO = G.WORKTYPE_NO
+		            WHERE H.RESUME_NO = A.RESUME_NO
+		        )      
+
+			) )AS RECOMMENDATION
+		FROM 
+		    RESUME A
+		WHERE 
+		    A.WORKER_NO = #{workerNo}
+		    AND A.RESUME_DEL_FL = 'N'
+		ORDER BY 
+		    A.RESUME_NO DESC
+		    </select>
+	
 <!-- 이력서 상세 페이지 내 정보 가져오는 패치요청 내 포함  -->
 	<!-- 경력 배열 -->
 	<select id="careerInfo" resultType="com.jobbuilder.project.resume.model.dto.CareerInfo">
@@ -200,6 +350,12 @@
 		WHERE 
 		    A.RESUME_NO = #{resumeNo}
 	</select>
+	
+	
+	
+	
+	
+	
 	
 	
 	
