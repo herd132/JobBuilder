@@ -23,6 +23,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jobbuilder.project.employer.model.dto.Employer;
 import com.jobbuilder.project.resume.model.dto.CareerInfo;
 
 import com.jobbuilder.project.resume.model.dto.Resume;
@@ -31,6 +32,8 @@ import com.jobbuilder.project.resume.model.dto.ResumeDaysTime;
 import com.jobbuilder.project.resume.model.service.ResumeService;
 import com.jobbuilder.project.worker.model.dto.Worker;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -312,15 +315,29 @@ public class ResumeController {
 		return "resume/resumeTotal";
 	}
 	
+	/** 인재 정보 리스트 가져오기
+	 * @param cp
+	 * @param model
+	 * @return
+	 * @author 신동국
+	 */
 	@GetMapping("ajax/list")
 	@ResponseBody
-	public List<Map<String, Object>> ajaxResumeTotalList(@RequestParam(value="cp", required = false, defaultValue = "1") int cp) {
+	public Map<String, Object> ajaxResumeTotalList(@RequestParam(value="cp", required = false, defaultValue = "1") int cp, @SessionAttribute(value="loginEmployer", required = false) Employer employer) {
 		
+
+		Map<String, Object> respMap = new HashMap<String, Object>();
+		
+		if(employer != null) {
+			respMap.put("memberNo", employer.getMemberNo());
+		}
 		// 조회 서비스 호출 후 결과 반환
 		Map<String, Object> map = service.resumeTotalList(cp);
 		
-		List<Map<String, Object>> list = (List<Map<String, Object>>) map.get("resumeTotalList");
-		return list;
+		// 리스트 put
+		respMap.put("resumeTotalList", (List<Map<String, Object>>) map.get("resumeTotalList"));
+				
+		return respMap;
 	}
 	
 
