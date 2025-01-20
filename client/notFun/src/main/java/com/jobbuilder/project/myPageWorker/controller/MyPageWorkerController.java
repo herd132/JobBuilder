@@ -157,9 +157,10 @@ public class MyPageWorkerController {
 							SessionStatus status,
 							RedirectAttributes ra) {
 		
-		int result = service.secession(loginWorker);
 		
-		int result1 = service.secessionResume(loginWorker);
+		int result = service.secessionResume(loginWorker);
+		
+		int result1 = service.secession(loginWorker);
 		
 		String message = null;
 		

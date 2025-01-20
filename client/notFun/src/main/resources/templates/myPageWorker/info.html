@@ -9,12 +9,13 @@
 	<!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
 	<th:block th:replace="~{common/common}"></th:block>
 
+	<!-- 로고 및 검색바 로그인 -->
+	<th:block th:replace="~{common/myPageWorker-header}"></th:block>
+	
 	<link rel="stylesheet" href="/css/myPageWorker/myPageWorkerInfo.css">
 </head>
 
 <body>
-	<!-- 로고 및 검색바 로그인 -->
-	<th:block th:replace="~{common/myPageWorker-header}"></th:block>
 
 	<div>
 
@@ -52,7 +53,7 @@
 
 						<div class="form-field">
 							<span class="workerAddress1">주소 : </span>
-							<span class="workerAddress2" th:text="${session.loginWorker.workerAddress.replace('^^^', ' ')}"></span>
+							<span class="workerAddress2"    th:text="${session.loginWorker.workerAddress != null ? session.loginWorker.workerAddress.replace('^^^', ' ') : ''}"></span>
 						</div>
 
 						<div class="form-field">
