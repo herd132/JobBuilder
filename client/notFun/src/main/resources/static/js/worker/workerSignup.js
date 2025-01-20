@@ -88,8 +88,7 @@ const checkAuthKeyBtn = document.querySelector("#checkAuthKeyBtn");
 // 인증번호 관련 메시지 출력 span
 const authKeyMessage = document.querySelector("#authKeyMessage");
 
-let authTimer; // 타이머 역할을 할 setInterval을 저장할 변수
-
+let authTimer; // 타이머 역할을 할 setInterval을 저a장할 변수0
 const initMin = 4; // 타이머 초기값 (분)
 const initSec = 59; // 타이머 초기값 (초)
 const initTime = "05:00";
@@ -555,8 +554,9 @@ const workerBirthDate = document.querySelector("#workerBirthDate");
 const workerBirthDateMsg = document.querySelector("#workerBirthDateMsg");
 
 workerBirthDate.addEventListener("input", (e) => {
-  const inputBirth = e.target.value;
+  let inputBirth = e.target.value;
 
+  // 입력값이 비어있는 경우
   if (inputBirth.trim().length === 0) {
     workerBirthDateMsg.innerText = " 생년월일을 확인해주세요. ( - 제외 )";
     workerBirthDateMsg.classList.remove("confirm", "error");
@@ -565,19 +565,41 @@ workerBirthDate.addEventListener("input", (e) => {
     return;
   }
 
-  const regExp = /^19[0-9]{6}$/;
+  // 기본 형식 검사 (19로 시작하는 8자리 숫자)
+  const regExp = /^19([0-9][0-9])(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/;
+  
   if (!regExp.test(inputBirth)) {
-    workerBirthDateMsg.innerText = "유효하지 않은 생년월일 방식입니다다.";
+    workerBirthDateMsg.innerText = "유효하지 않은 생년월일 방식입니다.";
     workerBirthDateMsg.classList.add("error");
     workerBirthDateMsg.classList.remove("confirm");
     checkObj.workerBirthDate = false;
     return;
   }
 
+  // Date 객체를 사용한 실제 날짜 유효성 검사
+  const year = parseInt(inputBirth.substring(0, 4));
+  const month = parseInt(inputBirth.substring(4, 6)) - 1; // JavaScript의 월은 0부터 시작
+  const day = parseInt(inputBirth.substring(6, 8));
+  
+  const date = new Date(year, month, day);
+  
+  // 입력된 날짜가 유효한지 확인 (윤년 및 각 월의 일수 고려)
+  if (date.getFullYear() !== year || 
+      date.getMonth() !== month || 
+      date.getDate() !== day) {
+    workerBirthDateMsg.innerText = "존재하지 않는 날짜입니다.";
+    workerBirthDateMsg.classList.add("error");
+    workerBirthDateMsg.classList.remove("confirm");
+    checkObj.workerBirthDate = false;
+    return;
+  }
+
+  // 모든 검증을 통과한 경우
   workerBirthDateMsg.innerText = "유효한 생년월일 형식입니다.";
   workerBirthDateMsg.classList.add("confirm");
   workerBirthDateMsg.classList.remove("error");
   checkObj.workerBirthDate = true;
+  inputBirth = date;
 });
 
 // 휴대폰 번호 정규 표현식

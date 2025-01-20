@@ -108,8 +108,9 @@ public class BoardController {
 			((Employer)session.getAttribute("loginEmployer")).getMemberNo();
 			map.put("memberNo", loginEmployer.getMemberNo());
 		}
-		log.debug("맵 "  + map);
 		board = service.selectOne(map);
+		log.debug("맵 "  + board);
+		
 		// 2) 서비스 호출		
 		String path = null;
 

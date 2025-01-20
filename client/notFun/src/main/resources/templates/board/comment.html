@@ -24,8 +24,8 @@
 						<th:block th:if="*{workerNickname != null}">
 							<span th:text="*{workerNickname}">닉네임</span>
 						</th:block>
-						<th:block th:if="*{businessName != null }">
-							<span th:text="*{businessName}">고용주닉네임</span>
+						<th:block th:if="*{workerNickname == null }">
+							<span th:text="*{memberName}">고용주닉네임</span>
 						</th:block>
 						<span class="comment-date" th:text="*{commentWriteDateBoard}">작성일</span>
 					</p>
