@@ -28,11 +28,6 @@
   margin-bottom: 15px;
 }
 
-.myPageBtn{
-  text-decoration: none;
-  color: black;
-}
-
 .cancel-button, .submit-button {
   flex: 1;
   padding: 12px;
@@ -131,8 +126,8 @@ input::placeholder {
 
 .header {
   width: 1000px;
-  margin-top: 45px;
-  margin-left: 200px;
+  margin-top: 50px;
+  margin-left: 460px;
   margin-bottom: 20px;
   display: flex;
   justify-content: space-between;

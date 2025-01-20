@@ -251,8 +251,8 @@ function expappend() {
   </label>
   <label>
     담당업무:
-    <textarea class="career-description" placeholder="담당업무를 입력하세요"></textarea>
-    <div class="exp-char-counter">0 / 500자</div>
+    <textarea class="career-add-description" maxlength="500" placeholder="담당업무를 입력하세요"></textarea>
+    <div class="exp-add-char-counter">0 / 500자</div>
   </label>
 `;
 
@@ -267,6 +267,21 @@ function expappend() {
 
   // 새로운 필드를 form 태그 안에 추가
   inputContainer.appendChild(newContainer);
+
+  // 새로 생성된 텍스트 영역과 카운터 요소 찾기
+  const expAddCharCounter = newContainer.querySelector(".exp-add-char-counter");
+  const expAddTextArea = newContainer.querySelector(".career-add-description");
+
+  // 글자 수 업데이트 이벤트 리스너 추가
+  if (expAddTextArea && expAddCharCounter) {
+    expAddTextArea.addEventListener("input", () => {
+      const addCurrentLength = expAddTextArea.value.length; // 현재 입력된 글자 수
+      const addMaxLength = expAddTextArea.getAttribute("maxlength"); // 최대 글자 수
+
+      // 글자 수 표시 업데이트
+      expAddCharCounter.textContent = `${addCurrentLength} / ${addMaxLength}자`;
+    });
+  }
 }
 
 function addSelect() {
@@ -342,11 +357,13 @@ function addSelect() {
 }
 
 // 자기소개 textarea와 글자 수 표시 영역 선택
-const textarea = document.querySelector(".selfInfo");
-const expTextArea = document.querySelector(".career-description");
+const textarea = document.querySelector(".selfInfo"); // 자기소개
+const expTextArea = document.querySelector(".career-description"); // 담당업무
+const expCharCounter = document.querySelector(".exp-char-counter"); // 담당업무 글자 수 체크
+const charCounter = document.querySelector(".char-counter"); // 자기소개 글자 수 체크
 
-const charCounter = document.querySelector(".char-counter");
-const expCharCounter = document.querySelector(".exp-char-counter");
+const expAddCharCounter = document.querySelector(".exp-add-char-counter");
+const expAddTextArea = document.querySelector(".career-add-description");
 
 // 텍스트 입력 시 글자 수 업데이트
 expTextArea.addEventListener("input", () => {
@@ -366,6 +383,14 @@ textarea.addEventListener("input", () => {
 });
 
 const inputTitle = document.querySelector(".inputTitle");
+const titleCharCounter = document.querySelector(".title-char-counter");
+
+inputTitle.addEventListener("input", () => {
+  const currentTitleLength = inputTitle.value.length;
+  const maxLength = inputTitle.getAttribute("maxlength");
+
+  titleCharCounter.textContent = `${currentTitleLength} / ${maxLength}자`;
+});
 
 writeResumeForm.addEventListener("submit", (e) => {
   e.preventDefault();

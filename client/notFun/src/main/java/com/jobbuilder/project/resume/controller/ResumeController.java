@@ -223,10 +223,6 @@ public class ResumeController {
 
 		if (currentUrl.startsWith(",")) {
 			currentUrl = currentUrl.substring(1); // 첫 번째 문자를 잘라냄
-
-			if (currentUrl.startsWith("http://localhost")) {
-				currentUrl = currentUrl.substring("http://localhost/".length());
-			}
 		}
 		
 		ra.addFlashAttribute("message", message);
@@ -234,7 +230,7 @@ public class ResumeController {
 		return "redirect:" + currentUrl;
 	}
 
-	@PostMapping("/updateTitle")
+	@PostMapping("updateTitle")
 	@ResponseBody
 	public Map<String, Object> updateResumeContent(@RequestBody Map<String, Object> requestBody) {
 		
@@ -254,7 +250,7 @@ public class ResumeController {
 		return resp;
 	}
 	
-	@PostMapping("/updateGrade")
+	@PostMapping("updateGrade")
 	public String updateGrade(Resume resume, 
 			@SessionAttribute("loginWorker") Worker loginWorker,
 			@RequestParam(value = "careerInfoList", required = false) String careerInfoListJson,
@@ -275,6 +271,7 @@ public class ResumeController {
 		
 		String message = null;
 		
+		log.debug("이게 왜 됨"+currentUrl);
 		if (result > 0) {
 			message = "학력/경력 수정 완료";
 		} else {
@@ -283,12 +280,11 @@ public class ResumeController {
 
 		if (currentUrl.startsWith(",")) {
 			currentUrl = currentUrl.substring(1); // 첫 번째 문자를 잘라냄
-
-			if (currentUrl.startsWith("http://13.124.153.205")) {
-				currentUrl = currentUrl.substring("http://13.124.153.205/".length());
-			}
 		}
+		
 		ra.addFlashAttribute("message", message);
+		
+		log.debug("현재페이지"+currentUrl);
 		
 		return "redirect:" + currentUrl;
 		

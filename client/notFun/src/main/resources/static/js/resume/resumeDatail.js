@@ -119,7 +119,7 @@ const updateUI = (
 
       // 근무기간
       const periodCell = document.createElement("td");
-      periodCell.innerHTML = `${career.startDate} ~ ${career.endDate}`;
+      periodCell.innerHTML = `${career.startDate} ~<br> ${career.endDate ? career.endDate : "현재 재직 중"}`;
 
       // 담당업무
       const descriptionCell = document.createElement("td");
@@ -177,23 +177,28 @@ const updateUI = (
   const periodName = resume.periodName;
   document.getElementById("periodName").innerHTML = `${periodName}`;
 
-  // 근무요일 배열
-  const dayList = document.getElementById("dayList");
-  resumeDaysTime.forEach((item) => {
-    const span = document.createElement("span");
-    span.textContent = item.daysName;
-    span.classList.add("subitem");
-    dayList.appendChild(span);
-  });
+  
 
-  // 근무시간 배열
-  const timeList = document.getElementById("timeList");
-  resumeDaysTime.forEach((item) => {
-    const span = document.createElement("span");
-    span.textContent = item.timeName;
-    span.classList.add("subitem");
-    timeList.appendChild(span);
-  });
+  // 기존 코드 제거하고 새로운 로직 추가
+resumeDaysTime.forEach((item, index) => {
+  // 요일 span 생성
+  const daySpan = document.createElement("span");
+  daySpan.textContent = item.daysName;
+  daySpan.classList.add("subitem");
+  
+  // 시간 span 생성
+  const timeSpan = document.createElement("span");
+  timeSpan.textContent = item.timeName;
+  timeSpan.classList.add("subitem");
+  
+  // 줄바꿈을 위한 div 생성
+  const container = document.createElement("div");
+  container.classList.add("day-time");
+  container.appendChild(daySpan);
+  container.appendChild(timeSpan);
+  
+  dayList.appendChild(container);
+});
 
   //급여
   const salary = formatSalary(
@@ -218,7 +223,7 @@ fetch("/resume/resumeDetaila", {
 })
   .then((response) => response.json())
   .then((data) => {
-    console.log("서버에서 받은 데이터:", data);
+    
 
     // 데이터 분해
     const {
@@ -568,6 +573,16 @@ document.addEventListener("click", (event) => {
         </form>
       `;
     }
+
+    const expTextArea = document.querySelector(".career-description"); // 담당업무
+    const expCharCounter = document.querySelector(".exp-char-counter");
+    expTextArea.addEventListener("input", () => {
+      const currentLength = expTextArea.value.length; // 현재 입력된 글자 수
+      const maxLength = expTextArea.getAttribute("maxlength"); // 최대 글자 수
+    
+      // 글자 수 표시 업데이트
+      expCharCounter.textContent = `${currentLength} / ${maxLength}자`;
+    });
   }
 });
 
@@ -647,8 +662,8 @@ function expappend() {
     </label>
     <label>
       담당업무:
-      <textarea class="career-description" placeholder="담당업무를 입력하세요"></textarea>
-      <div class="exp-char-counter">0 / 500자</div>
+      <textarea class="career-add-description" maxlength="500" placeholder="담당업무를 입력하세요"></textarea>
+      <div class="exp-add-char-counter">0 / 500자</div>
     </label>
   `;
 
@@ -661,7 +676,22 @@ function expappend() {
   newContainer.appendChild(deleteBtn);
 
   inputContainer.appendChild(newContainer);
-}
+
+   // 새로 생성된 텍스트 영역과 카운터 요소 찾기
+   const expAddCharCounter = newContainer.querySelector(".exp-add-char-counter");
+   const expAddTextArea = newContainer.querySelector(".career-add-description");
+ 
+   // 글자 수 업데이트 이벤트 리스너 추가
+   if (expAddTextArea && expAddCharCounter) {
+     expAddTextArea.addEventListener("input", () => {
+       const addCurrentLength = expAddTextArea.value.length; // 현재 입력된 글자 수
+       const addMaxLength = expAddTextArea.getAttribute("maxlength"); // 최대 글자 수
+ 
+       // 글자 수 표시 업데이트
+       expAddCharCounter.textContent = `${addCurrentLength} / ${addMaxLength}자`;
+     });
+   }
+};
 
 // 저장 버튼 클릭 이벤트 처리
 document.addEventListener("click", (e) => {
@@ -694,9 +724,7 @@ document.addEventListener("click", (e) => {
           const companyNameList = document.querySelectorAll(".company-name");
           const startDateList = document.querySelectorAll(".start-date");
           const endDateList = document.querySelectorAll(".end-date");
-          const careerDescriptionList = document.querySelectorAll(
-            ".career-description"
-          );
+          const careerDescriptionList = document.querySelectorAll(".career-description, .career-add-description");
 
           for (let i = 0; i < companyNameList.length; i++) {
             if (
@@ -1015,6 +1043,7 @@ categoryBtn.addEventListener("click", async (e) => {
         updateCategoryForm.appendChild(hiddenInput5); // 폼에 hidden input 추가
 
         updateCategoryForm.submit();
+        
       }
     });
   }
@@ -1051,11 +1080,23 @@ document.addEventListener("click", (e) => {
     if (confirm("제목을 수정하시겠습니까?")) {
       const title = resumeData.resumeTitle;
       document.querySelector(".edit-title").innerHTML = `
-      <h2>제목 :&nbsp </h2><input id="updateTitle" maxlength="100" value="${title}"></input>
+      <h2>제목 :&nbsp </h2><input class="updateTitle" id="updateTitle" maxlength="100" value="${title}"></input>
+      
+      &nbsp <div class="title-char-counter">0 / 100자</div>
       <button class="edit-btn" type="button" id="titleUpdateBtn"> 저장 </button>
       <button class="edit-btn" type="button" id="titleCancelBtn"> 취소 </button>
       `;
     }
+
+    const inputTitle = document.querySelector("#updateTitle");
+    const titleCharCounter = document.querySelector(".title-char-counter");
+
+    inputTitle.addEventListener("input", () => {
+      const currentTitleLength = inputTitle.value.length;
+      const maxLength = inputTitle.getAttribute("maxlength");
+
+      titleCharCounter.textContent = `${currentTitleLength} / ${maxLength}자`;
+    });
 
     // 동적으로 생성된 요소에 대한 이벤트 리스너 등록
     document.getElementById("titleUpdateBtn").addEventListener("click", (e) => {
@@ -1127,10 +1168,23 @@ document.addEventListener("click", (event) => {
                     </div>
                     <section class="form-section">
                         <textarea class="selfInfo" id="updateContent" maxlength="1500">${content}</textarea>
+                        <div class="char-counter">0 / 1500자</div>
                     </section>
                 </div>
             `;
     }
+    const textarea = document.querySelector(".selfInfo"); // 자기소개
+    const charCounter = document.querySelector(".char-counter");
+
+    textarea.addEventListener("input", () => {
+      const currentLength = textarea.value.length; // 현재 입력된 글자 수
+      const maxLength = textarea.getAttribute("maxlength"); // 최대 글자 수
+    
+      // 글자 수 표시 업데이트
+      charCounter.textContent = `${currentLength} / ${maxLength}자`;
+    });
+
+
   }
 
   // 저장 버튼 클릭 이벤트
@@ -1165,13 +1219,14 @@ document.addEventListener("click", (event) => {
                               <button class="edit-btn" type="button" id="selfBtn">Edit</button>
                           </div>
                           <section class="form-section">
-                              <div id="resumeContent" style="white-space: pre-wrap;">${updatedContent}</div>
+                              <textarea id="resumeContent" style="white-space: pre-wrap;">${updatedContent}</textarea>
                           </section>
                       </div>
                   `;
 
           // 성공 메시지 출력
           alert(data.message);
+          location.reload();
         })
         .catch((error) => {
           console.error("저장 중 오류 발생:", error);

@@ -35,6 +35,8 @@
   height: calc(100%/3);
   font-weight: normal;
   font-size: 0.8rem;
+  text-decoration: none;
+  color: black;
 }
 
 .nav-mypagemenu a:nth-child(n) {
@@ -45,6 +47,10 @@
   border-bottom: none;
 }
 
+.myPageBtn{
+  text-decoration: none;
+  color: black;
+}
 
 .nav-mypagemenu:after {
   content: '';
