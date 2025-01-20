@@ -587,6 +587,12 @@
   border-radius: 10px;
 }
 
+.modal-area{
+  background-color: white;
+  padding: 30px;
+  border-radius: 20px;
+}
+
 .loadingBox .circle {
   position:fixed; 
   left:50%; 

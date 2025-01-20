@@ -7,6 +7,7 @@
   <title>내 정보 수정</title>
 
   <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpFooter.css">
   <link rel="stylesheet" href="/css/myPageEmployer/updateInfo.css">
   
   <!--  12월 27일 오전 9시 36분 횟수 51회 -->
@@ -59,7 +60,7 @@
     </main>
   </div>
 
-  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
+  <th:block th:replace="~{common/main-footer}"></th:block>
 
   <script th:inline="javascript">
     const memberNo = /*[[${session.loginEmployer.memberNo}]]*/0;

@@ -93,6 +93,6 @@
 	<insert id="signUpEmployer">
 		INSERT INTO "EMPLOYER"
 		VALUES(SEQ_EMPLOYER_NO.NEXTVAL, #{businessRegistrationNumber}, #{businessName}, #{businessAddress},
-			${memberNo}, #{optionalAgreeFl}, DEFAULT, NULL, DEFAULT)
+			${memberNo}, #{optionalAgreeFl}, DEFAULT, NULL, DEFAULT, NULL)
 	</insert>
 </mapper>
