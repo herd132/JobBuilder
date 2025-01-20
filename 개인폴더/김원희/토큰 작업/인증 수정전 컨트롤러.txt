@@ -130,7 +130,6 @@ public class PaymentController {
             // 2. 결제 검증 서비스 호출
             boolean isVerified = service.verifyPayment(impUid, merchantUid, amount, employerNo);
 
- 
             if (isVerified) {
                 // 3. 기존 결제 완료 로직 실행
                 String customDataJson = (String) paymentData.get("customData");
