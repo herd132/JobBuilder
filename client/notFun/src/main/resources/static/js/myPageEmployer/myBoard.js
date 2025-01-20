@@ -92,7 +92,7 @@ function makeBoardList(boardTitles) {
 
     titleCell.style.cursor = "pointer"; // 마우스 커서 스타일을 포인터로 변경
     titleCell.addEventListener("click", () => {
-      window.location.href = `http://localhost/board/${board.boardCode}/${board.boardNo}`;
+      window.location.href = `/board/${board.boardCode}/${board.boardNo}?stat=myPage`;
     });
 
     // 작성일 (String 형식 날짜 처리)

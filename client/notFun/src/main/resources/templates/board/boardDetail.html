@@ -73,8 +73,21 @@
                     <button th:case="myLike" id="goToMyLikeListBtn">이전으로</button>
                 </th:block>
 
-                <th:block th:unless="${param.key2}">
+                <th:block th:unless="${param.stat}">
                     <button id="goToListBtn">목록으로</button>
+                </th:block>
+                
+                <th:block th:if="${param.stat}">
+                    <th:block th:if="${session.loginEmployer}">
+                        <button id="goToMyPageBtn">
+                            <a href="/myPageEmp/myWrite">목록으로</a>
+                        </button>
+                    </th:block>
+                    <th:block th:if="${session.loginWorker}">
+                        <button id="goToMyPageBtn">
+                            <a href="/myPageWorkee/myPageWorkerWrite">목록으로</a>
+                        </button>
+                    </th:block>
                 </th:block>
             </div>
 

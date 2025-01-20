@@ -20,6 +20,9 @@
 	<div class="recruitmentList-gray">
 		<main class="recruitmentList-white">
 			<p th:text="'총 '+${paginationRecruitment.listCount}+' 건'"></p>
+			<th:block th:unless="${param.type}">
+				<p th:text="|'${param.query}'로 검색한 결과입니다.|"></p>
+			</th:block>
 			<div class="list-wrapper">
 				<table class="list-table">
 
