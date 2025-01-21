@@ -1,6 +1,13 @@
 const cp = document.querySelector(".pagination .active").innerText;
 const recommendModal = document.querySelector(".recommend-modal");
 
+function maskString(input) {
+  if (!input) return ""; // 입력값이 비어있는 경우 빈 문자열 반환
+  const firstChar = input[0]; // 첫 번째 글자
+  const masked = '*'.repeat(input.length - 1); // 첫 번째 글자 제외한 나머지 길이만큼 *
+  return firstChar + masked; // 첫 번째 글자와 * 결합
+}
+
 fetch("/resume/ajax/list?cp=" + cp)
 .then(resp => resp.json())
 .then(respMap => {
@@ -31,8 +38,10 @@ fetch("/resume/ajax/list?cp=" + cp)
 
     const viewButton = memberNo == 0 ? '<br>': `<a class="view-button" href="/resume/resumeDetail?resumeNo=${resume.resumeNo}">이력서 보기</a>`;
     const profileImg = resume.profileImg !== undefined ? resume.profileImg : '/images/avatar.png';
+    const memberName = maskString(resume.memberName);
     let carrer = resume.carrerStr.split("^^^")[0] == "-&&&근무중(1개월 미만)" ?
       '등록된 경력이 없습니다.' : resume.carrerStr.split("^^^");
+
     let str = "";
     if (Array.isArray(carrer)) {
       carrer.map((c, index) => {
@@ -43,19 +52,18 @@ fetch("/resume/ajax/list?cp=" + cp)
     } else {
       str = carrer;
     }
+
     resumeGrid.innerHTML += `
   <div class="resume-card">
     <div class="resume-header">
       <img src="${profileImg}" alt="Profile image" class="profile-image">
       <div class="basic-info">
-        <div class="name">${resume.memberName} </div>
+        <div class="name">${memberName} </div>
         <div class="age">${resume.age} (${resume.workerBirthDate})</div>
       </div>
     </div>
     <div class="contact-info">
       <div class="info-item">
-        <span class="info-label">연락처</span>
-        <span>${resume.memberTel}</span>
       </div>
       <div class="info-item">
         <span class="info-label">이메일</span>
@@ -63,7 +71,7 @@ fetch("/resume/ajax/list?cp=" + cp)
       </div>
       <div class="info-item">
         <span class="info-label">지역</span>
-        <span>${resume.memberAddress == undefined ? 미입력 : resume.memberAddress}</span>
+        <span>${resume.memberAddress == undefined ? '미입력' : resume.memberAddress}</span>
       </div>
       <div class="info-item">
         <span class="info-label">MBTI</span>

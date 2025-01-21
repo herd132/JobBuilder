@@ -37,14 +37,23 @@
                 <th:block th:each="board, iterStat : ${serviceCenterList}" th:object="${board}">
                     <div class="faq-item">
                         <div class="faq-question">
-                            <span class="question-text" th:text="|Q. *{serviceCenterTitle}|">Q. 제목</span>
+                            <span class="question-text">
+                                <span class="q-marker">Q.</span>
+                                <span th:text="*{serviceCenterTitle}">제목</span>
+                            </span>
                             <span class="toggle-icon">+</span>
                         </div>
-                        <div class="faq-answer" th:text="*{serviceCenterContent}">
-                            내용
+                        <div class="faq-answer">
+                            <div class="answer-wrapper">
+                                <span class="a-marker">A.</span>
+                                <div class="answer-content" th:text="*{serviceCenterContent}">
+                                    내용
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </th:block>
+                
             </div>
 
             <!-- Search section -->

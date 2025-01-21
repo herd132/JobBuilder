@@ -109,6 +109,7 @@
 
 .faq-question {
   display: flex;
+  justify-content: space-between;
   align-items: center;
   padding: 20px 10px;
   cursor: pointer;
@@ -121,11 +122,21 @@
 }
 
 .question-text {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   flex-grow: 1;
   font-size: 16px;
   font-weight: 500;
   color: #333;
   margin-right: 20px;
+}
+
+
+.q-marker {
+  color: var(--warning-orange);
+  font-weight: 700;
+  min-width: 25px;
 }
 
 .toggle-icon {
@@ -137,16 +148,7 @@
 
 .faq-item.active .toggle-icon {
   transform: rotate(45deg);
-}
-
-.faq-item.active {
-  background-color: var(--primary-orange);
-}
-
-.faq-item.active span {
-  color:white;
-}
-
+} 
 
 .post-info {
   display: flex;
@@ -158,15 +160,53 @@
 
 .faq-answer {
   display: none;
+    background-color: #f9f9f9;
+    border-top: 1px solid #e0e0e0;
+}
+
+.answer-wrapper {
   padding: 20px 40px;
-  background-color: #f9f9f9;
-  border-top: 1px solid #e0e0e0;
+  display: flex;
+  gap: 8px;
+}
+
+
+.a-marker {
+  text-align: center;
+  line-height: 1.8rem;
+  color: var(--primary-orange);
+  font-weight: 700;
+  min-width: 25px;
+}
+
+.answer-content {
+  flex: 1;
   line-height: 1.6;
+  white-space: pre-wrap;
 }
 
 .faq-answer p {
   margin: 10px 0;
   color: #666;
+}
+
+/* 활성화 상태 스타일 */
+.faq-item.active .faq-question {
+  background-color: var(--primary-orange);
+  color: white;
+}
+
+.faq-item.active .question-text span:nth-child(2) {
+  color: white;
+}
+
+.faq-item.active .toggle-icon {
+  transform: rotate(45deg);
+  color: white;
+}
+
+.faq-item.active .q-marker {
+  color: var(--warning-orange);
 }
 
 .faq-item.active .faq-answer {
