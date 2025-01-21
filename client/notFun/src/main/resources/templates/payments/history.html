@@ -7,10 +7,9 @@
   <title>결제 내역</title>
   <!-- CSS, font awesome 라이브러리-->
   <th:block th:replace="~{common/common}"></th:block>
-  <link rel="stylesheet" href="/css/payments/testpay2.css">
+  <link rel="stylesheet" href="/css/payments/history.css">
   <link rel="stylesheet" href="/css/payments/payments.css">
 
-  <meta name="employerNo" th:content="${session.loginEmployer != null ? session.loginEmployer.employerNo : ''}">
 </head>
 
 
@@ -43,10 +42,13 @@
         </div>
       </div>
 
+      <div class="paginationRecruitment-area">
+        <ul class="paginationRecruitment" id="paginationContainer">
+        </ul>
+      </div>
 
 
-
-
+     
 
     </div>
 
@@ -62,7 +64,7 @@
 
 
 
-  <script src="/js/payments/testpay2.js"></script>
+  <script src="/js/payments/history.js"></script>
 </body>
 
 </html>

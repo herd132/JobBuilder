@@ -361,6 +361,22 @@
   cursor: pointer;
 }
 
+.list-button {
+  margin-left: 1rem;
+  padding: 0.8rem;
+  background-color: #543a14;
+  color: white;
+  border: none;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.list-button:hover {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+
 #businessName{
   margin-left: 1rem;
 }
@@ -710,7 +726,6 @@ select:focus {
 .payments-plussitem-bottom div {
   width: 110px; /* 버튼 너비 */
   height: 40px; /* 버튼 높이 */
-  background-color: #543A14; /* 버튼 배경색 */
   color: white; /* 텍스트 색상 */
   display: flex;
   justify-content: center;

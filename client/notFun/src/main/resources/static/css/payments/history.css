@@ -284,3 +284,73 @@
   background-color: #d32f2f;
   transform: scale(1.05);
 }
+
+/* 기본적으로 숨김 처리 */
+.subitem.hidden {
+  display: none;
+}
+
+/* ul 스타일링 */
+.subitem {
+  list-style-type: none; /* 기본 점 제거 */
+  margin: 0;
+  padding: 0;
+  border: 1px solid #ddd; /* 컨테이너 테두리 */
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  overflow: hidden; /* 내부 요소 관리 */
+  margin-bottom: 1rem;
+  margin-left: 2.5rem;
+  margin-right: 30rem;
+}
+
+/* li 스타일링 */
+.subitem li {
+  padding: 10px;
+}
+
+.subitem li:last-child {
+  border-bottom: none; /* 마지막 항목의 테두리 제거 */
+}
+
+
+
+/* 페이지네이션 스타일링 */
+.paginationRecruitment {
+  display: flex;
+  justify-content: center;
+  list-style: none;
+  padding: 20px 0;
+  margin: 0;
+}
+
+.paginationRecruitment li {
+  margin: 0 5px;
+}
+
+.paginationRecruitment a {
+  display: inline-block;
+  padding: 8px 12px;
+  color: #666;
+  text-decoration: none;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.paginationRecruitment a:hover {
+  transform: scale(1.2);
+}
+
+.pagination-link {
+  margin: 0 5px;
+  text-decoration: none;
+}
+
+.pagination-link.current {
+  font-weight: bold;
+  background-color: #007bff;
+  color: white;
+  border: 1px solid #007bff;
+  border-radius: 4px;
+  padding: 5px 10px;
+}

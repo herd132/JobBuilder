@@ -7,8 +7,16 @@
   const businessNameElement = document.getElementById("businessName");
   const employerNoInput = document.getElementById("employerNoInput");
   const changeButton = document.querySelector(".change-button");
+  const listButton = document.querySelector(".list-button"); 
   const modal = document.getElementById("employerModal");
   const employerList = document.getElementById("employerList");
+
+
+  listButton.value = employerNo;
+
+// 클릭 이벤트 처리
+
+
 
   function createModal(data) {
     employerList.innerHTML = "";
@@ -57,7 +65,15 @@
 
     const closeButton = modal.querySelector(".close-button");
     if (closeButton) {
-      closeButton.addEventListener("click", closeModalFunc);
+      closeButton.addEventListener("click", function (event) {
+        if (businessNameElement && businessNameElement.textContent.trim() === "") {
+          // 값이 없거나 비었을 경우
+          event.preventDefault(); // 이벤트 막기
+          alert("사업주를 먼저 선택하세요"); 
+        } else {
+          closeModalFunc(); // 값이 있으면 모달 닫기 함수 실행
+        }
+      });
     }
   }
 
@@ -79,7 +95,7 @@
 
     // 변경하기 버튼 숨김
     if (changeButton) changeButton.style.display = "none";
-
+    if (listButton) listButton.style.display = "none";
     resetStatus(); // UI 초기화
 }
 
@@ -105,6 +121,9 @@ async function fetchEmployerData() {
           if (changeButton) {
               changeButton.style.display = "inline-block";
           }
+          if (listButton) {
+            listButton.style.display = "inline-block";
+        }
 
           createModal(data); 
           updateUi(data);
@@ -206,6 +225,12 @@ async function fetchEmployerData() {
   if (changeButton) {
     changeButton.addEventListener("click", showModal);
   }
+
+  listButton.setAttribute("data-employer-no", employerNo);
+  listButton.addEventListener("click", () => {
+  sessionStorage.setItem('employerNo',employerNo);
+  window.location.href = "/payments/history";
+});
 
   await fetchEmployerData();
 })();

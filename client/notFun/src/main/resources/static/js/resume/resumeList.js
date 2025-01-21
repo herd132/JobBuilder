@@ -151,7 +151,7 @@ const formatTime = (dateString) => {
 
 // 경력 포맷팅
 const formatCareer = (totalCareer) => {
-    console.log(totalCareer);
+
     if (!totalCareer || totalCareer <= 0) return "신입";
     if (totalCareer >= 30) {
         const totalMonths = Math.floor(totalCareer / 30);

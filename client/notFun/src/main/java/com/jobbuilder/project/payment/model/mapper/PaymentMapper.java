@@ -49,6 +49,10 @@ public interface PaymentMapper {
 	
 	void insertPaymentLog(Map<String, Object> paramMap);
 
+	String getRefundMessage(int paymentNo);
+
+	String confirmRefund1(int paymentNo);
+
 	
 	// 3-2는 2-1과 동일
 	// void connectionPayment(Payment payment);
