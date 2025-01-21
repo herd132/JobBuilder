@@ -16,6 +16,11 @@
   height: 80px;
 }
 
+.myPageBtn{
+  text-decoration: none;
+  color: black;
+}
+
 .search-bar{
   flex: 0.75;
 }

@@ -21,10 +21,9 @@
   <!-- 로고 및 검색바 로그인 -->
   <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
 
-  <h3>공고추가 페이지 입니다.</h3>
-
   <div class="addRecruitment-gray">
     <main class="addRecruitment-white">
+      <h3 th:text="|'${session.loginEmployer.businessName}'님의 공고추가 페이지입니다.|" />
       <div class="recruitment-form-container">
         <form action="/recruitment/addRecruitment" method="post" class="addRecruitmentForm"
           id="addRecruitmentForm" enctype="multipart/form-data">
@@ -42,7 +41,7 @@
             <h4>근무지역을 선택해주세요</h4>
             <input type="text" id="workcondAddressTypeInfo" name="workcondAddressTypeInfo" readonly>
             <input type="hidden" id="workcondAddressTypeNo" name="workcondAddressTypeNo">
-            <div>
+            <div class="work-address-area">
               <ul>
                 <th:block th:each="address : ${majorAddressList}">
                   <li th:text="${address.workcondAddressTypeInfo}" class="address-categoty"
