@@ -29,7 +29,7 @@ fetch("/resume/ajax/list?cp=" + cp)
 
   resumeList.map(resume => {
 
-    const viewButton = memberNo == 0 ? "" : `<a class="view-button" href="/resume/resumeDetail?resumeNo=${resume.resumeNo}">이력서 보기</a>`;
+    const viewButton = memberNo == 0 ? '<br>': `<a class="view-button" href="/resume/resumeDetail?resumeNo=${resume.resumeNo}">이력서 보기</a>`;
     const profileImg = resume.profileImg !== undefined ? resume.profileImg : '/images/avatar.png';
     let carrer = resume.carrerStr.split("^^^")[0] == "-&&&근무중(1개월 미만)" ?
       '등록된 경력이 없습니다.' : resume.carrerStr.split("^^^");
@@ -63,7 +63,7 @@ fetch("/resume/ajax/list?cp=" + cp)
       </div>
       <div class="info-item">
         <span class="info-label">지역</span>
-        <span>${resume.memberAddress == null ? 미입력 : resume.memberAddress}</span>
+        <span>${resume.memberAddress == undefined ? 미입력 : resume.memberAddress}</span>
       </div>
       <div class="info-item">
         <span class="info-label">MBTI</span>
