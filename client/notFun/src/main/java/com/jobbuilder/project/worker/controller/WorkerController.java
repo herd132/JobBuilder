@@ -117,7 +117,6 @@ public class WorkerController {
 					ra.addFlashAttribute("message", message);
 					
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}				
 				
@@ -153,7 +152,6 @@ public class WorkerController {
 							RedirectAttributes ra) {
 			
 			// 회원가입 서비스 호출
-			log.debug("signUpPath" + signUpPath);
 			int result = service.signup(inputWorker, memberAddress);
 			
 			String path = null;

@@ -81,7 +81,6 @@ public class BoardServiceImpl implements BoardService{
 	// 상세조회 서비스
 	@Override
 	public Board selectOne(Map<String, Integer> map) {
-		// TODO Auto-generated method stub
 		return mapper.selectOne(map);
 	}
 	

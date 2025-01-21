@@ -259,7 +259,6 @@ public class EditBoardServiceImpl implements EditBoardService {
 	// 게시글 삭제 서비스 
 	@Override
 	public int boardDelete(Map<String, Integer> map) {
-		// TODO Auto-generated method stub
 		return mapper.boardDelete(map);
 	}
 	
