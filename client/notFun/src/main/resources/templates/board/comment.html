@@ -2,8 +2,8 @@
 
 	<!-- 댓글 작성 부분 -->
 	<div class="comment-write-area">
-		<textarea id="commentContentBoard"></textarea>
-		<button id="addComment">댓글 <br> 등록
+		<textarea id="commentContentBoard" maxlength="500"></textarea>
+		<button id="addComment">댓글 등록
 		</button>
 	</div>
 	<!-- 댓글 목록 -->
@@ -11,46 +11,7 @@
 		<ul id="commentList">
 
 
-			<!-- 대댓글(자식)인 경우 child-comment 클래스 추가 -->
-			<li class="comment-row" th:each="comment : ${board.commentList}"
-				th:classappend="${comment.parentCommentNo} != 0 ? child-comment" th:object="${comment}">
-
-				<th:block th:if="*{commentDelFlBoard} == 'Y'">
-					삭제된 댓글 입니다
-				</th:block>
-
-				<th:block th:if="*{commentDelFlBoard} == 'N'">
-					<p class="comment-writer">
-						<th:block th:if="*{workerNickname != null}">
-							<span th:text="*{workerNickname}">닉네임</span>
-						</th:block>
-						<th:block th:if="*{workerNickname == null }">
-							<span th:text="*{memberName}">고용주닉네임</span>
-						</th:block>
-						<span class="comment-date" th:text="*{commentWriteDateBoard}">작성일</span>
-					</p>
-
-					<p class="comment-content" th:text="*{commentContentBoard}">댓글 내용</p>
-
-					<!-- 버튼 영역 --></button>
-					<div class="comment-btn-area">
-						<button th:onclick="|showInsertComment(*{commentNoBoard}, this)|">답글</button>
-
-						<!-- 로그인 회원(근로자)과 댓글 작성자가 같은 경우 -->
-						<th:block th:if="${session.loginWorker != null and session.loginWorker.memberNo == comment.memberNo}">
-							<button th:onclick="|showUpdateComment(*{commentNoBoard}, this)|">수정</button>
-							<button th:onclick="|deleteComment(*{commentNoBoard})|">삭제 </button>
-						</th:block>
-						<!-- 로그인 회원 (고용주) 가 댓글 작성자가 같은 경우-->
-						<th:block th:if="${session.loginEmployer != null and session.loginEmployer.memberNo == comment.memberNo}">
-							<button th:onclick="|showUpdateComment(*{commentNoBoard}, this)|">수정</button>
-							<button th:onclick="|deleteComment(*{commentNoBoard})|">삭제 </button>
-						</th:block>
-
-					</div>
-				</th:block>
-
-			</li>
+			
 
 		</ul>
 	</div>
