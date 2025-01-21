@@ -80,8 +80,11 @@ main {
   box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
 }
 
-/* 버튼 스타일링 */
-button {
+
+
+.login-button, .findinfo-btn-return {
+  background-color: #543a14e5;
+  color: white;
   width: 100%;
   padding: 14px;
   border: none;
@@ -92,11 +95,6 @@ button {
   transition: all 0.3s ease;
 }
 
-.login-button {
-  background-color: #543a14e5;
-  color: white;
-}
-
 .login-button:hover {
   background-color: #2980b9;
 }
@@ -104,10 +102,18 @@ button {
 .loginMain {
   background-color: #ecf0f1;
   color: #2c3e50;
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .loginMain:hover {
-  background-color: WHITE;
+  background-color: orange;
 }
 
 /* 결과 페이지 스타일링 */
@@ -134,11 +140,6 @@ button {
 
 .findinfo-btn-bottom {
   margin-top: 30px;
-}
-
-.findinfo-btn-return {
-  background-color: #543a14e5;
-  color: white;
 }
 
 .findinfo-btn-return:hover {

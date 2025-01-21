@@ -7,6 +7,16 @@ body {
   color: #333;
 }
 
+.error {
+  color: #ff4d4f;
+  font-size: 1rem;
+}
+
+.confirm {
+  color: #52c41a;
+  font-size: 1rem;
+}
+
 /* 메인 타이틀 스타일링 */
 .findinfo-title-top {
   text-align: center;
@@ -66,7 +76,6 @@ body {
 /* 비밀번호 조건 메시지 스타일링 */
 .findinfo-subtitle-v3 {
   display: block;
-  color: #666;
   font-size: 14px;
   margin: 10px 0 20px;
 }
