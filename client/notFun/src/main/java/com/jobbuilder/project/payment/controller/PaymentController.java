@@ -104,19 +104,21 @@ public class PaymentController {
 
     @PostMapping("/confirmRefund")
     @ResponseBody
-    public String confirmRefund(@RequestBody int paymentNo) {
-
+    public ResponseEntity<String> confirmRefund(@RequestBody Map<String, Integer> request) {
         try {
-            // 서비스 호출: 단일 문자열 반환
-            String confirmRefund = service.confirmRefund(paymentNo);
+            // Map을 그대로 서비스로 전달
+            String confirmRefund = service.confirmRefund(request);
 
-            // 반환된 문자열을 그대로 리스폰스에 전달
-            return confirmRefund;
+            // 성공 메시지 반환
+            return ResponseEntity.ok(confirmRefund);
         } catch (Exception e) {
-            e.printStackTrace(); // 오류 로그 출력
-            return "서버 오류가 발생했습니다.";
+            e.printStackTrace();
+
+            // 오류 메시지 반환
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("서버 오류가 발생했습니다.");
         }
     }
+
 
     
     

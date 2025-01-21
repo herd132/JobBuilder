@@ -51,7 +51,11 @@ public interface PaymentMapper {
 
 	String getRefundMessage(int paymentNo);
 
-	String confirmRefund1(int paymentNo);
+	int confirmRefund(Map<String, Integer> request);
+
+	int confirmRefund2(Integer paymentNo);
+
+	
 
 	
 	// 3-2는 2-1과 동일

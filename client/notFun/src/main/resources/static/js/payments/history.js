@@ -117,20 +117,34 @@ if (refundButton) {
         );
         
         if (confirmRefund) {
-          // 확인 선택 시 추가 패치 요청
-          await fetch("/payments/confirmRefund", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json"
-            },
-            body: JSON.stringify(paymentNo)
-          });
-          alert("환불이 성공적으로 진행되었습니다.");
-          window.location.href = "/payments/history";
+          try {
+            // 확인 선택 시 추가 패치 요청
+            const response = await fetch("/payments/confirmRefund", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ paymentNo, employerNo }),
+            });
+        
+            // 서버에서 반환된 문자열 응답 받기
+            const result = await response.text();
+        
+            if (response.ok) {
+              alert(result); // 서버에서 반환된 메시지 표시 (성공 메시지)
+              window.location.href = "/payments/history"; // 리다이렉트
+            } else {
+              alert("환불 처리에 실패했습니다. 다시 시도해주세요.");
+            }
+          } catch (error) {
+            console.error("서버 오류:", error);
+            alert("서버와의 통신 중 오류가 발생했습니다.");
+          }
         } else {
           // 취소 시 로직 (아무 작업도 하지 않음)
           alert("취소되었습니다.");
         }
+        
       }
     } catch (error) {
       console.error("에러 발생:", error.message);

@@ -344,35 +344,22 @@ public class PaymentServiceImpl implements PaymentService {
 	}
 	
 	
-	@Override
-	public String confirmRefund(int paymentNo) {
-	    try {
-	        // 쿼리에서 시간 문자열 가져오기
-	        String refundTimeString = mapper.confirmRefund1(paymentNo);
+	public String confirmRefund(Map<String, Integer> request) {
+	    // Map에서 필요한 값 추출
+	    Integer employerNo = request.get("employerNo");
+	    Integer paymentNo = request.get("paymentNo");
 
-	        // 문자열을 LocalDateTime으로 변환
-	        DateTimeFormatter formatter;
-	        if (refundTimeString.contains(".")) {
-	            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-	        } else {
-	            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        }
-	        LocalDateTime refundTime = LocalDateTime.parse(refundTimeString, formatter);
-
-	        // 현재 시간과 비교
-	        LocalDateTime currentTime = LocalDateTime.now();
-	        Duration duration = Duration.between(refundTime, currentTime);
-	        long hoursDifference = duration.toHours();
-
-	        // 24시간 이내인지 확인
-	        return hoursDifference <= 24 ? "1" : "2";
-
-	    } catch (Exception e) {
-	        e.printStackTrace(); // 로그 출력
-	        return "서버 오류가 발생했습니다.";
+	    // 매퍼 호출 (Map을 전달)
+	    int  confirmRefund = mapper.confirmRefund(request);
+	    int  confirmRefund2 = mapper.confirmRefund2(paymentNo);
+	    
+	    
+	    if (confirmRefund > 0 && confirmRefund2 > 0) {
+	        return "환불이 성공적으로 완료되었습니다.";
+	    } else {
+	        return "환불에 실패했습니다.";
 	    }
 	}
-	
-	
+
 
 }
