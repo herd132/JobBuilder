@@ -240,12 +240,62 @@
 		WHERE PAYMENT_NO= #{paymentNo}
 	</select>
 
-    <select id="confirmRefund1">
-		SELECT PAYMENT_DATE
-		FROM PAYMENT
-		WHERE PAYMENT_NO= #{paymentNo}
-	</select>
-    
+<update id="confirmRefund">
+<![CDATA[
+    UPDATE MEMBERSHIP
+    SET 
+        MEMBERSHIP_END_DATE = CASE 
+            WHEN (
+                SELECT CASE 
+                    WHEN PAYMENT_TYPE_PRODUCT IN ('골드 이용권', '플래티넘 이용권') THEN MEMBERSHIP_END_DATE - (30 * PAYMENT_TYPE_COUNT)
+                    WHEN PAYMENT_TYPE_PRODUCT IN ('급구 이용권', 'Hot 이용권') THEN MEMBERSHIP_END_DATE - (1 * PAYMENT_TYPE_COUNT)
+                    ELSE NULL
+                END
+                FROM PAYMENT_MEMBERSHIP PM
+                JOIN PAYMENT_TYPE P ON PM.PAYMENT_NO = P.PAYMENT_NO
+                WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO
+                  AND PM.PAYMENT_NO = #{paymentNo}
+            ) > SYSDATE 
+            THEN (
+                SELECT CASE 
+                    WHEN PAYMENT_TYPE_PRODUCT IN ('골드 이용권', '플래티넘 이용권') THEN MEMBERSHIP_END_DATE - (30 * PAYMENT_TYPE_COUNT)
+                    WHEN PAYMENT_TYPE_PRODUCT IN ('급구 이용권', 'Hot 이용권') THEN MEMBERSHIP_END_DATE - (1 * PAYMENT_TYPE_COUNT)
+                    ELSE MEMBERSHIP_END_DATE
+                END
+                FROM PAYMENT_MEMBERSHIP PM
+                JOIN PAYMENT_TYPE P ON PM.PAYMENT_NO = P.PAYMENT_NO
+                WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO
+                  AND PM.PAYMENT_NO = #{paymentNo}
+            )
+            ELSE MEMBERSHIP_END_DATE
+        END,
+        MEMBERSHIP_DEL_FL = CASE 
+            WHEN (
+                SELECT CASE 
+                    WHEN PAYMENT_TYPE_PRODUCT IN ('골드 이용권', '플래티넘 이용권') THEN MEMBERSHIP_END_DATE - (30 * PAYMENT_TYPE_COUNT)
+                    WHEN PAYMENT_TYPE_PRODUCT IN ('급구 이용권', 'Hot 이용권') THEN MEMBERSHIP_END_DATE - (1 * PAYMENT_TYPE_COUNT)
+                    ELSE NULL
+                END
+                FROM PAYMENT_MEMBERSHIP PM
+                JOIN PAYMENT_TYPE P ON PM.PAYMENT_NO = P.PAYMENT_NO
+                WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO
+                  AND PM.PAYMENT_NO = #{paymentNo}
+            ) <= SYSDATE 
+            THEN 'Y'
+            ELSE MEMBERSHIP_DEL_FL
+        END
+    WHERE EMPLOYER_NO = #{employerNo}
+      AND MEMBERSHIP_DEL_FL = 'N'
+      AND EXISTS (
+          SELECT 1 
+          FROM PAYMENT_MEMBERSHIP PM 
+          WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO 
+            AND PM.PAYMENT_NO = #{paymentNo}
+      )
+]]>
+</update>
+
+
     
     
     
