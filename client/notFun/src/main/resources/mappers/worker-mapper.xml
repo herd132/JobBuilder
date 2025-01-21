@@ -61,7 +61,7 @@
 			 #{memberTel},			 			 
 			 DEFAULT,
 			 DEFAULT,
-			 2	
+			 2
 			 )
 			
 	 </insert>
@@ -75,7 +75,7 @@
 			#{workerId},
 			#{workerNickname},
 			#{workerBirthDate},
-			#{workerAddress},
+			TO_DATE(#{workerAddress}, 'yyyy-MM-dd'),			
 			DEFAULT,
 			#{signUpPath},
 			#{fastLoginToken},

@@ -31,8 +31,6 @@ public class CommentController {
 		
 		// HttpMessageConverter가
 		// List -> JSON(문자열)로 변환해서 응답 -> JS
-		log.debug("코멘트" + service.select(boardNo));
-		
 		return service.select(boardNo);
 	}
 	// 댓글 등록
