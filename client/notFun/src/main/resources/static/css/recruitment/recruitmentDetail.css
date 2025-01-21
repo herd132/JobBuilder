@@ -397,6 +397,7 @@
   font-weight: 600;
   color: #1a1a1a;
   margin-bottom: 2px;
+  word-break: break-all;
 }
 
 .age {

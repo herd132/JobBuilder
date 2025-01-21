@@ -326,17 +326,17 @@
 					CASE 
 					    -- END_DATE가 NULL인 경우
 					    WHEN END_DATE IS NULL THEN 
-					        '근무중(' || 
+					        '근무중-' || 
 					        CASE 
 					            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) > 0 
 					                AND TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) > 0 THEN 
 					                FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) || '년 ' || 
-					                TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) || '개월)'
+					                TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) || '개월'
 					            WHEN FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) > 0 THEN 
-					                FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) || '년)'
+					                FLOOR(MONTHS_BETWEEN(SYSDATE, START_DATE) / 12) || '년'
 					            WHEN TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) > 0 THEN 
-					                TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) || '개월)'
-					            ELSE '1개월 미만)'
+					                TRUNC(MOD(MONTHS_BETWEEN(SYSDATE, START_DATE), 12)) || '개월'
+					            ELSE '1개월 미만'
 					        END
 					    -- END_DATE가 NULL이 아닌 경우
 					    WHEN FLOOR(MONTHS_BETWEEN(END_DATE, START_DATE) / 12) > 0 
