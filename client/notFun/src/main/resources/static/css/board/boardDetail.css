@@ -78,7 +78,7 @@ main {
     background-color: #ff9838;
 }
 
-#goToListBtn {
+#goToListBtn, #goToMyPageBtn {
     padding: 8px 20px;
     border: 2px solid black;
     border-radius: 4px;
@@ -88,9 +88,14 @@ main {
     transition: background-color 0.2s;
     margin-right:  10px;
 }
-#goToListBtn:hover {
+#goToListBtn:hover, #goToMyPageBtn:hover {
     background-color: #ff9838;
     color:white;
+}
+
+#goToMyPageBtn a {
+    text-decoration: none;
+    color: black;
 }
 
 .img-box {

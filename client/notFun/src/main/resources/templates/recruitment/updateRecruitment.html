@@ -6,18 +6,17 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>공고수정 페이지</title>
   
-  <!-- header footer css 입니다 잊지 말고 header footer 사용시 연결해주세요 + 폰트 어썸 사용 -->
-  <th:block th:replace="~{common/common}"></th:block>
-
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
+  <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpFooter.css">
   <link rel="stylesheet" href="/css/recruitment/updateRecruitment.css">
 </head>
 
 <body>
-  <th:block th:replace="~{common/main-header}"></th:block>
-  <h2>공고수정페이지입니다</h2>
-
+  <th:block th:replace="~{common/myPageEmployer-header}"></th:block>
+  
   <div class="updateRecruitment-gray">
     <main class="updateRecruitment-white">
+      <h3 th:text="|'${session.loginEmployer.businessName}'님의 공고수정 페이지입니다.|" />
       <div class="recruitment-form-container">
         <form th:action="@{/recruitment/update/{recruitmentNo}(recruitmentNo=${recruitment.recruitmentNo})}"
           method="post" class="update-recruitment" enctype="multipart/form-data"
@@ -36,6 +35,11 @@
           <div class="business-nickname-area">
             <span>사업장 : </span>
             <input type="text" th:value="*{businessNickname}" name="businessNickname" id="businessNickname" readonly>
+          </div>
+
+          <div class="business-nickname-area">
+            <span>근무 지역 : </span>
+            <input type="text" th:value="*{workcondAddressTypeInfo}" name="workcondAddressTypeInfo" id="workcondAddressTypeInfo" readonly>
           </div>
 
           <div class="business-worktype-area">
@@ -230,8 +234,9 @@
     </main>
   </div>
 
-  <th:block th:replace="~{common/myPageEmployer-footer}"></th:block>
+  <th:block th:replace="~{common/main-footer}"></th:block>
 
+  <script src="/js/myPageEmployer/myPageEmpHeader.js"></script>
   <script src="/js/recruitment/updateRecruitment.js"></script>
 </body>
 
