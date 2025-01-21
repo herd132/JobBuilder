@@ -22,6 +22,11 @@
   cursor: pointer;
 };
 
+.showPromoteBusiness:hover{
+  background-color: var(--secondary-orange);
+  color: white;
+}
+
 .modal-area {
   position: relative;
   width: 90%;
@@ -507,7 +512,7 @@
 }
 
 
-#goToRecruitmentListBtn {
+#goToRecruitmentListBtn, #submitResumeBtn {
   border: 3px solid var(--secondary-orange);
   border-radius: 20px;
   padding: 4px 8px;
@@ -516,6 +521,20 @@
   color: var(--secondary-orange);
   font-size: 1rem;
   font-weight: bolder;
+}
+
+#submitResumeBtn {
+  margin-left: 0px;
+}
+
+#submitResumeBtn:hover{
+  background-color: var(--secondary-orange);
+  color: white;
+}
+
+#goToRecruitmentListBtn:hover{
+  background-color: var(--secondary-orange);
+  color: white;
 }
 
 #goToMyRecruitmentListBtn {
