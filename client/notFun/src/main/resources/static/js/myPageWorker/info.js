@@ -41,28 +41,4 @@ checkPwbtn.addEventListener("click", (e) => {
 
 });
 
-function onGeoOkay(position) {
-  const lat = position.coords.latitude;
-  const lng = position.coords.longitude;
-  // 위도 경도 변수 선언
-  console.log("You live in", lat, lng);
-}
-
-function onGeoError() {
-  alert("I can't find you. No weather for you.");
-}
-
-navigator.geolocation.getCurrentPosition(onGeoOkay, onGeoError);
-
-
-if (navigator.geolocation) {
-  navigator.geolocation.getCurrentPosition(function(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    console.log("현재 위치는 위도 " + latitude + ", 경도 " + longitude + " 입니다.");
-  });
-} else {
-  console.log("브라우저에서 위치 정보를 가져올 수 없습니다.");
-}
-
 });

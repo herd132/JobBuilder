@@ -97,7 +97,7 @@ public class WorkerServiceImpl implements WorkerService{
 		// 회원 가입 매퍼 메서드 호출쓰
 		
 		int result = mapper.signupMember(inputWorker);
-		
+		log.debug("result : " + result);
 		// 회원가입 성공시 DB에 정보 알바생 기본 정보 입력
 		if(result > 0 ) {
 			int resultWorker = mapper.signupWorker(inputWorker);
