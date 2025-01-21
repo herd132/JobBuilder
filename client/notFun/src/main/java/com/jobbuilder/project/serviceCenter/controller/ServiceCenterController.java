@@ -171,9 +171,6 @@ public class ServiceCenterController {
 		model.addAttribute("serviceCenterList", map.get("serviceCenterList"));
 		model.addAttribute("pagination", map.get("pagination"));
 		
-		log.debug("serviceCenterList : " + map.get("serviceCenterList"));
-		log.debug("pagination : " + map.get("pagination"));
-
 		return "serviceCenter/FAQ";
 	}
 	
@@ -216,6 +213,7 @@ public class ServiceCenterController {
 
     	if (session.getAttribute("loginWorker") != null) inquiry.setMemberNo(((Worker)session.getAttribute("loginWorker")).getMemberNo());
     	if (session.getAttribute("loginEmployer") != null) inquiry.setMemberNo(((Employer)session.getAttribute("loginEmployer")).getMemberNo());
+    	
 		return service.inquiryInsert(images, inquiry);
 	}
 	

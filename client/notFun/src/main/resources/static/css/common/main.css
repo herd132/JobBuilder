@@ -49,7 +49,7 @@ main {
 .job-filter {
   background: linear-gradient(to bottom, #ffffff, #fff9f5);
   min-width: 1000px;
-  height: 200px;
+  height: auto;
   display: flex;
   padding: 1rem;
   border-radius: 16px;
