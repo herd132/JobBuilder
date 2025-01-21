@@ -35,6 +35,14 @@
             <th:block th:unless="${#lists.isEmpty(serviceCenterList)}">
                 <div class="board-list">
 
+                    <div class="list-header">
+                        <div class="header-title">제목</div>
+                        <div class="header-info">
+                            <span class="header-date">작성일</span>
+                            <span class="header-views">조회수</span>
+                        </div>
+                    </div>
+
                     <th:block th:each="board, iterStat : ${serviceCenterList}" th:object="${board}">
                     <!-- Notice item -->
                     <div class="post-item">
