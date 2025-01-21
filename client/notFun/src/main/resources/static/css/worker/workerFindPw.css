@@ -95,7 +95,7 @@ input:focus {
 }
 
 /* 메인 버튼 스타일링 */
-button[type="submit"] {
+.submitBtn {
   width: 100%;
   padding: 14px;
   background-color: #543a14e5;;
@@ -109,7 +109,7 @@ button[type="submit"] {
   margin-top: 20px;
 }
 
-button[type="submit"]:hover {
+.submitBtn:hover {
   background-color: #2980b9;
 }
 

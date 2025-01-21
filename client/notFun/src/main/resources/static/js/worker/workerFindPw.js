@@ -251,7 +251,7 @@ const checkObj = {
 
   const signUpForm = document.querySelector(".workerFindPw-container");
 
-// 회원 가입 폼 제출 시
+//  폼 제출 시
 signUpForm.addEventListener("submit", (e) => {
   // checkObj의 저장된 값(value) 중
   // 하나라도 false가 있으면 제출 X
