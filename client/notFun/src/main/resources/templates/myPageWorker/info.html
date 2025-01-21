@@ -11,7 +11,7 @@
 
 	<!-- 로고 및 검색바 로그인 -->
 	<th:block th:replace="~{common/myPageWorker-header}"></th:block>
-	
+
 	<link rel="stylesheet" href="/css/myPageWorker/myPageWorkerInfo.css">
 </head>
 
@@ -53,7 +53,8 @@
 
 						<div class="form-field">
 							<span class="workerAddress1">주소 : </span>
-							<span class="workerAddress2"    th:text="${session.loginWorker.workerAddress != null ? session.loginWorker.workerAddress.replace('^^^', ' ') : ''}"></span>
+							<span class="workerAddress2"
+								th:text="${session.loginWorker.workerAddress != null ? session.loginWorker.workerAddress.replace('^^^', ' ') : ''}"></span>
 						</div>
 
 						<div class="form-field">
@@ -61,6 +62,27 @@
 							<span class="workerMbti2" th:text="${session.loginWorker.workerMbti}"></span>
 						</div>
 					</div>
+
+					<div class="weather-widget">
+						<h1>날씨 정보</h1>
+						<div class="weather-info">
+							<div class="weather-item">
+								<h2>눈/비</h2>
+								<p id="pty-value">정보 로딩 중...</p>
+							</div>
+							<div class="weather-item">
+								<h2>기온</h2>
+								<p id="t1h-value">정보 로딩 중...</p>
+							</div>
+							<div class="weather-item">
+								<h2>풍속</h2>
+								<p id="wsd-value">정보 로딩 중...</p>
+							</div>
+						</div>
+						<button id="reload-btn">날씨 업데이트</button>
+					</div>
+
+
 
 				</div>
 			</div>
