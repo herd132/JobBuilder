@@ -10,6 +10,42 @@ const newEl = (tag, attr, cls) => {
   return el; // 생성된 요소 반환
 };
 
+
+function goToRecruitmentList() {
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const cp = urlParams.get('cp'); // 'cp' 파라미터 값을 추출
+  let newUrl = '/myPageEmp/recruitmentList';
+  
+  if (cp) newUrl += `?cp=${cp}`;
+
+  window.location.href = newUrl;
+}
+
+function goToRecruitmentList2() {
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const query = urlParams.get('query');
+  const cp = urlParams.get('cp'); // 'cp' 파라미터 값을 추출
+  let newUrl = '/recruitment/list';
+  
+  if (query) newUrl += `?query=${query}`;
+  if (cp) newUrl += `&cp=${cp}`;
+
+  window.location.href = newUrl;
+}
+
+function goToRecruitmentList3() {
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const cp = urlParams.get('cp'); // 'cp' 파라미터 값을 추출
+  let newUrl = '/recruitment/list';
+
+  if (cp) newUrl += `?cp=${cp}`;
+
+  window.location.href = newUrl;
+}
+
 // 마이 페이지에서 상세 공고 페이지 들어온 경우, 마이페이지로 돌아가기
 const goToMyRecruitmentListBtn = document.querySelector("#goToMyRecruitmentListBtn");
 

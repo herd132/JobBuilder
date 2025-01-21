@@ -64,7 +64,7 @@ const onScroll = () => {
   const pageHeight = document.documentElement.scrollHeight;  // 전체 페이지 높이
 
   // 페이지 하단에 가까워졌을 때 추가 데이터를 요청
-  if (scrollPosition >= pageHeight - 5) {  // 5px 여유를 두고 하단 감지
+  if (scrollPosition >= pageHeight - 20) {  // 5px 여유를 두고 하단 감지
     fetchResumes();
   }
 };

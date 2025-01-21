@@ -205,7 +205,16 @@
           <button id="submitResumeBtn" th:attr="onclick='selectResumeBtn(' + ${session.loginWorker.workerNo} + ')'">
             이력서 제출</button>
         </th:block>
-        <button id="goToRecruitmentListBtn" type="button" onclick="window.history.back()"> 목록으로 </button>
+
+        <th:block th:if="${param.stat}">
+          <button id="goToRecruitmentListBtn" type="button" onclick="goToRecruitmentList()"> 목록으로 </button>
+        </th:block>
+        <th:block th:if="${param.query}">
+          <button id="goToRecruitmentListBtn" type="button" onclick="goToRecruitmentList2()"> 목록으로 </button>
+        </th:block>
+        <th:block th:if="${param.stat == null and param.query == null}">
+          <button id="goToRecruitmentListBtn" type="button" onclick="goToRecruitmentList3()"> 목록으로 </button>
+        </th:block>
       </div>
 
     </main>
