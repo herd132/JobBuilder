@@ -319,7 +319,7 @@ const empLogin3 = () => {
 	const inputMemberPw = document.createElement('input');
 	inputMemberPw.type = 'hidden';
 	inputMemberPw.name = 'memberPw';
-	inputMemberPw.value = '123';
+	inputMemberPw.value = 'pass01';
 	form.appendChild(inputMemberPw);
 
 	document.body.appendChild(form);
