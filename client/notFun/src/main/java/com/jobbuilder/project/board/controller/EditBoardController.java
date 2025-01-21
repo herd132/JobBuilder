@@ -113,7 +113,6 @@ public class EditBoardController {
 						     RedirectAttributes ra) {
 		
 		
-		log.debug("들어오나 여기로?");
 		// 수정 화면에 출력할 기존의 제목/내용/이미지 조회
 		// -> 게시글 상세 조회
 		Map<String, Integer> map = new HashMap<>();

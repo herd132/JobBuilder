@@ -566,7 +566,8 @@ workerBirthDate.addEventListener("input", (e) => {
   }
 
   // 기본 형식 검사 (19로 시작하는 8자리 숫자)
-  const regExp = /^19([0-9][0-9])(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/;
+  const regExp = /^(19|20)([0-9][0-9])(0[1-9]|1[0-2])(0[1-9]|[12][0-9]|3[01])$/;
+
   
   if (!regExp.test(inputBirth)) {
     workerBirthDateMsg.innerText = "유효하지 않은 생년월일 방식입니다.";

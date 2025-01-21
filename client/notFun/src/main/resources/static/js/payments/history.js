@@ -45,23 +45,32 @@ const updateMembershipUI = () => {
     // 메인 항목 생성
     const mainDiv = document.createElement("div");
     mainDiv.className = "payment-summary";
+
+    document.querySelectorAll(".payment-summary").forEach((summaryLine) => {
+      // summaryLine에서 특정 조건 처리
+      if (summary.paymentStatus === "환불") {
+        summaryLine.classList.add("refund");
+      }
+    });
+
     mainDiv.innerHTML += `
-    <div class="payment-summary-group3">
-     <div class="payment-summary-group2">
-        <strong>${index + 1}</strong>
+      <div class="payment-summary-group3">
+        <div class="payment-summary-group2 payment-summary-group2_${index}">
+          <strong>${index + 1}</strong>
+        </div>
+        <div class="payment-summary-group payment-summary-group_${index}">
+          <div class="payment-summary">
+            <p class="summary-line">
+              ${summary.paymentDate || "N/A"} - 
+              <strong>${summary.paymentProduct}</strong> - 
+              ${summary.paymentAmount.toLocaleString()}원 - 클릭시 펼쳐짐
+              <button id="Refund_${index}" class="refund-button">환불</button>
+              <span class="refund-text">${summary.paymentStatus === "환불" ? "(환불 완료)" : ""}</span>
+            </p>
+          </div>
+        </div>
       </div>
-    <div class="payment-summary-group">
-      <div class="payment-summary">
-        <p class="summary-line">
-          ${summary.paymentDate || "N/A"} - 
-          <strong>${summary.paymentProduct}</strong> - 
-          ${summary.paymentAmount.toLocaleString()}원 - 클릭시 펼쳐짐
-          <button id="Refund_${index}" class="refund-button">환불</button>
-        </p>
-      </div>
-    </div>
-    </div>
-  `;
+    `;
 
 // 상세 항목 컨테이너 생성 (ul 태그로 변경)
 const detailList = document.createElement("ul");
@@ -110,6 +119,12 @@ if (refundButton) {
       if (result === 2) {
         alert("구매시간 24시간이 넘는 구매건\n환불 요청은 관리자에게 문의 부탁드립니다.");
       }
+
+      if (result === 3) {
+        alert("이미 환불된 결제건 입니다.");
+      }
+
+
       // 결과가 1일 경우
       else if (result === 1) {
         const confirmRefund = confirm(
@@ -132,6 +147,7 @@ if (refundButton) {
         
             if (response.ok) {
               alert(result); // 서버에서 반환된 메시지 표시 (성공 메시지)
+
               window.location.href = "/payments/history"; // 리다이렉트
             } else {
               alert("환불 처리에 실패했습니다. 다시 시도해주세요.");

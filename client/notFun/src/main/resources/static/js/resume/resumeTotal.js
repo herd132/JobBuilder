@@ -39,7 +39,17 @@ fetch("/resume/ajax/list?cp=" + cp)
     const viewButton = memberNo == 0 ? '<br>': `<a class="view-button" href="/resume/resumeDetail?resumeNo=${resume.resumeNo}">이력서 보기</a>`;
     const profileImg = resume.profileImg !== undefined ? resume.profileImg : '/images/avatar.png';
     const memberName = maskString(resume.memberName);
-    let carrer = resume.carrerStr.split("^^^")[0] == "-&&&근무중(1개월 미만)" ?
+
+    const telEmail = memberNo == 0 ? '' : `
+      <div class="info-item">
+        <span class="info-label">이메일</span>
+        <span>${resume.memberTel}</span>
+      </div>
+      <div class="info-item">
+        <span class="info-label">이메일</span>
+        <span>${resume.memberEmail}</span>
+      </div>`;
+    let carrer = resume.carrerStr.split("^^^")[0] == "-&&&근무중-1개월 미만" ?
       '등록된 경력이 없습니다.' : resume.carrerStr.split("^^^");
 
     let str = "";
@@ -63,12 +73,7 @@ fetch("/resume/ajax/list?cp=" + cp)
       </div>
     </div>
     <div class="contact-info">
-      <div class="info-item">
-      </div>
-      <div class="info-item">
-        <span class="info-label">이메일</span>
-        <span>${resume.memberEmail}</span>
-      </div>
+      ${telEmail}
       <div class="info-item">
         <span class="info-label">지역</span>
         <span>${resume.memberAddress == undefined ? '미입력' : resume.memberAddress}</span>

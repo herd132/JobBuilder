@@ -427,18 +427,14 @@ const createRecommendResumeList = () => {
         </div>
       `;
       }
+    
+      resumeGrid.innerHTML = '';
 
-      resumeGrid.innerHTML = "";
+      resumeList.map(resume => {
 
-      resumeList.map((resume) => {
-        const profileImg =
-          resume.profileImg !== undefined
-            ? resume.profileImg
-            : "/images/avatar.png";
-        let carrer =
-          resume.carrerStr.split("^^^")[0] == "-&&&근무중(1개월 미만)"
-            ? "등록된 경력이 없습니다."
-            : resume.carrerStr.split("^^^");
+        const profileImg = resume.profileImg !== undefined ? resume.profileImg : '/images/avatar.png';
+        let carrer = resume.carrerStr.split("^^^")[0] == "-&&&근무중-1개월 미만" ?
+          '등록된 경력이 없습니다.' : resume.carrerStr.split("^^^");
         let str = "";
         if (Array.isArray(carrer)) {
           carrer.map((c, index) => {

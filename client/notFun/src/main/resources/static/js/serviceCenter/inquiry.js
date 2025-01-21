@@ -6,12 +6,12 @@ const subCategories = {
     { value: '3', text: '회사명/사업자등록번호변경' }
   ],
   2: [
-    { value: '1', text: '알바검색색' },
+    { value: '1', text: '알바검색' },
     { value: '2', text: '이력서 지원' },
     { value: '3', text: '알바지원내역' }
   ],
   3: [
-    { value: '1', text: '공고등록록' },
+    { value: '1', text: '공고등록' },
     { value: '2', text: '채용공고 심사/관리' },
     { value: '3', text: '지원자 관리' }
   ],

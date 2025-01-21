@@ -212,91 +212,91 @@
 	
 
 
-<insert id="insertPaymentLog">
-    INSERT INTO PAYMENT_LOG (
-        PAYMENT_LOG_NO, 
-        EMPLOYER_NO, 
-        PAYMENT_LOG_STATUS, 
-        PAYMENT_LOG_DATE, 
-        IMP_UID, 
-        MERCHANT_UID, 
-        AMOUNT
-    ) VALUES (
-        SEQ_PAYMENT_LOG_NO.NEXTVAL, 
-        #{employerNo}, 
-        #{status}, 
-        SYSDATE, 
-        #{impUid}, 
-        #{merchantUid}, 
-        #{amount}
-    )
+	<insert id="insertPaymentLog">
+	    INSERT INTO PAYMENT_LOG (
+	        PAYMENT_LOG_NO, 
+	        EMPLOYER_NO, 
+	        PAYMENT_LOG_STATUS, 
+	        PAYMENT_LOG_DATE, 
+	        IMP_UID, 
+	        MERCHANT_UID, 
+	        AMOUNT
+	    ) VALUES (
+	        SEQ_PAYMENT_LOG_NO.NEXTVAL, 
+	        #{employerNo}, 
+	        #{status}, 
+	        SYSDATE, 
+	        #{impUid}, 
+	        #{merchantUid}, 
+	        #{amount}
+	    )
+	
+	</insert>
 
-</insert>
 
+	<select id="getRefundMessages" parameterType="com.jobbuilder.project.payment.model.dto.Payment">
+				SELECT 
+		    M.MEMBERSHIP_NO AS MEMBERSHIP_NO,
+		    M.MEMBERSHIP_END_DATE AS MEMBERSHIP_END_DATE,
+		    M.MEMBERSHIP_TYPE AS MEMBERSHIP_TYPE,
+		    PT.PAYMENT_TYPE_COUNT AS PAYMENT_TYPE_COUNT, 
+		    P.PAYMENT_DATE AS PAYMENT_DATE,
+		    P.PAYMENT_STATUS AS PAYMENT_STATUS -- 추가된 컬럼
+		FROM 
+		    (
+		        SELECT 
+		            PM.MEMBERSHIP_NO,
+		            MB.MEMBERSHIP_END_DATE,
+		            MB.MEMBERSHIP_TYPE,
+		            ROW_NUMBER() OVER (PARTITION BY PM.PAYMENT_NO ORDER BY PM.MEMBERSHIP_NO) AS RANK_MEMBERSHIP
+		        FROM 
+		            PAYMENT_MEMBERSHIP PM
+		        JOIN 
+		            MEMBERSHIP MB ON PM.MEMBERSHIP_NO = MB.MEMBERSHIP_NO
+		        WHERE 
+		            PM.PAYMENT_NO = #{paymentNo}
+		    ) M
+		JOIN 
+		    (
+		        SELECT 
+		            PT.PAYMENT_NO,
+		            PT.PAYMENT_TYPE_COUNT,
+		            ROW_NUMBER() OVER (PARTITION BY PT.PAYMENT_NO ORDER BY PT.PAYMENT_TYPE_PRODUCT) AS RANK_PRODUCT
+		        FROM 
+		            PAYMENT_TYPE PT
+		        WHERE 
+		            PT.PAYMENT_NO = #{paymentNo}
+		    ) PT 
+		ON M.RANK_MEMBERSHIP = PT.RANK_PRODUCT
+		JOIN 
+		    PAYMENT P ON PT.PAYMENT_NO = P.PAYMENT_NO
+		WHERE 
+		    P.PAYMENT_NO = #{paymentNo}
 
-	<select id="getRefundMessage">
-		SELECT PAYMENT_DATE
-		FROM PAYMENT
-		WHERE PAYMENT_NO= #{paymentNo}
 	</select>
 
-<update id="confirmRefund">
-<![CDATA[
-    UPDATE MEMBERSHIP
-    SET 
-        MEMBERSHIP_END_DATE = CASE 
-            WHEN (
-                SELECT CASE 
-                    WHEN PAYMENT_TYPE_PRODUCT IN ('골드 이용권', '플래티넘 이용권') THEN MEMBERSHIP_END_DATE - (30 * PAYMENT_TYPE_COUNT)
-                    WHEN PAYMENT_TYPE_PRODUCT IN ('급구 이용권', 'Hot 이용권') THEN MEMBERSHIP_END_DATE - (1 * PAYMENT_TYPE_COUNT)
-                    ELSE NULL
-                END
-                FROM PAYMENT_MEMBERSHIP PM
-                JOIN PAYMENT_TYPE P ON PM.PAYMENT_NO = P.PAYMENT_NO
-                WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO
-                  AND PM.PAYMENT_NO = #{paymentNo}
-            ) > SYSDATE 
-            THEN (
-                SELECT CASE 
-                    WHEN PAYMENT_TYPE_PRODUCT IN ('골드 이용권', '플래티넘 이용권') THEN MEMBERSHIP_END_DATE - (30 * PAYMENT_TYPE_COUNT)
-                    WHEN PAYMENT_TYPE_PRODUCT IN ('급구 이용권', 'Hot 이용권') THEN MEMBERSHIP_END_DATE - (1 * PAYMENT_TYPE_COUNT)
-                    ELSE MEMBERSHIP_END_DATE
-                END
-                FROM PAYMENT_MEMBERSHIP PM
-                JOIN PAYMENT_TYPE P ON PM.PAYMENT_NO = P.PAYMENT_NO
-                WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO
-                  AND PM.PAYMENT_NO = #{paymentNo}
-            )
-            ELSE MEMBERSHIP_END_DATE
-        END,
-        MEMBERSHIP_DEL_FL = CASE 
-            WHEN (
-                SELECT CASE 
-                    WHEN PAYMENT_TYPE_PRODUCT IN ('골드 이용권', '플래티넘 이용권') THEN MEMBERSHIP_END_DATE - (30 * PAYMENT_TYPE_COUNT)
-                    WHEN PAYMENT_TYPE_PRODUCT IN ('급구 이용권', 'Hot 이용권') THEN MEMBERSHIP_END_DATE - (1 * PAYMENT_TYPE_COUNT)
-                    ELSE NULL
-                END
-                FROM PAYMENT_MEMBERSHIP PM
-                JOIN PAYMENT_TYPE P ON PM.PAYMENT_NO = P.PAYMENT_NO
-                WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO
-                  AND PM.PAYMENT_NO = #{paymentNo}
-            ) <= SYSDATE 
-            THEN 'Y'
-            ELSE MEMBERSHIP_DEL_FL
-        END
-    WHERE EMPLOYER_NO = #{employerNo}
-      AND MEMBERSHIP_DEL_FL = 'N'
-      AND EXISTS (
-          SELECT 1 
-          FROM PAYMENT_MEMBERSHIP PM 
-          WHERE PM.MEMBERSHIP_NO = MEMBERSHIP.MEMBERSHIP_NO 
-            AND PM.PAYMENT_NO = #{paymentNo}
-      )
-]]>
-</update>
 
+	<update id="unchangedMembership">
+	    UPDATE MEMBERSHIP SET 
+			MEMBERSHIP_END_DATE = #{membershipEndDate}
+		WHERE MEMBERSHIP_NO = #{membershipNo}
+    </update>
+	
+	<update id="changedMembership">
+	    UPDATE MEMBERSHIP SET 
+			MEMBERSHIP_END_DATE = SYSDATE,
+			MEMBERSHIP_DEL_FL = 'Y'
+		WHERE MEMBERSHIP_NO = #{membershipNo}
+    </update>
+	
 
     
+    <update id="processRefund" >
+	    UPDATE PAYMENT SET 
+			PAYMENT_STATUS = '환불',
+			PAYMENT_REFUND_DATE = SYSDATE
+		WHERE PAYMENT_NO = #{paymentNo}
+    </update>
     
     
 </mapper>

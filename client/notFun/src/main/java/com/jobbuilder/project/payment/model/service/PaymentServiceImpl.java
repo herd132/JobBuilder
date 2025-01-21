@@ -1,8 +1,12 @@
 package com.jobbuilder.project.payment.model.service;
 
+import java.math.BigDecimal;
+import java.sql.Timestamp;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -313,20 +317,39 @@ public class PaymentServiceImpl implements PaymentService {
 		log.info("Payment and membership linking completed for paymentNo: {}", payment.getPaymentNo());
 	}
 	
-	
 	@Override
 	public String getRefundMessage(int paymentNo) {
 	    try {
-	        // 쿼리에서 시간 문자열 가져오기
-	        String refundTimeString = mapper.getRefundMessage(paymentNo);
+	        // 쿼리에서 데이터 목록 가져오기
+	        List<Map<String, Object>> refundDataList = mapper.getRefundMessages(paymentNo);
+
+	        // 결과가 없을 경우 처리
+	        if (refundDataList == null || refundDataList.isEmpty()) {
+	            return "데이터가 없습니다.";
+	        }
+	        
+	        // 0번째 데이터에서 "PAYMENT_STATUS" 가져오기
+	        Object paymentStatusObject = refundDataList.get(0).get("PAYMENT_STATUS");
+
+	        if (paymentStatusObject != null && "환불".equals(paymentStatusObject.toString())) {
+	            return "3";
+	        }
+
+	        // 0번째 데이터에서 "PAYMENT_DATE" 가져오기
+	        Object refundTimeObject = refundDataList.get(0).get("PAYMENT_DATE");
+
+	        if (refundTimeObject == null) {
+	            return "PAYMENT_DATE 데이터가 없습니다.";
+	        }
+
+	        // Object를 문자열로 변환
+	        String refundTimeString = refundTimeObject.toString();
 
 	        // 문자열을 LocalDateTime으로 변환
-	        DateTimeFormatter formatter;
-	        if (refundTimeString.contains(".")) {
-	            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
-	        } else {
-	            formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-	        }
+	        DateTimeFormatter formatter = refundTimeString.contains(".")
+	            ? DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.S")
+	            : DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
 	        LocalDateTime refundTime = LocalDateTime.parse(refundTimeString, formatter);
 
 	        // 현재 시간과 비교
@@ -342,24 +365,73 @@ public class PaymentServiceImpl implements PaymentService {
 	        return "서버 오류가 발생했습니다.";
 	    }
 	}
-	
+
 	
 	public String confirmRefund(Map<String, Integer> request) {
-	    // Map에서 필요한 값 추출
-	    Integer employerNo = request.get("employerNo");
-	    Integer paymentNo = request.get("paymentNo");
+	    try {
+	        Integer paymentNo = request.get("paymentNo");
 
-	    // 매퍼 호출 (Map을 전달)
-	    int  confirmRefund = mapper.confirmRefund(request);
-	    int  confirmRefund2 = mapper.confirmRefund2(paymentNo);
-	    
-	    
-	    if (confirmRefund > 0 && confirmRefund2 > 0) {
+	        // 데이터 가져오기
+	        List<Map<String, Object>> refundDataList = mapper.getRefundMessages(paymentNo);
+
+	        // 결과가 없으면 처리
+	        if (refundDataList == null || refundDataList.isEmpty()) {
+	            return "데이터가 없습니다.";
+	        }
+
+	        // DateTimeFormatter 설정
+	        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
+
+	        // 맵 초기화
+	        Map<String, Object> changedMap = new HashMap<>();
+	        Map<String, Object> unchangedMap = new HashMap<>();
+
+	        // 반복 처리
+	        for (Map<String, Object> data : refundDataList) {
+	            // MEMBERSHIP_END_DATE와 PAYMENT_TYPE_COUNT 가져오기
+	            LocalDateTime membershipEndDate = ((Timestamp) data.get("MEMBERSHIP_END_DATE")).toLocalDateTime();
+
+	            // BigDecimal로 반환된 값을 Integer로 변환
+	            Integer paymentTypeCount = ((BigDecimal) data.get("PAYMENT_TYPE_COUNT")).intValue();
+	            Integer membershipType = ((BigDecimal) data.get("MEMBERSHIP_TYPE")).intValue();
+
+	            // 날짜 계산
+	            LocalDateTime calculatedEndDate;
+	            if (membershipType == 2 || membershipType == 3) {
+	                calculatedEndDate = membershipEndDate.minusDays(30L * paymentTypeCount);
+	            } else if (membershipType == 4 || membershipType == 5) {
+	                calculatedEndDate = membershipEndDate.minusDays(paymentTypeCount);
+	            } else {
+	                continue;
+	            }
+
+	            // 현재 날짜 비교
+	            LocalDateTime currentTime = LocalDateTime.now();
+	            Date membershipEndDateDate = Date.from(calculatedEndDate.atZone(ZoneId.systemDefault()).toInstant());
+	            
+	            if (calculatedEndDate.isAfter(currentTime)) {
+	                // 변경하지 않을 데이터
+	                unchangedMap.put("membershipNo", data.get("MEMBERSHIP_NO"));
+	                unchangedMap.put("membershipEndDate", membershipEndDateDate);
+	                mapper.unchangedMembership(unchangedMap);
+	            } else {
+	                // 변경할 데이터
+	                changedMap.put("membershipNo", data.get("MEMBERSHIP_NO"));
+	                mapper.changedMembership(changedMap);
+	            }
+	        }
+
+	        // 환불 처리
+	        mapper.processRefund(paymentNo);
 	        return "환불이 성공적으로 완료되었습니다.";
-	    } else {
-	        return "환불에 실패했습니다.";
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "서버 오류가 발생했습니다.";
 	    }
 	}
+
+
 
 
 }

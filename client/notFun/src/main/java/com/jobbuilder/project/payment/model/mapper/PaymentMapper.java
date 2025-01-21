@@ -49,11 +49,16 @@ public interface PaymentMapper {
 	
 	void insertPaymentLog(Map<String, Object> paramMap);
 
-	String getRefundMessage(int paymentNo);
 
-	int confirmRefund(Map<String, Integer> request);
 
-	int confirmRefund2(Integer paymentNo);
+	List<Map<String, Object>> getRefundMessages(int paymentNo);
+
+	void unchangedMembership(Map<String, Object> unchangedMap);
+
+	void changedMembership(Map<String, Object> changedMap);
+
+	int processRefund(Integer paymentNo);
+
 
 	
 
