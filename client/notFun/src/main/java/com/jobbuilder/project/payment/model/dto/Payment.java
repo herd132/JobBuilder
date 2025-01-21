@@ -37,6 +37,8 @@ public class Payment {
     private int paymentTypeAmount;			// 상세 가격
     private String paymentTypeProduct;		// 상세 품명
     private String paymentTypeCreateDate;	// 상세 날짜
+    private int paymentTypeCount;	// 상세 날짜
+    
     
    
     private String productName; // 상품명
