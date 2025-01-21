@@ -88,7 +88,7 @@ document.addEventListener("DOMContentLoaded", () => {
   })
     .then((response) => response.json())
     .then((data) => {
-      console.log("서버에서 받은 데이터:", data);
+
 
       const {
         resume,

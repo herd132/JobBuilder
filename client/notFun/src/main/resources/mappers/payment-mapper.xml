@@ -240,5 +240,13 @@
 		WHERE PAYMENT_NO= #{paymentNo}
 	</select>
 
+    <select id="confirmRefund1">
+		SELECT PAYMENT_DATE
+		FROM PAYMENT
+		WHERE PAYMENT_NO= #{paymentNo}
+	</select>
+    
+    
+    
     
 </mapper>

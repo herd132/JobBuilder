@@ -28,6 +28,8 @@ public interface PaymentService {
 
 	String getRefundMessage(int paymentNo);
 
+	String confirmRefund(int paymentNo);
+
 	
 
 

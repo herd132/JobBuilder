@@ -102,6 +102,21 @@ public class PaymentController {
         }
     }
 
+    @PostMapping("/confirmRefund")
+    @ResponseBody
+    public String confirmRefund(@RequestBody int paymentNo) {
+
+        try {
+            // 서비스 호출: 단일 문자열 반환
+            String confirmRefund = service.confirmRefund(paymentNo);
+
+            // 반환된 문자열을 그대로 리스폰스에 전달
+            return confirmRefund;
+        } catch (Exception e) {
+            e.printStackTrace(); // 오류 로그 출력
+            return "서버 오류가 발생했습니다.";
+        }
+    }
 
     
     

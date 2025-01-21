@@ -162,7 +162,7 @@ const renderPaymentPage = (defaultType) => {
   `;
 
   initializeDefaultProduct(defaultType);
-  console.log("초기 렌더링 완료:", { defaultType });
+
   updateMembershipContainer();
 };
 
@@ -725,13 +725,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-        
-        console.log("memberships 맴버정보 :", memberships);
-        console.log("validMembershipNumbers 정보있는 배열 :", validMembershipNumbers);
-        console.log("emptyMembershipCount  빈횟수 :", emptyMembershipCount);
-        console.log(paymentProduct);
-
-        console.log("임플번호:",employerNo);
 
         IMP.request_pay(
           {
@@ -756,9 +749,7 @@ document.addEventListener("DOMContentLoaded", () => {
             
             if (rsp.success) {
               // 결제성공시 로직
-        
-              console.log("Response Object: ", rsp);
-              console.log("rsp Object: ", rsp.custom_data);
+       
               const data = {
                   imp_uid: rsp.imp_uid,
                   merchantUid: rsp.merchant_uid,
@@ -791,8 +782,7 @@ document.addEventListener("DOMContentLoaded", () => {
               setTimeout(() => {
                 // 다음 로직 실행
             }, 3000); // 3초 대기
-              //alert(rsp.error_msg);
-              //console.log(rsp);
+
             }
           }
         );
