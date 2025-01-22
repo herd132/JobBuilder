@@ -23,7 +23,7 @@
 
             <!-- 제목 -->
             <h1 class="board-title">
-                <input type="text" name="boardTitle" placeholder="제목" th:value="${board.boardTitle}">
+                <input type="text" name="boardTitle" maxlength="25" placeholder="제목" th:value="${board.boardTitle}">
             </h1>
 
             <!-- 업로드 이미지 영역 -->
@@ -42,7 +42,7 @@
 
             <!-- 내용 -->
             <div class="board-content">
-                <textarea name="boardContent" th:text="*{boardContent}">게시글 내용</textarea>
+                <textarea name="boardContent" maxlength="2000" th:text="*{boardContent}">게시글 내용</textarea>
             </div>
 
 
