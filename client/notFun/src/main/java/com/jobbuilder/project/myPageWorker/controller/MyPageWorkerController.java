@@ -189,7 +189,7 @@ public class MyPageWorkerController {
 					        @RequestParam(value = "workerAddress", required = false) String[] workerAddress,
 					        @RequestParam("status") int status,
 					        RedirectAttributes ra) throws Exception {
-		log.debug("status : " + status);
+
 		if (workerNickname != null) {
 			loginWorker.setWorkerNickname(workerNickname);
 		}

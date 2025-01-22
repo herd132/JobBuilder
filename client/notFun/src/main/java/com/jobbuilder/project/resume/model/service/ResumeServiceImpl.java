@@ -204,7 +204,7 @@ public class ResumeServiceImpl implements ResumeService {
 		// dayTimesList에 resumeNo 각각 세팅
 		for (ResumeDaysTime daysTime : daysTimeList) {
 			daysTime.setResumeNo(resumeNo);
-			log.debug("daysTime : " + daysTime);
+//			log.debug("daysTime : " + daysTime);
 		}
 
 		Map<String, Object> daysTimeMap = new HashMap<>();
@@ -215,6 +215,7 @@ public class ResumeServiceImpl implements ResumeService {
 		if (result1 > 0) {
 			result = mapper.updateCategoryDaysTime(daysTimeList);
 		}
+		log.debug("result :" + result);
 		return result;
 
 	}

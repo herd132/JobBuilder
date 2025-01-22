@@ -86,7 +86,6 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService {
 	@Override
 	public int secession(Worker loginWorker) {
 		int memberNo = loginWorker.getMemberNo();
-		log.debug("memberNo : " + memberNo);
 		return mapper.secession(memberNo);
 		
 	}
@@ -94,7 +93,6 @@ public class MyPageWorkerServiceImpl implements MyPageWorkerService {
 	@Override
 	public int secessionResume(Worker loginWorker) {
 		int workerNo = loginWorker.getWorkerNo();
-		log.debug("workerNo : " + workerNo);
 		return mapper.secessionResume(workerNo);
 	}
 
