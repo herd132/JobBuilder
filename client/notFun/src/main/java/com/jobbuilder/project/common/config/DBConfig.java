@@ -166,7 +166,7 @@ public class DBConfig {
 	
 	// Mybatis : 트랜잭션 매니저
 	@Bean
-	@Primary
+    @Primary
 	public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
 		return new DataSourceTransactionManager(dataSource);
 	}

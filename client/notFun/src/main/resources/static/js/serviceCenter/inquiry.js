@@ -310,3 +310,15 @@ function createListTap(inquiryList) {
     `;
   })
 }
+
+function updateTitle(input) {
+  
+  const maxLength = 25;
+  const currentLength = input.value.length;
+
+  // 입력된 글자수가 최대 글자수를 초과하는 경우
+  if (currentLength > maxLength) {
+    // 초과된 부분을 잘라내기
+    input.value = input.value.substring(0, maxLength);
+  } 
+}

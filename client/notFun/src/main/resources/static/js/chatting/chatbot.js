@@ -141,7 +141,6 @@ function addMessage(type, content) {
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  return
   // 챗봇 렌더링
   fetch("/chat/chatBotMessgeList")
   .then(resp => resp.json())
