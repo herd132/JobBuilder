@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>사업장 수정페이지 입니다.</title>
+  <title>Job Builder</title>
 
   <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
   <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpFooter.css">
@@ -53,14 +53,14 @@
           <h4 th:text="|기존 사업장 별칭 : *{businessNickname}|"></h4>
           <div class="business-nickname">
             <span>변경할 사업장 별칭 : </span>
-            <input type="text" name="businessNickname" id="businessNickname" th:value="*{businessNickname}">
+            <input type="text" name="businessNickname" maxlength="20" id="businessNickname" th:value="*{businessNickname}">
             <br>
             <span style="font-size: 0.7em;">* 본점은 변경할 수 없습니다.</span>
           </div>
 
           <h4> 사업장 소개말 </h4>
           <div class="business-content">
-            <textarea type="text" name="businessContent" maxlength="2000" id="businessContent"
+            <textarea type="text" name="businessContent" maxlength="1800" id="businessContent"
               th:text="*{businessContent}"></textarea>
           </div>
   
@@ -80,7 +80,7 @@
             </div>
             <div>
               <input type="text" name="businessAddress" id="detailAddress" th:value="${detailAddress}"
-                placeholder="상세 주소"
+                placeholder="상세 주소" maxlength="100"
               >
               <button type="button" id="addressResetBtn">초기화</button>
             </div>

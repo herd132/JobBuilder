@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>사업주 회원가입페이지 입니다</title>
+  <title>Job Builder</title>
 
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/employer/employerSignUp.css">
@@ -100,7 +100,7 @@
                 <div><span class="accent">*</span> 사업자 등록번호</div>
                 <div>
                   <input type="text" id="businessRegistrationNumber" name="businessRegistrationNumber"
-                  placeholder="ex) 1234567890" value="3123314797">
+                  placeholder="ex) 1234567890" value="3123314797" maxlength="20">
                 </div>
                 <div>
                   <span id="brNoMessage">'-' 없이 입력해주세요</span>
@@ -111,7 +111,7 @@
                 <div><span class="accent">*</span> 대표자명</div>
                 <div>
                   <input type="text" id="representativeName" name="memberName"
-                  placeholder="ex) 홍길동" value="김용유">
+                  placeholder="ex) 홍길동" value="김용유" maxlength="50">
                 </div>
               </div>
   
@@ -135,7 +135,7 @@
               <div><span class="accent">*</span> 이메일</div>
               <div class="input-button-row">
                 <input type="text" name="memberEmail" id="memberEmail"
-                  placeholder="ex) asdf1234@kh.or.kr" autocomplete="off">
+                  placeholder="ex) asdf1234@kh.or.kr" autocomplete="off" maxlength="49">
                 <button type="button" id="sendAuthKeyBtn"> 인증번호 받기</button>
               </div>
               <div>
@@ -193,7 +193,7 @@
             <div class="companyname-area">
               <div><span class="accent">*</span> 회사명/점포명</div>
               <div>
-                <input type="text" name="businessName" id="businessName">
+                <input type="text" name="businessName" id="businessName" maxlength="100">
               </div>
               <div>
                 <span id="businessNameMessage">회사명을 입력해주세요</span>
@@ -211,7 +211,7 @@
               <input type="text" name="businessAddress" id="address" placeholder="도로명/지번 주소" readonly>
             </div>
             <div>
-              <input type="text" name="businessAddress" id="detailAddress" placeholder="상세 주소">
+              <input type="text" name="businessAddress" id="detailAddress" placeholder="상세 주소" maxlength="100">
               <button type="button" id="addressResetBtn">초기화</button>
             </div>
           </div>

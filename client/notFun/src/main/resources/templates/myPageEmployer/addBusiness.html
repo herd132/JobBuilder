@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>사업장 추가</title>
+  <title>Job Builder</title>
 
   <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
   <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpFooter.css">
@@ -49,12 +49,12 @@
         <form action="addBusiness" method="post" id="addBusinessForm" enctype="multipart/form-data">
           <h4>사업장 별칭</h4>
           <div class="business-nickname">
-            <input type="text" name="businessNickname" id="businessNickname" placeholder="ex) 본점, 서울 구로점">
+            <input type="text" name="businessNickname" id="businessNickname" placeholder="ex) 본점, 서울 구로점" maxlength="20">
           </div>
 
           <h4> 사업장 소개말 </h4>
           <div class="business-content">
-            <textarea type="text" name="businessContent" maxlength="2000" id="businessContent"
+            <textarea type="text" name="businessContent" maxlength="1800" id="businessContent"
               placeholder="ex) 저희 분점은 ~~입니다."></textarea>
           </div>
 
@@ -68,7 +68,7 @@
               <input type="text" name="businessAddress" id="address" placeholder="도로명/지번 주소" readonly>
             </div>
             <div>
-              <input type="text" name="businessAddress" id="detailAddress" placeholder="상세 주소">
+              <input type="text" name="businessAddress" id="detailAddress" placeholder="상세 주소" maxlength="100">
               <button type="button" id="addressResetBtn">초기화</button>
             </div>
           </div>

@@ -4,6 +4,7 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Job Builder</title>
 	<link rel="stylesheet" href="/css/common/multiLogin.css">
 	<th:block th:replace="~{common/common}"></th:block>
 	<script src="https://t1.kakaocdn.net/kakao_js_sdk/2.7.4/kakao.min.js"
@@ -48,8 +49,8 @@
 					<form action="/worker/workerLogin" method="post" id="workerLoginForm">
 
 						<div class="input-container">
-							<input type="text" placeholder="ID를 입력해 주세요" name="workerId">
-							<input type="password" placeholder="PW를 입력해 주세요" name="memberPw">
+							<input type="text" placeholder="ID를 입력해 주세요" name="workerId" maxlength="20">
+							<input type="password" placeholder="PW를 입력해 주세요" name="memberPw" maxlength="20">
 						</div>
 
 						<div class="login-options">
@@ -77,8 +78,8 @@
 					<form action="/employer/employerLogin" method="post" id="employerLoginForm">
 
 						<div class="input-container">
-							<input type="text" placeholder="이메일을 입력해 주세요" name="memberEmail">
-							<input type="password" placeholder="PW를 입력해 주세요" name="memberPw">
+							<input type="text" placeholder="이메일을 입력해 주세요" name="memberEmail" maxlength="50">
+							<input type="password" placeholder="PW를 입력해 주세요" name="memberPw" maxlength="20">
 						</div>
 
 						<div class="login-options">
