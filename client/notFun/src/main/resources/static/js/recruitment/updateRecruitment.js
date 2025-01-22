@@ -8,6 +8,79 @@ const newEl = (tag, attr, cls) => {
   return el;                                              // 생성된 요소 반환
 };
 
+/* ********** select 태그에 기존 값 넣기 ********** */
+const originalValue = () => {
+
+  // 모집인원
+  const numOfRecruitmentName = document.querySelector("#numOfRecruitmentName");
+  const originalNumOfRecruitmentName = document.querySelector("#originalNumOfRecruitmentName");
+  numOfRecruitmentName.value = originalNumOfRecruitmentName.value;
+
+  // 근무형태
+  const originalJobTypeNo = document.querySelector("#originalJobTypeNo");
+  const jobtypeRadios = document.getElementsByName("jobtypeNo");
+  jobtypeRadios.forEach(radio => {
+    if(radio.value == originalJobTypeNo.value) radio.checked = true;
+  })
+
+  // 학력조건
+  const originalGradeNo = document.querySelector("#originalGradeNo");
+  const gradeNo = document.querySelector("#gradeNo");
+  gradeNo.value = originalGradeNo.value;
+
+  // 급여조건
+  const originalSalaryNo = document.querySelector("#originalSalaryNo");
+  const salaryNo = document.querySelector("#salaryNo");
+  salaryNo.value = originalSalaryNo.value;
+
+  // 근무기간
+  const originalPeriodNo = document.querySelector("#originalPeriodNo");
+  const periodNo = document.querySelector("#periodNo");
+  periodNo.value = originalPeriodNo.value;
+
+  // 근무요일
+  const originalDaysNo = document.querySelector("#originalDaysNo");
+  const daysNo = document.querySelector("#daysNo");
+  daysNo.value = originalDaysNo.value;
+
+  // 근무시간
+  const originalTimeNo = document.querySelector("#originalTimeNo");
+  const timeNo = document.querySelector("#timeNo");
+  timeNo.value = originalTimeNo.value;
+}
+
+originalValue();
+
+/* ********** 급여조건 관련 ********** */
+
+// 초기 로딩 시에도 기존 값에 맞게 처리
+const initialSalaryValue = document.querySelector("#salaryNo").value;
+const initialSalaryMountInput = document.querySelector("#salaryMount");
+
+if (initialSalaryValue == "3" || initialSalaryValue == "4") {
+  initialSalaryMountInput.type = "hidden";
+  initialSalaryMountInput.value = "0";
+} else {
+  initialSalaryMountInput.type = "number";
+  initialSalaryMountInput.value = document.querySelector("#originalSalaryMount").value;
+}
+
+const salaryNoSelect = document.querySelector("#salaryNo");         // select 태그
+
+salaryNoSelect.addEventListener("change", () => {
+  const salaryMountInput = document.querySelector("#salaryMount");  // input 태그
+  const selectValue = salaryNoSelect.value;
+
+  if(selectValue == 3 || selectValue == 4){
+    salaryMountInput.type = "hidden";
+    salaryMountInput.value = "0";
+
+  } else {
+    salaryMountInput.type = "number";
+    salaryMountInput.value = document.querySelector("#originalSalaryMount").value;
+  }
+});
+
 /* ********** 선호조건 관련 ********** */
 const selectedPreferredArea = document.querySelector(".selected-preferred-area");
 
@@ -111,3 +184,17 @@ const addSubSupport = (liSubSupportLi) => {
 const backToRecruitmentDetail = () => {
   location.href = location.pathname.replace("update", "detail") + location.search;
 }
+
+
+/* ********** 제출 시 ********** */
+const updateRecruitmentForm = document.querySelector("#updateRecruitmentForm");
+updateRecruitmentForm.addEventListener("submit", e => {
+
+  const salaryMount = document.querySelector("#salaryMount");
+  if(salaryMount.value == "" || isNaN(salaryMount.value)){
+    alert("금액을 입력해주세요");
+    salaryMount.focus();
+    e.preventDefault();
+    return;
+  }
+})
