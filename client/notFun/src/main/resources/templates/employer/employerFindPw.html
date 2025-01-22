@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>비밀번호 찾기 페이지입니다.</title>
+  <title>Job Builder</title>
 
   <th:block th:replace="~{common/common}"></th:block>
   <link rel="stylesheet" href="/css/employer/employerFindPw.css">
@@ -32,12 +32,12 @@
         <div class="find-member-info-area">
           <div class="memberName-area">
             <span>가입자명 : </span>
-            <input type="text" name="memberName" id="memberName" maxlength="9" placeholder="가입자명을 입력해주세요" required>
+            <input type="text" name="memberName" id="memberName" maxlength="50" placeholder="가입자명을 입력해주세요" required>
           </div>
 
           <div class="memberEmail-area">
             <span>가입한 이메일 : </span>
-            <input type="email" name="memberEmail" id="memberEmail" placeholder="가입한 이메일을 입력해주세요" required>
+            <input type="email" name="memberEmail" id="memberEmail" placeholder="가입한 이메일을 입력해주세요" maxlength="50" required>
             <button id="sendAuthKeyBtn">인증번호 받기</button>
           </div>
 

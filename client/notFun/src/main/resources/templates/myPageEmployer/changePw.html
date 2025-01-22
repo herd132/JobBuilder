@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>비밀번호 변경</title>
+  <title>Job Builder</title>
 
   <link rel="stylesheet" href="/css/myPageEmployer/myPageEmpHeader.css">
   <link rel="stylesheet" href="/css/myPageEmployer/changePw.css">
@@ -30,7 +30,7 @@
         <div class="form-group1" id="form-group1">
           <label>현재 비밀번호</label>
           <input type="password" class="form-control" id="empCurrentPw" required
-          placeholder="현재 비밀번호를 입력해주세요">
+          placeholder="현재 비밀번호를 입력해주세요" maxlength="20">
           <span class="change-message" id="checkCurrentPw"></span>
         </div>
 
@@ -41,7 +41,7 @@
 
         <div class="form-group3">
           <label>신규 비밀번호 확인</label>
-          <input type="password" class="form-control" id="memberPwConfirm" required>
+          <input type="password" class="form-control" id="memberPwConfirm" maxlength="20" required>
           <span class="confirm-message" id="pwMessage"></span>
         </div>
 

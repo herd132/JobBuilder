@@ -186,7 +186,7 @@ select {
 
 textarea {
   min-height: 150px;
-  resize: vertical;
+  resize: none;
 }
 
 /* 버튼 영역 */
