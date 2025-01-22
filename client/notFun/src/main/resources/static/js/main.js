@@ -217,7 +217,7 @@ let popupWindow;
 if (customerServiceLink !== null) {
 	// 고객센터 클릭 시 모달 표시
 	customerServiceLink.addEventListener('click', (e) => {
-		console.log("됨");
+		
 		fetch("/chat/loginCheck")
 			.then(resp => resp.text())
 			.then(result => {

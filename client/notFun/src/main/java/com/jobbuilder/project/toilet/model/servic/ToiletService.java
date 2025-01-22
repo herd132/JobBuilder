@@ -16,13 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
-@Transactional("transactionManager")
+@Transactional(transactionManager = "jpaTransactionManager")
 @Slf4j
 public class ToiletService {
 
 	private final TestRepository toiletRepository;
-	
-	
 	
 	public List<ToiletDTO> findToiletsCoordinates(String swLat, String neLat, String swLng, String neLng) {
         List<Object[]> results = toiletRepository.findToiletsCoordinates(swLat, neLat, swLng, neLng);

@@ -1,271 +1,303 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
-  <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
-  <style>
-    /* *********** header ************ */
-    :root {
-    --primary-orange: #FF9838;
-    --secondary-orange: #FFB876;
-    --background-orange: #FFF4EA;
-    --text-dark: #333333;
-    --text-gray: #666666;
-    --button: #543A14;
-    --border-light: #FFE4CC;
-    --border-bold: #FF9838;
-    }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://kit.fontawesome.com/a0e57c9b1e.js" crossorigin="anonymous"></script>
+    <style>
+        /* *********** header ************ */
+        :root {
+            --primary-orange: #FF9838;
+            --secondary-orange: #FFB876;
+            --background-orange: #FFF4EA;
+            --text-dark: #333333;
+            --text-gray: #666666;
+            --button: #543A14;
+            --border-light: #FFE4CC;
+            --border-bold: #FF9838;
+        }
 
-    * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-    body {
-    font-family: 'Arial', sans-serif;
-    /* min-height: 100vh; */
-    background-color: #fff0dc6b;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    }
+        body {
+            font-family: 'Arial', sans-serif;
+            /* min-height: 100vh; */
+            background-color: #fff0dc6b;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
 
-    /* 챗봇 관련 */
-    .chatbot-modal {
-    /* position: fixed;
+        /* 챗봇 관련 */
+        .chatbot-modal {
+            /* position: fixed;
     right: 20px;
     bottom: 20px; */
-    width: 100%;
-    height: 100%;
-    background: white;
-    box-shadow: 0 5px 20px rgba(255, 152, 56, 0.2);
-    display: none;
-    flex-direction: column;
-    z-index: 1000;
-    /* 드래그 관련 속성 추가 */
-    position: fixed;
-    user-select: none;
-    }
+            width: 100%;
+            height: 100%;
+            background: white;
+            box-shadow: 0 5px 20px rgba(255, 152, 56, 0.2);
+            display: none;
+            flex-direction: column;
+            z-index: 1000;
+            /* 드래그 관련 속성 추가 */
+            position: fixed;
+            user-select: none;
+        }
 
-    .chatbot-modal.active {
-    display: flex;
-    }
+        .chatbot-modal.active {
+            display: flex;
+        }
 
-    .chatbot-header {
-    background: var(--primary-orange);
-    padding: 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    cursor: default; /* 커서 스타일 변경 */
-    user-select: none; /* 텍스트 선택 방지 */
-    }
+        .chatbot-header {
+            background: var(--primary-orange);
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: default;
+            /* 커서 스타일 변경 */
+            user-select: none;
+            /* 텍스트 선택 방지 */
+        }
 
-    .chatbot-modal.dragging {
-    opacity: 0.9;
-    transition: none;
-    }
+        .chatbot-modal.dragging {
+            opacity: 0.9;
+            transition: none;
+        }
 
-    .drag-handle {
-    flex: 1;
-    color: white;
-    }
+        .drag-handle {
+            flex: 1;
+            color: white;
+        }
 
-    .bot-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: 500;
-    }
+        .bot-status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+        }
 
-    .status-dot {
-    width: 8px;
-    height: 8px;
-    background: #4CAF50;
-    border-radius: 50%;
-    animation: pulse 2s infinite;
-    }
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #4CAF50;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
 
-    @keyframes pulse {
-    0% { opacity: 1; }
-    50% { opacity: 0.5; }
-    100% { opacity: 1; }
-    }
+        @keyframes pulse {
+            0% {
+                opacity: 1;
+            }
 
-    .close-btn {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 24px;
-    cursor: pointer;
-    padding: 0 5px;
-    }
+            50% {
+                opacity: 0.5;
+            }
 
-    .chatbot-body {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    }
+            100% {
+                opacity: 1;
+            }
+        }
 
-    .chat-messages {
-    flex: 1;
-    padding: 20px;
-    overflow-y: auto;
-    } 
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 0 5px;
+        }
 
-    .chat-messages::-webkit-scrollbar {
-    width: 10px;
-    }
+        .chatbot-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
 
-    .chat-messages::-webkit-scrollbar-thumb{
-    background-color: var(--border-bold);
-    border-radius: 10px;
-    }
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+        }
 
-    .chat-messages::-webkit-scrollbar-track {
-    background-color: white;
-    border-radius: 10px;
-    }
+        .chat-messages::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-thumb {
+            background-color: var(--border-bold);
+            border-radius: 10px;
+        }
+
+        .chat-messages::-webkit-scrollbar-track {
+            background-color: white;
+            border-radius: 10px;
+        }
 
 
 
-    .message {
-    display: flex;
-    gap: 10px;
-    margin-bottom: 20px;
-    }
+        .message {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
 
-    .user {
-    justify-content: flex-end;
-    }
+        .user {
+            justify-content: flex-end;
+        }
 
-    .message-avatar {
-    width: 35px;
-    height: 35px;
-    background: var(--background-orange);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--primary-orange);
-    }
+        .message-avatar {
+            width: 35px;
+            height: 35px;
+            background: var(--background-orange);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-orange);
+        }
 
-    .message-content {
-    background: var(--background-orange);
-    padding: 12px;
-    border-radius: 15px;
-    word-break: break-all;
-    max-width: 80%;
-    font-size: 0.9rem;
-    }
+        .message-content {
+            background: var(--background-orange);
+            padding: 12px;
+            border-radius: 15px;
+            word-break: break-all;
+            max-width: 80%;
+            font-size: 0.9rem;
+        }
 
-    .quick-buttons {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-top: 10px;
-    }
+        .quick-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-top: 10px;
+        }
 
-    .quick-buttons button {
-    background: white;
-    border: 1px solid var(--primary-orange);
-    color: var(--primary-orange);
-    padding: 6px 9px;
-    border-radius: 20px;
-    cursor: pointer;
-    transition: all 0.2s;
-    font-size: 0.7rem;
-    }
+        .quick-buttons button {
+            background: white;
+            border: 1px solid var(--primary-orange);
+            color: var(--primary-orange);
+            padding: 6px 9px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.7rem;
+        }
 
-    .quick-buttons button:hover {
-    background: var(--primary-orange);
-    color: white;
-    }
+        .quick-buttons button:hover {
+            background: var(--primary-orange);
+            color: white;
+        }
 
-    .chat-input {
-    padding: 15px;
-    border-top: 1px solid var(--border-light);
-    display: flex;
-    gap: 10px;
-    }
+        .chat-input {
+            padding: 15px;
+            border-top: 1px solid var(--border-light);
+            display: flex;
+            gap: 10px;
+        }
 
-    .chat-input input {
-    flex: 1;
-    padding: 10px;
-    border: 1px solid var(--border-light);
-    border-radius: 20px;
-    outline: none;
-    }
+        .chat-input input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--border-light);
+            border-radius: 20px;
+            outline: none;
+        }
 
-    .chat-input input:focus {
-    border-color: var(--primary-orange);
-    }
+        .chat-input input:focus {
+            border-color: var(--primary-orange);
+        }
 
-    .send-btn {
-    background: var(--primary-orange);
-    border: none;
-    color: white;
-    width: 35px;
-    height: 35px;
-    border-radius: 50%;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    }
+        .send-btn {
+            background: var(--primary-orange);
+            border: none;
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
 
-    .send-btn:hover {
-    background: var(--secondary-orange);
-    }
+        .send-btn:hover {
+            background: var(--secondary-orange);
+        }
 
-  </style>
+        .loadingBox .circle {
+            position: fixed;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            width: 40px;
+            height: 40px;
+            border: 10px solid #fff;
+            border-top: 10px solid red;
+            border-radius: 50em;
+            animation-name: spinCircle;
+            animation-duration: .8s;
+            animation-iteration-count: infinite;
+        }
+
+        @keyframes spinCircle {
+            from {
+                transform: translate(-50%, -50%) rotate(0);
+            }
+
+            to {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+    </style>
 </head>
+
 <body>
-  <!-- 고객센터 채팅봇 모달 -->
-<div id="chatbotModal" class="chatbot-modal active">
-  <div class="chatbot-header">
-      <div class="drag-handle">
-          <div class="bot-status">
-              <!-- <span class="status-dot"></span> -->
-              제목 미정
-          </div>
-      </div>
-  </div>
-  <div class="chatbot-body">
-      <div class="chat-messages">
-          <div class="message bot">
-              <div class="message-avatar">
-                  <i class="fas fa-robot"></i>
-              </div>
-              <div class="message-content">
-                  안녕하세요! 무엇을 도와드릴까요?
-                  <div class="quick-buttons">
-                      <button class="counselor">상담원 연결</button>
-                  </div>
-              </div> 
-          </div>
-      </div>
-      <div class="chat-input">
-          <input type="text" placeholder="메시지를 입력하세요..." disabled>
-          <button class="send-btn">
-              <i class="fas fa-paper-plane"></i>
-          </button>
-      </div>
-  </div>
+    <!-- 고객센터 채팅봇 모달 -->
+    <div id="chatbotModal" class="chatbot-modal active">
+        <div class="chatbot-header">
+            <div class="drag-handle">
+                <div class="bot-status">
+                    <!-- <span class="status-dot"></span> -->
+                    비돌이
+                </div>
+            </div>
+        </div>
+        <div class="chatbot-body">
+            <div class="chat-messages">
+                <div class="message bot">
+                    <div class="loadingBox">
+                        <div class="dim"></div>
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="chat-input">
+                <input type="text" placeholder="메시지를 입력하세요..." disabled>
+                <button class="send-btn">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
 
-  <script src="/js/chatting/chatbot.js"></script>
+        <script src="/js/chatting/chatbot.js"></script>
 
-  
 
-  <!-- https://github.com/sockjs/sockjs-client -->
-  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
-  
-</div>
+
+        <!-- https://github.com/sockjs/sockjs-client -->
+        <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"></script>
+
+    </div>
 </body>
+
 </html>

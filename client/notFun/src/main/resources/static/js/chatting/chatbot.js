@@ -56,6 +56,7 @@ inputField.addEventListener('keypress', (e) => {
 // 상담원 연결 이벤트
 const counselorConnection = async () => {
 
+  
 
   const resp = await fetch("/chat/enter")
   const chattingRoom = await resp.json();
@@ -78,9 +79,22 @@ const counselorConnection = async () => {
       "senderNo": selectTargetNo,
       "targetNo": loginMemberNo,
       "chattingRoomNo": selectChattingNo,
-      "messageContent": '상담원 분과 연결 중에 있습니다 잠시 기다려주시기 바랍니다. 연결 중 채팅창을 종료 시 연결이 끊기니 그 점에 유의해주시기 바랍니다.',
+      "messageContent": '상담원 분과 연결 중에 있습니다 잠시 기다려주시기 바랍니다. 연결 중 채팅창을 종료하거나 새로고침을 진행 할 시 연결이 끊기니 그 점에 유의해주시기 바랍니다.',
     };
     chattingSock.send(JSON.stringify(obj));
+
+    const quickButtons = chatbotModal.querySelectorAll('.quick-buttons button'); // 빠른 상담 버튼들
+    quickButtons.forEach((button, i) => {
+
+      if (i == quickButtons.length - 1 ) return;
+
+      button.removeEventListener('click', sendBotMessage);
+    });
+
+    
+    const counselor = document.querySelector(".counselor");
+
+    counselor.removeEventListener("click", counselorConnection);
   }
   
   // 상담원이 종료시 일어나는 이벤트
@@ -121,14 +135,13 @@ function addMessage(type, content) {
         <div class="message-avatar"><i class="fas fa-user"></i></div>`;
   messageDiv.innerHTML = html;
   chatMessages.appendChild(messageDiv);
-  chatMessages.scrollTo
-  p = chatMessages.scrollHeight;
-
-  messageDiv.scrollTop = messageDiv.scrollHeight;
+  chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
 
 document.addEventListener("DOMContentLoaded", () => {
+
+  return
   // 챗봇 렌더링
   fetch("/chat/chatBotMessgeList")
   .then(resp => resp.json())
