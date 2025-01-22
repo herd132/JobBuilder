@@ -26,6 +26,7 @@ public class WebSocketConfig implements WebSocketConfigurer{
 								  "http://127.0.0.1",
 								  "http://192.168.150.48",
 								  "http://404notfun.store",
+								  "http://192.168.50.216",
 								  "http://13.124.153.205",
 								  "http://172.31.32.204")
 		// setAllowedOriginPatterns 는 도메인 구매 시 변경
