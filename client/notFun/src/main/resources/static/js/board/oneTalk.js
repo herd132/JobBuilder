@@ -228,6 +228,7 @@ const showInsertoneTalk = (parentOneTalkNo, btn) => {
   // 답글을 작성할 textarea 요소 생성
   const textarea = document.createElement("textarea");
   textarea.classList.add("oneTalkInsertContent");
+  textarea.setAttribute("maxlength", 200);
 
   // 답글 버튼의 부모의 뒤쪽에 textarea 추가
   // after(요소) : 뒤쪽에 추가
@@ -401,6 +402,7 @@ const showUpdateoneTalk = (oneTalkNo, btn) => {
   const textarea = document.createElement("textarea");
   textarea.classList.add("update-textarea");
   textarea.value = beforeContent;
+  textarea.setAttribute("maxlength", 200);
 
   // 6. 댓글 행에 textarea 추가
   oneTalkRow.append(textarea);

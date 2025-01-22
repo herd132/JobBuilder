@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원가입</title>
+  <title>Job Builder</title>
   <link rel="stylesheet" href="/css/worker/workerSignup.css">
   <th:block th:replace="~{common/common}"></th:block>
 </head>
@@ -103,7 +103,7 @@
 
       <div class="form-group">
         <div>닉네임</div>
-        <input type="text" id="workerNickname" name="workerNickname" maxlength="10" placeholder="한글, 영어, 숫자로 10글자까지 가능합니다." required>
+        <input type="text" id="workerNickname" name="workerNickname" maxlength="20" placeholder="한글, 영어, 숫자로 10글자까지 가능합니다." required>
         <span id="nickMessage"> 유효하지 않은 닉네임 형식입니다. </span>
       </div>
 
@@ -128,11 +128,11 @@
         </div>
 
         <div class="signUp-input-area">
-          <input type="text" name="workerAddress" placeholder="도로명/지번 주소" id="address">
+          <input type="text" name="workerAddress" placeholder="도로명/지번 주소" maxlength="30" id="address">
         </div>
 
         <div class="signUp-input-area">
-          <input type="text" name="workerAddress"maxlength="30" placeholder="상세 주소" id="detailAddress">
+          <input type="text" name="workerAddress" maxlength="30" placeholder="상세 주소" id="detailAddress">
         </div>
       </div>
 
