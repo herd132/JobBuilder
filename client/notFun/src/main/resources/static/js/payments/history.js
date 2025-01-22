@@ -81,6 +81,8 @@ const updateMembershipUI = () => {
       </div>
     `;
 
+
+    
     mainDiv.querySelectorAll(".payment-summary-group, .payment-summary-group2, .refund-button").forEach((element) => {
       // summary.paymentStatus 조건 확인
       if (summary.paymentStatus === "환불") {
@@ -93,9 +95,15 @@ const updateMembershipUI = () => {
         }
       }
     });
+    const detailList = document.createElement("ul");
+    const cardInfoItem = document.createElement("li");
+    cardInfoItem.innerHTML = ` 결제대행 : ${summary.pgProvider}<br>
+                              결제카드 : ${summary.cardName}<br>
+                              카드번호 : ${summary.cardNumber}<br><br><hr><hr>`;
+    detailList.appendChild(cardInfoItem);
 
     // 상세 항목 컨테이너 생성 (ul 태그로 변경)
-    const detailList = document.createElement("ul");
+    
     detailList.className = "subitem hidden"; // 초기에는 숨김 (CSS 클래스 적용)
 
     // 상세 항목 추가 (li 태그로 구성)
@@ -108,10 +116,7 @@ const updateMembershipUI = () => {
       }
     });
 
-  const cardInfoItem = document.createElement("li");
-  cardInfoItem.textContent = `${summary.cardName}, ${summary.cardNumber}, ${summary.pgProvider}`;
-  cardInfoItem.style.fontWeight = "bold"; // 스타일 조정 (선택)
-  detailList.appendChild(cardInfoItem);
+
 
     // 메인 항목 클릭 이벤트 추가 (클릭 시 펼쳐짐/숨김)
     mainDiv.querySelector(".summary-line").addEventListener("click", () => {
