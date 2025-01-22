@@ -34,7 +34,7 @@
 
                     <div class="form-group">
                         <label for="title" class="required">제목</label>
-                        <input type="text" id="title" name="title" placeholder="문의 제목을 입력해주세요" required>
+                        <input type="text" id="title" name="title" placeholder="문의 제목을 입력해주세요(공백 포함 최대 25글자)" required oninput="updateTitle(this)">
                     </div>
 
                     <div class="form-group">
@@ -62,7 +62,7 @@
                     <div class="form-group">
                         <div class="content-container">
                             <textarea id="content" name="content" placeholder="문의하실 내용을 자세히 작성해주세요 (최대 2000자)" required
-                                onkeyup="updateCharCount(this)" maxlength="2000"></textarea>
+                            oninput="updateCharCount(this)" maxlength="2000"></textarea>
                             <div class="char-counter">0 / 2000자</div>
                         </div>
                     </div>
