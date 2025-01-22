@@ -61,7 +61,7 @@ public class OneTalkController {
 		@PostMapping("")	
 		@ResponseBody
 		public int insert(@RequestBody OneTalk oneTalk) {
-			log.debug("삽입으로 들어오나" + oneTalk);
+			
 			return service.insert(oneTalk);
 		}
 		// 한줄톡 삭제

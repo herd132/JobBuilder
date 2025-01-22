@@ -404,11 +404,10 @@ public class RecruitmentController {
 			String businessAddress = arr[1] + ", " + arr[2];
 			employer.setBusinessAddress(businessAddress);
 		} 
-		log.debug("임플로이어" + employer);
+		
 		
 		model.addAttribute("recruitment", recruitment);
 		model.addAttribute("employer", employer);
-		log.debug("이미지리스트 들어왔나확인" + employer.getBusinessImgList());
 		return "recruitment/showPromoteBusiness";
 	}
 

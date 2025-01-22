@@ -407,13 +407,12 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 		paramMap.put("recruitmentNo", recruitmentNo);
 		paramMap.put("businessNickname", businessNickname);
 
-		log.debug("으응" + mapper.showPromoteEmploy(paramMap));
 		return mapper.showPromoteEmploy(paramMap);
 	}
 
 	@Override
 	public Employer getBusiness(int empNo) {
-		log.debug("empNO는" + empNo);
+		
 		Employer business = mapper.getBusiness(empNo);
 		List<BusinessWorktype> businessWorktypeList = mapper.getBusinessWorktype(empNo);
 		String thumbnail = mapper.selectThumbNail(business.getEmployerNo());
