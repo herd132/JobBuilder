@@ -51,4 +51,8 @@ public class Payment {
     private int paymentLogStatus; //로그 상태
     private String paymentLogDate; //로그 날짜
     
+    private String cardName;
+    private String cardNumber;
+    private String pgProvider;
+    
 }

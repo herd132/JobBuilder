@@ -115,6 +115,9 @@ async function fetchEmployerData() {
           if (businessNameElement) {
               businessNameElement.textContent = data[0].businessName;
           }
+          if (listButton) {
+            listButton.style.display = "inline-block";
+          }
           await renderringui(window.employerNo);
           return;
       } else if (data.length > 1) {

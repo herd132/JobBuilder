@@ -56,16 +56,17 @@
   justify-content: space-between;
 }
 
-.payments-t-btn-after {
+.payments-c-btn-after {
   padding: 0.8rem;
   background-color: #543A14;
   color: white;
   border: none;
   cursor: pointer;
-  margin-bottom: 2rem;
+  margin-left: 35rem;
+  margin-bottom: 0.3rem;
 }
 
-.payments-t-btn-after:hover {
+.payments-c-btn-after:hover {
   transform: scale(1.1);
 }
 
@@ -357,5 +358,61 @@
 
 
 .refund{
-  background-color: #e4cfcf;
+  background-color: #0000006e;
+}
+
+
+
+.payments-title {
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.payments-title hr {
+  margin-top: 0.5rem;
+  background: #f0bb78;
+  height: 0.5rem;
+  border: 0;
+  
+}
+
+
+
+
+.paginationRecruitment-area {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.paginationRecruitment {
+  list-style: none;
+  display: flex;
+  padding: 0;
+}
+
+.page-item {
+  margin: 0 5px;
+}
+
+.page-item button {
+  padding: 8px 12px;
+  border: none;
+  background-color: #f0f0f0;
+  cursor: pointer;
+  border-radius: 4px;
+}
+
+.page-item button:hover:not(:disabled) {
+  background-color: #d4d4d4;
+}
+
+.page-item.active button {
+  background-color: #007bff;
+  color: white;
+}
+
+.page-item button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
 }
