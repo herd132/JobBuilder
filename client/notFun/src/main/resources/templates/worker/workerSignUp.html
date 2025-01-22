@@ -4,7 +4,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>회원가입</title>
+  <title>Job Builder</title>
   <link rel="stylesheet" href="/css/worker/workerSignup.css">
   <th:block th:replace="~{common/common}"></th:block>
 </head>
@@ -38,7 +38,7 @@
       <div class="form-group">
         <div>이메일</div>
         <div style="display: flex; ">
-          <input type="email" id="memberEmail" name="memberEmail" required>
+          <input type="email" id="memberEmail" name="memberEmail" maxlength="30" required>
           <button type="button" class="verification-btn" id="sendAuthKeyBtn">인증번호 받기</button>
         </div>
         <span class="signUp-message" id="workerEmailMessage" style="font-size: 12px;">
@@ -50,7 +50,7 @@
       <div class="form-group">
         <div>인증번호</div>
         <div style="display: flex; gap: 10px;">
-          <input type="text" id="authKey" name="authKey" required>
+          <input type="text" id="authKey" name="authKey" maxlength="8" required>
           <button type="button" class="verification-btn" id="checkAuthKeyBtn">인증번호 확인</button>
         </div>
         <span id="authKeyMessage"></span>
@@ -59,7 +59,7 @@
       <div class="form-group">
         <div> 아이디 </div>
         <div style="display: flex; gap: 10px;">
-          <input type="text" id="workerId" name="workerId" required>
+          <input type="text" id="workerId" name="workerId" maxlength="15" required>
           <button type="button" class="verification-btn" id="checkWorkerIdBtn">아이디 중복확인</button>
         </div>
         <span id="workerIdMessage"> 특수문자를 제외하고 3 - 20자로 작성해주세요</span>
@@ -67,12 +67,12 @@
 
       <div class="form-group">
         <div>비밀번호</div>
-        <input type="password" id="memberPw" name="memberPw" required>
+        <input type="password" id="memberPw" name="memberPw" maxlength="20" required>
       </div>
 
       <div class="form-group">
         <div>비밀번호 확인</div>
-        <input type="password" id="memberPwConfirm" required>
+        <input type="password" id="memberPwConfirm" maxlength="20" required>
         <span id="pwMessage"> 비밀번호가 일치하는지 확인해주세요.</span>
       </div>
 
@@ -84,7 +84,7 @@
       <div style="display: flex;">
         <div class="form-group" style="width: 50%;">
           <label>MBTI</label>
-          <input type="text" id="workerMbti" name="workerMbti" placeholder="대문자로 입력하여야 합니다." oninput="handleOnInput(this)" required>
+          <input type="text" id="workerMbti" name="workerMbti" maxlength="4"  placeholder="대문자로 입력하여야 합니다." oninput="handleOnInput(this)" required>
           <span id="workerMbtiMessage"> MBTI를 입력해주세요 </span>
         </div>
         <div class="form-group" style="width: 50%; align-items: center; margin: auto; margin-left: 30px;">
@@ -103,13 +103,13 @@
 
       <div class="form-group">
         <div>닉네임</div>
-        <input type="text" id="workerNickname" name="workerNickname" placeholder="한글, 영어, 숫자로 10글자까지 가능합니다." required>
+        <input type="text" id="workerNickname" name="workerNickname" maxlength="20" placeholder="한글, 영어, 숫자로 10글자까지 가능합니다." required>
         <span id="nickMessage"> 유효하지 않은 닉네임 형식입니다. </span>
       </div>
 
       <div class="form-group">
         <div>이름</div>
-        <input type="text" id="memberName" name="memberName" required>
+        <input type="text" id="memberName" name="memberName" maxlength="10" required>
       </div>
 
       <div class="form-group">
@@ -128,11 +128,11 @@
         </div>
 
         <div class="signUp-input-area">
-          <input type="text" name="workerAddress" placeholder="도로명/지번 주소" id="address">
+          <input type="text" name="workerAddress" placeholder="도로명/지번 주소" maxlength="30" id="address">
         </div>
 
         <div class="signUp-input-area">
-          <input type="text" name="workerAddress" placeholder="상세 주소" id="detailAddress">
+          <input type="text" name="workerAddress" maxlength="30" placeholder="상세 주소" id="detailAddress">
         </div>
       </div>
 

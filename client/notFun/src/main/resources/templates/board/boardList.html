@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>게시판 이름</title>
+	<title>Job Builder</title>
 
 	<th:block th:replace="~{common/common}"></th:block>
 	<link rel="stylesheet" href="/css/board/boardList.css">
@@ -213,7 +213,7 @@
 					<option value="w">작성자</option>
 				</select>
 
-				<input type="text" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
+				<input type="text" name="query" id="searchQuery" maxlength="50" placeholder="검색어를 입력해주세요.">
 
 				<button>검색</button>
 			</form>

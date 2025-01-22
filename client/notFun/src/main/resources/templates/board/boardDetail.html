@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title th:text="|${board.boardNo}번 글|">게시판 이름</title>
+    <title>Job Builder</title>
 
 
     <th:block th:replace="~{common/common}"></th:block>
@@ -60,7 +60,7 @@
             <!-- 버튼 영역-->
             <div class="board-btn-area">
                 <div id="nonblock"></div>
-                <th:block th:if="${session.loginWorker != null} or ${session.loginEmployer != null} ">                  
+                <th:block th:if="${session.loginWorker != null} or ${session.loginEmployer != null} ">
                     <!-- 로그인한 회원과 게시글 작성한 회원의 번호가 같은 경우 -->
                     <th:block
                         th:if="${board.memberNo == session.loginWorker?.memberNo} or ${board.memberNo == session.loginEmployer?.memberNo}  ">
@@ -76,17 +76,21 @@
                 <th:block th:unless="${param.stat}">
                     <button id="goToListBtn">목록으로</button>
                 </th:block>
-                
+
                 <th:block th:if="${param.stat}">
                     <th:block th:if="${session.loginEmployer}">
-                        <button id="goToMyPageBtn">
-                            <a href="/myPageEmp/myWrite">목록으로</a>
-                        </button>
+                        <a href="/myPageEmp/myWrite">
+                            <button id="goToMyPageBtn">
+                                목록으로
+                            </button>
+                        </a>
                     </th:block>
                     <th:block th:if="${session.loginWorker}">
-                        <button id="goToMyPageBtn">
-                            <a href="/myPageWorkee/myPageWorkerWrite">목록으로</a>
-                        </button>
+                        <a href="/myPageWorkee/myPageWorkerWrite">
+                            <button id="goToMyPageBtn">
+                                목록으로
+                            </button>
+                        </a>
                     </th:block>
                 </th:block>
             </div>
@@ -105,7 +109,7 @@
                         <div class="img-box">
                             <div class="boardImg">
 
-                                <img th:src="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|">                                
+                                <img th:src="|${board.imageList[i].boardImgPath}${board.imageList[i].boardImgRename}|">
                             </div>
                         </div>
                     </th:block>
@@ -117,7 +121,7 @@
 
         <!-- 댓글 영역-->
         <th:block th:replace="~{board/comment}"></th:block>
-        
+
     </main>
 
 
