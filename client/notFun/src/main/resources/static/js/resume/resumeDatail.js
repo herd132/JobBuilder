@@ -659,7 +659,7 @@ function expappend() {
   newContainer.innerHTML = `
     <label>
       회사명:
-      <input type="text" class="company-name" placeholder="회사명을 입력하세요">
+      <input type="text" class="company-name" placeholder="회사명을 입력하세요" maxlength="100">
     </label>
     <label>
       근무기간:
@@ -916,7 +916,7 @@ categoryBtn.addEventListener("click", async (e) => {
                         <option value="4">추후협의(월급)</option>
                     </select>
 
-                    <input type="number" name="salAmount" min="0">원
+                    <input type="number" name="salAmount" min="0" maxlength="9">원
                 </div>
                 <input type="hidden" id="currentUrl" name="currentUrl" value="">
                 </form>

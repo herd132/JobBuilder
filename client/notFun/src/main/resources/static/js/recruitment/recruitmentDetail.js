@@ -613,6 +613,7 @@ document.addEventListener("DOMContentLoaded", () => {
         toiletMarkers(range);
       });
 
+      // 날씨 정보 업데이트 함수
       const weatherIcons = {
         0: "☀️", // 없음
         1: "🌧️", // 비
@@ -624,7 +625,6 @@ document.addEventListener("DOMContentLoaded", () => {
         7: "🌨️", // 눈날림
       };
 
-      // 날씨 정보 업데이트 함수
       function updateWeather() {
         var xhr = new XMLHttpRequest();
         var url =
