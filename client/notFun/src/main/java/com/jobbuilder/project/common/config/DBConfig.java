@@ -8,6 +8,7 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -58,6 +59,7 @@ import jakarta.persistence.EntityManagerFactory;
 @Configuration
 @PropertySource("classpath:/config.properties")
 @EnableJpaRepositories(basePackages = "com.jobbuilder.project.**.repository") // JPA 레포지토리 경로
+//@EntityScan(basePackages = "com.example.practice.**.entity") // 엔티티 경로
 public class DBConfig {
 	
 	
@@ -162,7 +164,7 @@ public class DBConfig {
 	
 	
 	
-	// DataSourceTransactionManager : 트랜잭션 매니저
+	// Mybatis : 트랜잭션 매니저
 	@Bean
 	@Primary
 	public DataSourceTransactionManager dataSourceTransactionManager(DataSource dataSource) {
@@ -190,8 +192,8 @@ public class DBConfig {
     }
 
     // JPA 트랜잭션 매니저 설정
-    @Bean
-    public PlatformTransactionManager transactionManager(EntityManagerFactory entityManagerFactory) {
+    @Bean(name = "jpaTransactionManager")
+    public PlatformTransactionManager jpaTransactionManager(EntityManagerFactory entityManagerFactory) {
         return new JpaTransactionManager(entityManagerFactory);
     }
 
