@@ -1,3 +1,5 @@
+
+
 /************************************************
  * 섹션 상태 관리
  ************************************************/
@@ -866,6 +868,7 @@ try {
 
   updateUI(paginatedData);
   createPagination(recruitment, document.getElementById("pagination"));
+ 
 } catch (error) {
   console.error("요청 오류:", error);
 }
@@ -970,6 +973,7 @@ try {
   updateUI(paginatedData);
   // 페이지네이션 로직 호출
   createPagination(recruitment, document.getElementById("pagination"));
+  
 } catch (error) {
   console.error("요청 오류:", error);
 }
@@ -1121,3 +1125,5 @@ const paginatedData = data.slice(
 );
 updateUI(paginatedData);
 };
+
+window.scrollTo(0, 0);

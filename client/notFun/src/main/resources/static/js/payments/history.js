@@ -50,6 +50,8 @@ async function fetchAndCacheMembershipData() {
 const updateMembershipUI = () => {
   const container = document.getElementById("resultp");
   container.innerHTML = "";
+  
+
 
   const totalGroups = groupedMembershipList.length; // 전체 그룹 수 계산
   const startIndex = (currentPage - 1) * itemsPerPage;
@@ -112,7 +114,15 @@ const updateMembershipUI = () => {
       listItem.textContent = `${detail.paymentTypeProduct} - ${detail.paymentTypeAmount.toLocaleString()}원`;
       detailList.appendChild(listItem);
       if (summary.paymentStatus === "환불") {
-        listItem.style.backgroundColor = "#0000006e"; // 배경색 변경
+        const backgroundColor = "#0000006e"; // 배경색
+        listItem.style.backgroundColor = backgroundColor;
+        cardInfoItem.style.backgroundColor = backgroundColor;
+      
+        // cardInfoItem 내부의 <hr> 요소의 보더 색상 통일
+        const hrElements = cardInfoItem.querySelectorAll("hr");
+        hrElements.forEach((hr) => {
+          hr.style.borderColor = backgroundColor;
+        });
       }
     });
 
@@ -225,26 +235,28 @@ const renderPagination = () => {
   let endPage = startPage + pagesPerSection - 1;
   if (endPage > totalPages) endPage = totalPages;
 
-  // 이전 섹션 버튼 («)
-  const prevSectionLi = document.createElement("li");
-  prevSectionLi.className = "page-item";
+  // 이전 페이지 버튼 («)
+  const prevPageLi = document.createElement("li");
+  prevPageLi.className = "page-item";
 
-  const prevSectionButton = document.createElement("button");
-  prevSectionButton.textContent = "«"; // 이전 섹션
-  prevSectionButton.className = "page-link";
-  prevSectionButton.disabled = currentSection === 1;
+  const prevPageButton = document.createElement("button");
+  prevPageButton.textContent = "<"; // 이전 페이지
+  prevPageButton.className = "page-link";
+  prevPageButton.disabled = currentPage === 1;
 
-  prevSectionButton.addEventListener("click", () => {
-    if (currentSection > 1) {
-      currentSection--;
-      currentPage = (currentSection - 1) * pagesPerSection + 1;
+  prevPageButton.addEventListener("click", () => {
+    if (currentPage > 1) {
+      currentPage--;
+      if (currentPage < startPage) {
+        currentSection--;
+      }
       updateMembershipUI();
       renderPagination();
     }
   });
 
-  prevSectionLi.appendChild(prevSectionButton);
-  paginationContainer.appendChild(prevSectionLi);
+  prevPageLi.appendChild(prevPageButton);
+  paginationContainer.appendChild(prevPageLi);
 
   // 페이지 번호 버튼
   for (let i = startPage; i <= endPage; i++) {
@@ -268,27 +280,30 @@ const renderPagination = () => {
     paginationContainer.appendChild(pageLi);
   }
 
-  // 다음 섹션 버튼 (»)
-  const nextSectionLi = document.createElement("li");
-  nextSectionLi.className = "page-item";
+  // 다음 페이지 버튼 (»)
+  const nextPageLi = document.createElement("li");
+  nextPageLi.className = "page-item";
 
-  const nextSectionButton = document.createElement("button");
-  nextSectionButton.textContent = "»"; // 다음 섹션
-  nextSectionButton.className = "page-link";
-  nextSectionButton.disabled = currentSection === totalSections;
+  const nextPageButton = document.createElement("button");
+  nextPageButton.textContent = ">"; // 다음 페이지
+  nextPageButton.className = "page-link";
+  nextPageButton.disabled = currentPage === totalPages;
 
-  nextSectionButton.addEventListener("click", () => {
-    if (currentSection < totalSections) {
-      currentSection++;
-      currentPage = (currentSection - 1) * pagesPerSection + 1;
+  nextPageButton.addEventListener("click", () => {
+    if (currentPage < totalPages) {
+      currentPage++;
+      if (currentPage > endPage) {
+        currentSection++;
+      }
       updateMembershipUI();
       renderPagination();
     }
   });
 
-  nextSectionLi.appendChild(nextSectionButton);
-  paginationContainer.appendChild(nextSectionLi);
+  nextPageLi.appendChild(nextPageButton);
+  paginationContainer.appendChild(nextPageLi);
 };
+
 
 // 초기화 함수
 async function initializeMembershipData() {
@@ -299,7 +314,9 @@ async function initializeMembershipData() {
     updateMembershipUI();
     renderPagination();
   } else {
-    console.log("데이터가 없습니다.");
+    const container = document.getElementById("resultp");
+    container.innerHTML = "조회결과가 없습니다";
+    
   }
 }
 

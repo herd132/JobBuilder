@@ -232,6 +232,9 @@
             이력서 제출</button>
         </th:block>
 
+        <div>
+        <button id="goToRecruitmentListBtn" type="button" onclick="history.back()"> 뒤로가기 </button>
+
         <th:block th:if="${param.stat}">
           <button id="goToRecruitmentListBtn" type="button" onclick="goToRecruitmentList()"> 목록으로 </button>
         </th:block>
@@ -241,6 +244,7 @@
         <th:block th:if="${param.stat == null and param.query == null}">
           <button id="goToRecruitmentListBtn" type="button" onclick="goToRecruitmentList3()"> 목록으로 </button>
         </th:block>
+      </div>
       </div>
 
     </main>
