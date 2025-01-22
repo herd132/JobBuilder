@@ -437,7 +437,7 @@ if (categoryId === 5) {
     // 최대 선택 수 확인 (대분류5는 최대 1개)
     const countInCat = countInCategory(categoryId);
     if (countInCat >= categoryLimits[`category${categoryId}`]) {
-      alert("대분류5는 최대 1개만 선택 가능합니다.");
+      alert(`더이상 추가할 수 없습니다.`);
       return;
     }
 
@@ -509,7 +509,7 @@ if (categoryId === 5) {
     // 최대 선택 수 확인 (대분류5는 최대 1개)
     const countInCat = countInCategory(categoryId);
     if (countInCat >= categoryLimits[`category${categoryId}`]) {
-      alert("대분류5는 최대 1개만 선택 가능합니다.");
+      alert(`더이상 추가할 수 없습니다.`);
       return;
     }
 
