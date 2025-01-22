@@ -127,13 +127,13 @@ public class ResumeController {
 			@RequestParam("daysTimeList") String daysTimeListJson, // 요일날짜 JSON
 			RedirectAttributes ra) throws JsonMappingException, JsonProcessingException { 
 
-		log.debug("resume {}", resume); // gradeNo, periodNo, salaryNo, salaryAmount
-		log.debug("희망업종 workTypeList {}", workTypeList);
-		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
-		log.debug("희망급여 salAmount {} ", salAmount);
-		log.debug("careerInfoListJson {}", careerInfoListJson);
-		log.debug("희망 근무지 addressList {}", addressList);
-		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson); 
+//		log.debug("resume {}", resume); // gradeNo, periodNo, salaryNo, salaryAmount
+//		log.debug("희망업종 workTypeList {}", workTypeList);
+//		log.debug("근로형태 jobTypeNo {} ", jobTypeNoList);
+//		log.debug("희망급여 salAmount {} ", salAmount);
+//		log.debug("careerInfoListJson {}", careerInfoListJson);
+//		log.debug("희망 근무지 addressList {}", addressList);
+//		log.debug("요일날짜 daysTimeListJson {}", daysTimeListJson); 
 
 		List<CareerInfo> careerInfoList = null;
 		if (careerInfoListJson != null) {
@@ -143,12 +143,12 @@ public class ResumeController {
 
 			// 데이터 확인
 			for (CareerInfo info : careerInfoList) {
-				log.debug("경력사항 info {}", info);
+//				log.debug("경력사항 info {}", info);
 			}
 
 		}
 
-		log.debug("daysTimeListJson {}", daysTimeListJson);
+//		log.debug("daysTimeListJson {}", daysTimeListJson);
 
 		List<ResumeDaysTime> daysTimeList = null;
 		if (daysTimeListJson != null) {
@@ -158,7 +158,7 @@ public class ResumeController {
 
 			// 데이터 확인
 			for (ResumeDaysTime daysTime : daysTimeList) {
-				log.debug("근무요일시간 daysTime {}", daysTime);
+//				log.debug("근무요일시간 daysTime {}", daysTime);
 			}
 		}
 
@@ -184,7 +184,7 @@ public class ResumeController {
 
 		ra.addFlashAttribute(message);
 
-		return "redirect:/myPageWorkee/myPageWorkerInfo";
+		return "redirect:resumeList";
 	}
 
 	@PostMapping("updateCategory")
@@ -214,7 +214,7 @@ public class ResumeController {
 
 		int result = service.updateCategory(resume, workTypeList, addressList, jobTypeNoList, daysTimeList);
 
-		log.debug("currentUrl : " + currentUrl);
+//		log.debug("currentUrl : " + currentUrl);
 
 		String message = null;
 
@@ -237,7 +237,7 @@ public class ResumeController {
 	@ResponseBody
 	public Map<String, Object> updateResumeContent(@RequestBody Map<String, Object> requestBody) {
 		
-		log.debug("requestBody : " + requestBody);
+//		log.debug("requestBody : " + requestBody);
 		
 		int result = service.updateTitle(requestBody);
 		
@@ -274,7 +274,7 @@ public class ResumeController {
 		
 		String message = null;
 		
-		log.debug("이게 왜 됨"+currentUrl);
+//		log.debug("이게 왜 됨"+currentUrl);
 		if (result > 0) {
 			message = "학력/경력 수정 완료";
 		} else {
@@ -287,7 +287,7 @@ public class ResumeController {
 		
 		ra.addFlashAttribute("message", message);
 		
-		log.debug("현재페이지"+currentUrl);
+//		log.debug("현재페이지"+currentUrl);
 		
 		return "redirect:" + currentUrl;
 		

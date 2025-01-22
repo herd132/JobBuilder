@@ -636,11 +636,12 @@
   }
 }
 
+
 .weather-widget {
-  position: absolute;
+  position: fixed;  /* 화면에 고정 */
+  top: calc(50% + -100px);  /* 화면 중앙에서 아래로 조정 */
+  left: calc(50% + -752px);  /* 화면 중앙에서 오른쪽으로 조정 */
   z-index: 2;
-  top: 970px;  
-  left: 248px;
   background: #ffb876;
   border-radius: 15px;
   padding: 20px;
@@ -649,6 +650,8 @@
   box-shadow: 0 8px 32px rgba(31, 38, 135, 0.15);
   font-family: 'Pretendard', sans-serif;
 }
+
+
 
 .weather-widget > span {
   display: block;
