@@ -1,6 +1,3 @@
-console.log("workerSignUp.html과 연결됨");
-//취소버튼 누를 경우
-
 const cancelBtn = document.querySelector(".btn-cancel");
 
 cancelBtn.addEventListener("click", () => {
@@ -107,7 +104,6 @@ memberEmail.addEventListener("input", (e) => {
   // 작성된 이메일 값 얻어오기
   const inputEmail = e.target.value;
 
-  //console.log(inputEmail);
 
   // 3) 입력된 이메일이 없을 경우
   if (inputEmail.trim().length === 0) {
@@ -157,7 +153,7 @@ memberEmail.addEventListener("input", (e) => {
         workerEmailMessage.classList.add("error");
         workerEmailMessage.classList.remove("confirm");
         checkObj.memberEmail = false; // 중복은 유효하지 않은 상태이다.
-        console.log(count);
+        
         return;
       }
       // 중복 X인 경우
@@ -648,7 +644,7 @@ memberTel.addEventListener("input", (e) => {
         telMessage.classList.add("error");
         telMessage.classList.remove("confirm");
         checkObj.memberEmail = false; // 중복은 유효하지 않은 상태이다.
-        console.log(count);
+        
         return;
       }
       // 중복 X인 경우
