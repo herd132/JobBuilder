@@ -108,6 +108,11 @@ const updateMembershipUI = () => {
       }
     });
 
+  const cardInfoItem = document.createElement("li");
+  cardInfoItem.textContent = `${summary.cardName}, ${summary.cardNumber}, ${summary.pgProvider}`;
+  cardInfoItem.style.fontWeight = "bold"; // 스타일 조정 (선택)
+  detailList.appendChild(cardInfoItem);
+
     // 메인 항목 클릭 이벤트 추가 (클릭 시 펼쳐짐/숨김)
     mainDiv.querySelector(".summary-line").addEventListener("click", () => {
       detailList.classList.toggle("hidden"); // 숨김 토글

@@ -147,6 +147,10 @@ public class PaymentController {
             // 1. 요청 데이터 파싱
             String impUid = (String) paymentData.get("imp_uid");
             String merchantUid = (String) paymentData.get("merchantUid");
+            String cardName = (String) paymentData.get("cardName");
+            String cardNumber = (String) paymentData.get("cardNumber");
+            String pgProvider = (String) paymentData.get("pgProvider");
+            
             int amount = (int) paymentData.get("amount");
             int employerNo = (int) paymentData.get("employerNo"); // 사업주 회원번호
 
@@ -195,6 +199,9 @@ public class PaymentController {
                     .paymentStatus("승인")
                     .employerNo(employerNo)
                     .paymentProduct(paymentProduct)
+                    .cardName(cardName)
+                    .cardNumber(cardNumber)
+                    .pgProvider(pgProvider)
                     .build();
 
                 service.savePayment(payment, validMembershipNumbers, emptyMembershipCount, oldMembershipList, newMembershipList);

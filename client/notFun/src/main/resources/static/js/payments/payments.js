@@ -486,7 +486,7 @@ const setupProductSelectionHandlers = (count, productContainer) => {
         (selectedMemberships.includes("2") && selectedValue === "3") ||
         (selectedMemberships.includes("3") && selectedValue === "2")
       ) {
-        alert("맴버십 상품은 1개만 선택해야 합니다.");
+        alert("멤버십 상품은 1개만 선택해야 합니다.");
         event.target.value = "none";
         return;
       }
@@ -746,10 +746,10 @@ document.addEventListener("DOMContentLoaded", () => {
           },
           function (rsp) {
             // callback
-            
+            console.log(rsp);
             if (rsp.success) {
               // 결제성공시 로직
-       
+              
               const data = {
                   imp_uid: rsp.imp_uid,
                   merchantUid: rsp.merchant_uid,
@@ -757,6 +757,9 @@ document.addEventListener("DOMContentLoaded", () => {
                   paymentProduct: rsp.name,
                   employerNo: Number(employerNo),
                   customData: JSON.stringify(rsp.custom_data),
+                  cardName: rsp.card_name,
+                  cardNumber: rsp.card_number,
+                  pgProvider: rsp.pg_provider,
               };
 
               //결제 검증
@@ -778,7 +781,7 @@ document.addEventListener("DOMContentLoaded", () => {
               });
             } else {
               // 결제 실패 시 로직
-              alert("결재 실패");
+              alert("결제 실패");
               setTimeout(() => {
                 // 다음 로직 실행
             }, 3000); // 3초 대기
@@ -836,7 +839,7 @@ const renderMembershipUI = (data) => {
     `;
     
   } else {
-    return "<p>맴버십 데이터가 없습니다.</p>";
+    return "<p>멤버십 데이터가 없습니다.</p>";
   }
 };
 

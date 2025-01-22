@@ -82,7 +82,10 @@
             PAYMENT_AMOUNT,
             PAYMENT_STATUS,
             MERCHANT_UID,
-            IMP_UID
+            IMP_UID,
+            CARD_NAME,
+            CARD_NUMBER,
+            PG_PROVIDER
         ) VALUES (
             SEQ_PAYMENT_NO.NEXTVAL,
             SYSDATE,
@@ -90,7 +93,10 @@
             #{paymentAmount},
             #{paymentStatus},
             #{merchantUid},
-            #{impUid}
+            #{impUid},
+            #{cardName},
+            #{cardNumber},
+            #{pgProvider}
         )
 	                    
 	     <!-- 방금 삽입된 PAYMENT_NO를 가져오기 -->
