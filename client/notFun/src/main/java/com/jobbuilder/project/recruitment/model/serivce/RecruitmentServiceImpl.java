@@ -379,7 +379,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 			}
 		}
 
-		return result; // Controller 에 recruitmentNo 있어서 recruitmentNo 로 return 할 필요 없음
+		return updateRecruitment.getRecruitmentNo();
 	}
 
 	/* ********** 공고 삭제 관련 ********** */

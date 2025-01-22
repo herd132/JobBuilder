@@ -72,6 +72,7 @@
 
           <div>
             <h4 th:text="|기존 모집인원 : *{numOfRecruitmentName}|"></h4>
+            <input type="hidden" id="originalNumOfRecruitmentName" th:value="*{numOfRecruitmentName}">
             <select name="numOfRecruitmentName" id="numOfRecruitmentName">
               <option value="인원미정">인원미정</option>
               <option value="0명">0명</option>
@@ -81,14 +82,18 @@
 
           <div class="workcond-jobtype-area">
             <h4 th:text="|기존 근무형태 : *{jobtypeName}|"></h4>
-            <input type="radio" name="jobtypeNo" value="1" id="partTime" checked> 
+            <input type="hidden" id="originalJobTypeNo" th:value="*{jobtypeNo}">
+            <input type="radio" name="jobtypeNo" value="1" id="partTime"> 
             <label for="partTime">알바</label>
             <input type="radio" name="jobtypeNo" value="2" id="fullTime">
             <label for="fullTime">정규직</label>
+            <input type="radio" name="jobtypeNo" value="3" id="fixedTermContract">
+            <label for="fixedTermContract">기간 계약직</label>
           </div>
 
           <div class="grade-area">
             <h4 th:text="|기존 학력조건 : *{gradeName}|">학력조건</h4>
+            <input type="hidden" id="originalGradeNo" th:value="*{gradeNo}">
             <select name="gradeNo" id="gradeNo">
               <option value="1">무관</option>
               <option value="2">중졸 이상</option>
@@ -101,6 +106,8 @@
 
           <div class="salary-area">
             <h4 th:text="|기존 급여조건 : *{salaryName}, *{salaryMount}원|">급여조건</h4>
+            <input type="hidden" id="originalSalaryNo" th:value="*{salaryNo}">
+            <input type="hidden" id="originalSalaryMount" th:value="*{salaryMount}">
             <select name="salaryNo" id="salaryNo">
               <option value="1">시급</option>
               <option value="2">월급</option>
@@ -108,11 +115,12 @@
               <option value="4">추후협의(월급)</option>
             </select>
             <br>
-            <input type="number" name="salaryMount" id="salaryMount" min="0" placeholder="금액을 입력하세요"> 원
+            <input type="number" name="salaryMount" id="salaryMount" th:value="*{salaryMount}" min="0" placeholder="금액을 입력하세요"> 원
           </div>
 
           <div class="workcond-period-area">
             <h4 th:text="|기존 근무기간 : *{periodName}|">근무기간</h4>
+            <input type="hidden" id="originalPeriodNo" th:value="*{periodNo}">
             <select name="periodNo" id="periodNo">
               <option value="1">무관</option>
               <option value="2">하루</option>
@@ -127,6 +135,7 @@
 
           <div class="workcond-days-area">
             <h4 th:text="|기존 근무요일 : *{daysName}|">근무요일</h4>
+            <input type="hidden" id="originalDaysNo" th:value="*{daysNo}">
             <select name="daysNo" id="daysNo">
               <option value="1">무관</option>
               <option value="2">월 ~ 일</option>
@@ -144,6 +153,7 @@
 
           <div class="workcond-time-area">
             <h4 th:text="|기존 근무시간 : *{timeName}"|>근무시간</h4>
+            <input type="hidden" id="originalTimeNo" th:value="*{timeNo}">
             <select name="timeNo" id="timeNo">
               <option value="1">무관</option>
               <option value="2">오전 파트타임(06시~12시)</option>
