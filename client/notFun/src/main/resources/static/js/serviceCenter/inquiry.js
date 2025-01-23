@@ -2,7 +2,7 @@ const subCategories = {
   1: [
     { value: '1', text: '회원가입/탈퇴' },
     { value: '2', text: '회원정보 변경' },
-    { value: '3', text: '이력서 관리리' },
+    { value: '3', text: '이력서 관리' },
     { value: '3', text: '회사명/사업자등록번호변경' }
   ],
   2: [
@@ -22,7 +22,7 @@ const subCategories = {
   ],
   5: [
     { value: '1', text: '거짓채용공고 신고' },
-    { value: '2', text: '이모저모 글 신고' },
+    { value: '2', text: '게시판 글 신고' },
     { value: '3', text: '근로분쟁' }
   ],
   6: [

@@ -741,7 +741,71 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 페이지 로드 시 초기 날씨 정보 업데이트
       updateWeather();
+
+      const weatherWidget = document.querySelector('.weather-widget');
+      
+      let pos3 = 0, pos4 = 0;
+
+      function dragMouseDown(e) {
+
+        e.preventDefault();
+    
+        // 마우스 클릭 위치 가져오기
+        pos3 = e.clientX;
+        pos4 = e.clientY;
+    
+        // 마우스와 모달의 상대적 위치 계산 (오프셋)
+        const rect = weatherWidget.getBoundingClientRect();
+        offsetX = pos3 - rect.left;
+        offsetY = pos4 - rect.top;
+    
+        // 마우스 이벤트 추가
+        document.onmousemove = elementDrag;
+        document.onmouseup = closeDragElement;
+      }
+
+      function elementDrag(e) {
+
+        e.preventDefault();
+    
+        // 새로운 위치 계산
+        let newLeft = e.clientX - offsetX;
+        let newTop = e.clientY - offsetY;
+
+        // 화면 경계 확인
+        const boundary = {
+          top: -70,
+          left: -70,
+          right: window.innerWidth - weatherWidget.offsetWidth + 70,
+          bottom: window.innerHeight - weatherWidget.offsetHeight + 70,
+        };
+
+        // 화면 밖으로 나가지 않도록 제한
+        if (newTop < boundary.top) newTop = boundary.top;
+        if (newLeft < boundary.left) newLeft = boundary.left;
+        if (newTop > boundary.bottom) newTop = boundary.bottom;
+        if (newLeft > boundary.right) newLeft = boundary.right;
+
+    
+        // 모달의 새 위치 설정
+        weatherWidget.style.left = `${newLeft}px`;
+        weatherWidget.style.top = `${newTop}px`;
+    
+        // transform 초기화
+        weatherWidget.style.transform = 'none';
+      }
+
+      function closeDragElement() {
+        // 마우스 이벤트 제거
+        document.onmouseup = null;
+        document.onmousemove = null;
+      }
+
+      // 드래그 이벤트 리스너 추가
+      weatherWidget.onmousedown = dragMouseDown;
+
     }
+
   );
 });
 
