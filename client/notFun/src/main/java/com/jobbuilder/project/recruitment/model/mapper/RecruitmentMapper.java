@@ -236,7 +236,7 @@ public interface RecruitmentMapper {
 	 * @param employerNo
 	 * @return
 	 */
-	int getLatestTopBrandRecruitments(int employerNo);
+	Integer getLatestTopBrandRecruitments(int employerNo);
 	
 	
 

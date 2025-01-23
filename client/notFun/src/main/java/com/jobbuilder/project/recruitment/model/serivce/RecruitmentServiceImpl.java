@@ -392,7 +392,7 @@ public class RecruitmentServiceImpl implements RecruitmentService {
 	 * 탑브랜드 최신공고번호 조회
 	 */
 	@Override
-	public int getLatestTopBrandRecruitments(int employerNo) {
+	public Integer getLatestTopBrandRecruitments(int employerNo) {
 		return mapper.getLatestTopBrandRecruitments(employerNo);
 	}
 

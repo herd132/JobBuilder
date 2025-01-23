@@ -368,9 +368,9 @@ public class RecruitmentController {
 	@GetMapping("latestTopBrandRecruitment")
 	public String getLatestTopBrandRecruitments(@RequestParam("employerNo") int employerNo,
 												RedirectAttributes ra) {
-		int recruitmentNo = service.getLatestTopBrandRecruitments(employerNo);
+		Integer recruitmentNo = service.getLatestTopBrandRecruitments(employerNo);
 		
-		if(recruitmentNo > 0) {
+		if(recruitmentNo != null) {
 			return "redirect:/recruitment/detail/" + recruitmentNo;			
 		}
 		

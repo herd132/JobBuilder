@@ -358,7 +358,7 @@
 	
 	<!--  메인페이지 탑 공고 관련 -->
 	<!--  탑브랜드 최신공고번호 조회  -->
-	<select id="getLatestTopBrandRecruitments">
+	<select id="getLatestTopBrandRecruitments" resultType="int">
 		SELECT RECRUITMENT_NO
 		FROM (
 		    SELECT RECRUITMENT_NO

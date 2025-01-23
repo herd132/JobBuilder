@@ -136,7 +136,7 @@ public interface RecruitmentService {
 	 * @param employerNo
 	 * @return
 	 */
-	int getLatestTopBrandRecruitments(int employerNo);
+	Integer getLatestTopBrandRecruitments(int employerNo);
 
 	// 홍보페이지 조회
 	Recruitment showPromoteEmploy(String recruitmentNo, String businessNickname);
