@@ -122,6 +122,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // 페이지네이션 로직 호출
       createPagination(recommendations, document.getElementById("pagination"));
+      window.scrollTo(0, 0);
     })
     .catch((error) => {
       console.error("요청 오류:", error);
@@ -337,5 +338,6 @@ const createPagination = (data, paginationContainer) => {
   // >> : 제일 마지막으로 이동
   paginationContainer.appendChild(createLink(">>", totalPages));
 };
+
 
 

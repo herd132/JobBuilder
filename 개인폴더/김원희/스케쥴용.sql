@@ -16,6 +16,33 @@ BEGIN
 END;
 
 
+--BEGIN
+--    DBMS_SCHEDULER.CREATE_JOB (
+--        job_name        => 'UPDATE_RECRUITMENT_DEL_FLAG_JOB', -- 매일 0시에 실행
+--        job_type        => 'PLSQL_BLOCK',
+--        job_action      => '
+--            BEGIN
+--                UPDATE RECRUITMENT
+--                SET RECRUITMENT_DEL_FL = ''Y''
+--                WHERE RECRUITMENT_DEADLINE < TRUNC(SYSDATE) 
+--                AND RECRUITMENT_DEL_FL = ''N'';
+--            END;',
+--        start_date      => SYSTIMESTAMP,
+--        repeat_interval => 'FREQ=DAILY; BYHOUR=0; BYMINUTE=0; BYSECOND=0',
+--        enabled         => TRUE
+--    );
+--END;
+
+
+
+
+SELECT *
+FROM MEMBERSHIP AS OF TIMESTAMP (SYSTIMESTAMP - INTERVAL '30' MINUTE)
+WHERE MEMBERSHIP_DEL_FL = 'N'
+ORDER BY MEMBERSHIP_END_DATE DESC;
+
+
+
 
 BEGIN
     DBMS_SCHEDULER.DISABLE('UPDATE_MEMBERSHIP_DEL_FLAG_JOB');
@@ -59,6 +86,9 @@ FROM DBA_SCHEDULER_JOB_LOG
 WHERE JOB_NAME = 'UPDATE_MEMBERSHIP_DEL_FLAG_JOB'
 ORDER BY LOG_DATE DESC;
 -- 결과 확인
+
+
+
 
 SELECT *
 FROM DBA_SCHEDULER_JOB_LOG
