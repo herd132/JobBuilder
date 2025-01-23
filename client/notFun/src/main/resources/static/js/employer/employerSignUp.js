@@ -10,8 +10,8 @@ const checkObj = {
   "essentialAge": false,                // 나이 필수 약관
   "essentialService": false,            // 서비스 필수 약관
   "essentialPersonalInfo": false,       // 개인정보 필수 약관
-  "businessRegistrationNumber": true,  // 사업자등록번호
-  "representativeName": true,          // 대표자명
+  "businessRegistrationNumber": false,  // 사업자등록번호
+  "representativeName": false,          // 대표자명
   "memberEmail": false,                 // 멤버 이메일
   "authKey": false,                     // 인증키
   "memberPw": false,                    // 비밀번호
